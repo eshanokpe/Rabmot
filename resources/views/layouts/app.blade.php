@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-6/dist-font/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
     <!-- Scripts -->  
-     {{-- <script src="{{asset('/assets/js/app.js')}}"></script>  --}}
-    <script src="{{ mix('js/app.js')}}"></script> 
+    
     
     @viteReactRefresh
     @vite('resources/js/app.jsx')
