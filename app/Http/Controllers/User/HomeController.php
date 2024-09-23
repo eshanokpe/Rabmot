@@ -10,6 +10,8 @@ use App\Models\AddVehicleRenewal;
 use App\Models\User;
 use App\Models\VehicleType;
 use App\Models\Processhistory;
+use App\Models\VehicleRegistrationType;
+use App\Models\OtherPermitPrice;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -52,8 +54,17 @@ class HomeController extends Controller
         $id = Auth::user()->id;
         $vehicleList = VehicleType::all();
 
-        return view('user.pages.addvehicle', compact('vehicleList'));
+        return view('user.pages.addVehicle', compact('vehicleList'));
     }
+
+    public function pricing(){
+        $vehiclelist =  VehicleType::all();
+        $vehiclecategories = VehicleRegistrationType::all();
+        $states = State::all();
+        $otherPermits = OtherPermitPrice::all();
+          
+        return view('user.pages.pricing', compact('vehiclelist', 'vehiclecategories','states','otherPermits'));
+      }
 
     public function processHistory()
     {
