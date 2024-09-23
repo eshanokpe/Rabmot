@@ -212,7 +212,7 @@ export default  function NewVehicleRegistration() {
                                     <div className="col-sm-12">
                                         <div className="check-listg">
                                             <p className="check-listgk" id="mainPriceVReg" style={{ fontSize: '14px',  }}>TOTAL AMOUNT: 
-                                                <span className="check-listgk" >₦{total}</span>
+                                                <span className="check-listgk" >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(total)}</span>
                                             </p>
                                             <div className="main-btn-wrap">
                                                 <center> <a onClick={handleVehicleRegistration} className="btn btn-primary" style={{ backgroundColor: '#142444', borderColor: '#142444',color:'white' }}> Process Paper </a></center>
