@@ -149,13 +149,13 @@ export default function VehicleRenewalPaper() {
     useEffect(() => {
     const calculateTotalAmount = () => {
         
-        const vehicleLicenseTotal = vehicleLicense ? vehicleLicenseCost * vehicleLicenseCount : 0;
-        const roadWorthinessTotal = roadWorthiness ? roadWorthinessCost : 0;
-        const thirdPartyInsuranceTotal = thirdPartyInsurance ? thirdPartyInsuranceCost : 0;
-        const proofOfOwnershipTotal = proofOfOwnership ? proofOfOwnershipCost : 0;
-        const hackneyPermitTotal = hackneyPermit ? hackneyPermitCost * hackneyPermitCount : 0;
-        const policeCMRISTotal = policeCMRIS ? policeCMRISCost : 0;
-        const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? vehicleInspectionPickanddropCost : 0;
+        const vehicleLicenseTotal = vehicleLicense ? Number(vehicleLicenseCost) * vehicleLicenseCount : 0;
+        const roadWorthinessTotal = roadWorthiness ? Number(roadWorthinessCost) : 0;
+        const thirdPartyInsuranceTotal = thirdPartyInsurance ? Number(thirdPartyInsuranceCost) : 0;
+        const proofOfOwnershipTotal = proofOfOwnership ? Number(proofOfOwnershipCost) : 0;
+        const hackneyPermitTotal = hackneyPermit ? Number(hackneyPermitCost) * hackneyPermitCount : 0;
+        const policeCMRISTotal = policeCMRIS ? Number(policeCMRISCost) : 0;
+        const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? Number(vehicleInspectionPickanddropCost) : 0;
 
         setTotalAmount(
             vehicleLicenseTotal +

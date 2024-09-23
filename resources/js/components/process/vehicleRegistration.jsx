@@ -144,17 +144,17 @@ export default function VehicleRegistration() {
         let policeCMRISTotal = 0;
 
         if (isHackneyPermitChecked) {
-            hackneyPermitTotal = hackneyPermitCost; 
+            hackneyPermitTotal = Number(hackneyPermitCost); 
         }
 
         if (isPoliceCmrisChecked) {
-            policeCMRISTotal = policeCmrisCost; 
+            policeCMRISTotal = Number(policeCmrisCost); 
         }
 
         setHackneyPermitTotal(hackneyPermitTotal);
         setPoliceCMRISTotal(policeCMRISTotal);
 
-        const total = amount + hackneyPermitTotal + policeCMRISTotal;
+        const total = Number(amount) + hackneyPermitTotal + policeCMRISTotal;
         setTotalAmount(total);  
     };
 
