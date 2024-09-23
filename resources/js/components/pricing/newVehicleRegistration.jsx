@@ -99,7 +99,7 @@ export default  function NewVehicleRegistration() {
             policeCMRISTotal = Number(policeCMRISCost);
           }
           
-          totalAmount =  amount + hackneyPermitTotal + policeCMRISTotal;
+          totalAmount =  Number(amount) + Number(hackneyPermitTotal) + Number(policeCMRISTotal);
           setTotal(totalAmount);
         };
     

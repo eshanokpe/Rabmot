@@ -73,7 +73,7 @@ export default function VehicleRenewalPricing() {
       const policeCMRISTotal = policeCMRIS ? Number(policeCMRISCost) : 0; 
       const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? Number(vehicleInspectionPickanddropCost) : 0;
   
-      totalAmount = vehicleLicenseTotal + roadWorthinessTotal + proofOwnershipTotal 
+      totalAmount = Number(vehicleLicenseTotal) + roadWorthinessTotal + proofOwnershipTotal 
         + thirdPartyInsuranceTotal + hackneyPermitTotal + policeCMRISTotal + vehicleInspectionPickanddropTotal;
   
       setTotal(totalAmount);
