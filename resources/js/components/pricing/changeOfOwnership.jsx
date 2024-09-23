@@ -63,10 +63,10 @@ export default function ChangeOfOwnership() {
     
           
           if(policeCMRIS){
-            policeCMRISTotal = policeCMRISCost;
+            policeCMRISTotal = Number(policeCMRISCost);
           }
           
-          amount = vehicleCost + policeCMRISTotal;
+          amount = Number(vehicleCost) + policeCMRISTotal;
           setTotal(amount);
         };
     

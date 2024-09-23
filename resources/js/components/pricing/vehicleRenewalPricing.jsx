@@ -64,46 +64,28 @@ export default function VehicleRenewalPricing() {
   useEffect(() => {
     const calculateTotal = () => {
       let totalAmount = 0;
-      let vehicleLicenseTotal = 0;
-      let roadWorthinessTotal = 0;
-      let proofOwnershipTotal = 0;
-      let thirdPartyInsuranceTotal = 0;
-      let hackneyPermitTotal = 0;
-      let policeCMRISTotal = 0;
-      let vehicleInspectionPickanddropTotal = 0;
-
-      if(vehicleLicense){
-        vehicleLicenseTotal = vehicleLicenseCost; 
-      }
-      if(roadWorthiness){
-        roadWorthinessTotal = roadWorthinessCost; 
-      }
-      if(proofOwnership){
-        proofOwnershipTotal = proofOwnershipCost; 
-      }
-      if(thirdPartyInsurance){
-        thirdPartyInsuranceTotal = thirdPartyInsuranceCost; 
-      }
-      if(hackneyPermit){
-        hackneyPermitTotal = hackneyPermitCost; 
-      }
-      if(policeCMRIS){
-        policeCMRISTotal = policeCMRISCost;
-      }
-      if(vehicleInspectionPickanddrop){
-        vehicleInspectionPickanddropTotal = vehicleInspectionPickanddropCost;
-      }
+      
+      const vehicleLicenseTotal = vehicleLicense ? Number(vehicleLicenseCost) : 0; 
+      const roadWorthinessTotal = roadWorthiness ? Number(roadWorthinessCost) : 0; 
+      const proofOwnershipTotal = proofOwnership ? Number(proofOwnershipCost) : 0; 
+      const thirdPartyInsuranceTotal = thirdPartyInsurance ? Number(thirdPartyInsuranceCost) : 0; 
+      const hackneyPermitTotal = hackneyPermit ? Number(hackneyPermitCost) : 0; 
+      const policeCMRISTotal = policeCMRIS ? Number(policeCMRISCost) : 0; 
+      const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? Number(vehicleInspectionPickanddropCost) : 0;
+  
       totalAmount = vehicleLicenseTotal + roadWorthinessTotal + proofOwnershipTotal 
-      + thirdPartyInsuranceTotal + hackneyPermitTotal + policeCMRISTotal + vehicleInspectionPickanddropTotal;
+        + thirdPartyInsuranceTotal + hackneyPermitTotal + policeCMRISTotal + vehicleInspectionPickanddropTotal;
+  
       setTotal(totalAmount);
     };
-
+  
     calculateTotal();
   }, [vehicleLicense, vehicleLicenseCost, roadWorthiness, roadWorthinessCost, 
     proofOwnership, proofOwnershipCost, thirdPartyInsurance, thirdPartyInsuranceCost,
     hackneyPermit, hackneyPermitCost, policeCMRIS, policeCMRISCost, vehicleInspectionPickanddrop, 
     vehicleInspectionPickanddropCost
-  ]); 
+  ]);
+  
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
