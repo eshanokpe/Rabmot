@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\Processhistory;
+use App\Models\ProcessHistory;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
