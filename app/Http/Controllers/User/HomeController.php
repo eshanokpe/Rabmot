@@ -9,7 +9,7 @@ use App\Models\State;
 use App\Models\AddVehicleRenewal;
 use App\Models\User;
 use App\Models\VehicleType;
-use App\Models\Processhistory;
+use App\Models\ProcessHistory;
 use App\Models\VehicleRegistrationType;
 use App\Models\OtherPermitPrice;
 use Illuminate\Support\Facades\Validator;
