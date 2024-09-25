@@ -21,7 +21,7 @@ export default function DealerPateNumber() {
     const [pob, setPOB] = useState('');
     const [errors, setErrors] = useState({});
 
-    const [totalAmount, setTotalAmount] = useState(0); 
+    const [totalAmount, setTotalAmount] = useState(0.00); 
     
     const handleUserState= (e)=>{
         setHandleUserState(e.target.value);
