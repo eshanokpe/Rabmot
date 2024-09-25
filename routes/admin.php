@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 Route::get('admin/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin-forgotpassword');
 // Route::get('/login/admin',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::get('/admin',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.login');
+Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
 Route::get('/forgotpassword/admin',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

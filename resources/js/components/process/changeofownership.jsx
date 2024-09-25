@@ -41,28 +41,30 @@ export default function ChangeofOwnership() {
     }, [url]);
 
     useEffect(() => {
-        // setVehicleList([]);
-        // setStateVehicleList([]);
-
-        axios.post(`${url}/home/vehicleOwnershipCost`, { 
-            stateId,
-            vehicleCategoryId,
-            addVehicleOwnership,
-            vLExpirydate,
-            hackneyPermit,
-            plateType
-         })
-            .then(response => {
-                console.log(` updated successfully`, response.data);
-                setVehicleCost(response.data.vehicleCost);
-                setHackneyPermitCost(response.data.hackneyPermitCost);
-                setVehicleLicenseCost(response.data.vehicleLicenseCost); 
-                setPoliceCmrisCost(response.data.policeCMRISCost); 
+      
+        const calculateTotalAmount = () => {
+            console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
+            console.log('Successfully sent plateType:', plateType);
+            axios.post(`${url}/home/vehicleOwnershipCost`, { 
+                stateId,
+                vehicleCategoryId,
+                addVehicleOwnership,
+                vLExpirydate,
+                hackneyPermit, 
+                plateType
             })
-            .catch(error => {
-                console.error(`Error updating ${option}:`, error);
-            });
-        
+                .then(response => {
+                    console.log(` updated successfully`, response.data);
+                    setVehicleCost(response.data.vehicleCost);
+                    setHackneyPermitCost(response.data.hackneyPermitCost);
+                    setVehicleLicenseCost(response.data.vehicleLicenseCost); 
+                    setPoliceCmrisCost(response.data.policeCMRISCost); 
+                })
+                .catch(error => {
+                    console.error(`Error updating ${option}:`, error);
+                });
+        };
+        calculateTotalAmount();
         axios.post(`${url}/home/changeofownership-state-selection`, { 
             stateId 
         }).then(response => {
@@ -70,7 +72,7 @@ export default function ChangeofOwnership() {
         }).catch(error => {
             console.error('Error sending stateId:', error);
         });
-        
+   
         axios.post(`${url}/home/vehicleOwnership-vehicleCategoryId-selection`, {
                 vehicleCategoryId,
                 stateId
@@ -377,7 +379,7 @@ export default function ChangeofOwnership() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isPoliceCmrisChecked}
                                                                     onChange={(e) => handleCheckboxChange(e, 'policeCMRIS')}

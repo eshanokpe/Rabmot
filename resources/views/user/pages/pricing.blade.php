@@ -1,13 +1,69 @@
 @extends('user.layouts.app') 
 
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+<style>
+    /* hide the arrows beside the input type number forms */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+    /* special handling for mozilla*/
+    input[type=number] {
+        -moz-appearance:textfield;
+    }
+    
+    
+    /* hide the arrows beside the input type number forms */
+    input[type=date]::-webkit-inner-spin-button, 
+    input[type=date]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+    /* special handling for mozilla*/
+    input[type=date] {
+        -moz-appearance:textfield;
+    }
+        
+    .additionSubtractionTable{
+            max-width: 30px !important; 
+        }
+        
+        
+        .additionSubtraction{
+            border-radius: 3px; 
+            padding:3px 4px 3px 4px; 
+            overflow:hidden; 
+            color: #fff;
+            background-color: #bbb ; /* #009ee0; */
+            min-width: 17px ; 
+            /* height: 23px; */
+            font-size: 120% ; 
+        }
+        
+        .additionSubtraction:hover{
+            cursor: hand !important;
+            cursor: pointer !important;
+        }
+        
+        .additionSubtractionForm{
+            border-radius: 5px; 
+            padding:3px 5px 3px 5px; 
+            margin-top: 1px !important;
+            width: 32px ; 
+            height: 25px;
+        }
+</style>
     
 	<!-- wrapper -->
 	<div class="wrapper">
-		<!--header-->
-	
+
+        <div id="userPrice"></div> 
+
 
 		<!--page-wrapper-->
 		<div class="page-wrapper"> 
@@ -226,7 +282,6 @@
                                                                     <div class="main-btn-wrap" > 
                                                                         <center> <a href="" class="btn btn-primary px-5 text-center" > Process Paper </a></center>
                                                                     </div>
-
                                                                 </div>
                 
                                                                 
@@ -646,4 +701,4 @@
 		
         
 
-	@endsection
+@endsection

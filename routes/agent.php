@@ -7,7 +7,7 @@ use App\Http\Controllers\Agent\AgentDashboardController;
 
 Route::get('agent/forgotpassword',  [AgentLoginController::class, 'forgotpassword'])->name('agent-forgotpassword');
 Route::get('/login/agent',  [AgentLoginController::class, 'showLoginForm'])->name('agent.login');
-Route::post('/login/agent',  [AgentLoginController::class, 'login'])->name('agent.login');
+Route::post('/login/agent',  [AgentLoginController::class, 'login'])->name('agent.loginSubmit');
 Route::get('/forgotpassword/agent',  [AgentLoginController::class, 'forgotpassword'])->name('agent.forgotpassword');
 
 Route::middleware(['auth', 'role:agent'])->group(function () {

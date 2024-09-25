@@ -29,7 +29,9 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('/vehicle/paper/renewal', [AddVehicleRenewalController::class, 'vehicleRenewalPaper'])->name('home.vehicleRenewalPaper');
         Route::post('/post-vehicle-paper-renewal', [AddVehicleRenewalController::class, 'postRenewVehiclePaper'])->name('home.postRenewVehiclePaper');
-        Route::get('vehicle/paper/details/{encryptedId}', [AddVehicleRenewalController::class, 'editVehiclePaperRenewal'])->name('edit.vehiclePaperRenewal');
+        Route::get('/vehicle-paper-renewal/edit/{encryptedId}', [AddVehicleRenewalController::class, 'editVehiclePaperRenewal'])
+         ->name('edit.vehiclePaperRenewal');
+
         Route::get('vehicle/paper/delete/{encryptedId}', [AddVehicleRenewalController::class, 'deleteVehiclePaperRenewal'])->name('delete.vehiclePaperRenewal');
         Route::get('/get-user-add-vehicles-renewal', [AddVehicleRenewalController::class, 'getUserAddVehiclesRenewal']);
         Route::post('/vehicleRenewal-state-selection', [AddVehicleRenewalController::class, 'handleStateSelection']);
@@ -89,11 +91,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
         
-        Route::get('profile', [HomeController::class, 'profile'])->name('home.profile');
         Route::get('/topics', [HomeController::class, 'indexT'])->name('topics.index');
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
-        Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory');
+        Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
     
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
         Route::get('success', [HomeController::class, 'success'])->name('home.success');
@@ -101,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory');
         Route::get('deletetransactionhistory', [HomeController::class, 'deletetransactionhistory'])->name('home.deletetransactionhistory');
         
-        Route::get('user-profile', [ProfileController::class, 'index'])->name('home.profile');
+        Route::get('user-profile', [ProfileController::class, 'index']);
         Route::get('edit-profile', [ProfileController::class, 'editprofile'])->name('home.editprofile'); 
         Route::get('get-user-details', [ProfileController::class, 'userProfile']);
         Route::post('update-profile', [ProfileController::class, 'updateProfile']);

@@ -350,11 +350,11 @@
 												<div class="col-sm-3 ">
 													<div class=row>
 														<div class="col-6 p-1">
-															<a href="{{ route('edit.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" class="btn btn-sm btn-primary  text-center" >Edit Vehicle</a>
+															{{-- <a href="{{ route('edit.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" class="btn btn-sm btn-primary text-center">Edit Vehicle</a> --}}
 														</div>
 													
 														<div class="col-6 p-1">
-															<a href="{{ route('delete.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" class="btn btn-sm btn-secondary text-center" onclick="return confirm('Are you sure you want to delete this vehicle?')">Delete Vehicle</a>
+															{{-- <a href="{{ route('delete.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" class="btn btn-sm btn-secondary text-center" onclick="return confirm('Are you sure you want to delete this vehicle?')">Delete Vehicle</a> --}}
 															
 														</div>
 													</div>

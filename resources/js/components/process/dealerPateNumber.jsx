@@ -73,7 +73,8 @@ export default function DealerPateNumber() {
                
             });
     }, [url]);
-useEffect(() => {
+    
+    useEffect(() => {
         // setStateList([]);
         axios
             .post(`${url}/home/get-dealer-platenumber-price`, {
@@ -81,7 +82,7 @@ useEffect(() => {
             })
             .then(response => {
                 console.log('Success Amount:', response.data);
-                setTotalAmount(response.data.amount  || []);
+                setTotalAmount(Number(response.data.amount  || 0));
             })
             .catch(error => {
                 console.error('Error sending :', error);

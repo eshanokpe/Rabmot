@@ -2,8 +2,6 @@
 
 @section('content')
 
-    
-<body>
     <style>
         /* hide the arrows beside the input type number forms */
         input[type=number]::-webkit-inner-spin-button, 

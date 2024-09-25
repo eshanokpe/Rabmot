@@ -11,6 +11,7 @@ import './components/process/newDriverLicense';
 import './components/process/driverLicenseRenewal';
 import './components/process/internationalDriverLicense';
 import './components/process/otherPermit';
-
+ 
 import './components/profile/editProfile';
+import './components/user/index';
  

@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('apps')).render(
 <React.StrictMode>
     <Home />
 </React.StrictMode>
-);
+); 
 }

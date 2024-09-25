@@ -329,6 +329,7 @@ class AddVehicleOwnershipController extends Controller
          
         return response()->json([
             'success' => true,
+            'platenumber' => $platenumber,
             'message' => 'Vehicle Ownershipt Cost',
             'vehicleCost' => $vehicleCost,
             'hackneyPermitCost' => $hackneyPermitCost,

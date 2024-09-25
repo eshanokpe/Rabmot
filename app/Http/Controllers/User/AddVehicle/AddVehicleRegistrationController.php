@@ -199,7 +199,7 @@ class AddVehicleRegistrationController extends Controller
                         $amount = $RCommercialPlate3rdPartyNoInsurance;
                         break;
                 }
-            } elseif ($numberTypeId == 'PCN') {
+            } elseif ($numberTypeId == 'PCN') { 
                 $CPrivateVehicle3rdPartyInsurance = $vehicleRegPrice->first()->customized_private_vehicle_3rd_party_insurance ?? 0;
                 $CPrivateVehicle3rdPartyNoInsurance = $vehicleRegPrice->first()->customised_plate_private_vehicle_no_insurance ?? 0;
                 $CCommercialPlate3rdPartyInsurance = $vehicleRegPrice->first()->customised_commercial_plate_3rd_party_insurance ?? 0;
@@ -222,7 +222,7 @@ class AddVehicleRegistrationController extends Controller
                         break;
                 }
             }
-        }
+        } 
 
         return response()->json([
             'success' => true,

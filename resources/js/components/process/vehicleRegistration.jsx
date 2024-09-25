@@ -150,8 +150,8 @@ export default function VehicleRegistration() {
             setHackneyPermitTotal(hackneyPermitTotal);
             setPoliceCMRISTotal(policeCMRISTotal);
             setTotalAmount(
-                amount + hackneyPermitTotal + policeCMRISTotal 
-            );
+                Number(amount) + hackneyPermitTotal + policeCMRISTotal 
+            ); 
             // Set the individual totals in state
             
         };
