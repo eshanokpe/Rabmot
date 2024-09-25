@@ -26,7 +26,7 @@ export default function InternationalDriverLicense() {
     const [contactAddress, setContactAddress] = useState('');
     const [errors, setErrors] = useState({});
 
-    const [totalAmount, setTotalAmount] = useState(0); 
+    const [totalAmount, setTotalAmount] = useState(0.00); 
     
     const handleStateChange = (event) => {
         setStateId(event.target.value);
@@ -412,9 +412,11 @@ export default function InternationalDriverLicense() {
                  
                                                 <div className='row'>
                                                     <div className="col-md-1 mb-1"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
+                                                    <div className=" col-md-10 align-items-center text-center">
                                                         <div id="mainPrice" className="alert alert-info mt-3">
-                                                        Total Amount: ₦<span>{totalAmount.toLocaleString()}</span>
+                                                        Total Amount:
+                                                        <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+
                                                         </div>
                                                     </div>
                                                     <div className="col-md-1 mb-0"></div>

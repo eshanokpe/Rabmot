@@ -374,7 +374,7 @@ export default function DealerPateNumber() {
                                                 </div>
                                                 <div className='row'>
                                                     <div className="col-md-1 mb-2"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
+                                                    <div className=" col-md-10 align-items-center text-center">
                                                         <div id="mainPrice" className="alert alert-info mt-3">
                                                         Total Amount: 
                                                         <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
