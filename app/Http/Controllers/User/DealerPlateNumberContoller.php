@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\State;
-use App\Models\DealersPlatenumberPrice;
+use App\Models\DealersPlateNumberPrice;
 use App\Models\DealerPlateNumber;
 
 
