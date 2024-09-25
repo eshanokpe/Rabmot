@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddVehicleOwnership extends Model
 {
-    use HasFactory;
+    use HasFactory; 
     public $fillable = [ 
         'user_id',
         'state_id',

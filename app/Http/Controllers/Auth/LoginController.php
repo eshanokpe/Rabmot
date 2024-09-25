@@ -127,4 +127,9 @@ class LoginController extends Controller
         // Redirect to the login page or the home page
         return redirect()->route('processpapers');
     }
+
+    public function showLoginForm()
+    {
+        return redirect()->route('processpapers');
+    }
 }

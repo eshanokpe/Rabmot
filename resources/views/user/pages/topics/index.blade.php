@@ -1,4 +1,4 @@
-@extends('user.layouts.dashboardheader') 
+@extends('user.layouts.app') 
 
 @section('content')
 <body>
@@ -91,9 +91,7 @@
 
 			</div>
 		</div>
-			<!--footer-->
-		@include('user.layouts.dashboardfooter');
-		<!--end footer-->
+		
 	</div>
 
 

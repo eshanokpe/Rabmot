@@ -229,7 +229,7 @@ class AddVehicleRegistrationController extends Controller
             'message' => 'Vehicle cost retrieved successfully',
             'hackneyPermitCost' => $HackneyPermit,
             'policeCmrisCost' => $PoliceCmris,
-            'totalAmount' => $amount,
+            'amount' => $amount,
         ]);
     }
 

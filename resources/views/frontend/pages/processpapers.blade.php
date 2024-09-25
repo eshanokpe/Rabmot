@@ -12,7 +12,7 @@
                             {{ $errors->first('verified') }}
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         </div>
-                    @endif
+                    @endif 
                     
                 </div>
             </div>

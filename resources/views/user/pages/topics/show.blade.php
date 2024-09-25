@@ -1,25 +1,13 @@
-@extends('user.layouts.dashboardheader') 
-
-
+@extends('user.layouts.app') 
 
 @section('content')
 
 <body>
 
 	<!--page-wrapper-->
-
 	<div class="wrapper">
-
-
-
 		<!--header-->
-
-	
-
 		<!--end sidebar-wrapper-->
-
-		
-
 		<!--page-content-wrapper-->
 
 		<div class="page-content-wrapper">
@@ -54,26 +42,6 @@
 
 					</div>
 
-					<!--end breadcrumb-->
-
-				<!-- <div class="row">
-
-					<div class=" radius-15">
-
-						
-
-							<div class="card-title text-center">
-
-								<h5 class="mb-0">Add New Vehicle</h5>
-
-							</div>
-
-						
-
-					</div>
-
-				</div>-->
-
 				<br><br> 
 
 				<div class="row">
@@ -87,22 +55,7 @@
 									<h6>Discussion: {{ $topic->title }}</h6>
 
 								</div>
-
-                                <!-- <div class="col-sm-6 text-end">
-
-								<h6 ><a href="{{ route('topics.create') }}"> Recent Discusion</a></h6>
-
-								
-
-								</div> -->
-
-								
-
-							 	
-
                             </div>
-
-							
 
 							<div class="card border-top border-0 border-4 border-primary">
 
@@ -171,19 +124,6 @@
 
                                             <span>
 
-<!--                                                 
-
-                                                <form action="{{ route('comments.destroy', ['topic' => $topic->id, 'comment' => $comment->id]) }}" method="POST">
-
-                                                    @csrf
-
-                                                    @method('DELETE')
-
-                                                    <a href="#" onclick="event.preventDefault(); this.closest('form').submit();">Delete</a>
-
-                                                    | <a href="{{ route('comments.edit', ['topic' => $topic->id, 'comment' => $comment->id]) }}">Update</a>
-
-                                                </form> -->
 
                                             </span>
 
@@ -251,7 +191,7 @@
 
 		</div>
 
-		@include('user.layouts.dashboardfooter');
+	
 
 	</div>
 

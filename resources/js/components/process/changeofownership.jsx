@@ -95,7 +95,7 @@ export default function ChangeofOwnership() {
 
 
     const handleVehicleOwnership = ()=>{
-        window.location.href = `${url}/home/changeofOwnership`;
+        window.location.href = `${url}/home/addvehicleownership`;
     }
 
     const sendUpdateToBackend = (option, value) => {
@@ -184,7 +184,7 @@ export default function ChangeofOwnership() {
                                     <h5 className="mb-0 text-primary"> Change of Ownership</h5>
                                 </div>
                                 <hr />
-
+ 
                                 {vehicleCount < 1 ? (
                                     <>
                                         <div className="card border-top border-0 border-4 border-primary">
@@ -312,7 +312,7 @@ export default function ChangeofOwnership() {
                                                                 <option value="add-vehicle-ownership">+ Add Vehicle Ownership</option>
                                                                 {vehicleList.map((vehicle) => (
                                                                 <option key={vehicle.id} value={vehicle.category}>
-                                                                    {vehicle.vehiclebrand} {vehicle.vehiclemodel} {vehicle.id}
+                                                                    {vehicle.vehiclemodel} -  {vehicle.platenumber} 
                                                                 </option>
                                                                 ))}
                                                             </select>
@@ -394,12 +394,15 @@ export default function ChangeofOwnership() {
                                                            
                                                             </>
                                                         )}
-
-                                                        <div className="card-body col-md-12 align-items-center text-center">
-                                                            <div id="mainPrice" className="alert alert-info mt-3">
-                                                            Total Amount:
-                                                            <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+                                                        <div className="row mb-2 mt-2">
+                                                            <div className="col-md-1 mb-2"></div>
+                                                            <div className="card-body col-md-10 align-items-center text-center">
+                                                                <div id="mainPrice" className="alert alert-info mt-3">
+                                                                Total Amount:
+                                                                <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+                                                                </div>
                                                             </div>
+                                                            <div className="col-md-1 mb-2"></div>
                                                         </div>
                                                     </div>
 

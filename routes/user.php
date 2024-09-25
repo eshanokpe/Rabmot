@@ -10,6 +10,8 @@ use App\Http\Controllers\User\NewDriverLicenseController;
 use App\Http\Controllers\User\DriverLicenseRenewalController;
 use App\Http\Controllers\User\InternationalDriverLicenseController;
 use App\Http\Controllers\User\OtherPermitController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\TopicCommentController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleRenewalController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleRegistrationController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleOwnershipController;
@@ -45,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/post-vehicleRegistration', [AddVehicleRegistrationController::class, 'postNewVehicleRegistration']);
         
         Route::get('addvehicleownership', [AddVehicleOwnershipController::class, 'index'])->name('home.addVehicleOwnership');
-        Route::get('changeofOwnership', [AddVehicleOwnershipController::class, 'changeofOwnership'])->name('home.changeofOwnership');
+        Route::get('changeofwnership', [AddVehicleOwnershipController::class, 'changeofOwnership'])->name('home.changeofOwnership');
         Route::post('/changeofownership-state-selection', [AddVehicleOwnershipController::class, 'handleStateSelection']);
         Route::get('/get-user-add-vehicles-ownership', [AddVehicleOwnershipController::class, 'getUserAddVehiclesOwnership']);
         Route::post('/vehicleOwnership-vehicleCategoryId-selection', [AddVehicleOwnershipController::class, 'handleVehicleCategoryIdSelection']);
@@ -98,11 +100,28 @@ Route::middleware(['auth'])->group(function () {
         Route::get('deleteprocesshistory', [HomeController::class, 'deleteprocesshistory'])->name('home.deleteprocesshistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory');
         Route::get('deletetransactionhistory', [HomeController::class, 'deletetransactionhistory'])->name('home.deletetransactionhistory');
-        Route::get('profile', [HomeController::class, 'profile'])->name('home.profile');
-        Route::get('editprofile', [HomeController::class, 'editprofile'])->name('home.editprofile'); 
-        Route::post('updateProfile', [HomeController::class, 'updateProfile'])->name('update.profile');
-       
-
+        
+        Route::get('user-profile', [ProfileController::class, 'index'])->name('home.profile');
+        Route::get('edit-profile', [ProfileController::class, 'editprofile'])->name('home.editprofile'); 
+        Route::get('get-user-details', [ProfileController::class, 'userProfile']);
+        Route::post('update-profile', [ProfileController::class, 'updateProfile']);
+        Route::get('profile', [ProfileController::class, 'profile'])->name('home.profile');
+        // Routes for topics
+        Route::get('/topics', [TopicCommentController::class, 'index'])->name('topics.index');
+        Route::get('/topics/create', [TopicCommentController::class, 'create'])->name('topics.create');
+        Route::post('/topics', [TopicCommentController::class, 'store'])->name('topics.store');
+        Route::get('/topics/{topic}', [TopicCommentController::class, 'show'])->name('topics.show');
+        Route::get('/topics/{topic}/edit', [TopicCommentController::class, 'edit'])->name('topics.edit');
+        Route::put('/topics/{topic}', [TopicCommentController::class, 'update'])->name('topics.update');
+        Route::delete('/topics/{topic}', [TopicCommentController::class, 'destroy'])->name('topics.destroy');
+        // Routes for comments
+        Route::post('/topics/{topic}/comments', [TopicCommentController::class, 'storeComment'])->name('comments.store');
+        Route::get('/topics/{topic}/comments/{comment}/edit', [TopicCommentController::class, 'editComment'])->name('comments.edit');
+        Route::put('/topics/{topic}/comments/{comment}', [TopicCommentController::class, 'updateComment'])->name('comments.update');
+        Route::delete('/topics/{topic}/comments/{comment}', [TopicCommentController::class, 'destroyComment'])->name('comments.destroy');
+        Route::get('vehicle/paper/details/{encryptedId}', [TopicCommentController::class, 'editvehiclepaper'])->name('edit.vehiclepaper');
+        Route::get('vehicle/paper/delete/{encryptedId}', [TopicCommentController::class, 'deletevehiclepaper'])->name('delete.vehiclepaper');
+ 
     
     });
     // AddVehicleController

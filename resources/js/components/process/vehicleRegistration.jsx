@@ -19,6 +19,7 @@ export default function VehicleRegistration() {
     const [plateType, setPlateType] = useState('RPN');
 
     const [totalAmount, setTotalAmount] = useState(0);
+    const [amount, setAmount] = useState(0);
     const [hackneyPermitCost, setHackneyPermitCost] = useState(0);
     const [policeCmrisCost, setPoliceCmrisCost] = useState(0);
     // State to track checkbox selections
@@ -85,7 +86,7 @@ export default function VehicleRegistration() {
         const selectedVehicleResType = event.target.value;
         setVehicleResType(selectedVehicleResType);
        
-        sendVehicleRegCost(selectedVehicleResType);
+        // sendVehicleRegCost(selectedVehicleResType);
     };
 
     // Handle plate type change
@@ -93,12 +94,11 @@ export default function VehicleRegistration() {
         const selectedValue = event.target.value;
         setPlateType(selectedValue);
 
-        sendVehicleRegCost(vehicleResType);
+
     };
 
     // Fetch initial data on component mount
     useEffect(() => {
-        calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
         axios.get(`${url}/home/get-user-add-vehicles-registration`)
             .then(response => {
                 setVehicleCount(response.data.vehicleCount);
@@ -110,53 +110,57 @@ export default function VehicleRegistration() {
                 console.error('Error fetching vehicle data:', error);
                 setLoading(false);
             });
-    }, [url, isHackneyPermitChecked, hackneyPermitCost, isPoliceCmrisChecked, policeCmrisCost]);
+    }, [url]);
 
     // Send vehicle registration cost and update state
-    const sendVehicleRegCost = (vehicleResType) => {
-        console.log('Successfully sent VehicleResType:', vehicleResType);
-        console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
-        console.log('Successfully sent plateType:', plateType);
+    useEffect(() => {
+        const sendVehicleRegCost = () => {
+            console.log('Successfully sent VehicleResType:', vehicleResType);
+            console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
+            console.log('Successfully sent plateType:', plateType);
 
-        axios.post(`${url}/home/vehicleRegistration-addVehicleRegCost`, {
-            stateId,
-            vehicleCategoryId,
-            addVehicleReg,
-            vehicleResType,
-            plateType
-        })
-        .then(response => {
-            console.log('Successfully sent vehicle registration cost:', response.data);
-            const { totalAmount, hackneyPermitCost, policeCmrisCost } = response.data;
-            setTotalAmount(totalAmount);
-            setHackneyPermitCost(hackneyPermitCost);
-            setPoliceCmrisCost(policeCmrisCost);
-            calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
-        })
-        .catch(error => {
-            console.error('Error sending vehicle registration cost:', error);
-        });
-    };
+            axios.post(`${url}/home/vehicleRegistration-addVehicleRegCost`, {
+                stateId,
+                vehicleCategoryId,
+                addVehicleReg,
+                vehicleResType,
+                plateType
+            })
+            .then(response => {
+                console.log('Successfully sent vehicle registration cost:', response.data);
+                setAmount(response.data.amount);
+                setHackneyPermitCost(response.data.hackneyPermitCost);
+                setPoliceCmrisCost(response.data.policeCmrisCost);
+            })
+            .catch(error => {
+                console.error('Error sending vehicle registration cost:', error);
+            });
+        };
+        sendVehicleRegCost();
+    },[
+        stateId, vehicleCategoryId, addVehicleReg, 
+        vehicleResType, plateType
+    ]);
 
     // Calculate total amount
-    const calculateTotalAmount = (amount, hackneyPermitCost, policeCmrisCost) => {
-        let hackneyPermitTotal = 0;
-        let policeCMRISTotal = 0;
-
-        if (isHackneyPermitChecked) {
-            hackneyPermitTotal = Number(hackneyPermitCost); 
-        }
-
-        if (isPoliceCmrisChecked) {
-            policeCMRISTotal = Number(policeCmrisCost); 
-        }
-
-        setHackneyPermitTotal(hackneyPermitTotal);
-        setPoliceCMRISTotal(policeCMRISTotal);
-
-        const total = Number(amount) + hackneyPermitTotal + policeCMRISTotal;
-        setTotalAmount(total);  
-    };
+    useEffect(() => {
+        const calculateTotalAmount = () => {
+            const hackneyPermitTotal = isHackneyPermitChecked ? Number(hackneyPermitCost) : 0;
+            const policeCMRISTotal = isPoliceCmrisChecked ? Number(policeCmrisCost) : 0;
+            setHackneyPermitTotal(hackneyPermitTotal);
+            setPoliceCMRISTotal(policeCMRISTotal);
+            setTotalAmount(
+                amount + hackneyPermitTotal + policeCMRISTotal 
+            );
+            // Set the individual totals in state
+            
+        };
+        calculateTotalAmount();
+        },[
+            amount, isHackneyPermitChecked, hackneyPermitCost, 
+            isPoliceCmrisChecked, policeCmrisCost
+    ]);
+ 
 
     // Handle checkbox change
     const handleCheckboxChange = (event) => {
@@ -172,8 +176,6 @@ export default function VehicleRegistration() {
             default:
                 break;
         }
-        // Update total amount based on the current state of checkboxes and costs
-        calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
     };
 
     // Handle form submission
@@ -432,7 +434,7 @@ export default function VehicleRegistration() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isHackneyPermitChecked}
                                                                     onChange={handleCheckboxChange}
@@ -448,7 +450,7 @@ export default function VehicleRegistration() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isPoliceCmrisChecked}
                                                                     onChange={handleCheckboxChange}
@@ -462,9 +464,9 @@ export default function VehicleRegistration() {
                                                                 <div className="col-1"></div>
                                                             </div>
 
-                                                            <div className="row mb-2 mt-2">
+                                                            <div className="row ">
                                                                 <div className="col-md-1"></div>
-                                                                <div className="col-md-10">
+                                                                <div className="col-md-10 mb-2">
                                                                 <label htmlFor="plateType" className="form-label">Type of Plate Number</label>
                                                                 <select
                                                                     required
@@ -483,34 +485,37 @@ export default function VehicleRegistration() {
                                                             </div>
 
                                                             {plateType === 'PCN' && (
-                                                                <div className="row mb-2 mt-2">
-                                                                <div className="col-md-1 mb-2"></div>
-                                                                <div className="col-md-10 mb-2">
-                                                                    <div id="elementHide" className="col-sm-12 mb-3">
-                                                                    <label htmlFor="preferredNumber" className="mb-1">Enter Preferred Number</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        value={preferredNumber}
-                                                                        name="preferredNumber"
-                                                                        className="form-control mb-1"
-                                                                        placeholder="Preferred Number"
-                                                                        onChange={(e) => setPreferredNumber(e.target.value)}
-                                                                    />
-                                                                    <span style={{ color: 'red' }}>Must not be more than 8 characters</span>
+                                                                <div className="row">
+                                                                    <div className="col-md-1 "></div>
+                                                                    <div className="col-md-10 mb-2">
+                                                                        <div id="elementHide" className="col-sm-12 mb-3">
+                                                                        <label htmlFor="preferredNumber" className="mb-1">Enter Preferred Number</label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={preferredNumber}
+                                                                            name="preferredNumber"
+                                                                            className="form-control mb-1"
+                                                                            placeholder="Preferred Number"
+                                                                            onChange={(e) => setPreferredNumber(e.target.value)}
+                                                                        />
+                                                                        <span style={{ color: 'red' }}>Must not be more than 8 characters</span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className="col-md-1 mb-2"></div>
+                                                                    <div className="col-md-1"></div>
                                                                 </div>
                                                             )}
                                                             </>
                                                         )}
+                                                        <div className="row ">
+                                                            <div className="col-md-1 "></div>
+                                                            <div className=" col-md-10 align-items-center text-center">
+                                                                <div id="mainPrice" className="alert alert-info mt-3">
+                                                                Total Amount: 
+                                                                <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
 
-                                                        <div className="card-body col-md-12 align-items-center text-center">
-                                                            <div id="mainPrice" className="alert alert-info mt-3">
-                                                            Total Amount: 
-                                                            <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
-
+                                                                </div>
                                                             </div>
+                                                            <div className="col-md-1 "></div>
                                                         </div>
                                                     </div>
 
