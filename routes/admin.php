@@ -57,12 +57,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/view/viewdeliveryin/porogress/{id}', [AdminDashboardController::class, 'viewdeliveryinprogress'])->name('admin.viewdeliveryinprogress');
     Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status');
 
-    Route::get('/delivered', [AdminDashboardController::class, 'delivered'])->name('admin.delivered');
      
-    Route::get('/process/paper', [AdminDashboardController::class, 'processedpaper'])->name('admin.processedpaper');
-    Route::get('/pending/paper', [AdminDashboardController::class, 'pendingpaper'])->name('admin.pendingpaper');
-    Route::get('/ready/delivery', [AdminDashboardController::class, 'readyfordelivery'])->name('admin.readyfordelivery');
-    Route::get('/delivery/inprogress', [AdminDashboardController::class, 'deliveryinprogress'])->name('admin.deliveryinprogress'); 
     
     //Getaddvehiclerenewal
     Route::get('/getaddvehiclerenewal', [AdminDashboardController::class, 'getaddvehiclerenewal'])->name('admin.getaddvehiclerenewal');
@@ -230,7 +225,23 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/settings',[AdminDashboardController::class, 'postSettings'])->name('admin.postSettings');
     Route::get('/contactmessage',[AdminDashboardController::class, 'contactMessage'])->name('admin.contactMessage');
     Route::get('/viewcontactmessage/{id}',[AdminDashboardController::class, 'viewcontactMessage'])->name('admin.viewcontactMessage');
-        
+    //process/history 
+    Route::get('/view/process/history/{id}', [AdminController::class, 'viewprocesshistory'])->name('admin.viewprocesshistory');
+    Route::put('/update/process/history/{id}', [AdminController::class, 'updateProcessHistoryStatus'])->name('admin.update-processhistory-status');
+    Route::get('/view/process/paper/{id}', [AdminController::class, 'viewprocessPaper'])->name('admin.viewprocesspaper');
+    Route::put('/update/process/paper/{id}', [AdminController::class, 'updateProcessPaperStatus'])->name('admin.update-processPaper-status');
+    Route::get('/view/pending/paper/{id}', [AdminController::class, 'viewpendingPaper'])->name('admin.viewpendingpaper');
+    Route::put('/update/pending/paper/{id}', [AdminController::class, 'updatePendingPaperStatus'])->name('admin.update-pendingPaper-status');
+    Route::get('/view/ready-for-delivery/paper/{id}', [AdminController::class, 'viewreadyfordeliveryPaper'])->name('admin.viewreadyfordeliveryPaper');
+    Route::put('/update/readyfordelivery/paper/{id}', [AdminController::class, 'updatereadyfordeliveryPaperStatus'])->name('admin.update-readyfordelivery-status');
+    //Document Processes
+    Route::get('/pending/paper', [AdminDashboardController::class, 'pendingpaper'])->name('admin.pendingpaper');
+    Route::get('/process/paper', [AdminDashboardController::class, 'processedpaper'])->name('admin.processedpaper');
+    Route::get('/ready/delivery', [AdminDashboardController::class, 'readyfordelivery'])->name('admin.readyfordelivery');
+    Route::get('/delivery/inprogress', [AdminDashboardController::class, 'deliveryinprogress'])->name('admin.deliveryinprogress'); 
+    Route::get('/delivered', [AdminDashboardController::class, 'delivered'])->name('admin.delivered');
+    
+
     Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 }); 

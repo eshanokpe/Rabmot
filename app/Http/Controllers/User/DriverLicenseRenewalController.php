@@ -62,7 +62,7 @@ class DriverLicenseRenewalController extends Controller
 
             $request->validate([
                 'expiredDriverLicense' => 'required|mimes:jpeg,jpg,png,docx,doc|max:9048',
-            ]);
+            ]); 
 
             $stateId = $request->input('stateId');
             $lengthYear = $request->input('lengthYear');

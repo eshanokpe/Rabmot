@@ -54,14 +54,14 @@ export default function VehiclePapersRenewal() {
                                     <div class="col-md-1"></div>
                                 </div>
 
-                                <div class=" row mt-2 " >
-                                    {/* <div class="col-1 " > </div> */}
-                                    <div class="col-6">
+                                <div class=" row mt-3 " >
+                                    <div class="col-md-1" > </div>
+                                    <div class="col-md-5">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Vehicle License</label>
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-md-5">
                                         <label for="inputAddress2" class="form-label"> Expiry Date</label>
                                         <table class="padding-no margin-no additionSubtractionTable  ">
                                             <tr>
@@ -79,37 +79,43 @@ export default function VehiclePapersRenewal() {
                                             </tr>
                                         </table>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
 
                                 <div class=" row mt-2 " >
-                                    <div class="col-12">
+                                    <div class="col-md-1 " > </div>
+                                    <div class="col-md-10">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Road Worthiness</label>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
-                                <hr/>
                                 <div class=" row mt-2 " >
-                                    <div class="col-12">
+                                    <div class="col-md-1 " > </div>
+                                    <div class="col-md-10">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne"> Proof Ownership</label>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
-                                <hr/>
+                                
                                 <div class=" row mt-2 " >
-                                    <div class="col-12">
+                                    <div class="col-md-1 " > </div>
+                                    <div class="col-10">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Third-Party Insurance</label>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
-                                <hr/>
+                               
                                 <div class=" row mt-2 " >
-                                    {/* <div class="col-1 " > </div> */}
-                                    <div class="col-6">
+                                    <div class="col-sm col-md-1 " > </div>
+                                    <div class="col-sm col-md-5">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Hackney Permit</label>
                                     </div>
 
-                                    <div class="col-6">
+                                    <div class="col-sm col-md-5">
                                         <label for="inputAddress2" class="form-label"> Expiry Date</label>
                                         <table class="padding-no margin-no additionSubtractionTable  ">
                                             <tr>
@@ -127,22 +133,27 @@ export default function VehiclePapersRenewal() {
                                             </tr>
                                         </table>
                                     </div>
+                                    <div class= "col-sm col-md-1 " > </div>
                                 </div>
-                                <hr/>
+                               
                                 <div class=" row mt-2 " >
-                                    <div class="col-12">
+                                    <div class="col-md-1 " > </div>
+                                    <div class="col-md-10">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Book Vehicle Inspection Pick & Drop</label>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
-                                <hr/>
+                                
                                 <div class=" row mt-2 " >
-                                    <div class="col-12">
+                                    <div class="col-md-1 " > </div>
+                                    <div class="col-10">
                                         <input  class="form-check-input me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne">Police CMRIS</label>
                                     </div>
+                                    <div class="col-md-1 " > </div>
                                 </div>
-                                <div className="row">
+                                <div className="row card-body">
                                     <div className="col-md-1"></div>
                                     <div class=" col-md-10 text-center ">
                                         <div class="alert alert-info mt-2">TOTAL AMOUNT: ₦ <span class="check-listgk" style={{fontSize: '16px'}}>0.00</span></div>

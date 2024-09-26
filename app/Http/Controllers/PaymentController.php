@@ -22,8 +22,6 @@ class PaymentController extends Controller{
     
     
     public function initiatePayment(Request $request){
-     
-     
         $item = Order::whereOrderNumber($request->orderNo)->get();
         $amount = Order::whereOrderNumber($request->orderNo)->sum('total');
         $total = $request->total;
@@ -137,6 +135,7 @@ class PaymentController extends Controller{
                 //  dd($item);
                 ProcessHistory::create([ 
                     'user_id' => $id ?? null,
+                    'userType' => 'user',
                     'user_email' => $email ?? null,
                     'process_number'=> $orderNumber ?? null,
                     'process_id' =>  $item->model->process_id ?? null,
@@ -162,17 +161,12 @@ class PaymentController extends Controller{
                 ]);
             }
             
-            
-           
-            if($payment->save()){
-                
+            if($payment->save()){    
                 $user = User::where('email',$email)->get()->first();
-                
                 $user_email = new PendingMode($user); 
-               
                 Mail::to($user->email)->send($user_email);
+                Cart::destroy(); 
                 
-                Cart::destroy();
                 return  redirect()->route('home.transactionHistory');
             }else{
                 Session::flash('error', 'Payment initiation failed!');

@@ -106,7 +106,9 @@
                                                         <td>{{ $item->model->process_id }}</td>
                                                         <td> 
                                                             @if($item->model->process_type == 'Other Permit')
-                                                                {{ $item->model->permittype }}
+                                                                {{ $item->model->permitInfo->name }}
+                                                            @elseif($item->model->process_type == 'Dealer`s Plate Number')
+                                                                {{ $item->model->process_type }}, {{ $item->model->fullname }}
                                                             @elseif($item->model->process_type == 'International Driver License')
                                                                 Validity: {{ $internationalDL->lengthofyear }} Years
                                                             @elseif($item->model->process_type == 'Driver License Renewal')

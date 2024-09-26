@@ -10,6 +10,7 @@ class ProcessHistory extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'userType',
         'user_email',
         'userType',
         'process_number',

@@ -119,7 +119,7 @@
                                                             @elseif($item->model->process_type == 'Dealer`s Plate Number')
                                                                 <td>{{ $item->model->process_type }}, {{ $item->model->fullname }}</td>
                                                             @elseif($item->model->process_type == 'Other Permit')
-                                                                <td>{{ $item->model->permitInfo->name }}</td>
+                                                                <td>{{ $item->model->permitInfo->name }}</td> 
                                                             @elseif($item->model->process_type == 'policeCMRIS')
                                                                 <td>{{ $item->model->permittype }}</td>
                                                             @endif

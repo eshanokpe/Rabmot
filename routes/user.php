@@ -32,7 +32,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/vehicle-paper-renewal/edit/{encryptedId}', [AddVehicleRenewalController::class, 'editVehiclePaperRenewal'])
          ->name('edit.vehiclePaperRenewal');
 
-        Route::get('vehicle/paper/delete/{encryptedId}', [AddVehicleRenewalController::class, 'deleteVehiclePaperRenewal'])->name('delete.vehiclePaperRenewal');
+        Route::get('/vehicle-renewal/delete/{encryptedId}', [AddVehicleRenewalController::class, 'deleteVehiclePaperRenewal'])->name('delete.vehiclePaperRenewal');
+
         Route::get('/get-user-add-vehicles-renewal', [AddVehicleRenewalController::class, 'getUserAddVehiclesRenewal']);
         Route::post('/vehicleRenewal-state-selection', [AddVehicleRenewalController::class, 'handleStateSelection']);
         Route::get('/vehicleRenewal-state-selection', [AddVehicleRenewalController::class, 'handleStateSelection']);
@@ -55,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/vehicleOwnership-vehicleCategoryId-selection', [AddVehicleOwnershipController::class, 'handleVehicleCategoryIdSelection']);
         Route::post('/vehicleOwnershipCost', [AddVehicleOwnershipController::class, 'handleVehicleOwnershipCost']);
 
-        Route::get('platenumber', [DealerPlateNumberContoller::class, 'index'])->name('home.platenumber');
+        Route::get('dealer-platenumber', [DealerPlateNumberContoller::class, 'index'])->name('home.platenumber');
         Route::post('get-dealer-platenumber-price', [DealerPlateNumberContoller::class, 'getDPNPrice']);
         Route::get('get-state-dealerplatenumber', [DealerPlateNumberContoller::class, 'getState']);
         Route::post('/post/dealer/platenumber', [DealerPlateNumberContoller::class, 'postDealerPlateNumber']);
@@ -87,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('cart', [CartController::class, 'index'])->name('home.cart'); 
         Route::post('/cart/delete', [CartController::class, 'destroy'])->name('cart.delete');
         Route::get('checkout', [CheckoutController::class, 'index'])->name('home.checkout');
-
+        //Payment
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
         
@@ -99,14 +100,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
         Route::get('success', [HomeController::class, 'success'])->name('home.success');
         Route::get('deleteprocesshistory', [HomeController::class, 'deleteprocesshistory'])->name('home.deleteprocesshistory');
-        Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory');
         Route::get('deletetransactionhistory', [HomeController::class, 'deletetransactionhistory'])->name('home.deletetransactionhistory');
         
         Route::get('user-profile', [ProfileController::class, 'index']);
         Route::get('edit-profile', [ProfileController::class, 'editprofile'])->name('home.editprofile'); 
         Route::get('get-user-details', [ProfileController::class, 'userProfile']);
         Route::post('update-profile', [ProfileController::class, 'updateProfile']);
-        Route::get('profile', [ProfileController::class, 'profile'])->name('home.profile');
+        Route::get('profile', [ProfileController::class, 'index'])->name('home.profile');
         // Routes for topics
         Route::get('/topics', [TopicCommentController::class, 'index'])->name('topics.index');
         Route::get('/topics/create', [TopicCommentController::class, 'create'])->name('topics.create');

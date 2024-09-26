@@ -60,5 +60,5 @@ class OtherPermit extends Model
     public function permitInfo() 
     {
         return $this->belongsTo(OtherPermitType::class, 'permittype', 'id');
-    }
+    } 
 }

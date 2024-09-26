@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\State;
 use App\Models\DealersPlateNumberPrice;
-use App\Models\DealerPlateNumber;
+use App\Models\DealerPlateNumber; 
 
 
 class DealerPlateNumberContoller extends Controller

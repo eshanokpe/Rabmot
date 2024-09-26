@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import VehiclePapersRenewal from './vehiclePapersRenewal';
+import VehicleRegistration from './vehicleRegistration';
+import ChangeofOwnership from './changeofOwnership';
+import DriverLicenseRenewal from './driverLicenseRenewal';
+import NewDriverLicense from './newDriverLicense';
+import InternatinalDriversLicense from './internatinalDriversLicense';
+import OtherPermit from './otherPermit';
 
 export default function UserPrice() {
 
@@ -69,7 +75,12 @@ export default function UserPrice() {
                                         <div class="accordion accordion-flush" id="accordionFlushExample">
                                             {/* VehicleRenewal */}
                                             <VehiclePapersRenewal />
-                                            
+                                            <VehicleRegistration />
+                                            <ChangeofOwnership />
+                                            <DriverLicenseRenewal />
+                                            <NewDriverLicense />
+                                            <InternatinalDriversLicense />
+                                            <OtherPermit />
                                         </div>
                                     </div>
                                 </div>
