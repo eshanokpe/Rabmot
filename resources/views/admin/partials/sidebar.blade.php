@@ -63,22 +63,22 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.processvechiclePaperRenewal') }}">
+                        <a class="dropdown-item" href="{{ route('admin.processVehiclePaperRenewal') }}">
                             Vechicle Paper Renewal
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewvehicleRegistration')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewVehicleRegistration')}}">
                            New vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processchangeofownership')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processChangeOfOwnership')}}">
                            Change of Ownership
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewDriverlicense')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverlicense')}}">
                             New Driver License
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewDriverlicenseRenewal')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverLicenseRenewal')}}">
                             Driver License Renewal
                         </a>
-                        <a class="dropdown-item"href="{{ route('admin.processinternationalDriverlicense')}}"> 
+                        <a class="dropdown-item"href="{{ route('admin.processInternationalDriverLicense')}}"> 
                             International Driver License 
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.processdealerplateNumber')}}">

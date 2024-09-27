@@ -19,4 +19,3 @@ Rabmot Licensing Agency
 @endcomponent 
 
 
-@endcomponent

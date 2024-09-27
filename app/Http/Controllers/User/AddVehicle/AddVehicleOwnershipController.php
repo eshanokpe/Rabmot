@@ -340,8 +340,6 @@ class AddVehicleOwnershipController extends Controller
         ]);
     }
 
-   
-
     public function postchangeofownership(){
 
     }

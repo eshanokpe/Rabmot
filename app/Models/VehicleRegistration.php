@@ -36,6 +36,6 @@ class VehicleRegistration extends Model
     }
     public function vehicleregistrationType()
     {
-        return $this->belongsTo(VehicleregistrationType::class, 'registrationType', 'id');
+        return $this->belongsTo(VehicleRegistrationType::class, 'registrationType', 'id');
     }
 }

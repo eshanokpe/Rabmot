@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminLoginController;
+use App\Http\Controllers\Admin\ProcessDocument\AdminProcessDocument;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProcessTypeController;
 
 
 Route::get('admin/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin-forgotpassword');
@@ -11,30 +13,36 @@ Route::get('/admin',  [AdminLoginController::class, 'showLoginForm'])->name('adm
 Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
 Route::get('/forgotpassword/admin',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
+Route::prefix('/admin')->middleware(['auth', 'role:admin'])->group(function () {   
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    
     //Processe Type
-    Route::get('/vechicle/paperRenewal', [AdminDashboardController::class, 'processvechiclePaperRenewal'])->name('admin.processvechiclePaperRenewal');
-    Route::get('/viewvehiclepaperRenewal/{id}', [AdminDashboardController::class, 'viewvehiclepaperRenewal'])->name('admin.viewvehiclepaperRenewal');
+    Route::get('/vehicle/paper-renewal', [AdminProcessTypeController::class, 'processVehiclePaperRenewal'])->name('admin.processVehiclePaperRenewal');
+    Route::get('/vehicle/paper-renewal/view/{id}', [AdminProcessTypeController::class, 'viewVehiclePaperRenewal'])->name('admin.viewVehiclePaperRenewal');
+    
+    Route::get('/vehicle/registration', [AdminProcessTypeController::class, 'processNewVehicleRegistration'])->name('admin.processNewVehicleRegistration');
+    Route::get('/vehicle/registration/view/{id}', [AdminProcessTypeController::class, 'viewNewVehicleRegistration'])->name('admin.viewNewVehicleRegistration');
 
-    Route::get('/vechicle/Registration', [AdminDashboardController::class, 'processnewvehicleRegistration'])->name('admin.processnewvehicleRegistration');
-    Route::get('/viewNewvehicleRegistration/{id}', [AdminDashboardController::class, 'viewNewvehicleRegistration'])->name('admin.viewNewvehicleRegistration');
+    Route::get('/ownership/change', [AdminProcessTypeController::class, 'processChangeOfOwnership'])->name('admin.processChangeOfOwnership');
+    Route::get('/ownership/change/view/{id}', [AdminProcessTypeController::class, 'viewChangeOfOwnership'])->name('admin.viewChangeOfOwnership');
 
-    Route::get('/processchangeofownership', [AdminDashboardController::class, 'processchangeofownership'])->name('admin.processchangeofownership');
-    Route::get('/vviewchangeofownership/{id}', [AdminDashboardController::class, 'vviewchangeofownership'])->name('admin.vviewchangeofownership');
-    Route::get('/download/changeofownershiplicensepaper/{id}', [AdminDashboardController::class, 'downloadchangeofownershiplicensepaper'])->name('changeofownershiplicensepaper.download');
-    Route::get('/download/changeofownershipproof/{id}', [AdminDashboardController::class, 'downloadchangeofownershipproof'])->name('changeofownershipproof.download');
-    Route::get('/download/changeofownershipagreement/{id}', [AdminDashboardController::class, 'downloadchangeofownershipagreement'])->name('changeofownershipagreement.download');
-    Route::get('/download/changeofownershipmeansofid/{id}', [AdminDashboardController::class, 'downloadchangeofownershipmeansofid'])->name('changeofownershipmeansofid.download');
-   
-    Route::get('/newdriver/license', [AdminDashboardController::class, 'processnewDriverlicense'])->name('admin.processnewDriverlicense');
-    Route::get('/viewnewdriver/license/{id}', [AdminDashboardController::class, 'viewnewdriverlicense'])->name('admin.viewnewdriverlicense');
-    Route::get('/download/newDriverlicenseRenewaldocument/{id}', [AdminDashboardController::class, 'downloadnewDriverlicenseRenewaldocument'])->name('newDriverlicenseRenewaldocument.download');
+    Route::get('/ownership/license-paper/download/{id}', [AdminProcessTypeController::class, 'downloadChangeOfOwnershipLicensePaper'])->name('changeOfOwnershipLicensePaper.download');
+    Route::get('/ownership/proof/download/{id}', [AdminProcessTypeController::class, 'downloadChangeOfOwnershipProof'])->name('changeOfOwnershipProof.download');
+    Route::get('/ownership/agreement/download/{id}', [AdminProcessTypeController::class, 'downloadChangeOfOwnershipAgreement'])->name('changeOfOwnershipAgreement.download');
+    Route::get('/ownership/means-of-id/download/{id}', [AdminProcessTypeController::class, 'downloadChangeOfOwnershipMeansOfId'])->name('changeOfOwnershipMeansOfId.download');
 
-    Route::get('/newdriverlicenseRenewal', [AdminDashboardController::class, 'processnewDriverlicenseRenewal'])->name('admin.processnewDriverlicenseRenewal');
-    Route::get('/viewnewdriverlicenseRenewal/{id}', [AdminDashboardController::class, 'viewnewdriverlicenseRenewal'])->name('admin.viewnewdriverlicenseRenewal');
-    Route::get('/download/newDriverlicenseRenewaldocument/{id}', [AdminDashboardController::class, 'downloadnewDriverlicenseRenewaldocument'])->name('newDriverlicenseRenewaldocument.download');
+    Route::get('/new/driver/license', [AdminProcessTypeController::class, 'processNewDriverLicense'])->name('admin.processNewDriverlicense');
+    Route::get('/newdriver/license/view/{id}', [AdminProcessTypeController::class, 'viewNewDriverLicense'])->name('admin.viewNewDriverLicense');
+    Route::get('/newdriver-licenseRenewal/download/{id}', [AdminProcessTypeController::class, 'downloadnewDriverLicensedocument'])->name('newDriverlicensedocument.download');
+
+    Route::get('/newdriver/license-renewal', [AdminProcessTypeController::class, 'processnewDriverlicenseRenewal'])->name('admin.processNewDriverLicenseRenewal');
+    Route::get('/newdriver/license-renewal/view/{id}', [AdminProcessTypeController::class, 'viewnewdriverlicenseRenewal'])->name('admin.viewNewDriverLicenseRenewal');
+    Route::get('/driver/license-renewal/download/{id}', [AdminProcessTypeController::class, 'downloadnewDriverlicenseRenewaldocument'])->name('newDriverlicenseRenewaldocument.download');
+
+    Route::get('/international-driver-license', [AdminProcessTypeController::class, 'processInternationalDriverLicense'])->name('admin.processInternationalDriverLicense');
+    Route::get('/international-driver-license/view/{id}', [AdminProcessTypeController::class, 'viewInternationalDriverLicense'])->name('admin.viewInternationalDriverlicense');
+    Route::get('/international-driver-license-passport/download/{id}', [AdminProcessTypeController::class, 'downloadInternationalDriverLicensepassport'])->name('internationalDriverlicensepassport.download');
 
     Route::get('/dealer/plateNumber', [AdminDashboardController::class, 'processdealerplateNumber'])->name('admin.processdealerplateNumber');
     Route::get('/viewplateNumber/{id}', [AdminDashboardController::class, 'viewplateNumber'])->name('admin.viewplateNumber');
@@ -50,11 +58,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/download/otherpermitaffidavit/{id}', [AdminDashboardController::class, 'downloadotherpermitaffidavit'])->name('otherpermitaffidavit.download');
     Route::get('/download/otherpermitpolicereport/{id}', [AdminDashboardController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download');
 
-    Route::get('/internationalDriverlicense', [AdminDashboardController::class, 'processinternationalDriverlicense'])->name('admin.processinternationalDriverlicense');
-    Route::get('/viewinternationalDriverlicense/{id}', [AdminDashboardController::class, 'viewinternationalDriverlicense'])->name('admin.viewinternationalDriverlicense');
-    Route::get('/download/internationalDriverlicensepassport/{id}', [AdminDashboardController::class, 'downloadinternationalDriverlicensepassport'])->name('internationalDriverlicensepassport.download');
-
-    Route::get('/view/viewdeliveryin/porogress/{id}', [AdminDashboardController::class, 'viewdeliveryinprogress'])->name('admin.viewdeliveryinprogress');
+    
     Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status');
 
      
@@ -228,19 +232,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     //process/history 
     Route::get('/view/process/history/{id}', [AdminController::class, 'viewprocesshistory'])->name('admin.viewprocesshistory');
     Route::put('/update/process/history/{id}', [AdminController::class, 'updateProcessHistoryStatus'])->name('admin.update-processhistory-status');
-    Route::get('/view/process/paper/{id}', [AdminController::class, 'viewprocessPaper'])->name('admin.viewprocesspaper');
-    Route::put('/update/process/paper/{id}', [AdminController::class, 'updateProcessPaperStatus'])->name('admin.update-processPaper-status');
-    Route::get('/view/pending/paper/{id}', [AdminController::class, 'viewpendingPaper'])->name('admin.viewpendingpaper');
-    Route::put('/update/pending/paper/{id}', [AdminController::class, 'updatePendingPaperStatus'])->name('admin.update-pendingPaper-status');
     Route::get('/view/ready-for-delivery/paper/{id}', [AdminController::class, 'viewreadyfordeliveryPaper'])->name('admin.viewreadyfordeliveryPaper');
-    Route::put('/update/readyfordelivery/paper/{id}', [AdminController::class, 'updatereadyfordeliveryPaperStatus'])->name('admin.update-readyfordelivery-status');
-    //Document Processes
-    Route::get('/pending/paper', [AdminDashboardController::class, 'pendingpaper'])->name('admin.pendingpaper');
-    Route::get('/process/paper', [AdminDashboardController::class, 'processedpaper'])->name('admin.processedpaper');
-    Route::get('/ready/delivery', [AdminDashboardController::class, 'readyfordelivery'])->name('admin.readyfordelivery');
-    Route::get('/delivery/inprogress', [AdminDashboardController::class, 'deliveryinprogress'])->name('admin.deliveryinprogress'); 
-    Route::get('/delivered', [AdminDashboardController::class, 'delivered'])->name('admin.delivered');
     
+    //Document Processes
+    Route::get('/pending/paper', [AdminProcessDocument::class, 'pendingPaper'])->name('admin.pendingpaper');
+    Route::get('/view/pending/paper/{id}', [AdminProcessDocument::class, 'viewpendingPaper'])->name('admin.viewpendingpaper');
+    Route::put('/update/pending/paper/{id}', [AdminProcessDocument::class, 'updatePendingPaperStatus'])->name('admin.update-pendingPaper-status');
+    
+    Route::get('/process/paper', [AdminProcessDocument::class, 'processedPaper'])->name('admin.processedpaper');
+    Route::get('/view/process/paper/{id}', [AdminProcessDocument::class, 'viewProcessPaper'])->name('admin.viewprocesspaper');
+    Route::put('/update/process/paper/{id}', [AdminProcessDocument::class, 'updateProcessPaperStatus'])->name('admin.update-processPaper-status');
+    
+    Route::get('/ready/delivery', [AdminProcessDocument::class, 'readyForDelivery'])->name('admin.readyfordelivery');
+    Route::get('/view/viewdeliveryin/porogress/{id}', [AdminProcessDocument::class, 'viewDeliveryinProgress'])->name('admin.viewdeliveryinprogress');
+    Route::put('/update/readyfordelivery/paper/{id}', [AdminProcessDocument::class, 'updateReadyforDeliveryPaperStatus'])->name('admin.update-readyfordelivery-status');
+   
+    Route::get('/delivery/inprogress', [AdminProcessDocument::class, 'deliveryinProgress'])->name('admin.deliveryinprogress'); 
+    Route::get('/delivered', [AdminProcessDocument::class, 'delivered'])->name('admin.delivered');
+    Route::get('/view/delivered/paper/{id}', [AdminProcessDocument::class, 'viewDeliveredPaper'])->name('admin.viewdeliveredPaper');
+    Route::put('/update/delivered/paper/{id}', [AdminProcessDocument::class, 'updateDeliveredPaperStatus'])->name('admin.update-delivered-status');
+ 
 
     Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 

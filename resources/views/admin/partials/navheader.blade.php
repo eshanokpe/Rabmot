@@ -63,20 +63,16 @@
 
                         style="background-image: url({{ asset('assets/dist/img/015m.jpg')}})"></span>
                     @php
-                     
-
+                        $user = Auth::user();
+                        
                         // Access user details
-                        $name = $user->name;
+                        $name = $user->fullname;
                         $email = $user->email;
                     @endphp  
                     <div class="d-none d-xl-block ps-2">
-
                         <div>{{ $name}}</div>
-                         
                         <div class="mt-1 small text-muted">{{$email}}</div>
-
                     </div>
- 
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
