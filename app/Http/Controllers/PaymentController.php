@@ -132,7 +132,7 @@ class PaymentController extends Controller{
             $payment->trans_id = $trans_id;
             $payment->status = $status;
             foreach ($cartItems as $item ){
-                //  dd($item);
+                //  dd($item->model);
                 ProcessHistory::create([ 
                     'user_id' => $id ?? null,
                     'userType' => 'user',
@@ -148,7 +148,7 @@ class PaymentController extends Controller{
                     'process_VR_vehicleregistrationType' =>  $item->model->vehicleregistrationType->name ?? null,
                     'process_VR_numberplate' =>  $item->model->numberplate ?? null, 
                     'process_VR_preferrednumber' =>  $item->model->preferrednumber ?? null, 
-                    'process_VPR_vehicleType' =>  $item->model->vehicleType ?? null, 
+                    'process_VPR_vehicleType' =>  $item->model->category ?? null, 
                     'process_VPR_vehicleLicense' =>  $item->model->vehicleLicense ?? null, 
                     'process_VPR_roadWorthiness' =>  $item->model->roadWorthiness ?? null, 
                     'process_VPR_thirdPartyInsurance' =>  $item->model->thirdPartyInsurance ?? null, 
@@ -166,9 +166,8 @@ class PaymentController extends Controller{
                 $user_email = new PendingMode($user); 
                 Mail::to($user->email)->send($user_email);
                 Cart::destroy(); 
-                
                 return  redirect()->route('home.transactionHistory');
-            }else{
+            }else{ 
                 Session::flash('error', 'Payment initiation failed!');
                 // echo "Failed Transaction!";
                 return redirect()->route('home.cart'); 

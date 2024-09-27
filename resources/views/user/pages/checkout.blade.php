@@ -104,7 +104,7 @@
                                                     <tr>
                                                         <td>{{ $orderNumber }}</td> 
                                                         <td>{{ $item->model->process_id }}</td>
-                                                        <td> 
+                                                        <td>  
                                                             @if($item->model->process_type == 'Other Permit')
                                                                 {{ $item->model->permitInfo->name }}
                                                             @elseif($item->model->process_type == 'Dealer`s Plate Number')

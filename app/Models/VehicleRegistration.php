@@ -28,7 +28,7 @@ class VehicleRegistration extends Model
 
     public function vehicleType(){
         return $this->hasMany(VehicleType::class, 'category', 'id');
-    } 
+    }  
 
     public function categoryInfo()
     {
