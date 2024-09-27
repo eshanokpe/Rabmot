@@ -135,7 +135,7 @@ class PaymentController extends Controller{
                 //  dd($item->model);
                 ProcessHistory::create([ 
                     'user_id' => $id ?? null,
-                    'userType' => 'user',
+                    'userType' => 'user',         
                     'user_email' => $email ?? null,
                     'process_number'=> $orderNumber ?? null,
                     'process_id' =>  $item->model->process_id ?? null,
