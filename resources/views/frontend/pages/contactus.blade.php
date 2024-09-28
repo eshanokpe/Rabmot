@@ -11,7 +11,7 @@
                         <div class="left-content">
                             <div class="section-title">
                                 <h2 class="heading-03 padding-bottom-10">Get In Touch</h2>
-                                </div>
+                                </div> 
                             <div class="pb-5 pe-2 p5-2">
                                 @if(session('success'))
                                     <div class="alert alert-success">
@@ -80,7 +80,7 @@
                                                 data-callback='onSubmit'
                                                 data-action='submit'>Send Message</button>
                                             </div>
-
+ 
                                         </div>
                                     </div>
                                 </form>

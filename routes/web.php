@@ -41,6 +41,7 @@ Route::get('/signup', [FrontendController::class, 'signup'])->name('signup');
 Route::get('/pricing', [PriceController::class, 'pricing'])->name('pricing');
 Route::get('/processpapers', [FrontendController::class, 'processpapers'])->name('processpapers');
 Route::get('/contactus', [FrontendController::class, 'contactus'])->name('contactus');
+Route::post('/formcontactus', [FrontendController::class, 'submitForm'])->name('contactus.form'); 
 Route::get('/community', [FrontendController::class, 'community'])->name('community');
 Route::get('/aboutus', [FrontendController::class, 'aboutus'])->name('aboutus');
 Route::get('/policy', [FrontendController::class, 'policy'])->name('policy');
