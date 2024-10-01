@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\AddVehicle;
 use Carbon\Carbon; 
 use Auth;
+use Cart;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -11,6 +12,7 @@ use App\Models\VehicleType;
 use App\Models\AddVehicleOwnership;
 use App\Services\AddVehicleOwnershipService; 
 use App\Models\VehicleRegistrationType; 
+use App\Models\ChangeOfOwnership; 
 use App\Models\ChangeofOwnershipPrice; 
 
 
@@ -340,7 +342,61 @@ class AddVehicleOwnershipController extends Controller
         ]);
     }
 
-    public function postchangeofownership(){
+    public function postChangeOfVehicleOwnership(Request $request){
+        $userId = Auth::id();
+        $userEmail = Auth::user()->email;
+        $stateId = $request->input('stateId');
+        $userType = $request->input('userType');
+        $vehicleCategoryId = $request->input('vehicleCategoryId');
+        $addVehicleOwnership = $request->input('addVehicleOwnership');
+        $vLExpirydate = $request->input('vLExpirydate');
+        $hackneyPermit = $request->input('hackneyPermit');
+        $plateType = $request->input('plateType');
+        $policeCMRISTotal = $request->input('policeCMRISTotal');
+
+        $totalAmount = $request->input('totalAmount');
+
+        $randomNumber = mt_rand(100000, 999999);
+        $processId = 'PROCO' . $randomNumber;
+        $vehicleitem = VehicleType::where('id', $vehicleCategoryId)->first();
+        $vehicleType = $vehicleitem->name;
+
+        ChangeOfOwnership::create([
+            'user_id' => $userId,
+            'user_email' => $userEmail,
+            'userType' => $userType,
+            'process_id' => $processId,
+            'process_type' => 'Change of Ownership',
+            'vehicle_category' => $vehicleType,
+            'vehiclelicenseexpiry_date' => $vLExpirydate,
+            'hacneypermit' => $hackneyPermit,
+            'platenumber' => $plateType,
+
+            'payment_status' => 0.00,
+            'totalamount' => $totalAmount,
+        ]);
+        $users = ChangeOfOwnership::where('process_id', $processId)->first();
+        Cart::add([
+            'id' => $users->id,
+            'name' => $users->process_type,
+            'price' => $users->totalamount,
+            'qty' => 1,
+            'options' => array(
+                'process_id' => $users->process_id,
+                'process_type' => $users->process_type,
+                'process_detials' => $vehicleitem->name,
+                'vehiclelicenseexpiry_date' => $vehicleitem->vehiclelicenseexpiry_date,
+                'insuranceexpiry' => $vehicleitem->insuranceexpiry,
+                'roadworthinessexpiry' => $vehicleitem->roadworthinessexpiry,
+                'hackneypermitexpiry' => $vehicleitem->hackneypermitexpiry,
+            )
+        ])->associate('App\Models\ChangeOfOwnership');
+
+        return response()->json([
+            'success' => true,
+            'message' => "New Change of Ownership has been added to Cart Successfully",
+            'vehicleType' => $vehicleType
+        ]);
 
     }
     

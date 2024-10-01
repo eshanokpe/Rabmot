@@ -178,7 +178,27 @@
             </div>
         <div>
         <br>    
-        <p>CAC Company Registration (Limited) and New Driver License Registration </p>
+        <p> 
+            @php
+            $processTypes = [];
+            @endphp
+            
+            @foreach($cartItems as $item)
+                @php
+                    $processType = $item->model->process_type;
+                @endphp
+            
+                @unless(in_array($processType, $processTypes))
+                    {{ $processType }}
+                    @unless ($loop->last && count($processTypes) === 1)
+                        ,
+                    @endunless
+                    @php
+                        $processTypes[] = $processType;
+                    @endphp
+                @endunless
+            @endforeach
+        </p>
         <table class="table table-bordered">
             <thead>
                 <tr>

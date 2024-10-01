@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-user-add-vehicles-ownership', [AddVehicleOwnershipController::class, 'getUserAddVehiclesOwnership']);
         Route::post('/vehicleOwnership-vehicleCategoryId-selection', [AddVehicleOwnershipController::class, 'handleVehicleCategoryIdSelection']);
         Route::post('/vehicleOwnershipCost', [AddVehicleOwnershipController::class, 'handleVehicleOwnershipCost']);
+        Route::post('/post-changeofownership', [AddVehicleOwnershipController::class, 'postChangeOfVehicleOwnership']);
+
 
         Route::get('dealer-platenumber', [DealerPlateNumberContoller::class, 'index'])->name('home.platenumber');
         Route::post('get-dealer-platenumber-price', [DealerPlateNumberContoller::class, 'getDPNPrice']);

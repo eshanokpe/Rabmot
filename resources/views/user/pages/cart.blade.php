@@ -106,7 +106,7 @@
                                                                     @endif
                                                                 </td>
                                                             @elseif($item->model->process_type == 'Vehicle Paper Renewal')
-                                                                <td>
+                                                                <td> 
                                                                     {{ $item->model->vehicleType }}: 
                                                                     @if($item->model->vehicleLicense) Vehicle License, @endif
                                                                     @if($item->model->roadWorthiness) Road Worthiness, @endif

@@ -25,6 +25,7 @@ export default function ChangeofOwnership() {
     const [vehicleLicenseCost, setVehicleLicenseCost] = useState(0);
 
     const [policeCmrisCost, setPoliceCmrisCost] = useState(0);
+    const [policeCMRISTotal, setPoliceCMRISTotal] = useState(0);
     const [isPoliceCmrisChecked, setIsPoliceCmrisChecked] = useState(false);
 
     useEffect(() => {
@@ -43,8 +44,7 @@ export default function ChangeofOwnership() {
     useEffect(() => {
       
         const calculateTotalAmount = () => {
-            console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
-            console.log('Successfully sent plateType:', plateType);
+           
             axios.post(`${url}/home/vehicleOwnershipCost`, { 
                 stateId,
                 vehicleCategoryId,
@@ -65,6 +65,7 @@ export default function ChangeofOwnership() {
                 });
         };
         calculateTotalAmount();
+
         axios.post(`${url}/home/changeofownership-state-selection`, { 
             stateId 
         }).then(response => {
@@ -89,10 +90,11 @@ export default function ChangeofOwnership() {
     useEffect(() => {
 
         const PoliceCmrisTotel = isPoliceCmrisChecked ? policeCmrisCost: 0;
-
+        setPoliceCMRISTotal(PoliceCmrisTotel);
         setTotalAmount(
             Number(vehicleCost) + Number(hackneyPermitCost) + Number(vehicleLicenseCost) + Number(PoliceCmrisTotel)
         );
+
     }, [vehicleCost, hackneyPermitCost, vehicleLicenseCost, isPoliceCmrisChecked, policeCmrisCost]);
 
 
@@ -147,6 +149,38 @@ export default function ChangeofOwnership() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = {
+            stateId,
+            vehicleCategoryId,
+            addVehicleOwnership,
+            vLExpirydate,
+            hackneyPermit,
+            plateType,
+            policeCMRISTotal,
+            totalAmount,
+        };
+        axios.post(`${url}/home/post-changeofownership`, {
+            stateId:stateId,
+            userType:'user',
+            vehicleCategoryId: vehicleCategoryId,
+            addVehicleOwnership:addVehicleOwnership,
+            vLExpirydate:vLExpirydate,
+            hackneyPermit:hackneyPermit,
+            plateType:plateType,
+            policeCMRISTotal:policeCMRISTotal,
+            totalAmount:totalAmount,
+        })
+        .then(response => {
+            console.log('Successfully sent vehicleCategoryId:', response.data);
+
+            setTimeout(()=>{
+                window.location.href = `${url}/home/cart`;
+            },1100)
+        })
+        .catch(error => {
+            console.error('Error sending vehicleCategoryId:', error);
+        });
+        console.log("Form data submitted: ", formData);
     }
 
     if (loading) {
@@ -398,7 +432,7 @@ export default function ChangeofOwnership() {
                                                         )}
                                                         <div className="row mb-2 mt-2">
                                                             <div className="col-md-1 mb-2"></div>
-                                                            <div className="card-body col-md-10 align-items-center text-center">
+                                                            <div className=" col-md-10 align-items-center text-center">
                                                                 <div id="mainPrice" className="alert alert-info mt-3">
                                                                 Total Amount:
                                                                 <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
@@ -406,10 +440,10 @@ export default function ChangeofOwnership() {
                                                             </div>
                                                             <div className="col-md-1 mb-2"></div>
                                                         </div>
-                                                    </div>
+                                                    </div> 
 
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
+                                                    <div className=" col-md-12 align-items-center text-center ">
                                                         <button type="submit" className="btn btn-primary">Process Payment</button>
                                                     </div>
                                                 </form>

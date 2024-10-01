@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function VehicleRegistration() {
     
-    const url = window.location.origin;
+    const url = window.location.origin; 
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -13,11 +13,9 @@ export default function VehicleRegistration() {
     const [stateId, setStateId] = useState('');
     const [vehicleCategoryId, setVehicleCategoryId] = useState('');
     const [vehicleResType, setVehicleResType] = useState(null);
-
     const [loading, setLoading] = useState(true);
     const [addVehicleReg, setAddVehicleReg] = useState(null);
     const [plateType, setPlateType] = useState('RPN');
-
     const [totalAmount, setTotalAmount] = useState(0);
     const [amount, setAmount] = useState(0);
     const [hackneyPermitCost, setHackneyPermitCost] = useState(0);
@@ -31,8 +29,6 @@ export default function VehicleRegistration() {
 
     const [preferredNumber, setPreferredNumber] = useState('');
 
-
-    // Handle state change
     const handleStateChange = (event) => {
         const selectedStateId = event.target.value;
         setStateId(selectedStateId);
@@ -48,12 +44,10 @@ export default function VehicleRegistration() {
         }
     };
 
-    // Handle vehicle category change
     const handleVehicleCategoryId = (event) => {
         const vehicleCategoryId = event.target.value;
         setVehicleCategoryId(vehicleCategoryId);
     };
-
 
     useEffect(() => {
         setVehicleList([]);
@@ -72,7 +66,6 @@ export default function VehicleRegistration() {
         
     }, [vehicleCategoryId, stateId]);
 
-    // Handle add vehicle registration change
     const handleAddVehicleChange = (event) => {
         const addVehicleValue = event.target.value;
         setAddVehicleReg(addVehicleValue);
@@ -81,23 +74,16 @@ export default function VehicleRegistration() {
         } 
     };
 
-    // Handle vehicle resource type change
     const handleVehicleResType = (event) => {
         const selectedVehicleResType = event.target.value;
         setVehicleResType(selectedVehicleResType);
-       
-        // sendVehicleRegCost(selectedVehicleResType);
     };
 
-    // Handle plate type change
     const handlePlateTypeChange = (event) => {
         const selectedValue = event.target.value;
         setPlateType(selectedValue);
-
-
     };
 
-    // Fetch initial data on component mount
     useEffect(() => {
         axios.get(`${url}/home/get-user-add-vehicles-registration`)
             .then(response => {
