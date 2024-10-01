@@ -8,7 +8,7 @@ export default function NewDriverLicense() {
     const [lengthOfYearsNDL, setLengthOfYearsNDL] = useState([]);
     const [selectedLengthNDL, setSelectedLengthNDLNDL] = useState('');
     const [totalAmount, setTotalAmountNDL] = useState('0.00');
-
+ 
     useEffect(() => { 
         const fetchStates = async () => {
             axios.get(`${url}/get-state/pricing`)

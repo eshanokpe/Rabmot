@@ -7,7 +7,7 @@ export default function ChangeOfOwnership() {
     const [vehicleTypeIdCO, setvehicleTypeIdCO] = useState('');
     const [stateList, setStateList] = useState([]);
     const [vehicleTypeList, setVehicleTypeList] = useState([]);
-
+ 
     const [vehicleLicenseDate, setVehicleLicenseDate] = useState('');
     const [hacneyPermitDate, setHacneyPermitDate] = useState('');
     const [plateNumber, setPlateNumber] = useState('RPN');

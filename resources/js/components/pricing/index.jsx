@@ -9,14 +9,14 @@ import OtherPermits from './otherPermits';
 import InternationalDriverLicense from'./internationalDriverLicense';
 
 export default function Pricing() {
-    return (
+    return ( 
         <>  
             <VehicleRenewalPricing/>
             <NewVehicleRegistration/>
             <ChangeOfOwnership/>
             <NewDriverLicense/>
-            <InternationalDriverLicense/>
             <DriverLicenseRenewal/>
+            <InternationalDriverLicense/>
             <OtherPermits/> 
         </>
     );

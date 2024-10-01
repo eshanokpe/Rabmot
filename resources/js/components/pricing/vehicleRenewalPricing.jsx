@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function VehicleRenewalPricing() {
-  const url = window.location.origin;
+  const url = window.location.origin; 
   const [stateIdVR, setStateIdVR] = useState(0);
   const [stateList, setStateList] = useState([]);
   const [vehicleTypeList, setVehicleTypeList] = useState([]);

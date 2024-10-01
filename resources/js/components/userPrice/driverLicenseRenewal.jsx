@@ -3,8 +3,71 @@ import ReactDOM from 'react-dom/client';
 
 
 export default function DriverLicenseRenewal() {
+
+    const url = window.location.origin;
+    const [statesDLR, setStatesDLR] = useState([]);
+    const [stateIdDLR, setStateIdDLR] = useState('');
+    const [lengthOfYearsDLR, setLengthOfYearsDLR] = useState([]);
+    const [selectedLengthDLR, setSelectedLengthDLR] = useState('');
+    const [totalAmount, setTotalAmountDLR] = useState('0.00');
+
+    useEffect(() => { 
+        const fetchStates = async () => {
+            axios.get(`${url}/get-state/pricing`)
+              .then(response => {
+                setStatesDLR(response.data.stateList);
+              })
+              .catch(error => {
+                  console.error('Error fetching vehicle data:', error);
+              });
+        }
+        fetchStates();
+      }, [ url]);
+
+    useEffect(() => { 
+        const fetchLength = async () => {
+            axios.post(`${url}/get-driverLicenseRenewal/length`, {
+                statesDLR: statesDLR,
+              }).then(response => {
+                console.log('New drive pricing:', response.data);
+                setLengthOfYearsDLR(response.data.lengthYear);
+              }).catch(error => {
+                console.error('Error sending :', error);
+              });
+        }
+        fetchLength();
+    }, [ url, statesDLR]);
+
+    useEffect(() => { 
+        const fetchLengthNDL = async () => {
+            axios.post(`${url}/get-driverLicenseRenewal/price`, {
+                stateIdDLR: stateIdDLR,
+                selectedLengthDLR: selectedLengthDLR,
+              }).then(response => {
+                console.log('New drive pricing:', response.data);
+                setTotalAmountDLR(response.data.amount);
+              }).catch(error => {
+                console.error('Error sending :', error);
+              });
+        }
+        fetchLengthNDL();
+    }, [ url, stateIdDLR, selectedLengthDLR]);
+
+    const handleStateChange = (event) => {
+        setStateIdDLR(event.target.value);
+        setSelectedLengthDLR(''); // Reset lengthOfYears on state change
+    };
+
+    const handleLengthChange = (event) => {
+        setSelectedLengthDLR(event.target.value);
+    };
+
+    const handleDriverlicenseRenewal = (event) => {
+        window.location.href = `${url}/home/drivers/license/renewal`;
+    }
+
+
     return (
-       
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-headingFour">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
@@ -25,11 +88,11 @@ export default function DriverLicenseRenewal() {
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10 pt-2">
                                         <label for="inputState" class="form-label">Select State</label>
-                                        <select required name="stateId" id="stateId" class="form-select">
-                                            <option disabled selected="selected" value="">-- Select State--</option>
-                                        
-                                            <option   value=""></option>
-                                        
+                                        <select required  className="form-select" onChange={handleStateChange}  value={stateIdDLR}>
+                                            <option disabled selected value="">-- Select State --</option>
+                                            {statesDLR.map(state => (
+                                                <option key={state.id} value={state.id}>{state.name}</option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div class="col-md-10 "></div>
@@ -39,8 +102,11 @@ export default function DriverLicenseRenewal() {
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10 pt-2">
                                         <label for="inputState" class="form-label">Choose Length of Validity</label>
-                                        <select required name="lengthofyearDLR" id="lengthofyearDLR" class="form-select">
-                                            <option disabled selected="selected" value="">-- Select length of Years --</option>
+                                        <select required  className="form-select" onChange={handleLengthChange} value={selectedLengthDLR}>
+                                            <option disabled selected value="">-- Select length of Years --</option>
+                                            {lengthOfYearsDLR.map(length => (
+                                                <option key={length.id} value={length.years_type} >{length.years_type} Years Validity</option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div class="col-md-1"></div>
@@ -49,7 +115,10 @@ export default function DriverLicenseRenewal() {
                                 <div className="row card-body">
                                     <div className="col-md-1"></div>
                                     <div class=" col-md-10 text-center ">
-                                        <div class="alert alert-info mt-2">TOTAL AMOUNT: ₦ <span class="check-listgk" style={{fontSize: '16px'}}>0.00</span></div>
+                                        <div class="alert alert-info mt-2" style={{fontSize: '14px'}}>TOTAL AMOUNT: ₦ 
+                                            <span className="check-listgk" style={{fontSize: '16px'}}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+
+                                        </div>
                                         <div class="main-btn-wrap" > 
                                             <center> <a href="" class="btn btn-primary px-5 text-center" > Process Paper </a></center>
                                         </div>

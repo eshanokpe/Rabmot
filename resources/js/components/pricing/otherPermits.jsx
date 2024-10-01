@@ -6,7 +6,7 @@ export default function OtherPermits() {
     const [otherPermits, setOtherPermits] = useState([]);
     const [selectedPermitId, setSelectedPermitId] = useState('');
     const [totalAmount, setTotalAmountOP] = useState('0.00');
-
+ 
     useEffect(() => { 
         const fetchStates = async () => {
             axios.get(`${url}/get-otherPermit`)

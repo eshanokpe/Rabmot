@@ -73,12 +73,12 @@ export default function UserPrice() {
                                 <div class="card">
                                     <div class="">
                                         <div class="accordion accordion-flush" id="accordionFlushExample">
-                                            {/* VehicleRenewal */}
-                                            <VehiclePapersRenewal />
+                                          
+                                            <VehiclePapersRenewal /> 
                                             <VehicleRegistration />
                                             <ChangeofOwnership />
-                                            <DriverLicenseRenewal />
                                             <NewDriverLicense />
+                                            <DriverLicenseRenewal />
                                             <InternatinalDriversLicense />
                                             <OtherPermit />
                                         </div>

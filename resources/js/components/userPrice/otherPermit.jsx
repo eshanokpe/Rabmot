@@ -3,6 +3,50 @@ import ReactDOM from 'react-dom/client';
 
 
 export default function OtherPermit() {
+
+    const url = window.location.origin;
+    const [otherPermits, setOtherPermits] = useState([]);
+    const [selectedPermitId, setSelectedPermitId] = useState('');
+    const [totalAmount, setTotalAmountOP] = useState('0.00');
+ 
+    useEffect(() => { 
+        const fetchStates = async () => {
+            axios.get(`${url}/get-otherPermit`)
+              .then(response => {
+                setOtherPermits(response.data.permitType);
+              })
+              .catch(error => {
+                  console.error('Error fetching vehicle data:', error);
+              });
+        }
+        fetchStates();
+    }, [ url]);
+
+    useEffect(() => { 
+        console.log('Other Permit :', otherPermits);
+        const fetchLengthNDL = async () => {
+            axios.post(`${url}/get-otherPermit/price`, {
+                otherPermits: selectedPermitId,
+              }).then(response => {
+                console.log('Other Permit pricing:', response.data);
+                setTotalAmountOP(response.data.amount);
+              }).catch(error => {
+                console.error('Error sending :', error);
+              });
+        }
+        fetchLengthNDL();
+    }, [ url, selectedPermitId]);
+
+   
+
+    const handlePermitChange = (event) => {
+        setSelectedPermitId(event.target.value);
+    };
+
+    const handleOtherPermit = (e) => {
+        window.location.href = `${url}/home/otherpermit`;
+    }
+
     return (
        
         <div class="accordion-item">
@@ -25,11 +69,20 @@ export default function OtherPermit() {
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10 pt-2">
                                         <label for="inputState" class="form-label">Select Type of Permit</label>
-                                        <select required name="stateId" id="stateId" class="form-select">
-                                            <option disabled selected="selected" value="">-- Select the Others Permit --</option>
-                                        
-                                            <option   value=""></option>
-                                        
+                                         <select
+                                            className="form-select"
+                                            id="otherPermitId"
+                                            name="otherPermitId"
+                                            aria-label="Default select example"
+                                            onChange={handlePermitChange}
+                                            value={selectedPermitId}
+                                        >
+                                            <option value="">-- Select the Others Permit --</option>
+                                            {otherPermits.map((permit, index) => (
+                                                <option key={index} value={permit.id}>
+                                                   {permit.name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div class="col-md-10 "></div>
@@ -39,9 +92,12 @@ export default function OtherPermit() {
                                 <div className="row card-body">
                                     <div className="col-md-1"></div>
                                     <div class=" col-md-10 text-center ">
-                                        <div class="alert alert-info mt-2">TOTAL AMOUNT: ₦ <span class="check-listgk" style={{fontSize: '16px'}}>0.00</span></div>
+                                        <div class="alert alert-info mt-2">TOTAL AMOUNT: 
+                                            <span className="check-listgk" style={{fontSize: '16px'}}>{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+
+                                        </div>
                                         <div class="main-btn-wrap" > 
-                                            <center> <a href="" class="btn btn-primary px-5 text-center" > Process Paper </a></center>
+                                            <center> <a onClick={handleOtherPermit} class="btn btn-primary px-5 text-center" > Process Paper </a></center>
                                         </div>
                                     </div>
                                     <div className="col-md-1"></div>
