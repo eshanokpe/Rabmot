@@ -74,8 +74,13 @@ class OtherPermitController extends Controller
             $registrationNumber = $request->input('registrationNumber');
 
             $purpose = $request->input('purpose');
+            $nin = $request->input('nin');
+            $classLicenses = $request->input('classLicenses');
+            $lengthOfYears = $request->input('lengthOfYears');
+            $reasonfor = $request->input('reasonfor');
              
             $totalAmount = $request->input('totalAmount');
+
             $passportFile = null; 
             $passportPath = null;
             if ($request->hasFile('passport')) {
@@ -103,6 +108,7 @@ class OtherPermitController extends Controller
                     $picsVehicleLicenseFile->move(public_path('documents/otherPermit'), $picsVehicleLicensePath);
                 }
             } 
+
             $affidavitFile = null; 
             $affidavitPath = null;
             if ($request->hasFile('affidavit')) {
@@ -112,6 +118,7 @@ class OtherPermitController extends Controller
                     $affidavitFile->move(public_path('documents/otherPermit'), $affidavitPath);
                 }
             } 
+
             $policereportFile = null; 
             $policereportPath = null;
             if ($request->hasFile('policereport')) {
@@ -121,6 +128,17 @@ class OtherPermitController extends Controller
                     $policereportFile->move(public_path('documents/otherPermit'), $policereportPath);
                 }
             } 
+
+            $proofofownershipFile = null; 
+            $proofofownershipPath = null;
+            if ($request->hasFile('proofofownership')) {
+                $proofofownershipFile = $request->file('proofofownership');
+                if ($proofofownershipFile) {
+                    $proofofownershipPath = $proofofownershipFile->getClientOriginalName();
+                    $proofofownershipFile->move(public_path('documents/otherPermit'), $proofofownershipPath);
+                }
+            } 
+
             $randomNumber = mt_rand(100000, 999999);
             $processId = 'PROOP' . $randomNumber;
             OtherPermit::create([
@@ -157,16 +175,22 @@ class OtherPermitController extends Controller
                 'vehicle_model' => $vehicleModel,
                 'reg_number' => $registrationNumber,
                 'pictureoftheVehicleLicense' => 'otherPermit/'.$picsVehicleLicensePath,
-
+ 
                 'affidavit' => 'otherPermit/'.$affidavitPath,
                 'policereport' => 'otherPermit/'.$policereportPath,
 
+                'proofofownership' => 'otherPermit/'.$proofofownershipPath,
+
                 'purpose' => $purpose,
+                'nin' => $nin,
+                'classoflicense' => $classLicenses,
+                'lengthofyears' => $lengthOfYears,
+                'reasonfor' => $reasonfor,
 
                 'amount' => $totalAmount,
             ]);
             $users = OtherPermit::where('process_id', $processId)->first();
-            Cart::add([
+            Cart::add([ 
                 'id' => $users->id,
                 'name' => $users->process_type,
                 'price' => $users->amount,

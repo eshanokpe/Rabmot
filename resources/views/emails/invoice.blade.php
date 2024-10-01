@@ -152,9 +152,11 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                         <div class="receipt-right">
                             <p><b>Rabmot Automoblie and Licensing Agency.</b></p>
+                            <p>CAC RC Number: RC 7488687 </p>
+                            <p>TAX ID: 31717032-0001</p>
                             <p>1st floor AMG Workspace 22 Road, Festac Town, Lagos Nigeria</p>
                             <p>info@rabmotlicensing.com, suppport@rabmotlicensing.com</p>
-                            <p>Phone: +234815 520 6810, +234708 817 3662</p>
+                            <p>Phone: +234815 520 6810, +234708 817 3662, 07088173662</p>
                             <p>Company ID: BN 3510510</p>
                             <p>Website: www.rabmotlicensing.com</p>
                         </div>
@@ -336,7 +338,7 @@
             <p> ₦{{ Cart::total()}}</p>
             
         </div>
-        <p>GAPhub link, <a href="https://appstaging.mygaphub.com/home" class="btn btn-primary">click here</a>.</p>
+        {{-- <p>GAPhub link, <a href="https://appstaging.mygaphub.com/home" class="btn btn-primary">click here</a>.</p> --}}
         
 </div>
 

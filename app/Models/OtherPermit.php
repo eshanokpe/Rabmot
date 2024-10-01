@@ -17,7 +17,7 @@ class OtherPermit extends Model
         'permittype',
         'amount',
         'firstname',
-        'middlename',
+        'middlename', 
         'lastname' ,
         'mothermaidenname',
         'email',

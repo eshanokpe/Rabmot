@@ -10,7 +10,7 @@ import InternationalDriverLicense from'./internationalDriverLicense';
 
 export default function Pricing() {
     return (
-        <> 
+        <>  
             <VehicleRenewalPricing/>
             <NewVehicleRegistration/>
             <ChangeOfOwnership/>

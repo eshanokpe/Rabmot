@@ -8,6 +8,10 @@ import JBTEmblem from './otherPermit/JBTEmblem';
 import MidYearPermit from './otherPermit/MidYearPermit';
 import LicensePlatesNumber from './otherPermit/LicensePlatesNumber';
 import AffidavitsPoliceReport from './otherPermit/AffidavitsPoliceReport';
+import DriverLicenseReIssue from  './otherPermit/DriverLicenseReIssue';
+import LearnerPermit from  './otherPermit/LearnerPermit';
+import TintedPermit from './otherPermit/TintedPermit';
+import CMRIS from './otherPermit/CMRIS';
 
 export default function OtherPermit() {
 
@@ -40,47 +44,50 @@ const [vehicleMake, setVehicleMake] = useState('');
 const [vehicleModel, setVehicleModel] = useState('');
 const [registrationNumber, setRegistrationNumber] = useState('');
 
+const [lengthOfYears, setLengthOfYears] = useState('');
+const [driverLicenseNumber, setDriverLicenseNumber] = useState('');
+const [classLicenses, setClassLicenses] = useState(''); 
+const [reason, setReason] = useState(''); 
+
+const [nin, setNIN] = useState('');
+
 const [totalAmount, setTotalAmount] = useState(0.0);
 const [errors, setErrors] = useState({});
 
-const handlePermitTypeChange = (event) => {
-setPermitTypeId(event.target.value);
-};
+    const handlePermitTypeChange = (event) => {
+        setPermitTypeId(event.target.value);
+    };
 
+    useEffect(() => {
+        axios.get(`${url}/home/get-permittype-otherpermit`)
+        .then(response => {
+            console.log('Success', response.data);
+            setPermitType(response.data.permitType);
+            })
+        .catch(error => {
+            console.error('Error fetching vehicle data:', error);
+        });
+    }, [url]);
 
-useEffect(() => {
-axios.get(`${url}/home/get-permittype-otherpermit`)
-.then(response => {
-console.log('Success', response.data);
-setPermitType(response.data.permitType);
-})
-.catch(error => {
-console.error('Error fetching vehicle data:', error);
+    useEffect(() => {
+        axios.post(`${url}/home/get-permittype-price`, {
+            permitTypeId
+        })
+        .then(response => {
+            console.log('Success Length:', response.data);
+            setTotalAmount(response.data.amount || []);
+            })
+        .catch(error => {
+            console.error('Error sending :', error);
+        });
 
-});
-}, [url]);
-
-useEffect(() => {
-
-axios.post(`${url}/home/get-permittype-price`, {
-permitTypeId
-})
-.then(response => {
-console.log('Success Length:', response.data);
-setTotalAmount(response.data.amount || []);
-})
-.catch(error => {
-console.error('Error sending :', error);
-});
-
-}, [url,permitTypeId]);
-
-
+    }, [url,permitTypeId]);
 
     const [files, setFiles] = useState({
         passport: null,
         meansofID: null,
         picsVehicleLicense: null,
+        proofOwnership :  null,
     });
     const handleFileChange = (e) => {
         const { name, files: fileList } = e.target;
@@ -117,6 +124,7 @@ console.error('Error sending :', error);
         formData.append('contactAddress', contactAddress);
         formData.append('meansofID', files.meansofID);
         formData.append('passport', files.passport);
+        formData.append('proofofownership', files.proofOwnership);
 
         //LocalGovt Permit
         formData.append('vehicleDocumentsName', vehicleDocuments);
@@ -130,6 +138,10 @@ console.error('Error sending :', error);
         formData.append('policereport', files.policereport); 
 
         formData.append('purpose', purpose);
+        formData.append('nin', nin);
+        formData.append('classLicenses', classLicenses);
+        formData.append('lengthOfYears', lengthOfYears);
+        formData.append('reason', reason);
         
         formData.append('totalAmount', totalAmount);
 
@@ -148,7 +160,6 @@ try {
     } catch (error) {
         console.error('Error uploading files', error);
         if (error.response && error.response.data && error.response.data.errors) {
-            // Assuming 'duplicate_name' is the error key for duplicate file names
             if (error.response.data.errors.file === 'duplicate_name') {
                 setErrors({ file: 'A file with this name already exists. Please rename your file and try again.' });
             } else {
@@ -245,6 +256,68 @@ const renderPermitSpecificForm = () => {
                 purpose = {purpose} setPurpose ={setPurpose} contactAddressCBT={contactAddress}
                 setContactAddressCBT={setContactAddress} handleFileChangeCBT={handleFileChange} errors />
         </>
+        );
+        case '8':
+            return (
+            <>
+                <DriverLicenseReIssue 
+                    lengthOfYears={lengthOfYears} setLengthOfYears={setLengthOfYears} 
+                    lastName={lastName} setLastName={setLastName}
+                    driverLicenseNumber={driverLicenseNumber} setDriverLicenseNumber={setDriverLicenseNumber}
+                    reason = {reason} setReason ={setReason} 
+                    dob={dob} setDOB = {setDOB} 
+                    nextKinName = {nextKinName} setNextKinName = {setNextKinName} 
+                    nextKinPhoneNumber = {nextKinPhoneNumber} setNextKinPhoneNumber = {setNextKinPhoneNumber} 
+                    classLicenses = {classLicenses} setClassLicenses = {setClassLicenses}
+                    contactAddressCBT={contactAddress} setContactAddressCBT={setContactAddress} 
+                    handleFileChangeCBT={handleFileChange} errors />
+            </>
+        );
+        case '9':
+            return (
+            <>
+                <LearnerPermit firstName={firstName} setFirstName={setFirstName} lastName={lastName} setLastName={setLastName}
+                    middleName={middleName} setMiddleName={setMiddleName} states={states} maidenName={maidenName}
+                    setMaidenName={setMaidenName} emailAddress={emailAddress} setEmailAddress={setEmailAddress} gender={gender}
+                    setGender={setGender} dob={dob} setDOB={setDOB} maritalStatus={maritalStatus}
+                    setMaritalStatus={setMaritalStatus} stateOrigin={stateOrigin} setStateOrigin={setStateOrigin}
+                    lGovtPOB={lGovtPOB} setLGovtPOB={setLGovtPOB} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}
+                    bloodGroup={bloodGroup} setBloodGroup={setBloodGroup} height={height} setHeight={setHeight}
+                    lGovtOrigin={lGovtOrigin} setLGovtOrigin={setLGovtOrigin} nextKinName={nextKinName}
+                    setNextKinName={setNextKinName} nextKinPhoneNumber={nextKinPhoneNumber}
+                    setNextKinPhoneNumber={setNextKinPhoneNumber} contactAddressLP={contactAddress}
+                    setContactAddressLP={setContactAddress} errors={errors} setErrors={setErrors}
+                    handleFileChangeLP={handleFileChange} 
+                />
+            </>
+        );
+        case '10':
+            return (
+            <>
+                <TintedPermit 
+                    firstName={firstName} setFirstName={setFirstName} 
+                    lastName={lastName} setLastName={setLastName} 
+                    emailAddress={emailAddress} setEmailAddress={setEmailAddress} 
+                    phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} 
+                    nin = {nin} setNIN = {setNIN}
+                    errors={errors} setErrors={setErrors}
+                    handleFileChangeTP={handleFileChange} 
+                />
+            </>
+        );
+        case '11':
+            return (
+            <>
+                <CMRIS 
+                    firstName={firstName} setFirstName={setFirstName} 
+                    lastName={lastName} setLastName={setLastName} 
+                    emailAddress={emailAddress} setEmailAddress={setEmailAddress} 
+                    phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} 
+                    nin = {nin} setNIN = {setNIN}
+                    errors={errors} setErrors={setErrors}
+                    handleFileChangeTP={handleFileChange} 
+                />
+            </>
         );
         // Add more cases for other permit types as needed
         default:

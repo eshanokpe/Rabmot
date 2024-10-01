@@ -1,20 +1,20 @@
 import React from 'react';
 
-export default function RiderCard({
-firstName, setFirstName, lastName, setLastName, states, 
-middleName, setMiddleName, maidenName, setMaidenName, emailAddress, setEmailAddress, dob, setDOB,
-maritalStatus, setMaritalStatus,
-setGender, gender, stateOrigin, setStateOrigin, lGovtPOB, setLGovtPOB, phoneNumber, setPhoneNumber,
-bloodGroup, setBloodGroup, height, setHeight, lGovtOrigin, setLGovtOrigin, nextKinName, setNextKinName,
-nextKinPhoneNumber, setNextKinPhoneNumber, contactAddress, setContactAddress, handleFileChange, errors
- }) {
+export default function LearnerPermit({
+    firstName, setFirstName, lastName, setLastName, states, 
+    middleName, setMiddleName, maidenName, setMaidenName, emailAddress, setEmailAddress, dob, setDOB,
+    maritalStatus, setMaritalStatus,
+    setGender, gender, stateOrigin, setStateOrigin, lGovtPOB, setLGovtPOB, phoneNumber, setPhoneNumber,
+    bloodGroup, setBloodGroup, height, setHeight, lGovtOrigin, setLGovtOrigin, nextKinName, setNextKinName,
+    nextKinPhoneNumber, setNextKinPhoneNumber, contactAddressLP, setContactAddressLP, handleFileChangeLP, errors
+}) {
 return (
 <>
     <br />
     <div className="row">
         <div className="col-md-1 mb-2"></div>
         <div className="col-md-10">
-            <h6 class="mb-0 text-dark"><b>Personal Information for Rider’s Card (Motorcycle)</b></h6>
+            <h6 class="mb-0 text-dark"><b>Personal Information for Learner’s Permit</b></h6>
             <hr>
             </hr>
         </div>
@@ -31,7 +31,7 @@ return (
             />
         </div>
         <div className="col-md-5 mb-2">
-            <label className="form-label">Middle Name</label>
+            <label className="form-label"> Middle name </label>
             <input type="text" className="form-control" value={middleName} placeholder='Middle name' onChange={(e)=>
             setMiddleName(e.target.value)}
             required
@@ -39,7 +39,6 @@ return (
         </div>
         <div className="col-md-1"></div>
     </div>
-
     <div className="row">
         <div className="col-md-1"></div>
         <div className="col-md-5 mb-2">
@@ -58,11 +57,12 @@ return (
         </div>
         <div className="col-md-1"></div>
     </div>
+
     <div className="row ">
         <div className="col-md-1 "></div>
         <div className="col-md-5 mb-2">
             <label className="form-label">Email address</label>
-            <input type="text" className="form-control" value={emailAddress} placeholder='Email address' onChange={(e)=>
+            <input type="email" className="form-control" value={emailAddress} placeholder='Email address' onChange={(e)=>
             setEmailAddress(e.target.value)}
             required
             />
@@ -106,8 +106,8 @@ return (
     <div className="row ">
         <div className="col-md-1 "></div>
         <div className="col-md-5 mb-2">
-            <label className="form-label">Local government of origin</label>
-            <input type="text" className="form-control" value={lGovtOrigin} placeholder='Email address' onChange={(e)=>
+        <label className="form-label">Local Government of origin</label> 
+            <input type="text" className="form-control" value={lGovtOrigin} placeholder='Local Government of origin' onChange={(e)=>
             setLGovtOrigin(e.target.value)}
             required
             />
@@ -129,15 +129,15 @@ return (
     <div className="row ">
         <div className="col-md-1 "></div>
         <div className="col-md-5 mb-2">
-            <label className="form-label">Local govt place of birth</label>
-            <input type="text" className="form-control" value={lGovtPOB} placeholder='Local govt place of birth'
+            <label className="form-label">Local Govt Place of birth</label>
+            <input type="date" className="form-control" value={lGovtPOB} placeholder='Local Govt place of birth'
                 onChange={(e)=> setLGovtPOB(e.target.value)}
             required
             />
         </div>
         <div className="col-md-5 mb-2">
             <label className="form-label">Phone number </label>
-            <input type="text" className="form-control" value={phoneNumber} placeholder='Phone number' onChange={(e)=>
+            <input type="number" className="form-control" value={phoneNumber} placeholder='Phone number' onChange={(e)=>
             setPhoneNumber(e.target.value)} required
             />
         </div>
@@ -158,7 +158,7 @@ return (
         </div>
         <div className="col-md-5 mb-2">
             <label className="form-label">Height </label>
-            <input type="text" className="form-control" value={height} placeholder='Height' onChange={(e)=>
+            <input type="number" className="form-control" value={height} placeholder='Height' onChange={(e)=>
             setHeight(e.target.value)} required
             />
         </div>
@@ -175,44 +175,47 @@ return (
         </div>
         <div className="col-md-5 mb-2">
             <label for="inputFirstName" class="form-label"> Next of kin phone number</label>
-            <input required type="text" value={nextKinPhoneNumber} onChange={(e)=> setNextKinPhoneNumber(e.target.value)} name="nextofkinphonenumber" placeholder="Next of kin phone number "
+            <input required type="number" value={nextKinPhoneNumber} onChange={(e)=> setNextKinPhoneNumber(e.target.value)} name="nextofkinphonenumber" placeholder="Next of kin phone number "
                 class="form-control" id="nextofkinphonenumber" />
 
         </div>
         <div className="col-md-1"></div>
     </div>
-
+   
+    
     <div className="row ">
         <div className="col-md-1 "></div>
         <div className="col-md-10 mb-2">
             <label for="inputFirstName" class="form-label"> Contact Address</label>
-            <textarea rows='3' value={contactAddress} onChange={(e)=> setContactAddress(e.target.value)}  required type="text" name="address" placeholder="Contact Address" class="form-control"
+            <textarea rows='3' value={contactAddressLP} onChange={(e)=> setContactAddressLP(e.target.value)}  required type="text" name="address" placeholder="Contact Address" class="form-control"
                 id="address" ></textarea>
 
         </div>
         <div className="col-md-1"></div>
     </div>
 
+
     <div className="row">
     <div className="col-md-1"></div>
     <div class="card col-md-10 radius-10 mt-3 mb-3">
         <div class="card-body">
             <div class="card-title">
-                <p class="mb-0"><b>Upload Passport, and Means of ID </b></p>
+                <p class="mb-0"><b>Upload Passport and Means of ID </b></p>
             </div>
             <hr />
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="passport" class="form-label">Passport Photograph </label>
-                    <input class="form-control" onChange={handleFileChange}  id="passport" type="file" accept=".jpg, .png, image/jpeg, image/png"  name="passport" />
+                    <input  class="form-control" onChange={handleFileChangeLP}  id="passport" type="file" accept=".jpg, .png, image/jpeg, image/png"  name="passport" />
                     {errors.passport && <small style={{ color: 'red' }}>{errors.passport[0]}</small>}
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label for="meansofID" class="form-label">Means of ID </label>
-                    <input class="form-control" onChange={handleFileChange}  id="meansofID" type="file" name="meansofID" />
+                    <input  class="form-control" onChange={handleFileChangeLP}  id="meansofID" type="file" name="meansofID" />
                     {errors.meansofID && <small style={{ color: 'red' }}>{errors.meansofID[0]}</small>}
                 </div>
+
             </div>
         </div>
     </div>

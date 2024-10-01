@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Http;
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Validator;
 
 class FrontendController extends Controller
 {
@@ -53,9 +55,9 @@ class FrontendController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' => 'required|string|max:30',
             'email' => 'required|string|email|max:30',
-            'phone' => 'required|string|max:11',
+            'phone' => 'required|string|max:20',
             'subject' => 'required|max:30',
-            'message' => 'required|max:50',
+            'message' => 'required|max:255',
             'g-recaptcha-response'=> 'required',
         ]);
        
@@ -85,8 +87,6 @@ class FrontendController extends Controller
 
         // Redirect back with a success message
         return redirect()->route('contactus')->with('success', 'Message sent successfully');
-
-        
     }
     
 
