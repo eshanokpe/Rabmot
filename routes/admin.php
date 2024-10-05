@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\AdminProcessTypeController;
 
 Route::get('admin/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin-forgotpassword');
 // Route::get('/login/admin',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
-Route::get('/admin',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+Route::get('/admin/login',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
 Route::get('/forgotpassword/admin',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
 
@@ -42,21 +42,21 @@ Route::prefix('/admin')->middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/international-driver-license', [AdminProcessTypeController::class, 'processInternationalDriverLicense'])->name('admin.processInternationalDriverLicense');
     Route::get('/international-driver-license/view/{id}', [AdminProcessTypeController::class, 'viewInternationalDriverLicense'])->name('admin.viewInternationalDriverlicense');
-    Route::get('/international-driver-license-passport/download/{id}', [AdminProcessTypeController::class, 'downloadInternationalDriverLicensepassport'])->name('internationalDriverlicensepassport.download');
+    Route::get('/international-driver-license-passport/download/{id}', [AdminProcessTypeController::class, 'downloadInternationalDriverLicensePassPort'])->name('internationalDriverlicensepassport.download');
 
-    Route::get('/dealer/plateNumber', [AdminDashboardController::class, 'processdealerplateNumber'])->name('admin.processdealerplateNumber');
-    Route::get('/viewplateNumber/{id}', [AdminDashboardController::class, 'viewplateNumber'])->name('admin.viewplateNumber');
-    Route::get('/download/plateNumberpassportpassport/{id}', [AdminDashboardController::class, 'downloadplateNumberpassport'])->name('plateNumberpassport.download');
-    Route::get('/download/plateNumbercertificate/{id}', [AdminDashboardController::class, 'downloadplateNumbercertificate'])->name('plateNumbercertificate.download');
-    Route::get('/download/plateNumbercompanyLetterhead/{id}', [AdminDashboardController::class, 'downloadplateNumbercompanyLetterhead'])->name('plateNumbercompanyLetterhead.download');
+    Route::get('/dealer/plateNumber', [AdminProcessTypeController::class, 'processDealerPlateNumber'])->name('admin.processDealerPlateNumber');
+    Route::get('/viewplateNumber/{id}', [AdminProcessTypeController::class, 'viewDealerPlateNumber'])->name('admin.viewplateNumber');
+    Route::get('/download/plateNumberpassportpassport/{id}', [AdminProcessTypeController::class, 'downloadPlateNumberPassPort'])->name('plateNumberpassport.download');
+    Route::get('/download/plateNumbercertificate/{id}', [AdminProcessTypeController::class, 'downloadPlateNumberCertificate'])->name('plateNumbercertificate.download');
+    Route::get('/download/plateNumbercompanyLetterhead/{id}', [AdminProcessTypeController::class, 'downloadPlateNumberCompanyLetterhead'])->name('plateNumbercompanyLetterhead.download');
     
-    Route::get('/otherPermit', [AdminDashboardController::class, 'processotherPermit'])->name('admin.processotherPermit');
-    Route::get('/viewotherPermit/{id}', [AdminDashboardController::class, 'viewotherPermit'])->name('admin.viewotherPermit');
-    Route::get('/download/otherpermitpassport/{id}', [AdminDashboardController::class, 'downloadotherpermitpassport'])->name('otherpermitpassport.download');
-    Route::get('/download/otherpermitmeansofID/{id}', [AdminDashboardController::class, 'downloadotherpermitmeansofID'])->name('otherpermitmeansofID.download');
-    Route::get('/download/otherpermitpictureoftheVehicleLicense/{id}', [AdminDashboardController::class, 'downloadotherpermitpictureoftheVehicleLicense'])->name('otherpermitpictureoftheVehicleLicense.download');
-    Route::get('/download/otherpermitaffidavit/{id}', [AdminDashboardController::class, 'downloadotherpermitaffidavit'])->name('otherpermitaffidavit.download');
-    Route::get('/download/otherpermitpolicereport/{id}', [AdminDashboardController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download');
+    Route::get('/otherPermit', [AdminProcessTypeController::class, 'processOtherPermit'])->name('admin.processOtherPermit');
+    Route::get('/viewotherPermit/{id}', [AdminProcessTypeController::class, 'viewOtherPermit'])->name('admin.viewOtherPermit');
+    Route::get('/download/otherpermitpassport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpassport'])->name('otherpermitpassport.download');
+    Route::get('/download/otherpermitmeansofID/{id}', [AdminProcessTypeController::class, 'downloadotherpermitmeansofID'])->name('otherpermitmeansofID.download');
+    Route::get('/download/otherpermitpictureoftheVehicleLicense/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpictureoftheVehicleLicense'])->name('otherpermitpictureoftheVehicleLicense.download');
+    Route::get('/download/otherpermitaffidavit/{id}', [AdminProcessTypeController::class, 'downloadotherpermitaffidavit'])->name('otherpermitaffidavit.download');
+    Route::get('/download/otherpermitpolicereport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download');
 
     
     Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status');

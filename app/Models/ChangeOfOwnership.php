@@ -39,8 +39,14 @@ class ChangeOfOwnership extends Model
         'payment_status',
         'totalamount',
     ];
+
     public function vehicleTypeInfo()
     {
         return $this->belongsTo(VehicleType::class, 'vehicle_category', 'id');
+    }
+
+    public function addVehicleOwnership()
+    {
+        return $this->belongsTo(AddVehicleOwnership::class, 'user_id', 'user_id');
     }
 }

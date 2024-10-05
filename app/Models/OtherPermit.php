@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OtherPermit extends Model
 {
-    use HasFactory;
+    use HasFactory; 
     public $fillable = [
         'user_id',
         'user_email',

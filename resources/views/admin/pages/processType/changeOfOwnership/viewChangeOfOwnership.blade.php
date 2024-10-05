@@ -84,7 +84,7 @@
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Fullname</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->fullname}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addVehicleOwnership->ownerfullname}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Vehiclelicenseexpiry Date</label>
@@ -92,19 +92,19 @@
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Address</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->address}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addVehicleOwnership->address}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Phone Number</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->phonenumber}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addVehicleOwnership->phonenumber}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Gender</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->gender}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addVehicleOwnership->gender}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Occupation</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->occupation}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addVehicleOwnership->occupation}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Vehiclelicense Expiry</label>

@@ -81,10 +81,10 @@
                         <a class="dropdown-item"href="{{ route('admin.processInternationalDriverLicense')}}"> 
                             International Driver License 
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processdealerplateNumber')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processDealerPlateNumber')}}">
                             Dealer's Plate Number
                          </a>
-                          <a class="dropdown-item" href="{{ route('admin.processotherPermit')}}">
+                          <a class="dropdown-item" href="{{ route('admin.processOtherPermit')}}">
                             Other Permit
                          </a>
                     </div>

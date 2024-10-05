@@ -18,7 +18,7 @@ class AddVehicleOwnership extends Model
         'category',
         'vehiclemake',
         'vehiclemodel',
-        'yearofmake',
+        'yearofmake', 
         'platenumber',
         'chassisnumber',
         'enginenumber',

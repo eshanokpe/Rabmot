@@ -7,10 +7,10 @@
                 <div class="col">
                     <!-- Page pre-title -->
                     <div class="page-pretitle">
-                    View Vehicle
+                        View Vehicle
                     </div>
                     <h2 class="page-title">
-                        Change of Ownership 
+                        Vehicles Plate Number
                     </h2>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> Change of Ownership Process</h3>
+                            <h3 class="card-title">Plate Number Process</h3>
                         </div>
                         <div class="table-responsive">
                             <table class="table card-table table-vcenter text-nowrap datatable">
@@ -31,19 +31,12 @@
                                         <th class="w-1">S/N
                                             <i class="fa fa-arrow-up"></i>
                                         </th>
-                                         <th>View</th>
+                                        <th>View</th>
                                         <th>User Email</th>
                                         <th>Process ID</th>
                                         <th>Process Type</th>
-                                        <th>Vehicle Category</th>
-                                        <th>Vehiclelicense Expiry date</th>
-                                        <th>fullname</th>
-                                        <th>address</th>
-                                        <th>Phonenumber</th>
-                                        <th>Email Address</th>
+                                        <th>State</th>
                                         <th>Gender</th>
-                                        <th>Occupation</th>
-                                        <th>Payment Status</th>
                                         <th>Total Amount</th>
                                         <th>Created</th>
                                     </tr>
@@ -55,23 +48,14 @@
                                         <td><span class="text-muted">{{ $serial++ }}</span></td>
                                         <td class="text-end">
                                             <span class="dropdown">
-                                                <a href="{{ route('admin.viewChangeOfOwnership', ['id'=> encrypt($item->id) ]) }}" class="btn ">View</a> 
+                                                <a href="{{route('admin.viewplateNumber', encrypt($item->id))}}" class="btn ">View</a> 
                                             </span>
                                         </td>
                                         <td>{{ $item->user_email}}</td>
                                         <td>{{ $item->process_id}}</td>
                                         <td>{{ $item->process_type}}</td>
-                                        <td> {{ $item->vehicle_category}}
-                                           
-                                        </td>
-                                        <td>{{ $item->vehiclelicenseexpiry_date}} </td>
-                                        <td>{{ $item->fullname}}</td>
-                                        <td>{{ $item->address}}</td>
-                                        <td>{{ $item->phonenumber}}</td>
-                                        <td>{{ $item->emailaddress}}</td>
+                                        <td> {{ $item->state}} </td>
                                         <td>{{ $item->gender}}</td>
-                                        <td>{{ $item->occupation}}</td>
-                                        <td>{{ $item->payment_status}}</td>
                                         <td>₦{{ number_format($item->totalamount,2, '.', ',')}}</td>
                                        
                                         <td>
@@ -87,10 +71,6 @@
                                 </tbody>
 
                             </table>
-                             <!-- Pagination links -->
-                             <div class="pagination-links">
-                                {{ $items->links('pagination::simple-bootstrap-4') }} <!-- Or simple-default -->
-                            </div>
 
                         </div>
 
