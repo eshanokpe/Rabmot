@@ -47,13 +47,9 @@ class AddVehicleOwnership extends Model
         'meansofid',
     ];
 
-    public function categoryInfo()
-    {
-        return $this->belongsTo(VehicleCategory::class, 'category');
-    }
     
-    public function VehicleType()
+    public function vehicleTypeInfo()
     {
-        return $this->belongsTo(VehicleType::class, 'category', 'id');
+        return $this->belongsTo(VehicleType::class, 'category');
     }
 }

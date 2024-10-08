@@ -17,18 +17,21 @@ use App\Models\DriverLicenseRenewal;
 use App\Models\InternationalDriverLicense;
 use App\Models\DealerPlateNumber;
 use App\Models\OtherPermit;
-
+ 
 class AdminDashboardController extends Controller
 {
+   // public function __construct()
+   // {
+   //     $this->middleware('admin');
+   // }
+   
     public function index()
     {
-        $user = Auth::user();
-        $userId = $user->id;
-        $userEmail = $user->email;
+         $user = Auth::guard('admin')->user();
+         $userId = $user->id;
+         $userEmail = $user->email;
 
-        if ($user->role !== 'admin') {
-            return redirect()->route('index')->with('error', 'Unauthorized access.');
-        }
+       
         $userDetails = User::where('id', $user->id)->first();
         $items = ProcessHistory::where('status',0)->latest()->get();
         $countprocesshistory = ProcessHistory::count();

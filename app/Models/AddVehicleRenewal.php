@@ -41,7 +41,7 @@ class AddVehicleRenewal extends Model
         'insurancepapers',
         'roadworthinesspapers',
         'hackneypermitpaper',
-        'statecarriagepermit',
+        'statecarriagepermit', 
         'localgovernmentpermit',
         'midyearpermit',
         'meansofid',

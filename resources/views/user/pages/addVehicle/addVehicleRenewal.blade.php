@@ -14,7 +14,7 @@
 						<nav aria-label="breadcrumb">
 							<ol class="breadcrumb mb-0 p-0">
 								<li class="breadcrumb-item"><a href="{{ route('home.addVehicle') }}"><i class="bx bx-car"></i></a>
-								</li>
+								</li> 
 								<li class="breadcrumb-item active" aria-current="page">+Add New Vehicle (Renewal) <i class="bx bx-car" style="color:red;"></i></li>
 							</ol>
 						</nav>

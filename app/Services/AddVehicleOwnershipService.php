@@ -21,7 +21,7 @@ class AddVehicleOwnershipService
         $proofofownershipdocument = $this->uploadFile($request, 'proofofownership');
         $vehiclelicensepapersdocument = $this->uploadFile($request, 'vehiclelicensepapers');
         $custompapers = $this->uploadFile($request, 'custompapers');
-
+ 
         // Create vehicle registration record
         $user = Auth::user();
 
@@ -68,7 +68,7 @@ class AddVehicleOwnershipService
         if ($request->hasFile($fieldName)) {
             $file = $request->file($fieldName);
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('document/vehicleOwnership'), $filename);
+            $file->move(public_path('documents/vehicleOwnership'), $filename);
             return $filename;
         }
 

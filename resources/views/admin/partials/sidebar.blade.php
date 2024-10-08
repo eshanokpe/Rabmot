@@ -101,13 +101,13 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{route('admin.getaddvehiclerenewal')}}"  rel="noopener">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewals')}}"  rel="noopener">
                             Vehicle Renewal
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.getaddnewvehicleregistration')}}">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registrations.new')}}">
                             New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.getaddchangeOfownership')}}" 
+                        <a class="dropdown-item" href="{{route('admin.changeOfOwnership')}}" 
                             rel="noopener">
                             Change Of Ownership
                         </a>
@@ -125,13 +125,13 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{route('admin.addvehiclerenewal')}}"  rel="noopener">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewal.add')}}" >
                            Vehicle Renewal
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.addnewvehicleregistration')}}">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registration.new')}}">
                             New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.addchangeOfownership')}}" 
+                        <a class="dropdown-item" href="{{route('admin.vehicle.changeOfOwnership.add')}}" 
                             rel="noopener">
                             Change Of Ownership
                         </a>
@@ -145,38 +145,38 @@
                         <i class="fa fa-money-bill"></i>
                         </span>
                         <span class="nav-link-title">
-                            Price
+                            Price 
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.vehicleType') }}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicle.types') }}">
                             Vehicle Type
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.state') }}"> 
+                        <a class="dropdown-item" href="{{ route('admin.states') }}"> 
                             State
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice') }}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice.index') }}">
                             Vechicle Renewal Price
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice')}}">
-                           New vehicle Registration
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice.index')}}">
+                           New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice')}}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice.index')}}">
                            Change of Ownership
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense')}}">
+                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense.index')}}">
                             New Driver License
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal')}}">
+                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal.index')}}">
                             Driver License Renewal
                         </a>
-                        <a class="dropdown-item"href="{{ route('admin.intDriverlicense')}}"> 
+                        <a class="dropdown-item"href="{{ route('admin.intDriverLicense.index')}}"> 
                             International Driver License 
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.dealersPlatenumber')}}">
+                        <a class="dropdown-item" href="{{ route('admin.dealersPlateNumber.index')}}">
                             Dealer's Plate Number
                          </a>
-                          <a class="dropdown-item" href="{{ route('admin.otherPermit')}}">
+                          <a class="dropdown-item" href="{{ route('admin.otherPermit.index')}}">
                             Other Permit
                          </a>
                     </div>

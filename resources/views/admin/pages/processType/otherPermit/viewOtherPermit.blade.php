@@ -236,7 +236,7 @@
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Length of years</label>
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $items->lengthofyears}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $items->lengthofyears}} Year" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Name on driver</label>

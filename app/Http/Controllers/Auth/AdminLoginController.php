@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Model\Admin;
 
 class AdminLoginController extends Controller
-{
+{ 
     public function showLoginForm()
     {
         return view('auth.admin.admin-login'); // Create a view for the admin login form
@@ -19,17 +20,21 @@ class AdminLoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'])) {
-            return redirect()->route('admin.dashboard');
+        $credentials = $request->only('email', 'password');
+        if (Auth::guard('admin')->attempt($credentials)) {
+            return redirect()->intended(route('admin.index'));
         }
+        
 
         return back()->withErrors(['error' => 'Invalid Admin Credentials']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('admin.login');
     }
 }

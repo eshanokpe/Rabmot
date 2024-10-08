@@ -51,8 +51,8 @@ class AddVehicleRegistration extends Model
         'updated_at',
     ];
 
-    public function categoryInfo()
+    public function vehicleTypeInfo()
     {
-        return $this->belongsTo(VehicleCategory::class, 'category');
+        return $this->belongsTo(VehicleType::class, 'category');
     }
 } 

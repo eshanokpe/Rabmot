@@ -63,10 +63,10 @@
 
                         style="background-image: url({{ asset('assets/dist/img/015m.jpg')}})"></span>
                     @php
-                        $user = Auth::user();
+                        $user = Auth::guard('admin')->user();
                         
                         // Access user details
-                        $name = $user->fullname;
+                        $name = $user->name;
                         $email = $user->email;
                     @endphp  
                     <div class="d-none d-xl-block ps-2">
