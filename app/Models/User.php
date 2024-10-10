@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
-{
+{ 
     use HasFactory, Notifiable;
 
     /**
@@ -30,6 +30,7 @@ class User extends Authenticatable
         'gender',
         'address',
         'status_id',
+        'status',
         'password',
         'know_us',
         'referred_by',

@@ -201,16 +201,16 @@ Route::prefix('admin')->group(function () {
         Route::get('/add/question', [AdminDashboardController::class, 'addQuestion'])->name('admin.addQuestion');
         Route::get('/edit/question/{id}', [AdminDashboardController::class, 'editQuestion'])->name('admin.editQuestion');
         //Users
-        Route::get('/getusers', [AdminDashboardController::class, 'getusers'])->name('admin.users');
-        Route::get('/viewusers/{id}', [AdminDashboardController::class, 'editgetusers'])->name('admin.editgetusers');
-        Route::post('/updateUserStatus/{id}', [AdminDashboardController::class, 'updateUserStatus'])->name('admin.updateUserStatus');
-
+        Route::get('/users', [AdminDashboardController::class, 'getUsers'])->name('admin.users');
+        Route::get('/users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
+        Route::put('/users/{id}/status', [AdminDashboardController::class, 'updateUserStatus'])->name('admin.users.updateStatus');
+    
         //Agent
-        Route::get('/getAgent', [AdminDashboardController::class, 'getAgent'])->name('admin.getAgent');
-        Route::get('/editAgent/{id}', [AdminDashboardController::class, 'editAgent'])->name('admin.editAgent');
-        Route::post('/updateAgent/{id}', [AdminDashboardController::class, 'updateAgent'])->name('admin.updateAgent');
-        Route::get('/createAgent', [AdminDashboardController::class, 'createAgent'])->name('admin.createAgent');
-        Route::post('/postcreateAgent', [AdminDashboardController::class, 'postcreateAgent'])->name('admin.postcreateAgent');
+        Route::get('/agents', [AdminDashboardController::class, 'getAgent'])->name('admin.agents');
+        Route::get('/agents/create', [AdminDashboardController::class, 'createAgent'])->name('admin.agent.create');
+        Route::post('/agents', [AdminDashboardController::class, 'postcreateAgent'])->name('admin.agent.store');
+        Route::get('/agents/{id}/edit', [AdminDashboardController::class, 'editAgent'])->name('admin.agent.edit');
+        Route::put('/agents/{id}', [AdminDashboardController::class, 'updateAgent'])->name('admin.agent.update');
 
         Route::get('/notificationslist', [NotificationController::class, 'index'])->name('admin.notificationList');
         Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('admin.getNotifications');

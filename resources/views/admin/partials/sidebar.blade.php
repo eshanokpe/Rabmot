@@ -195,7 +195,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.getAgent')}}">
+                    <a class="nav-link" href="{{route('admin.agents')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                         <i class="fa fa-users"></i>
                         </span>
