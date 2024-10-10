@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
-use Mail;
 use App\Models\ProcessHistory;
 use App\Models\User;
 use App\Models\Agent;
-use Illuminate\Support\Facades\Hash;
-use App\Mail\AgentDetailMessage;
+use App\Models\AddVehicleRenewal;
+use App\Models\WalletPayment;
+use Illuminate\Support\Facades\Auth;
+use App\Models\VehiclePaperRenewal;
+use App\Models\VehicleRegistration;
+use App\Models\ChangeofOwnershipPrice;
+use App\Models\NewDriverLicense;
+use App\Models\DriverLicenseRenewal;
+use App\Models\InternationalDriverLicense;
+use App\Models\DealerPlateNumber;
+use App\Models\OtherPermit;
 use Illuminate\Support\Facades\Validator;
  
 class AdminDashboardController extends Controller
@@ -142,7 +150,7 @@ class AdminDashboardController extends Controller
       if ($request->input('status') == 'delete') {
            $item->delete();
           return redirect()->route('admin.agents')->with('success', 'Agent account deleted successfully');
-      }
+      } 
       $item->username = $request->input('username');
       $item->email = $request->input('email');
       $item->fullname = $request->input('fullname');
