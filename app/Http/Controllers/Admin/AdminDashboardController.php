@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\Agent;
 use App\Models\AddVehicleRenewal;
 use App\Models\WalletPayment;
-use Illuminate\Support\Facades\Auth;
 use App\Models\VehiclePaperRenewal;
 use App\Models\VehicleRegistration;
 use App\Models\ChangeofOwnershipPrice;
