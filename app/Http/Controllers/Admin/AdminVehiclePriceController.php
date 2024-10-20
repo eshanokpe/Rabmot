@@ -70,12 +70,11 @@ class AdminVehiclePriceController extends Controller
     }
  
     public function indexStates(){
-        $states = State::all();
+        $states = State::latest()->get();
         return view('admin.pages.prices.state.index', compact('states'));
     }
 
     public function createState(){
-        // $states = State::with('subcategories')->whereNull('parent_id')->get();
         $states = State::all(); 
         return view('admin.pages.prices.state.add', compact('states')); 
     } 

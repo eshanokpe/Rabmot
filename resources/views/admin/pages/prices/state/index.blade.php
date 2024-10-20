@@ -85,9 +85,9 @@
                                             <td>{{ $state->name}}</td>
                                             <td>
                                                  @php
-                                                    $date = \Carbon\Carbon::parse($state->created_at);
+                                                    $dateW = \Carbon\Carbon::parse($state->created_at);
                                                 @endphp
-                                                {{ $date->format('F j, Y') }}
+                                                {{ $dateW->format('F j, Y') }}
                                             </td>
                                         </tr>
                                         @empty

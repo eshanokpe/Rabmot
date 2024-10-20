@@ -1,4 +1,4 @@
-@extends('admin.layouts.header') 
+@extends('admin.layouts.app') 
 @section('content')
     <div class="page-wrapper">
         <div class="page-header d-print-none">
@@ -13,9 +13,12 @@
                             Create State and Vehicle type
 
                         </h2>
-
                     </div>
-
+                    <div class="text-end col-6"> 
+                        <a href="{{route('admin.states')}}" class="btn btn-primary">
+                           View State
+                        </a> 
+                    </div>
                 </div>
 
             </div>

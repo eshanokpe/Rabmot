@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProcessDocument\AdminProcessDocument;
+use App\Http\Controllers\Admin\Transaction\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProcessTypeController;
 use App\Http\Controllers\Admin\AdminAddVehicleController;
@@ -93,12 +94,14 @@ Route::prefix('admin')->group(function () {
         //Getnewvehicleregistration
         Route::get('/vehicle-registrations/new', [AdminAddedVehicleController::class, 'showAddNewVehicleRegistration'])->name('admin.vehicle.registrations.new');
         Route::get('/vehicle-registrations/{id}', [AdminAddedVehicleController::class, 'showAddNewVehicleRegistrationDetails'])->name('admin.vehicle.registrations.view'); 
+        Route::put('/vehicle-registrations/{id}', [AdminAddedVehicleController::class, 'updateVehicleRegistration'])->name('admin.vehicle.registration.update');
         Route::get('/vehicle-registrations/download/custom-paper/{id}', [AdminAddedVehicleController::class, 'downloadVehicleRegistrationCustomPaper'])->name('vehicle.registration.custom.paper.download');
         Route::get('/vehicle-registrations/download/means-of-id/{id}', [AdminAddedVehicleController::class, 'downloadVehicleRegistrationMeansOfId'])->name('vehicle.registration.means.of.id.download');
 
         //GetaddchangeOfownership
         Route::get('/change-of-ownership', [AdminAddedVehicleController::class, 'showAddChangeOfOwnership'])->name('admin.changeOfOwnership');
         Route::get('/change-of-ownership/{id}', [AdminAddedVehicleController::class, 'viewAddChangeOfOwnership'])->name('admin.changeOfOwnership.view');
+        Route::put('/change-of-ownership/{id}', [AdminAddedVehicleController::class, 'updateChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.update');
         
         Route::get('/change-of-ownership/download/vehicle-license/{id}', [AdminAddedVehicleController::class, 'downloadChangeOfOwnershipVehicleLicense'])->name('changeOfOwnership.vehicle.license.download');
         Route::get('/change-of-ownership/download/proof-of-ownership/{id}', [AdminAddedVehicleController::class, 'downloadChangeOfOwnershipProofOfOwnership'])->name('changeOfOwnership.proof.download');
@@ -115,7 +118,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/vehicle-change-of-ownership/add', [AdminAddVehicleController::class, 'addVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.add');
         Route::post('/vehicle-change-of-ownership', [AdminAddVehicleController::class, 'storeVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.store');
 
-        //Vehicle Type
+        //Vehicle Type 
         Route::get('/vehicle-types', [AdminVehiclePriceController::class, 'indexVehicleTypes'])->name('admin.vehicle.types');
         Route::get('/vehicle-types/add', [AdminVehiclePriceController::class, 'createVehicleType'])->name('admin.vehicle.type.add');
         Route::post('/vehicle-types/store', [AdminVehiclePriceController::class, 'storeVehicleType'])->name('admin.vehicle.type.store');
@@ -197,9 +200,21 @@ Route::prefix('admin')->group(function () {
         Route::get('/other-permit/{id}', [OtherPermitPriceController::class, 'destroy'])->name('admin.otherPermit.destroy');
         Route::post('/admin/other-permit-type', [OtherPermitPriceController::class, 'storeType'])->name('admin.otherPermit.storeType');
         // FAQ 
-        Route::get('/question', [AdminDashboardController::class, 'question'])->name('admin.question'); 
-        Route::get('/add/question', [AdminDashboardController::class, 'addQuestion'])->name('admin.addQuestion');
-        Route::get('/edit/question/{id}', [AdminDashboardController::class, 'editQuestion'])->name('admin.editQuestion');
+        Route::prefix('faq/questions')->group(function () {
+            Route::get('/', [AdminDashboardController::class, 'showFAQ'])
+                ->name('admin.faq.index');
+            
+            Route::get('/create', [AdminDashboardController::class, 'addFaqQuestion'])
+                ->name('admin.faq.create');
+            
+            Route::post('/add', [AdminDashboardController::class, 'addFaqQuestionPost'])
+                ->name('admin.faq.add');
+            
+            Route::get('/{id}/edit', [AdminDashboardController::class, 'editFaqQuestion'])
+                ->name('admin.faq.edit');
+            Route::put('/{id}', [AdminDashboardController::class, 'updateFaqQuestion'])
+                ->name('admin.faq.update');
+        });
         //Users
         Route::get('/users', [AdminDashboardController::class, 'getUsers'])->name('admin.users');
         Route::get('/users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
@@ -215,47 +230,61 @@ Route::prefix('admin')->group(function () {
         Route::get('/notificationslist', [NotificationController::class, 'index'])->name('admin.notificationList');
         Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('admin.getNotifications');
         Route::get('/notifications/{id}', [NotificationController::class, 'markAsRead'])->name('admin.markAsRead');
-        
 
         Route::get('/withdraw', [AdminDashboardController::class, 'withdraw'])->name('admin.withdraw');
         Route::get('/editWithdraw/{id}', [AdminDashboardController::class, 'editWithdraw'])->name('admin.editWithdraw');
         Route::put('/update/withdraw/{id}', [AdminDashboardController::class, 'updaterWithdrawStatus'])->name('admin.update-withdraw-status');
 
-        Route::get('/transaction', [AdminDashboardController::class, 'transaction'])->name('admin.transaction');
-        Route::get('/view/transaction/{id}', [AdminDashboardController::class, 'viewtransaction'])->name('admin.viewtransaction');
+        Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions');
+        Route::get('/transactions/{id}', [AdminTransactionController::class, 'viewTransaction'])->name('admin.transactions.show');
 
-        Route::get('/transactionPaperRenewal', [AdminDashboardController::class, 'transactionPaperRenewal'])->name('admin.transactionPaperRenewal');
-        Route::get('/view/transactionPaperRenewal/{id}', [AdminDashboardController::class, 'viewtransactionPaperRenewal'])->name('admin.viewtransactionPaperRenewal');
+        Route::prefix('transaction')->group(function () {
+            Route::get('/agent', [AdminTransactionController::class, 'transactionAgent'])->name('admin.transactions.agent');
+            Route::get('/agent/{id}', [AdminTransactionController::class, 'viewTransactionAgent'])->name('admin.transactions.viewAgent');
+    
+            Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
+            Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');
+    
+            Route::get('/vehicle-registration', [AdminTransactionController::class, 'transactionVehicleRegistration'])->name('admin.transaction.vehicleRegistration');
+            Route::get('/vehicle-registration/{id}', [AdminTransactionController::class, 'showTransactionVehicleRegistration'])->name('admin.transaction.showVehicleRegistration');
+    
+            Route::get('/change-of-ownership', [AdminTransactionController::class, 'transactionChangeofownership'])->name('admin.transaction.changeOfOwnership');
+            Route::get('/change-of-ownership/{id}', [AdminTransactionController::class, 'showTransactionChangeofownership'])->name('admin.transaction.showChangeOfOwnership');
+    
+            Route::get('/new-driver-license', [AdminTransactionController::class, 'transactionNewDriverlicense'])->name('admin.transactions.newDriverLicense');
+            Route::get('/new-driver-license/{id}', [AdminTransactionController::class, 'showTransactionNewDriverlicense'])->name('admin.transactions.showNewDriverLicense');
+    
+            Route::get('/driver-license-renewal', [AdminTransactionController::class, 'transactionDriverlicenseRenewal'])->name('admin.transactions.driverLicenseRenewal');
+            Route::get('/driver-license-renewal/{id}', [AdminTransactionController::class, 'showTransactionDriverlicenseRenewal'])->name('admin.transactions.showDriverLicenseRenewal');
+    
+            Route::get('/international-driver-license', [AdminTransactionController::class, 'transactionInternationalDriverlicense'])->name('admin.transactions.internationalDriverLicense');
+            Route::get('/international-driver-license/{id}', [AdminTransactionController::class, 'showTransactionInternationalDriverlicense'])->name('admin.transactions.showInternationalDriverLicense');
+    
+            Route::get('/dealer-plate-number', [AdminTransactionController::class, 'transactionDealerPlateNumber'])->name('admin.transactions.dealerPlateNumber');
+            Route::get('/dealer-plate-number/{id}', [AdminTransactionController::class, 'showTransactionDealerPlateNumber'])->name('admin.transactions.showDealerPlateNumber');
         
-        Route::get('/transactionVehicleRegistration', [AdminDashboardController::class, 'transactionVehicleRegistration'])->name('admin.transactionVehicleRegistration');
-        Route::get('/view/transactionVehicleRegistration/{id}', [AdminDashboardController::class, 'viewtransactionVehicleRegistration'])->name('admin.viewtransactionVehicleRegistration');
-
-        Route::get('/transactionChangeofownership', [AdminDashboardController::class, 'transactionChangeofownership'])->name('admin.transactionChangeofownership');
-        Route::get('/view/transactionChangeofownership/{id}', [AdminDashboardController::class, 'viewtransactionChangeofownership'])->name('admin.viewtransactionChangeofownership');
+            Route::get('/other-permit', [AdminTransactionController::class, 'transactionOtherPermit'])->name('admin.transactions.otherPermit');
+            Route::get('/other-permit/{id}', [AdminTransactionController::class, 'showTransactionOtherPermit'])->name('admin.transactions.showOtherPermit');
         
-        Route::get('/transactionNewDriverlicense', [AdminDashboardController::class, 'transactionNewDriverlicense'])->name('admin.transactionNewDriverlicense');
-        Route::get('/view/transactionNewDriverlicense/{id}', [AdminDashboardController::class, 'viewtransactionNewDriverlicense'])->name('admin.viewtransactionNewDriverlicense');
-        
-        Route::get('/transactionNewDriverlicense', [AdminDashboardController::class, 'transactionNewDriverlicense'])->name('admin.transactionNewDriverlicense');
-        Route::get('/view/transactionNewDriverlicense/{id}', [AdminDashboardController::class, 'viewtransactionNewDriverlicense'])->name('admin.viewtransactionNewDriverlicense');
-        
-        Route::get('/transactionDriverlicenseRenewal', [AdminDashboardController::class, 'transactionDriverlicenseRenewal'])->name('admin.transactionDriverlicenseRenewal');
-        Route::get('/view/transactionDriverlicenseRenewal/{id}', [AdminDashboardController::class, 'viewtransactionDriverlicenseRenewal'])->name('admin.viewtransactionDriverlicenseRenewal');
-        
-        Route::get('/transactionInternationalDriverlicense', [AdminDashboardController::class, 'transactionInternationalDriverlicense'])->name('admin.transactionInternationalDriverlicense');
-        Route::get('/view/transactionInternationalDriverlicense/{id}', [AdminDashboardController::class, 'viewtransactionInternationalDriverlicense'])->name('admin.viewtransactionInternationalDriverlicense');
-        
-        Route::get('/transactionDealerplateNumber', [AdminDashboardController::class, 'transactionDealerplateNumber'])->name('admin.transactionDealerplateNumber');
-        Route::get('/view/transactionDealerplateNumber/{id}', [AdminDashboardController::class, 'viewtransactionDealerplateNumber'])->name('admin.viewtransactionDealerplateNumber');
-        
-        Route::get('/transactionOtherPermit', [AdminDashboardController::class, 'transactionOtherPermit'])->name('admin.transactionOtherPermit');
-        Route::get('/view/transactionOtherPermit/{id}', [AdminDashboardController::class, 'viewtransactionOtherPermit'])->name('admin.viewtransactionOtherPermit');      
+        });
 
         Route::get('/',[AdminDashboardController::class, 'index'])->name('admin.index');
-        Route::get('/settings',[AdminDashboardController::class, 'settings'])->name('admin.settings');
-        Route::post('/settings',[AdminDashboardController::class, 'postSettings'])->name('admin.postSettings');
-        Route::get('/contactmessage',[AdminDashboardController::class, 'contactMessage'])->name('admin.contactMessage');
-        Route::get('/viewcontactmessage/{id}',[AdminDashboardController::class, 'viewcontactMessage'])->name('admin.viewcontactMessage');
+        
+        Route::prefix('settings')->group(function () {
+            Route::get('/', [AdminDashboardController::class, 'settings'])
+                ->name('admin.settings.index');
+            
+            Route::post('/', [AdminDashboardController::class, 'postSettings'])
+                ->name('admin.settings.update');
+        });
+        
+        Route::prefix('contact-messages')->group(function () {
+            Route::get('/', [AdminDashboardController::class, 'contactMessage'])
+                ->name('admin.contactMessages.index');
+            
+            Route::get('/{id}', [AdminDashboardController::class, 'showContactMessage'])
+                ->name('admin.contactMessages.show');
+        });
         //process/history 
         Route::get('/view/process/history/{id}', [AdminController::class, 'viewprocesshistory'])->name('admin.viewprocesshistory');
         Route::put('/update/process/history/{id}', [AdminController::class, 'updateProcessHistoryStatus'])->name('admin.update-processhistory-status');

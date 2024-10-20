@@ -12,7 +12,7 @@ class AddVehicleRegistration extends Model
     
     protected $fillable = [
         'user_id',
-        'userType',
+        'userType', 
         'user_email',
         'ownerfullname',
         'owneremail',

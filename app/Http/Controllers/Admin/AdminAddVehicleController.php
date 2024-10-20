@@ -97,8 +97,9 @@ class AdminAddVehicleController extends Controller
         } else{
             $moiddocument = null;
         }
-        //    $admin = auth('admin')->user(); 
-        $admin = Auth::user();
+      
+        $admin = auth('admin')->user(); 
+        // dd($admin);
         $ownerdetails = User::where('email', $request->owneremail)->get()->first();
         $ownerID = $ownerdetails->id;
         
@@ -163,8 +164,8 @@ class AdminAddVehicleController extends Controller
             'custompapers.required' => 'The Custom Papers is required',
             'meansofid.required' => 'The Means of ID is required',
         ]);
-        // $admin = auth('admin')->user();
-        $admin = Auth::user();
+        $admin = auth('admin')->user();
+       
         
         if($request->hasFile('meansofid')){
             $image = $request->file('meansofid');
@@ -265,7 +266,7 @@ class AdminAddVehicleController extends Controller
             }else{
                 $meansofid = null;
             }
-            $admin = Auth::user();
+            $admin = auth('admin')->user(); 
             $ownerdetails = User::where('email', $request->owneremail)->get()->first();
             $ownerID = $ownerdetails->id;
        
@@ -300,7 +301,7 @@ class AdminAddVehicleController extends Controller
             $vehicleOwnership->statecarriagepermitexpiry = $request->statecarriagepermitexpiry;
             $vehicleOwnership->midyearpermit = $request->midyearpermit;
             $vehicleOwnership->localgovernmentpermitexpiry = $request->localgovernmentpermitexpiry;
-
+ 
             $vehicleOwnership->vehiclelicensepapers = 'vehicleOwnership/'.$vehiclelicensepapers;
             $vehicleOwnership->proofofownership = 'vehicleOwnership/'.$proofofownership;
             $vehicleOwnership->agreement = 'vehicleOwnership/'.$agreement;

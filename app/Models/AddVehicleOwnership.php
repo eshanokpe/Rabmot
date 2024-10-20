@@ -24,7 +24,7 @@ class AddVehicleOwnership extends Model
         'enginenumber',
         'vehiclecolor',
         'vehiclepapername',
-        'vehicledocumentname',
+        'vehicledocumentname', 
         'registeredaddressofvehicle',
         'ownerfullname',
         'ownersNIN',

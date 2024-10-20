@@ -152,15 +152,20 @@
                                     </div>
 
                                     <div class="mb-3 col-3">
-
-                                        <label class="form-label">Name On Document</label>
-                                        <div style="font-weight:bold">{{ $items->vehiclelicense }}</div>
-                                        <input type="text" name="vehiclelicense" class="form-control" autocomplete="off"
-                                            value="{{ $items->vehiclelicense }}" />
-
+                                        <label class="form-label">Vehicle Name</label>
+                                        <div style="font-weight:bold">{{ $items->vehiclename }}</div> 
+                                        <input type="text" name="vehiclename" class="form-control" autocomplete="off"
+                                            value="{{ $items->vehiclename }}" />
                                     </div>
 
                                     <div class="mb-3 col-3">
+                                        <label class="form-label">Vehicle Document name</label>
+                                        <div style="font-weight:bold">{{ $items->vehicledocumentname }}</div> 
+                                        <input type="text" name="vehicledocumentname" class="form-control" autocomplete="off"
+                                            value="{{ $items->vehicledocumentname }}" />
+                                    </div>
+
+                                    {{-- <div class="mb-3 col-3">
                                         <label class="form-label">Document Name Type</label>
                                         <div style="font-weight:bold">{{ $items->vehicledocumentname }}</div>
                                         <select name="vehicledocumentname" id="inputState" class="form-select">
@@ -170,7 +175,7 @@
                                             <option value="Individual & Company Name">Individual & Company Name</option>
                                             <option value="Company Name Only"> Company Name Only </option>
                                         </select>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="mb-3 col-3">
                                         <label class="form-label">Owner's Number</label>
@@ -273,7 +278,7 @@
                                         @php
                                             $date7 = \Carbon\Carbon::parse($items->localgovernmentpermitexpiry);
                                         @endphp
-                                        <div style="font-weight:bold">
+                                        <div style="font-weight:bold"> 
                                             {{ $date7->format('F j, Y') }}</div>
                                         <input type="date" name="localgovernmentpermitexpiry" class="form-control"
                                             autocomplete="off"

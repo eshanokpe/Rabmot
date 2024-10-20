@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class VehiclePaperRenewal extends Model
 {
     use HasFactory;
-    protected $fillable =[
+    protected $fillable =[ 
         'user_id', 
         'user_email',
         'ownerEmail',

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\ProcessHistory;
 use App\Models\User;
+use App\Models\FAQs;
+use App\Models\ContactMessage;
 use App\Models\Agent;
 use App\Models\AddVehicleRenewal;
 use App\Models\WalletPayment;
@@ -165,4 +167,97 @@ class AdminDashboardController extends Controller
       $item->save();
       return redirect()->back()->with('success', 'Agent account updated successfully');
    }
+
+   public function contactMessage()
+   {
+      $contactMsgs = ContactMessage::latest()->get();
+      return view('admin.pages.contactMessage.index', compact('contactMsgs'));
+   }
+   
+   public function showContactMessage($id)
+   {
+      $items = ContactMessage::find(decrypt($id));
+      return view('admin.pages.contactMessage.show', compact('items'));
+   }
+
+   public function showFAQ(){
+      $data = FAQs::latest()->get();
+      return view('admin.pages.faqs.index', compact('data'));
+   }
+
+   public function addFaqQuestion(){
+      return view('admin.pages.faqs.add');
+   }
+
+   public function addFaqQuestionPost(Request $request){
+      $validator = Validator::make($request->all(), [
+         'question' => 'required',
+         'answer' => 'required',
+     ]);
+    
+     if ($validator->fails()) {
+         return redirect()
+             ->back()
+             ->withInput()
+             ->withErrors($validator);
+     }
+ 
+     try {
+         // Create a new Agent instance
+         $faqData = $request->only(['question', 'answer']);
+         
+         FAQs::create($faqData);
+         return redirect()->back()->with('success', 'Created Successfully.');
+         
+     } catch (\Exception $e) {
+         return redirect()->back()->with('error', 'Add Details failed');
+     }
+   }
+
+   public function editFaqQuestion($id){
+      $data = FAQs::find(decrypt($id));
+      return view('admin.pages.faqs.edit', compact('data'));
+   }
+
+   public function updateFaqQuestion(Request $request, $id){
+      $item = FAQs::find($id);
+  
+     
+      $item->question = $request->input('question');
+      $item->answer = $request->input('answer');
+
+      $item->save();
+      return redirect()->back()->with('success', 'FAQs updated successfully');
+   }
+
+   public function settings(){  
+      return view('admin.pages.settings.index');
+   }
+
+   public function postSettings(Request $request) 
+   {
+     
+      $validator = Validator::make($request->all(), [
+         'oldpassword' => 'required|string',
+         'password' => 'required|string|confirmed',
+     ]);
+      if ($validator->fails()) {
+         return redirect()
+             ->back()
+             ->withInput()
+             ->withErrors($validator);
+     }
+
+      $user = auth('admin')->user();
+      if (!Hash::check($request->oldpassword, $user->password)) {
+         throw ValidationException::withMessages(['oldpassword' => 'The provided old password is incorrect.']);
+      }
+
+      $user->update([
+         'password' => Hash::make($request->password),
+      ]);
+
+      return redirect()->back()->with('success', 'Password changed successfully!');
+   }
+
 }

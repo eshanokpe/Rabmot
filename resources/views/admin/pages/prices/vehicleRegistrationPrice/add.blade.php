@@ -12,9 +12,9 @@
                         <h2 class="page-title">
                             Master Admin
                         </h2>
-                    </div>
+                    </div> 
                     <div class="text-end col-6">
-                        <a href="{{ route("admin.vehicleChangeofOwnershipPrice.index") }}" class="btn btn-primary">
+                        <a href="{{ route("admin.vehicleRegistrationPrice.index") }}" class="btn btn-primary">
                             Back-to Vehicle Registration Price
                         </a> 
                     </div>

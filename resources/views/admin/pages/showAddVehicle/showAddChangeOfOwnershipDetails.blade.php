@@ -43,6 +43,11 @@
                                 <h3 class="card-title">Change of owernship</h3>
                                 
                             </div>
+                            @if(session('success'))
+                                <div class="alert alert-success" id="success-alert">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             @if(session('error'))
                                     <div class="alert alert-danger">
                                         {{ session('error') }}
@@ -51,141 +56,140 @@
 
                             <div class="col-12 mt-2 ps-2">
 
-                                <fieldset class="form-fieldset">
-
+                                <form method="POST"
+                                    action="{{ route('admin.vehicle.changeOfOwnership.update', $items->id) }}"
+                                    class="form-fieldset">
+                                    @csrf
+                                    @method('PUT')
                                     <div class="row">
                                         
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label required">User Email</label>
-
+                                            <div style="font-weight:bold">{{ $items->user_email }}</div>
                                             <input type="text" class="form-control" autocomplete="off" value="{{ $items->user_email}}" disabled/>
-
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label required">Category</label>
-
-                                            <input type="text" class="form-control"  autocomplete="off" value="{{ $items->vehicleTypeInfo ? $items->vehicleTypeInfo->name : 'N/A'}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->vehicleTypeInfo->name }}</div>
+                                            <select required name="category" id="inputState" class="form-select">
+                                                <option selected="selected" value="{{ $items->vehicleTypeInfo->id }}">
+                                                    {{ $items->vehicleTypeInfo->name }}</option>
+                                                @foreach($vehicleList as $vehicleList)
+                                                    <option value="{{ $vehicleList->id }}"> {{ $vehicleList->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label required">Vehicle Make</label>
-
-                                            <input type="text" class="form-control"  autocomplete="off" value="{{ $items->vehiclemake}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->vehiclemake }}</div>
+                                            <input type="text" name="vehiclemake" class="form-control"  autocomplete="off" value="{{ $items->vehiclemake}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Vehicle Model</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehiclemodel}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->vehiclemodel }}</div>
+                                            <input type="text" name="vehiclemodel" class="form-control" autocomplete="off" value="{{ $items->vehiclemodel}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Year Of Make</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->yearofmake}}" disabled/>
-
+                                            @php
+                                                $date = \Carbon\Carbon::parse($items->yearofmake);
+                                            @endphp
+                                            <div style="font-weight:bold">{{ $date }}</div>
+                                            <input type="text" name="yearofmake" class="form-control" autocomplete="off" value="{{ $items->yearofmake}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Plate Number</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->platenumber}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->platenumber }}</div>
+                                            <input type="text" name="platenumber" class="form-control" autocomplete="off" value="{{ $items->platenumber}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Chasis Number</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->chassisnumber}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->chassisnumber }}</div>
+                                            <input type="text" name="chassisnumber" class="form-control" autocomplete="off" value="{{ $items->chassisnumber}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Engine Number</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->enginenumber}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->enginenumber }}</div>
+                                            <input type="text" name="enginenumber" class="form-control" autocomplete="off" value="{{ $items->enginenumber}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Vehicle Color</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehiclecolor}}" disabled />
-
+                                            <div style="font-weight:bold">{{ $items->vehiclecolor }}</div>
+                                            <input type="text" name="vehiclecolor" class="form-control" autocomplete="off" value="{{ $items->vehiclecolor}}"  />
                                         </div>
 
                                         <div class="mb-3 col-3">
-
-                                            <label class="form-label">Vehicle License</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehiclelicense}}" disabled/>
+                                            <label class="form-label">Vehicle Paper name</label>
+                                            <div style="font-weight:bold">{{ $items->vehiclepapername }}</div>
+                                            <input type="text" name="vehiclepapername" class="form-control" autocomplete="off" value="{{ $items->vehiclepapername}}" />
 
                                         </div>
 
-                                        <div class="mb-3 col-3">
-
+                                        {{-- <div class="mb-3 col-3">
                                             <label class="form-label">Document Name Type</label>
+                                            <div style="font-weight:bold">{{ $items->vehicledocumentname }}</div>
+                                            <input type="text" name="vehicledocumentname" class="form-control" autocomplete="off" value="{{ $items->vehicledocumentname}}" />
 
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehicledocumentname}}" disabled/>
-
-                                        </div>
+                                        </div> --}}
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Vehicle Document Name</label>
-
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehicledocumentname}}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $items->vehicledocumentname }}</div>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehicledocumentname}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Register Address Of Vehicle</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->registeredaddressofvehicle}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->registeredaddressofvehicle }}</div>
+                                            <input type="text" name="registeredaddressofvehicle" class="form-control" autocomplete="off" value="{{ $items->registeredaddressofvehicle}}" />
 
                                         </div>
 
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Owner Fullname</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->ownerfullname}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->ownerfullname }}</div>
+                                            <input type="text" name="ownerfullname" class="form-control" autocomplete="off" value="{{ $items->ownerfullname}}" />
                                         </div>
                                         
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Owner NIN</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->ownersNIN}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->ownerfullname }}</div>
+                                            <input type="text" name="ownersNIN" class="form-control" autocomplete="off" value="{{ $items->ownersNIN}}" />
                                         </div>
                                         
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Address</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->address}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->ownerfullname }}</div>
+                                            <input type="text" name="address" class="form-control" autocomplete="off" value="{{ $items->address}}" />
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Phone number</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->phonenumber}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->phonenumber }}</div>
+                                            <input type="number" name="phonenumber" class="form-control" autocomplete="off" value="{{ $items->phonenumber}}" />
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Email Address</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->emailaddress}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->emailaddress }}</div>
+                                            <input type="text" name="emailaddress" class="form-control" autocomplete="off" value="{{ $items->emailaddress}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Gender</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->gender}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->gender }}</div>
+                                            <input type="text" name="gender" class="form-control" autocomplete="off" value="{{ $items->gender}}" />
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Occupation</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->occupation}}" disabled/>
+                                            <div style="font-weight:bold">{{ $items->occupation }}</div>
+                                            <input type="text" name="occupation" class="form-control" autocomplete="off" value="{{ $items->occupation}}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
@@ -194,27 +198,29 @@
                                             @php
                                                 $date = \Carbon\Carbon::parse($items->vehiclelicenseexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y')  }}</div>
+                                            <input type="date" name="vehiclelicenseexpiry" class="form-control" autocomplete="off"  value="{{ $date->format('Y-m-d') }}" />
 
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">Vehicle Insurance Expiry Date</label>
                                             @php
-                                                $date = \Carbon\Carbon::parse($items->vehiclelicenseexpiry);
+                                                $date = \Carbon\Carbon::parse($items->insuranceexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
-
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y') }}</div>
+                                            <input type="date" class="form-control" autocomplete="off" value="{{ $date->format('Y-m-d') }}" />
                                         </div>
+                                        
 
                                         <div class="mb-3 col-3">
 
                                             <label class="form-label">Road Worthiness Expiry Date</label>
                                             @php
-                                                $date = \Carbon\Carbon::parse($items->roadworthinessexpiry);
+                                                $dateW = \Carbon\Carbon::parse($items->roadworthinessexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
+                                            <div style="font-weight:bold">{{ $dateW->format('F j, Y')  }}</div>
+                                            <input type="date" class="form-control" autocomplete="off"  value="{{ $dateW->format('Y-m-d') }}" />
 
                                         </div>
 
@@ -224,20 +230,18 @@
                                             @php
                                                 $date = \Carbon\Carbon::parse($items->hackneypermitexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y')  }}</div>
+                                            <input type="date" class="form-control" autocomplete="off"  value="{{ $date->format('Y-m-d') }}" />
 
                                         </div>
 
                                         <div class="mb-3 col-3">
-
                                             <label class="form-label">State Carriage Permit Expiry Date</label>
-
                                             @php
                                                 $date = \Carbon\Carbon::parse($items->statecarriagepermitexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
-
-
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y')  }}</div>
+                                            <input type="date" class="form-control" autocomplete="off"  value="{{ $date->format('Y-m-d') }}" />
                                         </div>
 
                                         <div class="mb-3 col-3">
@@ -246,7 +250,8 @@
                                             @php
                                                 $date = \Carbon\Carbon::parse($items->midyearpermit);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y')  }}</div>
+                                            <input type="date" class="form-control" autocomplete="off"  value="{{ $date->format('Y-m-d') }}" />
 
                                         </div>
 
@@ -256,7 +261,8 @@
                                             @php
                                                 $date = \Carbon\Carbon::parse($items->localgovernmentpermitexpiry);
                                             @endphp
-                                            <input type="text" class="form-control" autocomplete="off"  value="{{ $date->format('F j, Y') }}" disabled/>
+                                            <div style="font-weight:bold">{{ $date->format('F j, Y')  }}</div>
+                                            <input type="date" class="form-control" autocomplete="off"  value="{{ $date->format('Y-m-d') }}" />
 
                                         </div>
                                     </div>
@@ -298,20 +304,16 @@
                                             <div class="input-group">
                                                 <a href="{{route('changeOfOwnership.means.of.id.download', ['id' => encrypt($items->id) ])}}" class="btn btn-primary">Download</a>
                                             </div>
-
                                         </div>
-
-
-                                        <div class="mb-3 col-6">
-
-                                            <a href="{{route('admin.changeOfOwnership')}}"><button  class="btn btn-primary ms-auto">Back</button></a>    
-
-                                        </div>
-
                                     </div>
-                                    
+                                    <div class="mb-3 ">
+                                        <input type="submit" class="btn btn-primary ms-auto" value="Update" />
+                                    </div>
+                                </form>
 
-                                </fieldset>
+                                <div class="mb-3 col-6">
+                                    <a href="{{route('admin.changeOfOwnership')}}"><button  class="btn btn-primary ms-auto">Back</button></a>    
+                                </div>
 
                             </div>
 
@@ -325,32 +327,7 @@
 
         </div>
 
-        <footer class="footer footer-transparent d-print-none">
-
-            <div class="container-xl">
-
-                <div class="row text-center align-items-center flex-row-reverse">
-
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-
-                        <ul class="list-inline list-inline-dots mb-0">
-
-                            <li class="list-inline-item">
-
-                                Rabmot © 2023 | Developed By : ODD.Creatives
-
-                            </li>
-
-                        </ul>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </footer>
-
+      
     </div>
 
 </div>

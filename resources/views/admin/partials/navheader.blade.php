@@ -81,7 +81,7 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a href="{{route('admin.settings')}}" class="dropdown-item">Settings</a>
+                    <a href="{{route('admin.settings.index')}}" class="dropdown-item">Settings</a>
 
                     <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item">
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">

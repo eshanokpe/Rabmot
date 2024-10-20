@@ -11,7 +11,7 @@
                         </div>
                         <h2 class="page-title">
                             Master Admin
-                        </h2>
+                        </h2> 
                     </div>
                 </div>
             </div>
