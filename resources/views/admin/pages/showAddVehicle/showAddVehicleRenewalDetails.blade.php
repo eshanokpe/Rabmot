@@ -152,7 +152,7 @@
                                     </div>
 
                                     <div class="mb-3 col-3">
-                                        <label class="form-label">Vehicle Name</label>
+                                        <label class="form-label"> Name on Document</label>
                                         <div style="font-weight:bold">{{ $items->vehiclename }}</div> 
                                         <input type="text" name="vehiclename" class="form-control" autocomplete="off"
                                             value="{{ $items->vehiclename }}" />

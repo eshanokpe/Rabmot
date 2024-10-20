@@ -15,13 +15,10 @@ class AgentDashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::guard('agent')->user();
+        dd($user);
         $userId = $user->id;
         $userEmail = $user->email;
-
-        if ($user->role !== 'agent') {
-            return redirect()->route('home')->with('error', 'Unauthorized access.');
-        }
 
         $userDetails = User::where('id', $user->id)->first();
         // $userDetails = User::where('id', $user->id)->with('agentDetails')->first();

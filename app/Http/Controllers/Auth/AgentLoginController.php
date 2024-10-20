@@ -16,26 +16,28 @@ use App\Models\PasswordModel;
 use Mail;
 use Carbon\Carbon;
 use App\Mail\AgentEmailForgetPassword;
-
+ 
 
 class AgentLoginController extends Controller
 {
     public function showLoginForm()
-    {
-        return view('auth.agent.agent-login'); // Create a view for the agent login form
+    { 
+        return view('auth.agent.agent-login'); 
     }
 
     public function login(Request $request)
-    {
+    { 
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'agent'])) {
+        $credentials = $request->only('email', 'password');
+        if (Auth::guard('agent')->attempt($credentials)) {
+            // $user = Auth::guard('agent')->user();
+            // return dd($user);
             return redirect()->route('agent.dashboard');
-        }
-
+        } 
+        
         return back()->withErrors(['error' => 'Invalid Agent Credentials']);
     }
 

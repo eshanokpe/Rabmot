@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Model\Admin;
-
+ 
 class AdminLoginController extends Controller
-{ 
+{  
     public function showLoginForm()
     {
-        return view('auth.admin.admin-login'); // Create a view for the admin login form
+        return view('auth.admin.admin-login'); 
     } 
 
     public function login(Request $request)

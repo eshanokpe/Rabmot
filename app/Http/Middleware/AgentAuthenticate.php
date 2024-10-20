@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 use Closure;
 
 
-class AdminAuthenticate
+class AgentAuthenticate
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::guard('admin')->check()) {
+        if (Auth::guard('agent')->check()) {
             return $next($request);
         }
 
-        return redirect()->route('admin.login');
+        return redirect()->route('agent.login');
     } 
 } 

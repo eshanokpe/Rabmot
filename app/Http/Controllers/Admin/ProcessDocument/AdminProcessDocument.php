@@ -208,8 +208,8 @@ class AdminProcessDocument extends Controller
       return view('admin.pages.processHistory.delivered.delivered', compact('items'));
    }
 
-   public function viewDeliveredPaper(){
-      $items = Processhistory::find($id);
+   public function viewDeliveredPaper($id){
+      $items = Processhistory::find(decrypt($id));
       return view('admin.pages.processHistory.delivered.viewDeliveredPaper', compact('items'));
    }
 

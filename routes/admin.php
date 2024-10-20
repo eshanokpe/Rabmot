@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\InternationalDriverLicensePriceController;
 
 
 
-
+ 
 Route::prefix('admin')->group(function () {
     Route::get('/login',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');  
     Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
@@ -29,7 +29,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
  
     Route::middleware('auth.admin')->group(function () {
-    
+        Route::get('/',[AdminDashboardController::class, 'index'])->name('admin.index');
+        
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         
         //Processe Type
@@ -72,12 +73,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/download/otherpermitpictureoftheVehicleLicense/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpictureoftheVehicleLicense'])->name('otherpermitpictureoftheVehicleLicense.download');
         Route::get('/download/otherpermitaffidavit/{id}', [AdminProcessTypeController::class, 'downloadotherpermitaffidavit'])->name('otherpermitaffidavit.download');
         Route::get('/download/otherpermitpolicereport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download');
-
-        
         Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status');
 
-        
-        
         //Getaddvehiclerenewal
         Route::get('/vehicle-renewals', [AdminAddedVehicleController::class, 'showAddVehicleRenewal'])->name('admin.vehicle.renewals');
         Route::get('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDetails'])->name('admin.vehicle.renewals.view');
@@ -172,7 +169,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/admin/driver-license-renewal/{id}/edit', [DriverLicenseRenewalController::class, 'edit'])->name('admin.driverLicenseRenewal.edit');
         Route::put('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'update'])->name('admin.driverLicenseRenewal.update');
         Route::get('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'destroy'])->name('admin.driverLicenseRenewal.destroy');
-
 
         //IntDriverlicense
        // International Driver License price management routes for admin
@@ -269,7 +265,6 @@ Route::prefix('admin')->group(function () {
         
         });
 
-        Route::get('/',[AdminDashboardController::class, 'index'])->name('admin.index');
         
         Route::prefix('settings')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'settings'])

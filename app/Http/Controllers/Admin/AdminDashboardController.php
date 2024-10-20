@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
+use Mail;
+use Illuminate\Support\Facades\Hash;
 use App\Models\ProcessHistory;
 use App\Models\User;
 use App\Models\FAQs;
@@ -21,6 +23,7 @@ use App\Models\InternationalDriverLicense;
 use App\Models\DealerPlateNumber;
 use App\Models\OtherPermit;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\AgentDetailMessage;
  
 class AdminDashboardController extends Controller
 {

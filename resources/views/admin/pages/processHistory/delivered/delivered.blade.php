@@ -77,7 +77,7 @@
                                             <th>Status</th>
 
                                            <th>Date</th>
-                                            <th>Update</th>
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -113,11 +113,11 @@
                                                     @endphp
                                                     {{ $date->format('F j, Y') }}
                                                 </td>
-                                                <td class="text-end">
+                                                {{-- <td class="text-end">
                                                     <span class="dropdown">
                                                         <a href="{{ route('admin.viewdeliveredPaper', encrypt( $item->id) ) }}" class="btn align-text-top">Actions</a>
                                                     </span>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @empty
                                             <p class="text-danger">No Data found</p>

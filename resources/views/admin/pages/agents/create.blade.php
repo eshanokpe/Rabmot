@@ -79,7 +79,7 @@
                                     <div class="row">
                                         <div class="mb-3 col-6">
                                             <label class="form-label required">Username</label>
-                                            <input type="text" name="username" class="form-control" autocomplete="off" required/>
+                                            <input type="text" name="username" class="form-control" autocomplete="off" autofocus="off"  required/>
                                         </div>
                                          <div class="mb-3 col-6">
                                             <label class="form-label required">Full Name</label>
