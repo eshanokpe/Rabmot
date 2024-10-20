@@ -237,10 +237,11 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions');
         Route::get('/transactions/{id}', [AdminTransactionController::class, 'viewTransaction'])->name('admin.transactions.show');
-
+ 
         Route::prefix('transaction')->group(function () {
-            Route::get('/agent', [AdminTransactionController::class, 'transactionAgent'])->name('admin.transactions.agent');
-            Route::get('/agent/{id}', [AdminTransactionController::class, 'viewTransactionAgent'])->name('admin.transactions.viewAgent');
+            Route::get('/agent', [AdminTransactionController::class, 'transactionAgentWithdraw'])->name('admin.transactions.agent');
+            Route::get('/agent/{id}', [AdminTransactionController::class, 'editTransactionAgentWithdraw'])->name('admin.transactions.editAgentWithdraw');
+            Route::put('/agent/{id}', [AdminTransactionController::class, 'updateTransactionAgentWithdraw'])->name('admin.transactions.updateAgentWithdraw');
     
             Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
             Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');

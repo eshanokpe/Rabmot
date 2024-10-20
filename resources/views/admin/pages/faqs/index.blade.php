@@ -99,7 +99,12 @@
                                             </td>
                                             <td>{{$data->question}}</td>
                                             <td>{{$data->answer }}</td>
-                                            <td>{{$data->created_at}} </td>
+                                            <td>
+                                                @php							
+                                                    $date = \Carbon\Carbon::parse($data->created_at);							
+                                                @endphp							
+                                                {{ $date->format('F j, Y H:i:s A') }}							
+                                            </td>
                                             
                                         </tr>
                                     @empty

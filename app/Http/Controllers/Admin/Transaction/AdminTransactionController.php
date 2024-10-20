@@ -121,5 +121,30 @@ class AdminTransactionController extends Controller
         $items = PaymentModel::find(decrypt($id));
         return view('admin.pages.transactions.otherPermit.show', compact('items'));
     }
+
+    public function transactionAgentWithdraw(){
+        $items = Wallet::latest()->get();
+        $totalAmount = Wallet::latest()->sum('amount');
+        
+        return view('admin.pages.transactions.agentWithdraw.index', compact( 'items','totalAmount')); 
+    }
+     
+    public function editTransactionAgentWithdraw($id){
+        $items = Wallet::find(decrypt($id));
+        return view('admin.pages.transactions.agentWithdraw.edit', compact('items'));
+    }
+  
+    public function updateTransactionAgentWithdraw(Request $request, $id){
+        $request->validate([
+           'status' => 'required|in:0,1,2',
+        ]);
+  
+        $user = Wallet::find($id);
+     
+        $user->status = $request->input('status');
+        $user->save();
+  
+        return redirect()->back()->with('success', 'Status updated successfully');
+     }
 }
 

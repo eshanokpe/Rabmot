@@ -56,7 +56,12 @@
                                                         <a href="{{ route('admin.contactMessages.show', encrypt($contactMsg->id) ) }}" class="btn align-text-top">View</a>
                                                     </span>
                                                 </td>
-                                                <td>{{$contactMsg->created_at}} </td>
+                                                <td>
+                                                    @php							
+                                                        $date = \Carbon\Carbon::parse($contactMsg->created_at);							
+                                                    @endphp							
+                                                    {{ $date->format('F j, Y H:i:s A') }}							
+                                                </td>
                                                 <td>{{$contactMsg->fullname}}</td>
                                                 <td>{{$contactMsg->email }}</td>
                                                 <td>{{$contactMsg->phone}} </td>
