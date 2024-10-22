@@ -162,19 +162,19 @@
                                         
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Owner NIN</label>
-                                            <div style="font-weight:bold">{{ $items->ownerfullname }}</div>
+                                            <div style="font-weight:bold">{{ $items->ownersNIN }}</div>
                                             <input type="text" name="ownersNIN" class="form-control" autocomplete="off" value="{{ $items->ownersNIN}}" />
                                         </div>
                                         
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Address</label>
-                                            <div style="font-weight:bold">{{ $items->ownerfullname }}</div>
+                                            <div style="font-weight:bold">{{ $items->address }}</div>
                                             <input type="text" name="address" class="form-control" autocomplete="off" value="{{ $items->address}}" />
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Phone number</label>
                                             <div style="font-weight:bold">{{ $items->phonenumber }}</div>
-                                            <input type="number" name="phonenumber" class="form-control" autocomplete="off" value="{{ $items->phonenumber}}" />
+                                            <input type="text" name="phonenumber" class="form-control" autocomplete="off" value="{{ $items->phonenumber}}" />
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Email Address</label>

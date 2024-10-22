@@ -11,7 +11,7 @@
                     </div>
                     <h2 class="page-title">
                         Change of Ownership
-                    </h2>
+                    </h2> 
                 </div>
             </div>
         </div>
@@ -57,6 +57,7 @@
                                         <th>Hackneypermit Expiry</th>
                                         <th>State carriage permit Expiry</th>
                                         <th>Mid year Permit</th>
+                                        <th>Local Government Permit Expiry</th>
                                         <th>Created</th>
                                     </tr>
                                 </thead>
@@ -137,7 +138,7 @@
                                             @endphp
                                             {{ $date->format('F j, Y') }}
                                         </td>
-                                        <td>
+                                        <td> 
                                             @php
                                                 $date = \Carbon\Carbon::parse($item->created_at);
                                             @endphp

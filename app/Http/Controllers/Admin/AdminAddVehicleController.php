@@ -218,7 +218,7 @@ class AdminAddVehicleController extends Controller
     public function addVehicleChangeOfOwnership(){
         $vehicleList = VehicleType::all();
         $userEmail = User::all();
-        return view('admin.pages.addvehicle.addChangeofownership', compact('vehicleList','userEmail'));
+        return view('admin.pages.addVehicle.addChangeofownership', compact('vehicleList','userEmail'));
     }
 
     public function storeVehicleChangeOfOwnership(Request $request){

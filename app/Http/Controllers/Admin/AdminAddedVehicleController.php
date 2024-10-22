@@ -273,7 +273,7 @@ class AdminAddedVehicleController extends Controller
             'enginenumber' => 'nullable|string|max:255',
             'vehiclecolor' => 'nullable|string|max:255',
             'vehiclepapername' => 'nullable|string|max:255',
-            'vehiclelicenseexpiry' => 'nullable|date',
+            'vehiclelicenseexpiry' => 'nullable|date', 
             'insuranceexpiry' => 'nullable|date',
             'roadworthinessexpiry' => 'nullable|date',
             'hackneypermitexpiry' => 'nullable|date',
