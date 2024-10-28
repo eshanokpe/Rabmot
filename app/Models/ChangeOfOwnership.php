@@ -12,6 +12,7 @@ class ChangeOfOwnership extends Model
     protected $fillable = [
         'user_id',
         'user_email',
+        'owner_id',
         'userType',
         'process_id',
         'process_type',
@@ -48,5 +49,10 @@ class ChangeOfOwnership extends Model
     public function addVehicleOwnership()
     {
         return $this->belongsTo(AddVehicleOwnership::class, 'user_id', 'user_id');
+    }
+
+    public function ownerInfo()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 }

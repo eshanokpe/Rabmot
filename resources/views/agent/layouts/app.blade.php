@@ -10,9 +10,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<meta name="csrf-token" content="{{ csrf_token() }}" />
 		<title>Rabmot - Vehicle License Agency</title>
+		@viteReactRefresh
+        @vite('resources/js/app.jsx')
 		<!--favicon-->
 		<link rel="icon" href="{{ asset('/assets/img/fav.png')}}" type="image/png" />
-		<!-- Vector CSS -->
+		<!-- Vector CSS --> 
 		<link href="{{ asset('/assets/dashboard/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet" />
 		<!--plugins-->
 		<link href="{{ asset('/assets/dashboard/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />

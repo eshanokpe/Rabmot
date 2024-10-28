@@ -122,10 +122,10 @@
 												<td>{{ $serial++}}</td>
 												<td>{{$vehicle->ownerfullname}}</td>
 												<td>
-													@if( $vehicle->categoryInfo == null )
+													@if( $vehicle->vehicleTypeInfo == null )
 
 													@else
-													{{ $vehicle->categoryInfo->name }}
+													{{ $vehicle->vehicleTypeInfo->name }}
 													@endif
 												</td>
 												<td>{{$vehicle->vehiclemodel}}</td>

@@ -66,7 +66,7 @@ class HomeController extends Controller
         $otherPermits = OtherPermitPrice::all();
           
         return view('user.pages.pricing', compact('vehiclelist', 'vehiclecategories','states','otherPermits'));
-      }
+    }
 
     public function processHistory()
     {

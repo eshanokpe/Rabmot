@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class InvoiceMail extends Mailable
-{
+{ 
     use Queueable, SerializesModels;
  
     // Properties to hold the data passed to the Mailable
@@ -20,6 +20,7 @@ class InvoiceMail extends Mailable
     public $totalAmount;
     public $invoiceNumber;
     public $saleDate;
+    public $newdriverlicense
 
     /**
      * Create a new message instance.
@@ -46,7 +47,8 @@ class InvoiceMail extends Mailable
         $cartItems,
         $totalAmount,
         $invoiceNumber,
-        $saleDate
+        $saleDate,
+        $newdriverlicense
     ) {
         $this->orderNo = $orderNo;
         $this->fullname = $fullname;
@@ -57,6 +59,7 @@ class InvoiceMail extends Mailable
         $this->totalAmount = $totalAmount;
         $this->invoiceNumber = $invoiceNumber;
         $this->saleDate = $saleDate;
+        $this->newdriverlicense = $$newdriverlicense;
     }
 
     /**
@@ -78,7 +81,8 @@ class InvoiceMail extends Mailable
                         'cartItems' => $this->cartItems,
                         'totalAmount'=> $this->totalAmount,
                         'invoiceNumber'=> $this->invoiceNumber,
-                        'saleDate' => $this->saleDate
+                        'saleDate' => $this->saleDate,
+                        'newdriverlicense' => $this->newdriverlicense
                     ]);
         
     }

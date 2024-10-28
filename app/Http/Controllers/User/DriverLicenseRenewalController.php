@@ -109,7 +109,7 @@ class DriverLicenseRenewalController extends Controller
             Cart::add([
                 'id' => $users->id,
                 'name' => $users->email,
-                'price' => $users->totalamount,
+                'price' => $users->totalAmount,
                 'qty' => 1,
                 'attributes' => array(
                     'process_id' => $users->process_id,

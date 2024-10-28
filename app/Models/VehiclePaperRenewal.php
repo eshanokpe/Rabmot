@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class VehiclePaperRenewal extends Model
 {
     use HasFactory;
-    protected $fillable =[ 
+    protected $fillable =[  
         'user_id', 
         'user_email',
-        'ownerEmail',
+        'owner_id',
         'userType',
         'process_id',
         'process_type',  
@@ -31,5 +31,10 @@ class VehiclePaperRenewal extends Model
     public function categoryInfo()
     {
         return $this->belongsTo(VehicleType::class, 'vehicleCategory', 'id');
+    }
+
+    public function ownerInfo()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 }

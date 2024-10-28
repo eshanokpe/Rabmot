@@ -1,11 +1,5 @@
 <div class="sidebar-wrapper" data-simplebar="true">
-
-
-
     <div class="sidebar-header">
-
-
-
         <div class=""> 
             <img src="{{ asset('/assets/img/dashboard_logo.png')}} " class="img-fluid w-75 logo-text" alt="" />
         </div>

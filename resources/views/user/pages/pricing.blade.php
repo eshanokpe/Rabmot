@@ -4,7 +4,7 @@
     <style>
         /* hide the arrows beside the input type number forms */
         input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
+        input[type=number]::-webkit-outer-spin-button {  
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;

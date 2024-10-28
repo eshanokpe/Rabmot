@@ -14,7 +14,7 @@ use App\Services\AddVehicleRegistrationService;
 use App\Models\VehicleRegistrationType; 
 use App\Models\VehicleRegistrationPrice; 
 use App\Models\VehicleRegistration;
- 
+  
 
 class AddVehicleRegistrationController extends Controller
 {

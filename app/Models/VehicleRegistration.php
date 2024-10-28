@@ -12,6 +12,7 @@ class VehicleRegistration extends Model
     protected $fillable = [
         'user_id',
         'user_email',
+        'owner_id',
         'userType',
         'ownerEmail',
         'process_id',
@@ -37,5 +38,9 @@ class VehicleRegistration extends Model
     public function vehicleregistrationType()
     {
         return $this->belongsTo(VehicleRegistrationType::class, 'registrationType', 'id');
+    }
+    public function ownerInfo()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 }

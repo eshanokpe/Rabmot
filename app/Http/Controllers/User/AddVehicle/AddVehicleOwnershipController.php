@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User\AddVehicle;
 use Carbon\Carbon; 
-use Auth;
+use Auth; 
 use Cart;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

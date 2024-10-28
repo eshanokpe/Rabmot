@@ -38,7 +38,7 @@ class CheckoutController extends Controller
                 Order::create([
                     'user_id' => $id,
                     'user_email' => $email,
-                    'userType' => '',
+                    'userType' => 'user',
                     'order_number' => $orderNumber,
                     'process_id' => $items->model->process_id,
                     'product_name' => $items->model->process_type,

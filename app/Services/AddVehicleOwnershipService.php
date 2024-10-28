@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AddVehicleOwnershipService
 {
    
-    public function handleRegistration(Request $request)
+    public function handleRegistration(Request $request) 
     {
         $id = Auth::user()->id;
         $email = Auth::user()->email;
