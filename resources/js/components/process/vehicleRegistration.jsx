@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 
 export default function VehicleRegistration() {
-    
+     
     const url = window.location.origin; 
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
@@ -37,6 +37,7 @@ export default function VehicleRegistration() {
             axios.post(`${url}/home/vehicleRegistration-state-selection`, { 
                 stateId: selectedStateId 
             }).then(response => {
+                console.log('Success stateVehicleList:', response.data);
                 setStateVehicleList(response.data.stateVehicleList);
             }).catch(error => {
                 console.error('Error sending stateId:', error);
@@ -52,18 +53,17 @@ export default function VehicleRegistration() {
     useEffect(() => {
         setVehicleList([]);
         axios
-            .post(`${url}/home/vehicleRegistration-vehicleCategoryId-selection`, {
-                vehicleCategoryId,
-                stateId
-            })
-            .then(response => {
-                console.log('Success vehicleCategoryId:', response.data);
-                setVehicleList(response.data.vehicleList  || []);
-            })
-            .catch(error => {
-                console.error('Error sending vehicleCategoryId:', error);
-            });
-        
+        .post(`${url}/home/vehicleRegistration-vehicleCategoryId-selection`, {
+            vehicleCategoryId,
+            stateId
+        })
+        .then(response => {
+            console.log('Success vehicleCategoryId:', response.data.vehicleList);
+            setVehicleList(response.data.vehicleList);
+        })
+        .catch(error => {
+            console.error('Error sending vehicleCategoryId:', error);
+        });
     }, [vehicleCategoryId, stateId]);
 
     const handleAddVehicleChange = (event) => {
@@ -97,15 +97,16 @@ export default function VehicleRegistration() {
                 setLoading(false);
             });
     }, [url]);
-
+ 
     // Send vehicle registration cost and update state
     useEffect(() => {
         const sendVehicleRegCost = () => {
+            console.log('Successfully sent stateId:', stateId);
             console.log('Successfully sent VehicleResType:', vehicleResType);
             console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
             console.log('Successfully sent plateType:', plateType);
 
-            axios.post(`${url}/home/vehicleRegistration-addVehicleRegCost`, {
+            axios.post(`${url}/home/vehicleRegistrationAddVehicleRegCost`, {
                 stateId,
                 vehicleCategoryId,
                 addVehicleReg,
@@ -191,7 +192,7 @@ export default function VehicleRegistration() {
         })
         .then(response => {
             console.log('Successfully sent vehicleCategoryId:', response.data);
-            // setVehicleList(response.data.vehicleList);
+            setVehicleList(response.data.vehicleList);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
             },1100)
@@ -375,18 +376,15 @@ export default function VehicleRegistration() {
                                                             <label htmlFor="vehicleForm" className="form-label">Select the Option of your choice</label>
                                                             <select
                                                                 required
-                                                                value={addVehicleReg || ''}
-                                                                name="vehicleType"
-                                                                id="vehicleForm"
-                                                                className="form-select"
-                                                                onChange={handleAddVehicleChange}
+                                                                value={addVehicleReg || ''} name="vehicleType"
+                                                                id="vehicleForm" className="form-select" onChange={handleAddVehicleChange}
                                                             >
                                                                 <option disabled value="">-- Select Vehicle --</option>
                                                                 <option value="add-registration">+ Add Vehicle Registration</option>
                                                                 {vehicleList.map((vehicle) => (
-                                                                <option key={vehicle.category} value={vehicle.category}>
-                                                                    {vehicle.vehiclebrand} {vehicle.vehiclemodel}
-                                                                </option>
+                                                                    <option key={vehicle.category} value={vehicle.category}>
+                                                                        {vehicle.vehiclebrand} {vehicle.vehiclemodel}
+                                                                    </option>
                                                                 ))}
                                                             </select>
                                                             </div>

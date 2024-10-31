@@ -353,7 +353,7 @@ export default function NewDriverLicense() {
                                                     </div>
                                                     <div className="col-md-5 mb-2">
                                                         <label for="inputFirstName" class="form-label"> Email Address </label>
-                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Mother Maiden Name" class="form-control" id="motherMaidenName"/>
+                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Email Address" class="form-control" id="motherMaidenName"/>
                                                     </div>
                                                     <div className="col-md-1 m"></div>
                                                 </div>
@@ -425,10 +425,14 @@ export default function NewDriverLicense() {
                                                         <label htmlFor="vehicleForm" className="form-label">Blood group </label>
                                                         <select required value={bloodGroup || ''}  onChange={handleBloodGroup} name="addVehicleOwnership" id="addVehicleOwnership" className="form-select" >
                                                             <option disabled selected="selected" value="">Select Blood group</option>
-                                                            <option value="A">Blood Group A</option>
-                                                            <option value="B">Blood Group B</option>
-                                                            <option value="AB">Blood Group AB</option>
-                                                            <option value="O">Blood Group O</option>
+                                                            <option value="Blood Group A+"> Blood Group A+</option>
+                                                            <option value="Blood Group A-">Blood Group A-</option>
+                                                            <option value="Blood Group B+">Blood Group B+</option>
+                                                            <option value="Blood Group B-">Blood Group B-</option>
+                                                            <option value="Blood Group B-">Blood Group B-</option>
+                                                            <option value="Blood Group AB+">Blood Group AB+</option>
+                                                            <option value="Blood Group AB-">Blood Group AB-</option>
+                                                            <option value="Blood Group O+">Blood Group O+</option>
                                                         </select>
                                                     </div>
                                                     <div className="col-md-1"></div>

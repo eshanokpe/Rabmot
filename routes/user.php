@@ -46,9 +46,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/get-user-add-vehicles-registration', [AddVehicleRegistrationController::class, 'getUserAddVehiclesRegistration']);
         Route::post('/vehicleRegistration-state-selection', [AddVehicleRegistrationController::class, 'handleStateSelection']);
         Route::post('/vehicleRegistration-vehicleCategoryId-selection', [AddVehicleRegistrationController::class, 'handleVehicleCategoryIdSelection']);
-        Route::post('/vehicleRegistration-addVehicleRegCost', [AddVehicleRegistrationController::class, 'handleVehicleRegCost']);
+        Route::post('/vehicleRegistrationAddVehicleRegCost', [AddVehicleRegistrationController::class, 'handleVehicleRegCost']);
         Route::post('/post-vehicleRegistration', [AddVehicleRegistrationController::class, 'postNewVehicleRegistration']);
-        
+         
         Route::get('addvehicleownership', [AddVehicleOwnershipController::class, 'index'])->name('home.addVehicleOwnership');
         Route::get('changeofwnership', [AddVehicleOwnershipController::class, 'changeofOwnership'])->name('home.changeofOwnership');
         Route::post('/changeofownership-state-selection', [AddVehicleOwnershipController::class, 'handleStateSelection']);

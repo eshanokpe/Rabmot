@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\State;
+use App\Models\State; 
 use App\Models\VehicleType;
 use App\Models\VehicleRegistrationType;
 use App\Models\VehicleRenewalPrice;
@@ -152,288 +152,97 @@ class PriceController extends Controller
         ]);
     }
 
-    public function getChangeofOwnershipPriceee(Request $request){
-        $stateId = $request->input('stateId');
-        $vehicleTypeId = $request->input('vehicleTypeId');
-        $vehicleLicenseDate = $request->input('vehicleLicenseDate');
-        $plateNumber = $request->input('plateNumber');
-        $hacneyPermitDate = $request->input('hacneyPermitDate');
+   
 
-        $vehicleName = VehicleType::where('id', $vehicleTypeId )->first();
-        $vehicleName2 = VehicleType::where('id', $vehicleName->id )->first();
-        $changeofownershipPrice = ChangeofOwnershipPrice::where('state_id', $stateId)
-                                                        ->where('vehicle_type_id', $vehicleTypeId)
-                                                        ->get();
-        $vehicleCostCO = 0;
-        $RVLAmount = 0;
-        $policeCMRIS = 0;
-        $RHPermitAmount = 0;
-        $vehiclelicenseAmount = 0;
-        $hackneyPermitCost = 0; 
-        
-        if($changeofownershipPrice && strpos($vehicleName->name, $vehicleName2) !== false || $hacneyPermitDate){
-            if($plateNumber == 'RPN' ){
-                
-                $vehicleCostCO =  $changeofownershipPrice->first()->random_cost ?? 0;
-                $RVLAmount =  $changeofownershipPrice->first()->random_vehicleLicense ?? 0;
-                $RHPermitAmount =  $changeofownershipPrice->first()->random_hacneyPermit ?? 0;
-                $policeCMRIS =  $changeofownershipPrice->first()->random_policeCmris ?? 0;
-                switch($vehiclelicensedate){
-                    case 'lessthan1month':
-                        $vehiclelicenseAmount = "0";
-                        break;
-                    case 'morethan1month':
-                        $vehiclelicenseAmount = $$changeofownershipPrice->first()->random_vehicleLicense;
-                        break;
-                    case 'morethan1year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 2;
-                        break;
-                    case 'morethan2year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 3;
-                        break;
-                    case 'morethan3year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 4;
-                        break;
-                    case 'morethan4year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 5;
-                        break;
-                    case 'morethan5year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 6;
-                        break;
-                    case 'morethan6year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 7;
-                        break;
-                    case 'morethan7year':
-                        $vehiclelicenseAmount = $changeofownershipPrice->first()->random_vehicleLicense * 8;
-                        break;
-                    default:
-                        $vehiclelicenseAmount = "0";
-                }
-                switch($hacneypermitdate){
-                    case 'lessthan1month':
-                        $hacneypermitAmount = "0";
-                        break;
-                    case 'morethan1month':
-                        $hacneypermitAmount = $RHPermitAmount;
-                        break;
-                    case 'morethan1year':
-                        $hacneypermitAmount = $RHPermitAmount * 2;
-                        break;
-                    case 'morethan2year':
-                        $hacneypermitAmount = $RHPermitAmount * 3;
-                        break;
-                    case 'morethan3year':
-                        $hacneypermitAmount = $RHPermitAmount * 4;
-                        break;
-                    case 'morethan4year':
-                        $hacneypermitAmount = $RHPermitAmount * 5;
-                        break;
-                    case 'morethan5year':
-                        $hacneypermitAmount = $RHPermitAmount * 6;
-                        break;
-                    case 'morethan6year':
-                        $hacneypermitAmount = $RHPermitAmount * 7;
-                        break;
-                    case 'morethan7year':
-                        $hacneypermitAmount = $RHPermitAmount * 8;
-                        break;
-                    default:
-                        $hacneypermitAmount = "0";
-                }
-            }else{
-                $plateNumber = 0;
-            }
-        }
-        
-        return response()->json([
-            'success' => true,
-            'stateId' => $stateId,
-            'vehicleTypeId' => $vehicleTypeId,
-            'vehicleLicenseDate' => $vehicleLicenseDate,
-            'plateNumber' => $plateNumber,
-            'hacneyPermitDate' => $hacneyPermitDate,
-            'changeofownershipPrice' => $changeofownershipPrice,
-            'vehicleCostCO' => $changeofownershipPrice->first()->random_cost,
-            'vehicleLicenseCost' => $vehiclelicenseAmount,
-            'hackneyPermitCost' => $hackneyPermitCost,
-            'policeCMRIS' => $policeCMRIS,
-        ]);
-    }
+  
 
-    public function getChangeofOwnershipPrice(Request $request){
-        
+    public function getChangeofOwnershipPrice(Request $request) {
         $stateId = $request->input('stateId');
         $vehicleCategoryId = $request->input('vehicleTypeId');
         $vLExpirydate = $request->input('vehicleLicenseDate');
         $platenumber = $request->input('plateNumber');
         $hackneyPermit = $request->input('hacneyPermitDate');
-        
-        $vehiclename = VehicleType::where('id', $vehicleCategoryId )->first();
-        
+    
+        $vehiclename = VehicleType::where('id', $vehicleCategoryId)->first();
         $changeofownershipPrice = ChangeofOwnershipPrice::where('state_id', $stateId)
-                                                        ->where('vehicle_type_id', $vehicleCategoryId)->get();
+                                                        ->where('vehicle_type_id', $vehicleCategoryId)
+                                                        ->first();
+        
         $vehicleCost = 0;
         $RVLAmount = 0;
         $policeCMRIS = 0;
         $RHPermitAmount = 0;
         $vehiclelicenseAmount = 0;
         $hackneyPermitCost = 0;
-        
-        if(strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'RPN'  || $hackneyPermit){
-         
-            $vehicleCost =  $changeofownershipPrice->first()->random_cost;
-            $RVLAmount =  $changeofownershipPrice->first()->random_vehicleLicense;
-            $RHPermitAmount =  $changeofownershipPrice->first()->random_hacneyPermit;
-            $policeCMRIS =  $changeofownershipPrice->first()->random_policeCmris;
+        $expiryDateCost = 0;
+        $hackneyPermitDateCost = 0;
+    
+        if (strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber === 'RPN' || $hackneyPermit) {
+            if ($changeofownershipPrice) {
+                $vehicleCost = $changeofownershipPrice->random_cost;
+                $RVLAmount = $changeofownershipPrice->random_vehicleLicense;
+                $RHPermitAmount = $changeofownershipPrice->random_hacneyPermit;
+                $policeCMRIS = $changeofownershipPrice->random_policeCmris;
+                $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $RVLAmount);
+                $expiryDateCost += $vehiclelicenseAmount;
+                $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $RHPermitAmount);
+                $hackneyPermitDateCost += $hackneyPermitCost;
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No matching ownership price data found for given criteria.'
+                ]);
+            }
+        } elseif (strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber === 'CPN' || $hackneyPermit) {
+            $vehicleCost = $changeofownershipPrice->customised_cost ?? 0;
+            $CVLAmount = $changeofownershipPrice->customised_vehicleLicense ?? 0;
+            $CHPermitAmount = $changeofownershipPrice->customised_hacneyPermit ?? 0;
+            $policeCMRIS = $changeofownershipPrice->customised_policeCmris ?? 0;
             
-            switch($vLExpirydate){
-                case 'lessthan1month':
-                    $vehiclelicenseAmount = 0;
-                    break;
-                case 'morethan1month':
-                    $vehiclelicenseAmount = $RVLAmount;
-                    break;
-                case 'morethan1year':
-                    $vehiclelicenseAmount = $RVLAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $vehiclelicenseAmount = $RVLAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $vehiclelicenseAmount = $RVLAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $vehiclelicenseAmount = $RVLAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $vehiclelicenseAmount = $RVLAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $vehiclelicenseAmount = $RVLAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $vehiclelicenseAmount = $RVLAmount * 8;
-                    break;
-                default:
-                    $vehiclelicenseAmount = 0;
-            }
-            switch($hackneyPermit){
-                case 'lessthan1month':
-                    $hackneyPermitCost = 0;
-                    break;
-                case 'morethan1month':
-                    $hackneyPermitCost = $RHPermitAmount;
-                    break;
-                case 'morethan1year':
-                    $hackneyPermitCost = $RHPermitAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $hackneyPermitCost = $RHPermitAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $hackneyPermitCost = $RHPermitAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $hackneyPermitCost = $RHPermitAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $hackneyPermitCost = $RHPermitAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $hackneyPermitCost = $RHPermitAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $hackneyPermitCost = $RHPermitAmount * 8;
-                    break;
-                default:
-                    $hackneyPermitCost = 0;
-            }
-         
-            
-        } elseif(strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'CPN' || $hackneyPermit){
-            $vehicleCost =  $changeofownershipPrice->first()->customised_cost;
-            $CVLAmount =  $changeofownershipPrice->first()->customised_vehicleLicense;
-            $CHPermitAmount =  $changeofownershipPrice->first()->customised_hacneyPermit;
-            $policeCMRIS =  $changeofownershipPrice->first()->customised_policeCmris;
-            switch($vLExpirydate){
-                case 'lessthan1month':
-                    $vehiclelicenseAmount = 0;
-                    break;
-                case 'morethan1month':
-                    $vehiclelicenseAmount = $CVLAmount;
-                    break;
-                case 'morethan1year':
-                    $vehiclelicenseAmount = $CVLAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $vehiclelicenseAmount = $CVLAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $vehiclelicenseAmount = $CVLAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $vehiclelicenseAmount = $CVLAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $vehiclelicenseAmount = $CVLAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $vehiclelicenseAmount = $CVLAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $vehiclelicenseAmount = $CVLAmount * 8;
-                    break;
-                default:
-                    $vehiclelicenseAmount = 0;
-            }
-            switch($hackneyPermit){
-                case 'lessthan1month':
-                    $hackneyPermitCost = "0";
-                    break;
-                case 'morethan1month':
-                    $hackneyPermitCost = $CHPermitAmount;
-                    break;
-                case 'morethan1year':
-                    $hackneyPermitCost = $CHPermitAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $hackneyPermitCost = $CHPermitAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $hackneyPermitCost = $CHPermitAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $hackneyPermitCost = $CHPermitAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $hackneyPermitCost = $CHPermitAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $hackneyPermitCost = $CHPermitAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $hackneyPermitCost = $CHPermitAmount * 8;
-                    break;
-                default:
-                    $hackneyPermitCost = "0";
-            }
-        }else{
-            $vehiclelicenseAmount = 0;
-            $hackneyPermitCost = 0;
-            $vehicleCost = 0;
+            $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $CVLAmount);
+            $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $CHPermitAmount);
         }
-         
+    
         return response()->json([
             'success' => true,
-            'message' => 'Vehicle Ownershipt Cost',
+            'message' => 'Vehicle Ownership Cost',
+            'expiryDateCost' => $expiryDateCost,
+            'hackneyPermitDateCost' => $hackneyPermitDateCost,
+            'changeofownershipPrice' => $changeofownershipPrice,
             'vehicleCost' => $vehicleCost,
             'hackneyPermitCost' => $hackneyPermitCost,
-            'vehicleLicenseCost' => $vehiclelicenseAmount,
-            'changeofownershipPrice' => $changeofownershipPrice,
             'platenumber' => $platenumber,
             'policeCmrisCost' => $policeCMRIS,
         ]);
     }
+    
+    // Helper method to calculate the amount based on duration
+    private function calculateAmountByDuration($duration, $amount) {
+        switch ($duration) {
+            case 'lessthan1month':
+                return 0;
+            case 'morethan1month':
+                return $amount;
+            case 'morethan1year':
+                return $amount * 2;
+            case 'morethan2year':
+                return $amount * 3;
+            case 'morethan3year':
+                return $amount * 4;
+            case 'morethan4year':
+                return $amount * 5;
+            case 'morethan5year':
+                return $amount * 6;
+            case 'morethan6year':
+                return $amount * 7;
+            case 'morethan7year':
+                return $amount * 8;
+            default:
+                return 0;
+        }
+    }
+    
+
 
     public function getNewdriverLicensesLength(Request $request){
 

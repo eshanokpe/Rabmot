@@ -15,8 +15,11 @@ export default function ChangeofOwnership() {
     const [plateNumber, setPlateNumber] = useState('RPN');
 
     const [vehicleCost, setVehicleCost] = useState(0);
-    const [hackneyPermitCost, setHackneyPermitCost] = useState(0);
+    const [expiryDateCost, setExpiryDateCost] = useState(0);
+
+    const [hackneyPermitDateCost, setHackneyPermitDateCost] = useState(0);
     const [vehicleLicenseCost, setVehicleLicenseCost] = useState(0);
+
     const [policeCMRIS, setPoliceCMRIS] = useState(false);
     const [policeCMRISCost, setPoliceCMRISCost] = useState(0);
 
@@ -47,8 +50,8 @@ export default function ChangeofOwnership() {
             }).then(response => {
               console.log('Success pricing:', response.data);
               setVehicleCost(response.data.vehicleCost);
-              setHackneyPermitCost(response.data.hackneyPermitCost);
-              setVehicleLicenseCost(response.data.vehicleLicenseCost);
+              setExpiryDateCost(response.data.expiryDateCost);
+              setHackneyPermitDateCost(response.data.hackneyPermitDateCost);
               setPoliceCMRISCost(response.data.policeCmrisCost)
             }).catch(error => {
               console.error('Error sending vehicleCategoryId:', error);
@@ -68,12 +71,12 @@ export default function ChangeofOwnership() {
             policeCMRISTotal = Number(policeCMRISCost);
           }
           
-          amount = Number(vehicleCost) + policeCMRISTotal;
+          amount = Number(vehicleCost) + Number(expiryDateCost) + Number(hackneyPermitDateCost) + policeCMRISTotal;
           setTotal(amount);
         };
     
         calculateTotal();
-      }, [vehicleCost, hackneyPermitCost, policeCMRIS, policeCMRISCost,
+      }, [vehicleCost, expiryDateCost, hackneyPermitDateCost, policeCMRIS, policeCMRISCost,
     ]);
 
     const handleStateCO = (event) => {

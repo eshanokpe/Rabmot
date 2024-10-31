@@ -15,7 +15,7 @@ use App\Models\VehicleRegistrationType;
 use App\Models\VehicleRegistrationPrice; 
 use App\Models\VehicleRegistration;
   
-
+ 
 class AddVehicleRegistrationController extends Controller
 {
     protected $vehicleRegistrationService;
@@ -102,52 +102,68 @@ class AddVehicleRegistrationController extends Controller
 
     public function handleStateSelection(Request $request)
     {
-        $userId = Auth::id();
-        $stateId = $request->input('stateId');
-        $addVehicleregistration = AddVehicleRegistration::where('user_id', $userId)->get();
+        try{
+            $userId = Auth::id();
+            $stateId = $request->input('stateId');
+            $addVehicleRegistration = AddVehicleRegistration::where('user_id', $userId)->get();
 
-        $vehicleCategories = $addVehicleregistration->pluck('category')->unique();
-        $stateVehicleList = collect();
-        foreach ($vehicleCategories as $category) { 
-            $results = VehicleRegistrationPrice::with(['vehicleType', 'stateInfo'])
-                ->where('state_id', $stateId) 
-                ->where('vehicle_type_id', $category)
-                ->get();
-            
-            $stateVehicleList = $stateVehicleList->merge($results); 
+            $vehicleCategories = $addVehicleRegistration->pluck('category')->unique();
+            $stateVehicleList = collect();
+            foreach ($vehicleCategories as $category) { 
+                $results = VehicleRegistrationPrice::with(['vehicleType', 'stateInfo'])
+                    ->where('state_id', $stateId) 
+                    ->where('vehicle_type_id', $category)
+                    ->get();
+                
+                $stateVehicleList = $stateVehicleList->merge($results); 
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'State ID received successfully',
+                'stateId' => $stateId,
+                'stateVehicleList' => $stateVehicleList,
+                'vehicleCategories' => $vehicleCategories
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'Errormessage' => $e->getMessage(),
+            ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'State ID received successfully',
-            'stateId' => $stateId,
-            'stateVehicleList' => $stateVehicleList,
-
-        ]);
     }
 
     public function handleVehicleCategoryIdSelection(Request $request){
-        $userId = Auth::id();
-        $userEmail = Auth::user()->email;
-        $vehicleCategoryId = $request->input('vehicleCategoryId');
-        $stateId = $request->input('stateId');
+        try{
+            $userId = Auth::id();
+            $userEmail = Auth::user()->email;
+            $vehicleCategoryId = $request->input('vehicleCategoryId');
+            $stateId = $request->input('stateId');
 
-        $vehicleList = AddVehicleRegistration::where('user_id', $userId)
-                                            ->where('category', $vehicleCategoryId)
-                                            ->where('user_email', $userEmail)
-                                            ->get();
-
-                      
-        return response()->json([
-            'success' => true,
-            'message' => 'Vehicle ID received successfully',
-            'vehicleList' => $vehicleList,
-           
-        ]);
+            $vehicleList = AddVehicleRegistration::where('user_id', $userId)
+                                                ->where('category', $vehicleCategoryId)
+                                                ->where('user_email', $userEmail)
+                                                ->get();
+                        
+            return response()->json([
+                'success' => true,
+                'message' => 'Vehicle ID received successfully',
+                'message' => 'Vehicle ID received successfully',
+                'vehicleList' => $vehicleList,
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => true,
+                'Errormessage' => $e->getMessage()
+                
+            ]);
+        }
     }
 
-    public function handleVehicleRegCost(Request $request)
+    public function handleVehicleRegCost(Request $request) 
     {
+        try{
+
         $userId = Auth::id();
         $userEmail = Auth::user()->email;
         $vehicleRegCategoryId = $request->input('vehicleCategoryId');
@@ -231,6 +247,13 @@ class AddVehicleRegistrationController extends Controller
             'policeCmrisCost' => $PoliceCmris,
             'amount' => $amount,
         ]);
+    }catch(Exception $e){
+        return response()->json([
+            'success' => true,
+            'Errormessage' => $e->Message(),
+            
+        ]);
+    }
     }
 
 

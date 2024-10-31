@@ -7,12 +7,15 @@ export default function ChangeOfOwnership() {
     const [vehicleTypeIdCO, setvehicleTypeIdCO] = useState('');
     const [stateList, setStateList] = useState([]);
     const [vehicleTypeList, setVehicleTypeList] = useState([]);
- 
+  
     const [vehicleLicenseDate, setVehicleLicenseDate] = useState('');
     const [hacneyPermitDate, setHacneyPermitDate] = useState('');
     const [plateNumber, setPlateNumber] = useState('RPN');
 
     const [vehicleCost, setVehicleCost] = useState(0);
+    const [expiryDateCost, setExpiryDateCost] = useState(0);
+    const [hackneyPermitDateCost, setHackneyPermitDateCost] = useState(0);
+
     const [hackneyPermitCost, setHackneyPermitCost] = useState(0);
     const [vehicleLicenseCost, setVehicleLicenseCost] = useState(0);
     const [policeCMRIS, setPoliceCMRIS] = useState(false);
@@ -45,6 +48,8 @@ export default function ChangeOfOwnership() {
             }).then(response => {
               console.log('Success pricing:', response.data);
               setVehicleCost(response.data.vehicleCost);
+              setExpiryDateCost(response.data.expiryDateCost);
+              setHackneyPermitDateCost(response.data.hackneyPermitDateCost);
               setHackneyPermitCost(response.data.hackneyPermitCost);
               setVehicleLicenseCost(response.data.vehicleLicenseCost);
               setPoliceCMRISCost(response.data.policeCmrisCost)
@@ -54,7 +59,7 @@ export default function ChangeOfOwnership() {
        
         }
         fetchPricing();
-    }, [url, stateIdCO, vehicleTypeIdCO, vehicleLicenseDate, hacneyPermitDate ]);
+    }, [url, stateIdCO, vehicleTypeIdCO, vehicleLicenseDate, hacneyPermitDate, plateNumber ]);
     
     useEffect(() => {
         const calculateTotal = () => {
@@ -66,12 +71,12 @@ export default function ChangeOfOwnership() {
             policeCMRISTotal = Number(policeCMRISCost);
           }
           
-          amount = Number(vehicleCost) + policeCMRISTotal;
+          amount = Number(vehicleCost) + Number(expiryDateCost) + Number(hackneyPermitDateCost) + policeCMRISTotal;
           setTotal(amount);
         };
-    
+        
         calculateTotal();
-      }, [vehicleCost, hackneyPermitCost, policeCMRIS, policeCMRISCost,
+      }, [vehicleCost, expiryDateCost, hackneyPermitDateCost, policeCMRIS, policeCMRISCost,
     ]);
 
     const handleStateCO = (event) => {

@@ -211,13 +211,13 @@ export default function VehiclePapersRenewal() {
                                 </div>
 
                                 <div class=" row mt-3 " >
-                                    <div class="col-md-1" > </div>
-                                    <div class="col-md-5">
+                                    <div class="col-1 " > </div>
+                                    <div class="col-5 ">
                                         <input onChange={handleCheckboxChange} checked={vehicleLicense} name="vehicleLicense" class="form-check-input  me-2" type="checkbox"  id="vehicleLicense" />
                                         <label class="form-check-label" for="addOne"> Vehicle License</label>  
                                     </div>
 
-                                    <div class="col-md-5">
+                                    <div class="col-5 ">
                                         <label for="inputAddress2" class="form-label"> Expiry Date</label>
                                         <table class="padding-no margin-no additionSubtractionTable  ">
                                             <tr>
@@ -235,43 +235,43 @@ export default function VehiclePapersRenewal() {
                                             </tr>
                                         </table>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
 
                                 <div class=" row mt-2 " >
-                                    <div class="col-md-1 " > </div>
-                                    <div class="col-md-10">
+                                    <div class="col-1 " > </div>
+                                    <div class="col-10">
                                         <input onChange={handleCheckboxChange} checked={roadWorthiness} class="form-check-input me-2" type="checkbox"  name="roadWorthiness" />
                                         <label class="form-check-label" for="addOne">Road Worthiness</label>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
                                 <div class=" row mt-2 " >
-                                    <div class="col-md-1 " > </div>
-                                    <div class="col-md-10">
-                                        <input onChange={handleCheckboxChange} checked={proofOwnership} class="form-check-input me-2" type="checkbox"  name="vehicleInspectionPickanddrop" />
+                                    <div class="col-1 " > </div>
+                                    <div class="col-10">
+                                        <input onChange={handleCheckboxChange} checked={proofOwnership} class="form-check-input me-2" type="checkbox"  name="proofOfOwnership" />
                                         <label class="form-check-label" for="addOne"> Proof Ownership</label>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
                                 
                                 <div class=" row mt-2 " >
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                     <div class="col-10">
                                         <input onChange={handleCheckboxChange} checked={thirdPartyInsurance} class="form-check-input me-2" type="checkbox"  name="thirdPartyInsurance" />
                                         <label class="form-check-label" for="addOne">Third-Party Insurance</label>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
                                
                                 <div class=" row mt-2 " >
-                                    <div class="col-sm col-md-1 " > </div>
-                                    <div class="col-sm col-md-5">
+                                    <div class="col-1 " > </div>
+                                    <div class="col-5">
                                         <input onChange={handleCheckboxChange} checked={hackneyPermit} class="form-check-input me-2" type="checkbox"  name="hackneyPermit" />
                                         <label class="form-check-label" for="addOne">Hackney Permit</label>
                                     </div>
 
-                                    <div class="col-sm col-md-5">
+                                    <div class="col-5">
                                         <label for="inputAddress2" class="form-label"> Expiry Date</label>
                                         <table class="padding-no margin-no additionSubtractionTable  ">
                                             <tr>
@@ -289,25 +289,25 @@ export default function VehiclePapersRenewal() {
                                             </tr>
                                         </table>
                                     </div>
-                                    <div class= "col-sm col-md-1 " > </div>
+                                    <div class= "col-1" > </div>
                                 </div>
                                
                                 <div class=" row mt-2 " >
-                                    <div class="col-md-1 " > </div>
-                                    <div class="col-md-10">
+                                    <div class="col-1 " > </div>
+                                    <div class="col-10">
                                         <input onChange={handleCheckboxChange} checked={vehicleInspectionPickanddrop} class="form-check-input me-2" type="checkbox"  name="vehicleInspectionPickanddrop" />
                                         <label class="form-check-label" for="addOne">Book Vehicle Inspection Pick & Drop</label>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
                                 
                                 <div class=" row mt-2 " >
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                     <div class="col-10">
                                         <input onChange={handleCheckboxChange} checked={policeCMRIS} class="form-check-input me-2" type="checkbox"  name="policeCMRIS" />
                                         <label class="form-check-label" for="addOne">Police CMRIS</label>
                                     </div>
-                                    <div class="col-md-1 " > </div>
+                                    <div class="col-1 " > </div>
                                 </div>
                                 <div className="row card-body">
                                     <div className="col-md-1"></div>
