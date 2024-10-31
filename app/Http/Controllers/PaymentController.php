@@ -9,6 +9,7 @@ use Redirect;
 use SeerbitLaravel\Facades\Seerbit; 
 use App\Models\PaymentModel;
 use App\Models\ProcessHistory;
+use App\Models\NewDriverLicense;
 use Auth;
 use Cart;
 use App\Models\User;
@@ -19,7 +20,7 @@ use Carbon\Carbon;
 
 class PaymentController extends Controller{
     
-    
+     
     
     public function initiatePayment(Request $request){
         $item = Order::whereOrderNumber($request->orderNo)->get();
@@ -33,7 +34,8 @@ class PaymentController extends Controller{
         $floatNumber = (float) $numberStringWithoutComma;
         $uuid = bin2hex(random_bytes(6));  
         $transaction_ref = strtoupper(trim($uuid));
-    
+        $newdriverlicense = NewDriverLicense::where('process_id', $process_id)->first();
+           
         $payload = [
             "amount" =>  $floatNumber,
             "callbackUrl" => "https://rabmotlicensing.com/home/payment_callbackSeerbit", 
@@ -67,8 +69,6 @@ class PaymentController extends Controller{
             if($payment->save()){
                 // Send the invoice email
                 $cartItems = Cart::content();
-                // dd($cartItems); 
-                // dd($item);
                 $totalAmount = collect($item)->sum('total');
                 $saleDate = Carbon::now()->format('M d, Y');
                 
@@ -96,7 +96,8 @@ class PaymentController extends Controller{
                         $cartItems,
                         $totalAmount,
                         $invoiceNumber,
-                        $saleDate
+                        $saleDate,
+                        $newdriverlicense,
                     ));
                 } catch (Exception $e) {
                     Session::flash('error', 'Payment initiation failed! ' . $e->getMessage());

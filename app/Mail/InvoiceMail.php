@@ -20,7 +20,7 @@ class InvoiceMail extends Mailable
     public $totalAmount;
     public $invoiceNumber;
     public $saleDate;
-    public $newdriverlicense
+    public $newdriverlicense;
 
     /**
      * Create a new message instance.
@@ -59,7 +59,7 @@ class InvoiceMail extends Mailable
         $this->totalAmount = $totalAmount;
         $this->invoiceNumber = $invoiceNumber;
         $this->saleDate = $saleDate;
-        $this->newdriverlicense = $$newdriverlicense;
+        $this->newdriverlicense = $newdriverlicense;
     }
 
     /**
@@ -67,7 +67,7 @@ class InvoiceMail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build() 
     {
         return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
                     ->subject('Your Invoice from Rabmot Licensing Agency')
@@ -84,6 +84,5 @@ class InvoiceMail extends Mailable
                         'saleDate' => $this->saleDate,
                         'newdriverlicense' => $this->newdriverlicense
                     ]);
-        
     }
 }

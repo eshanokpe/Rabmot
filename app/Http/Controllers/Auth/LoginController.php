@@ -11,7 +11,7 @@ use Http;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
+    use AuthenticatesUsers; 
 
     /**
      * Where to redirect users after login.
@@ -48,11 +48,11 @@ class LoginController extends Controller
 
         // Validate login credentials
         $this->validateLogin($request);
-
-        // Attempt to log the user in
+        // Attempt to log the user in with "Remember Me" support
         $credentials = $this->credentials($request);
+        $remember = $request->filled('remember'); 
 
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
 
             // Check if the user's account is disabled

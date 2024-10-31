@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Mail\PendingMode;
 use Mail;
 use App\Mail\InvoiceMail;
+use App\Models\NewDriverLicense;
 use Carbon\Carbon;
 
 class PaymentController extends Controller{
@@ -35,6 +36,7 @@ class PaymentController extends Controller{
         $floatNumber = (float) $numberStringWithoutComma;
         $uuid = bin2hex(random_bytes(6));  
         $transaction_ref = strtoupper(trim($uuid));
+        $newdriverlicense = NewDriverLicense::where('process_id', $process_id)->first();
      
         $payload = [
             "amount" =>  $floatNumber,
@@ -92,7 +94,6 @@ class PaymentController extends Controller{
                 try{
                     Mail::to($email)->send(new InvoiceMail(
                         $request->orderNo, 
-                        $newdriverlicense,
                         $fullname, 
                         $email, 
                         $phone,
@@ -100,7 +101,8 @@ class PaymentController extends Controller{
                         $cartItems,
                         $totalAmount,
                         $invoiceNumber,
-                        $saleDate
+                        $saleDate,
+                        $newdriverlicense,
                     ));
                 } catch (Exception $e) {
                     Session::flash('error', 'Payment initiation failed! ' . $e->getMessage());
