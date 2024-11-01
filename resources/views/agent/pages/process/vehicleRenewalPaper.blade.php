@@ -59,6 +59,6 @@
 				height: 25px;
 			}
     </style>
-
-	<div id="agentvehiclerenewalpaper"></div>
+ 
+	<div id="agentVehicleRenewalPaper"></div>
 @endsection 

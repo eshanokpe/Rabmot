@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import axios from 'axios';
+import axios from 'axios'; 
 
 export default function AgentVehicleRenewalPaper() {
     const url = window.location.origin; 
@@ -622,8 +622,8 @@ export default function AgentVehicleRenewalPaper() {
     );
 } 
 
-if (document.getElementById('agentvehiclerenewalpaper')) {
-    ReactDOM.createRoot(document.getElementById('agentvehiclerenewalpaper')).render(
+if (document.getElementById('agentVehicleRenewalPaper')) {
+    ReactDOM.createRoot(document.getElementById('agentVehicleRenewalPaper')).render(
         <React.StrictMode>
             <AgentVehicleRenewalPaper />
         </React.StrictMode>
