@@ -60,5 +60,5 @@
 			}
     </style>
 
-	<div id="agentVehicleRenewalPaper"></div>
-@endsection
+	<div id="agentvehiclerenewalpaper"></div>
+@endsection 

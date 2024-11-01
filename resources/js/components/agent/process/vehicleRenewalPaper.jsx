@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 
 export default function AgentVehicleRenewalPaper() {
-    const url = window.location.origin;
+    const url = window.location.origin; 
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -622,11 +622,11 @@ export default function AgentVehicleRenewalPaper() {
     );
 } 
 
-if (document.getElementById('agentVehicleRenewalPaper')) {
-    ReactDOM.createRoot(document.getElementById('agentVehicleRenewalPaper')).render(
+if (document.getElementById('agentvehiclerenewalpaper')) {
+    ReactDOM.createRoot(document.getElementById('agentvehiclerenewalpaper')).render(
         <React.StrictMode>
             <AgentVehicleRenewalPaper />
         </React.StrictMode>
-    );
+    ); 
 }
 

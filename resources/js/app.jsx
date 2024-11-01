@@ -15,9 +15,9 @@ import './components/process/otherPermit';
 import './components/profile/editProfile';
 import './components/userPrice/index';
  
-// Agent
+// Agent 
 import './components/agent/process/otherPermit';
-import './components/agent/process/vehicleRenewalPaper'; 
+import './components/agent/process/vehicleRenewalPaper';  
 import './components/agent/process/vehicleRegistration'; 
 import './components/agent/process/changeofownership'; 
 import './components/agent/process/dealerPateNumber';
