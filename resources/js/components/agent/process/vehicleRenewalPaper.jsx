@@ -626,7 +626,7 @@ if (document.getElementById('agentVehicleRenewalPaper')) {
     ReactDOM.createRoot(document.getElementById('agentVehicleRenewalPaper')).render(
         <React.StrictMode>
             <AgentVehicleRenewalPaper />
-        </React.StrictMode>
+        </React.StrictMode> 
     ); 
 }
 

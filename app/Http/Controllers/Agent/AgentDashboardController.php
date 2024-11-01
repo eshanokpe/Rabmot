@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Agent;
+use App\Models\User;
 use App\Models\Wallet;
 use App\Models\VehicleType;
 use App\Models\ProcessHistory;
@@ -41,7 +42,7 @@ class AgentDashboardController extends Controller
         $vehicle = AddVehicleRenewal::where('user_id', $userId)
                                      ->where('user_email', $userEmail)
                                      ->where('userType', 'Agent')
-                                     ->get();
+                                     ->get(); 
         
         $vehicleCount = $vehicle->count(); 
         return view('agent.dashboard', [
