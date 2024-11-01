@@ -242,44 +242,7 @@ export default function ChangeofOwnership() {
                                 </div>
                                 <hr />
  
-                                {vehicleCount < 1 ? (
-                                    <>
-                                        <div className="card border-top border-0 border-4 border-primary">
-                                            <div className="row">
-                                                <div className="col-12 col-lg-12 col-xl-12">
-                                                    <div className="radius-15">
-                                                        <div className="card-body">
-                                                            <h6 className="text-justify text-success card-title">
-                                                                REQUIRED
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                - Choose the Vehicle Category. <br/>
-                                                                - Mark the desired options to calculate the total cost. <br/>
-                                                                - Specify the vehicle type: Commercial or Private. <br/>
-                                                                - Complete the submission of essential documents.
-                                                            
-                                                            </h6>
-                                                            <h6 className="text-justify card-title text-danger">
-                                                                TIMELINE
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                72 Hours
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                                                <span className="alert-link">Oh Snap!</span> 
-                                                You need to Add New Vehicle to start the registration process. 
-                                                <a onClick={handleVehicleOwnership} className="alert-link"  style={{cursor:'pointer'}}> Add New Vehicle Ownership</a>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
+                                
                                         <div className="card radius-15 border-top border-0 border-4 ">
                                             <div className="row">
                                                 <div className="col-12 col-lg-12 col-xl-12">
@@ -495,8 +458,7 @@ export default function ChangeofOwnership() {
                                                 </form>
                                             </div>
                                         </div>
-                                    </>
-                                )}
+                                    
                             </div>
                         </div>
                     </div>

@@ -322,39 +322,8 @@ export default function AgentVehicleRenewalPaper() {
                                 </div>
                                 <hr />
 
-                                {vehicleCount < 1 ? (
-                                    <>
-                                        <div className="card border-top border-0 border-4 border-primary">
-                                            <div className="row">
-                                                <div className="col-12 col-lg-12 col-xl-12">
-                                                    <div className="radius-15">
-                                                        <div className="card-body">
-                                                            <h6 className="text-justify text-success card-title">
-                                                                REQUIRED
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Please Check or Uncheck what papers you want renewed. Note that for Lagos State, you only get a Road Worthiness Referral Note to visit a LACVIS Centre within 30 days of payment
-                                                            </h6>
-                                                            <h6 className="text-justify card-title text-danger">
-                                                                TIMELINE
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Renewals of vehicle papers are done within 24 hours but during festive periods, there may be slight delays.
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                                                <span className="alert-link">Oh Snap!</span> You need to add a vehicle to start the Renewal Process. 
-                                                <a onClick={handleVehicleRenawel}  style={{cursor:'pointer'}} className="alert-link">Add Vehicle Renewal</a>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
+                               
+                                    
                                         <div className="card radius-15 border-top border-0 border-4 ">
                                             <div className="row">
                                                 <div className="col-12 col-lg-12 col-xl-12">
@@ -611,8 +580,8 @@ export default function AgentVehicleRenewalPaper() {
                                                 </form>
                                             </div>
                                         </div>
-                                    </>
-                                )}
+                                    
+                                
                             </div>
                         </div>
                     </div>
