@@ -247,13 +247,13 @@ class AddVehicleRegistrationController extends Controller
             'policeCmrisCost' => $PoliceCmris,
             'amount' => $amount,
         ]);
-    }catch(Exception $e){
-        return response()->json([
-            'success' => true,
-            'Errormessage' => $e->Message(),
-            
-        ]);
-    }
+        }catch(Exception $e){
+            return response()->json([
+                'success' => true,
+                'Errormessage' => $e->Message(),
+                
+            ]);
+        }
     }
 
 

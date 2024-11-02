@@ -266,7 +266,7 @@ export default function VehicleRegistration() {
                                                                 TIMELINE
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                72 Hours
+                                                                <b>Processing and Delivery Time:</b> 72 hours
                                                             </h6>
                                                         </div>
                                                     </div>

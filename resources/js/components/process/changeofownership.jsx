@@ -242,7 +242,7 @@ export default function ChangeofOwnership() {
                                                                 TIMELINE
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                72 Hours
+                                                                Processing and Delivery Time: 72 hours to 5 working days
                                                             </h6>
                                                         </div>
                                                     </div>
