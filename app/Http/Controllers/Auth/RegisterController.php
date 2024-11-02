@@ -112,7 +112,7 @@ class RegisterController extends Controller
                 'role' => 3,
                 'password' => bcrypt($request->input('password')),
                 'status_id' => 1,
-                'status' => 'active'
+                'status' => 'active',
                 'referral_code' => $request->filled('referral_code') ? $request->input('referral_code') : null,
             ]);
             
