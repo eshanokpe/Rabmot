@@ -16,7 +16,7 @@ class TopicCommentController extends Controller
     public function index()
     {
         $topics = Topic::all();
- 
+
         return view('user.pages.topics.index', compact('topics'));
     }
     public function create()
@@ -45,10 +45,10 @@ class TopicCommentController extends Controller
 
        
     public function show($id){
-        $topic = Topic::findOrFail($id);
-        dd($topic);
+        $user = Auth::user();
+        $topic = Topic::where('id', decrypt($id))->latest()->firstOrFail();
 
-        return view('user.pages.topics.show', compact('topic'));
+        return view('user.pages.topics.show', compact('topic', 'user'));
     }
 
     public function edit($id)
@@ -85,14 +85,14 @@ class TopicCommentController extends Controller
         $email = Auth::user()->email;
 
         $comment = new Comment();
-        $comment->topic_id = $topicId;
+        $comment->topic_id = decrypt($topicId);
         $comment->comment_id = $commentId;
         $comment->content = $request->input('content');
         $comment->author = $fullname;
         $comment->author_pics = $email;
         $comment->save();
-
-        return redirect()->route('topics.show', $topicId);
+        
+        return redirect()->route('topics.show', $topicId)->withSuccess('Comment was successfully created.');
     }
 
     public function editComment($topic, $comment)

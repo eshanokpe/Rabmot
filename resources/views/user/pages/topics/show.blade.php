@@ -7,9 +7,7 @@
 	<!--page-wrapper-->
 	<div class="wrapper">
 		<!--header-->
-		<!--end sidebar-wrapper-->
-		<!--page-content-wrapper-->
-
+		<!--end sidebar-wrapper--> 
 		<div class="page-content-wrapper">
 
 			<div class="page-content">
@@ -60,50 +58,29 @@
 							<div class="card border-top border-0 border-4 border-primary">
 
 								<div class="card-body p-5">
-
 									<div class="fade show">
-
                                         <h5 class="mb-0 text-primary">{{ $topic->content }}</h5>
-
                                         <hr>
-
                                     </div>
-
-                                    
-
                                    @if(session('success'))
-
                                     <div class="alert alert-success">
-
                                         {{ session('success') }}
-
                                     </div>
-
                                     @endif
-
-
-
                                     @if(session('error'))
-
-                                    <div class="alert alert-danger">
-
-                                        {{ session('error') }}
-
-                                    </div>
-
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
                                     @endif
-
-
-
                                     @if ($topic->comments->isNotEmpty())
-
                                         @foreach ($topic->comments as $comment)
-
                                         <div class="row">
-
-                                            <div class="col-4 col-sm-1">
-
-                                            <img src="{{ asset('public/assets/img/avatar.png')}}" class="w-100" alt="comment images">
+                                            <div class="col-4 col-sm-1"> 
+                                                @if($user->profile_image)
+                                                    <img src="{{ asset('/assets/profileimages/'.$user->profile_image) }}" style="border-radius: 100px" class="w-100" alt="comment images">
+                                                @else
+                                                    <img src="{{ asset('/assets/img/avatar.png')}}" class="w-100" alt="comment images">
+                                                @endif
                                             </div>
 
                                             <div class="col-12 col-sm-10">
@@ -115,45 +92,18 @@
                                                 <span class="relative-time"  style="font-style: italic;">{{ $comment->created_at->format('d F Y')}}</span>
 
                                             </div>
-
-                                            
-
-
-
                                             <p>{{ $comment->content }}</p>
-
                                             <span>
-
-
                                             </span>
-
                                             </div>
-
                                             <hr>
-
                                         </div>
-
                                         @endforeach
-
-                                         <!-- Include the moment.js library -->
-
-                                        
-
                                         @else
-
                                         <p>No comments on this topic yet.</p>
-
                                         @endif
-
-
-
-									
-
 									<h6>Post a Comment</h6>
-
-
-
-                                    <form class="row g-3" action="{{ route('comments.store', $topic->id) }}" method="POST">
+                                    <form class="row g-3" action="{{ route('comments.store', encrypt($topic->id) ) }}" method="POST">
 
                                         @csrf
 
@@ -161,7 +111,7 @@
 
                                             <textarea id="content" name="content" class="form-control" placeholder="Enter your content" cols="5" rows="4" required></textarea>
 
-                                        </div>
+                                        </div> 
 
                                         <div class="col-12 mt-30">
 

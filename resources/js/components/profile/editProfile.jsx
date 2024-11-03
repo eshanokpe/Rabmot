@@ -8,7 +8,7 @@ export default function EditProfile() {
     const [userDetails, setUserDetails] = useState({
         fullname: '',
         email: '',
-        phone: '',
+        phone: '', 
         address: '',
         gender: '',
         profileImage: null,

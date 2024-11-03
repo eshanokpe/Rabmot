@@ -31,6 +31,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/post-vehicle-paper-renewal', [AddVehicleRenewalController::class, 'postRenewVehiclePaper'])->name('home.postRenewVehiclePaper');
         Route::get('/vehicle-paper-renewal/edit/{encryptedId}', [AddVehicleRenewalController::class, 'editVehiclePaperRenewal'])
          ->name('edit.vehiclePaperRenewal');
+        Route::put('/vehicle-paper-renewal/update/{id}', [AddVehicleRenewalController::class, 'updateVehiclePaperRenewal'])
+         ->name('update.vehiclePaperRenewal');
+       
 
         Route::get('/vehicle-renewal/delete/{encryptedId}', [AddVehicleRenewalController::class, 'deleteVehiclePaperRenewal'])->name('delete.vehiclePaperRenewal');
 
@@ -94,7 +97,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
         
-        Route::get('/topics', [HomeController::class, 'indexT'])->name('topics.index');
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
@@ -110,6 +112,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('update-profile', [ProfileController::class, 'updateProfile']);
         Route::get('profile', [ProfileController::class, 'index'])->name('home.profile');
         // Routes for topics
+       
         Route::get('/topics', [TopicCommentController::class, 'index'])->name('topics.index');
         Route::get('/topics/create', [TopicCommentController::class, 'create'])->name('topics.create');
         Route::post('/topics', [TopicCommentController::class, 'store'])->name('topics.store');

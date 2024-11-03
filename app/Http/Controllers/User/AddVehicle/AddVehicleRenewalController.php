@@ -66,6 +66,31 @@ class AddVehicleRenewalController extends Controller
         }
     }
 
+    public function editVehiclePaperRenewal($encryptedId){
+        $vehicleId = AddVehicleRenewal::find(($encryptedId));
+        $id = Auth::user()->id;
+        $vehicleList = VehicleType::all();
+        return view('user.pages.addVehicle.editAddVehicleRenewal',compact('vehicleId','vehicleList'));
+    }
+
+    public function updateVehiclePaperRenewal(Request $request, $id){
+        $record = AddVehicleRenewal::find($id);
+        if(!$record){
+            return redirect()->back()->with('error', 'Record not found.');
+        }
+        $record->update($request->all());
+        return redirect()->route('home')->with('success', 'Record updated successfully');
+    }
+
+    public function deleteVehiclePaperRenewal($encryptedId){
+        $vehicleId = AddVehicleRenewal::find(decrypt($encryptedId));
+        if(!$vehicleId){
+            return redirect()->back()->with('error','Record not found.');
+        }
+        $vehicleId->delete();
+        return redirect()->route('home')->with('success', 'Vehicle deleted successfully');
+    }
+
     public function  vehicleRenewalPaper(){ 
        
         return view('user.pages.process.vehicleRenewalPaper');
