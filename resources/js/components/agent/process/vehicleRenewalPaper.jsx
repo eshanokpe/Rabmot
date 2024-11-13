@@ -8,7 +8,7 @@ export default function AgentVehicleRenewalPaper() {
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
     const [stateVehicleList, setStateVehicleList] = useState([]);
-    const [userList, setUserList] = useState([]);
+    const [userList, setUserList] = useState([]); 
     const [userId, setUserId] = useState('');
     const [stateId, setStateId] = useState('');
     const [vehicleCategoryId, setVehicleCategoryId] = useState('');
@@ -322,8 +322,6 @@ export default function AgentVehicleRenewalPaper() {
                                 </div>
                                 <hr />
 
-                               
-                                    
                                         <div className="card radius-15 border-top border-0 border-4 ">
                                             <div className="row">
                                                 <div className="col-12 col-lg-12 col-xl-12">
@@ -391,7 +389,7 @@ export default function AgentVehicleRenewalPaper() {
                                                         <div className="row mb-2">
                                                             <div className=" col-md-1 mb-2"></div>
                                                             <div className=" col-md-10">
-                                                                <label className="form-label">Select the User</label>
+                                                                <label className="form-label">Select Owner</label>
                                                                 <select
                                                                     required
                                                                     value={userId || ''}
@@ -400,10 +398,10 @@ export default function AgentVehicleRenewalPaper() {
                                                                     id="userId"
                                                                     className="form-select"
                                                                 >
-                                                                    <option disabled value="">-- Select User --</option>
+                                                                    <option disabled value="">-- Select Owner --</option>
                                                                     {userList.map((userList) => (
                                                                         <option key={userList.id} value={userList.id}>
-                                                                            {userList.fullname} ({userList.email})
+                                                                            {userList.ownerfullname} ({userList.user_email})
                                                                         </option>
                                                                     ))}
                                                                 </select>
@@ -530,7 +528,7 @@ export default function AgentVehicleRenewalPaper() {
                                                                     <label for="inputAddress2" class="form-label"> Expiry Date</label>
                                                                 
                                                                     <table class="padding-no margin-no additionSubtractionTable  ">
-                                                                        <tr>
+                                                                        <tr> 
                                                                             <td class= "padding-no margin-righ-no col-md-1" >			
                                                                                 <div className="additionSubtraction minusFigure" onClick={decrementCountHP}>-</div>
                                                                             </td>

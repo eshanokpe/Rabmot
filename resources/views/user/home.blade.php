@@ -24,7 +24,7 @@
 						@if (session('error'))
 							<div class="col-sm-12">
 								<div class="alert alert-danger alert-dismissible fade show" role="alert">
-									{{ session('success') }}
+									{{ session('error') }}
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 								</div>
 
@@ -147,10 +147,10 @@
 													<small> Vehicle Make: {{$vehicle->vehiclemake}}</small><br>
 													<small> Vehicle Reg.: {{$vehicle->platenumber}}</small> <br>
 													<small> Vehicle Type: 
-														@if( $vehicle->categoryInfo == null )
+														@if( $vehicle->vehicleTypeInfo == null )
 
 														@else
-														{{ $vehicle->categoryInfo->name }}
+														{{ $vehicle->vehicleTypeInfo->name }}
 														@endif
 														
 													</small>
@@ -159,7 +159,6 @@
 												<div class="col-sm-4">
 													
 													<p class="font-10 text-muted"> 
-														
 														@if($vehicle->vehiclelicenseexpiry == null) 
 														{{-- Vehicle Lincense: 	0 day --}}
 														
@@ -244,13 +243,9 @@
 														{{-- Hackney Permit: 0 day --}}
 														@else
 															@php
-																//Get the current data (today)
 																$currentDate = new DateTime();
-																// Convert the expiry date string to a DateTime object
 																$expiryDate = DateTime::createFromFormat('Y-m-d', $vehicle->hackneypermitexpiry);
-																// Calcutlate the difference between the current data and the expiry data
 																$interval = $currentDate->diff($expiryDate);
-																// Get the remaining days, months, and years
 																$remainingDays = $interval->days;
 																$remainingMonths = $interval->m;
 																$remainingYears = $interval->y;
@@ -271,13 +266,9 @@
 															0 day
 														@else
 															@php
-																//Get the current data (today)
 																$currentDate = new DateTime();
-																// Convert the expiry date string to a DateTime object
 																$expiryDate = DateTime::createFromFormat('Y-m-d', $vehicle->statecarriagepermitexpiry);
-																// Calcutlate the difference between the current data and the expiry data
 																$interval = $currentDate->diff($expiryDate);
-																// Get the remaining days, months, and years
 																$remainingDays = $interval->days;
 																$remainingMonths = $interval->m;
 																$remainingYears = $interval->y;
@@ -327,11 +318,8 @@
 															@php
 																//Get the current data (today)
 																$currentDate = new DateTime();
-																// Convert the expiry date string to a DateTime object
 																$expiryDate = DateTime::createFromFormat('Y-m-d', $vehicle->localgovernmentpermitexpiry);
-																// Calcutlate the difference between the current data and the expiry data
 																$interval = $currentDate->diff($expiryDate);
-																// Get the remaining days, months, and years
 																$remainingDays = $interval->days;
 																$remainingMonths = $interval->m;
 																$remainingYears = $interval->y;

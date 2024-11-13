@@ -96,14 +96,17 @@ class AgentDashboardController extends Controller
         ]);
     }
 
-    public function handleUserSelection()
+    public function handleUserSelection() 
     {
         $user = Auth::guard('agent')->user();
 
-        $userList = User::all();
+        $userList = AddVehicleRenewal::where('userType', 'agent')
+        ->where('user_id', $user->id)
+        ->get();
 
         return response()->json([
-            'userList' => $userList
+            'userList' => $userList,
+            'userId' => $user->id,
         ]);
     }
 

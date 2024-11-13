@@ -42,9 +42,7 @@ export default function ChangeofOwnership() {
     }, [url]);
 
     useEffect(() => {
-      
         const calculateTotalAmount = () => {
-           
             axios.post(`${url}/home/vehicleOwnershipCost`, { 
                 stateId,
                 vehicleCategoryId,
@@ -111,7 +109,7 @@ export default function ChangeofOwnership() {
         switch (name) {
             case "policeCMRIS":
                 setIsPoliceCmrisChecked(checked);
-                break;
+                break; 
             default:
                 break;
         }
@@ -244,7 +242,7 @@ export default function ChangeofOwnership() {
                                                             <h6 className="card-subtitle mb-2">
                                                                 Processing and Delivery Time: 72 hours to 5 working days
                                                             </h6>
-                                                        </div>
+                                                        </div> 
                                                     </div>
                                                 </div>
                                             </div>

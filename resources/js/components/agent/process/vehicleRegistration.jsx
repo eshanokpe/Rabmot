@@ -329,7 +329,7 @@ export default function VehicleRegistration() {
                                                 <div className="row mb-2">
                                                     <div className=" col-md-1 mb-2"></div>
                                                     <div className=" col-md-10">
-                                                        <label className="form-label">Select the User</label>
+                                                        <label className="form-label">Select Owner</label>
                                                         <select
                                                             required
                                                             value={userId || ''}
@@ -338,10 +338,10 @@ export default function VehicleRegistration() {
                                                             id="userId"
                                                             className="form-select"
                                                         >
-                                                            <option disabled value="">-- Select User --</option>
+                                                            <option disabled value="">-- Select Owner --</option>
                                                             {userList.map((userList) => (
                                                                 <option key={userList.id} value={userList.id}>
-                                                                    {userList.fullname} ({userList.email})
+                                                                      {userList.ownerfullname} ({userList.user_email})
                                                                 </option>
                                                             ))}
                                                         </select>

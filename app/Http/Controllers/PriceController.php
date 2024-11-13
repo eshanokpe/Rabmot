@@ -152,15 +152,12 @@ class PriceController extends Controller
         ]);
     }
 
-   
-
-  
 
     public function getChangeofOwnershipPrice(Request $request) {
         $stateId = $request->input('stateId');
         $vehicleCategoryId = $request->input('vehicleTypeId');
         $vLExpirydate = $request->input('vehicleLicenseDate');
-        $platenumber = $request->input('plateNumber');
+        $platenumber = $request->input('numberPlateType');
         $hackneyPermit = $request->input('hacneyPermitDate');
     
         $vehiclename = VehicleType::where('id', $vehicleCategoryId)->first();
@@ -177,31 +174,37 @@ class PriceController extends Controller
         $expiryDateCost = 0;
         $hackneyPermitDateCost = 0;
     
-        if (strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber === 'RPN' || $hackneyPermit) {
-            if ($changeofownershipPrice) {
-                $vehicleCost = $changeofownershipPrice->random_cost;
-                $RVLAmount = $changeofownershipPrice->random_vehicleLicense;
-                $RHPermitAmount = $changeofownershipPrice->random_hacneyPermit;
-                $policeCMRIS = $changeofownershipPrice->random_policeCmris;
-                $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $RVLAmount);
+       
+            // Check specifically for 'RPN' plate number
+            if ( strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'RPN' && ($hackneyPermit))
+            {
+                if ($changeofownershipPrice) {
+                    $vehicleCost = $changeofownershipPrice->random_cost;
+                    $RVLAmount = $changeofownershipPrice->random_vehicleLicense;
+                    $RHPermitAmount = $changeofownershipPrice->random_hacneyPermit;
+                    $policeCMRIS = $changeofownershipPrice->random_policeCmris;
+                    $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $RVLAmount);
+                    $expiryDateCost += $vehiclelicenseAmount;
+                    $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $RHPermitAmount);
+                    $hackneyPermitDateCost += $hackneyPermitCost;
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No matching ownership price data found for given criteria.'
+                    ]);
+                }
+            } elseif ( strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'CPN' && ($hackneyPermit)) 
+            {
+                $vehicleCost = $changeofownershipPrice->customised_cost ?? 0;
+                $CVLAmount = $changeofownershipPrice->customised_vehicleLicense ?? 0;
+                $CHPermitAmount = $changeofownershipPrice->customised_hacneyPermit ?? 0;
+                $policeCMRIS = $changeofownershipPrice->customised_policeCmris ?? 0;
+                $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $CVLAmount);
                 $expiryDateCost += $vehiclelicenseAmount;
-                $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $RHPermitAmount);
+                $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $CHPermitAmount);
                 $hackneyPermitDateCost += $hackneyPermitCost;
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No matching ownership price data found for given criteria.'
-                ]);
             }
-        } elseif (strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber === 'CPN' || $hackneyPermit) {
-            $vehicleCost = $changeofownershipPrice->customised_cost ?? 0;
-            $CVLAmount = $changeofownershipPrice->customised_vehicleLicense ?? 0;
-            $CHPermitAmount = $changeofownershipPrice->customised_hacneyPermit ?? 0;
-            $policeCMRIS = $changeofownershipPrice->customised_policeCmris ?? 0;
-            
-            $vehiclelicenseAmount = $this->calculateAmountByDuration($vLExpirydate, $CVLAmount);
-            $hackneyPermitCost = $this->calculateAmountByDuration($hackneyPermit, $CHPermitAmount);
-        }
+        
     
         return response()->json([
             'success' => true,
@@ -241,6 +244,8 @@ class PriceController extends Controller
                 return 0;
         }
     }
+    
+    
     
 
 

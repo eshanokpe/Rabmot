@@ -24,16 +24,21 @@ class AddVehicleRenewalController extends Controller
     }
 
     // VehicleRenewalController.php
-    public function getUserAddVehiclesRenewal()
-    {
+    public function getUserAddVehiclesRenewal(Request $request)
+    { 
         $user = Auth::guard('agent')->user();
         $id = $user->id;
         $userEmail = $user->email;
         $states = State::all();
-        $vehicleCount = AddVehicleRenewal::where('user_id', $id)
+
+        $ownerVehicleRenewal = $request->input('ownerVehicleRenewal');
+        // $ownerUserId = $request->input('ownerUserId');
+
+        $vehicleCount = AddVehicleRenewal::where('id', $id)
                                         ->where('user_email', $userEmail)
                                         ->where('userType', 'agent')->count();
-        $vehicleList = AddVehicleRenewal::where('user_id', $id)
+
+        $vehicleList = AddVehicleRenewal::where('id', $id)
                                         ->where('user_email', $userEmail)
                                         ->where('userType', 'agent')->get();
        
@@ -41,7 +46,9 @@ class AddVehicleRenewalController extends Controller
             'vehicleCount' => $vehicleCount,
             'vehicleList' => $vehicleList,
             'stateList' => $states,
-            'id'=>$id
+            'id'=> $id,
+            'ownerId'=> $ownerId,
+            'ownerVehicleRenewal' => $ownerVehicleRenewal
         ]);
     } 
 

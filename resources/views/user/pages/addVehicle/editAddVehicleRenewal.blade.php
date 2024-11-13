@@ -57,7 +57,7 @@
                                     
                                     <form class="row g-3" method="POST" action="{{ route('update.vehiclePaperRenewal', ['id' => $vehicleId->id]) }}" enctype="multipart/form-data">
                                         @csrf
-                                        @method('PUT')
+                                        @method('PUT') 
                                         <div class="col-sm-6 col-md-4">
                                             <label for="inputFirstName" class="form-label">Vehicle Make (e.g Toyota) <span style="color:red;">*</span></label>
                                             <input required type="text" name="vehiclemake" class="form-control" value="{{ $vehicleId->vehiclemake}}" placeholder="Vehicle Make (e.g Toyota)">
@@ -139,7 +139,7 @@
                                         </div>
                                         <div class="col-sm-6 col-md-6">
                                             <label for="inputAddress2" class="form-label"> Name written on Vehicle Paper <span style="color:red;">*</span></label>
-                                            <input value="{{ $vehicleId->vehiclelicense}}"  required  type="text" class="form-control" name="vehiclename" id="enginenumber" placeholder="Vehicle Name"> 
+                                            <input value="{{ $vehicleId->vehiclename}}"  required  type="text" class="form-control" name="vehiclename" id="enginenumber" placeholder="Vehicle Name"> 
                                         </div>
                                         <div class="col-sm-6 col-md-6">
                                             <label for="inputState" class="form-label">What type of Name is on your document?</label>

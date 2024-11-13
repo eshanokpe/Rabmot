@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/vehicle/paper/renewal', [AddVehicleRenewalController::class, 'vehicleRenewalPaper'])->name('home.vehicleRenewalPaper');
         Route::post('/post-vehicle-paper-renewal', [AddVehicleRenewalController::class, 'postRenewVehiclePaper'])->name('home.postRenewVehiclePaper');
         Route::get('/vehicle-paper-renewal/edit/{encryptedId}', [AddVehicleRenewalController::class, 'editVehiclePaperRenewal'])
-         ->name('edit.vehiclePaperRenewal');
+         ->name('edit.vehiclePaperRenewal'); 
         Route::put('/vehicle-paper-renewal/update/{id}', [AddVehicleRenewalController::class, 'updateVehiclePaperRenewal'])
          ->name('update.vehiclePaperRenewal');
        

@@ -10,7 +10,7 @@ class AddVehicleRenewal extends Model
     use HasFactory; 
     protected $table = 'addvehiclerenewals'; 
     public $fillable = [ 
-        'user_id',
+        'user_id', 
         'userType',
         'user_email',
         'ownerfullname',

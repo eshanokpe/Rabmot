@@ -43,7 +43,7 @@ Route::prefix('agent')->group(function () {
         // Vehicle Paper Renewal
         Route::get('/vehicle/paper/renewal', [AddVehicleRenewalController::class, 'index'])->name('agent.vehicleRenewalPaper');
         Route::post('/state-selection', [AgentDashboardController::class, 'handleStateSelection']);
-        Route::get('/user-selection', [AgentDashboardController::class, 'handleUserSelection']);
+        Route::get('/user-selection', [AgentDashboardController::class, 'handleUserSelection']); 
         Route::post('/vehicleRenewal-vehicleCategoryId-selection', [AddVehicleRenewalController::class, 'handleVehicleCategoryIdSelection']);
         Route::get('/get-user-add-vehicles-renewal', [AddVehicleRenewalController::class, 'getUserAddVehiclesRenewal']);
         Route::post('/vehicleRenewal-addVehicleValue-selection', [AddVehicleRenewalController::class, 'handleAddVehicleValueSelection']);

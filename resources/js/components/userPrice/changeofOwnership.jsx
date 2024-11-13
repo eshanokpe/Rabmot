@@ -38,6 +38,7 @@ export default function ChangeofOwnership() {
     }, [ url]);
 
     useEffect(() => {
+        console.error('Error plateNumber', plateNumber);
         
         const fetchPricing = async () => {
        
@@ -45,7 +46,7 @@ export default function ChangeofOwnership() {
               stateId: stateIdCO,
               vehicleTypeId: vehicleTypeIdCO,
               vehicleLicenseDate:vehicleLicenseDate,
-              numberPlateType: plateNumber,
+              numberPlateType: plateNumber, 
               hacneyPermitDate:hacneyPermitDate
             }).then(response => {
               console.log('Success pricing:', response.data);
@@ -59,7 +60,7 @@ export default function ChangeofOwnership() {
        
         }
         fetchPricing();
-    }, [url, stateIdCO, vehicleTypeIdCO, vehicleLicenseDate, hacneyPermitDate ]);
+    }, [url, stateIdCO, vehicleTypeIdCO, vehicleLicenseDate, hacneyPermitDate, plateNumber ]);
     
     useEffect(() => {
         const calculateTotal = () => {
@@ -196,19 +197,19 @@ export default function ChangeofOwnership() {
                                     <div class="col-md-1 " > </div>
                                 </div>
 
-                               
-                                <div class=" row mt-2 " >
+                                 <div class=" row mt-2 " >
                                     <div class="col-md-1 " > </div>
-                                    <div class="col-10">
+                                    <div class="col-md-10">
                                         <label for="inputState" class="form-label"> Type of Plate Number </label>
                                         <select className="form-select" value={plateNumber} onChange={(e) => setPlateNumber(e.target.value)}>
-                                            <option selected disabled>-- Type of Plate Number: --</option>
+                                            <option  >-- Type of Plate Number: --</option>
                                             <option value="RPN">New Random Plate Number</option>
                                             <option value="CPN">New Customised Plate Number</option>
                                         </select>
                                     </div>
                                     <div class="col-md-1 " > </div>
                                 </div>
+
 
                                 <div class=" row mt-2 " >
                                     <div class="col-md-1 " > </div>
