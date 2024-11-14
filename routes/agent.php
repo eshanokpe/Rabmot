@@ -42,8 +42,8 @@ Route::prefix('agent')->group(function () {
         // process document
         // Vehicle Paper Renewal
         Route::get('/vehicle/paper/renewal', [AddVehicleRenewalController::class, 'index'])->name('agent.vehicleRenewalPaper');
-        Route::post('/state-selection', [AgentDashboardController::class, 'handleStateSelection']);
-        Route::get('/user-selection', [AgentDashboardController::class, 'handleUserSelection']); 
+        Route::post('/owner-vehicleRenewal-selection', [AddVehicleRenewalController::class, 'handleOwnerVehicleSelection']);
+        Route::get('/user-selection', [AgentDashboardController::class, 'handleUserSelection']);
         Route::post('/vehicleRenewal-vehicleCategoryId-selection', [AddVehicleRenewalController::class, 'handleVehicleCategoryIdSelection']);
         Route::get('/get-user-add-vehicles-renewal', [AddVehicleRenewalController::class, 'getUserAddVehiclesRenewal']);
         Route::post('/vehicleRenewal-addVehicleValue-selection', [AddVehicleRenewalController::class, 'handleAddVehicleValueSelection']);
@@ -52,6 +52,8 @@ Route::prefix('agent')->group(function () {
         
         // Vehicle Registration
         Route::get('/new/vehicle/registration', [AddVehicleRegistrationController::class, 'index'])->name('agent.newVehicleRegistration');
+        Route::get('/ownerVehicleRegistration-selection', [AddVehicleRegistrationController::class, 'handleOwnerSelection']);
+        Route::post('/owner-vehicleRegistration-selection', [AddVehicleRegistrationController::class, 'handleOwnerVehicleSelection']);
         Route::get('/get-user-add-vehicles-registration', [AddVehicleRegistrationController::class, 'getUserAddVehiclesRegistration']);
         Route::post('/vehicleRegistration-vehicleCategoryId-selection', [AddVehicleRegistrationController::class, 'handleVehicleCategoryIdSelection']);
         Route::post('/vehicleRegistration-addVehicleRegCost', [AddVehicleRegistrationController::class, 'handleVehicleRegCost']);
@@ -59,6 +61,9 @@ Route::prefix('agent')->group(function () {
 
         // ChangeofOwnership
         Route::get('/changeofOwnership', [AddVehicleOwnershipController::class, 'index'])->name('agent.changeofOwnership');
+        Route::get('/owner-vehicleOwnership-selection', [AddVehicleOwnershipController::class, 'handleOwnerSelection']);
+        Route::post('/owner-vehicleOwnership-vehicleCategory', [AddVehicleOwnershipController::class, 'handleOwnerVehicleSelection']);
+       
         Route::get('/get-user-add-vehicles-ownership', [AddVehicleOwnershipController::class, 'getUserAddVehiclesOwnership']);
         Route::post('/vehicleOwnershipCost', [AddVehicleOwnershipController::class, 'handleVehicleOwnershipCost']);
         Route::post('/vehicleOwnership-vehicleCategoryId-selection', [AddVehicleOwnershipController::class, 'handleVehicleCategoryIdSelection']);

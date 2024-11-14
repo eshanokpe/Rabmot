@@ -23,7 +23,8 @@ class ChangeOfOwnership extends Model
         'phonenumber',
         'emailaddress',
         'gender',
-        'occupation',
+        'occupation', 
+        'platenumber',
         'vehiclelicenseexpiry',
         'insuranceexpiry',
         'roadworthinessexpiry',
@@ -53,6 +54,6 @@ class ChangeOfOwnership extends Model
 
     public function ownerInfo()
     {
-        return $this->belongsTo(User::class, 'owner_id', 'id');
+        return $this->belongsTo(AddVehicleOwnership::class, 'owner_id', 'id');
     }
 }

@@ -25,6 +25,20 @@ class AddVehicleRegistrationController extends Controller
         return view('agent.pages.process.newVehicleRegistration',$data);
     }
 
+    public function handleOwnerSelection() 
+    {
+        $user = Auth::guard('agent')->user();
+
+        $userList = AddVehicleRegistration::where('userType', 'agent')
+        ->where('user_id', $user->id)
+        ->get();
+
+        return response()->json([
+            'userList' => $userList,
+            'userId' => $user->id,
+        ]);
+    }
+
     public function getUserAddVehiclesRegistration()
     {
         $user = Auth::guard('agent')->user();
@@ -49,14 +63,18 @@ class AddVehicleRegistrationController extends Controller
         ]);
     }
 
-    public function handleStateSelection(Request $request)
+    public function handleOwnerVehicleSelection(Request $request)
     {
         $user = Auth::guard('agent')->user();
         $userId = $user->id;
         $userEmail = $user->email;
-
+        $ownerId = $request->input('ownerId');
         $stateId = $request->input('stateId');
-        $addVehicleregistration = AddVehicleRegistration::where('user_id', $userId)->get();
+
+        $addVehicleregistration = AddVehicleRegistration::where('user_id', $userId)
+                                            ->where('user_email', $userEmail)
+                                            ->where('id', $ownerId)
+                                            ->where('userType', 'agent')->get();
 
         $vehicleCategories = $addVehicleregistration->pluck('category')->unique();
         $stateVehicleList = collect();
@@ -75,6 +93,40 @@ class AddVehicleRegistrationController extends Controller
             'stateId' => $stateId,
             'stateVehicleList' => $stateVehicleList,
 
+        ]);
+    }
+
+    public function handleOwnerVehicleSelectionn(Request $request)
+    {
+        $user = Auth::guard('agent')->user();
+        $userId = $user->id;
+        $userEmail = $user->email;
+        $stateId = $request->input('stateId');
+        $ownerId = $request->input('ownerId');
+
+        $addVehiclerenewal = AddVehicleRegistration::where('user_id', $userId)
+                                            ->where('user_email', $userEmail)
+                                            ->where('id', $ownerId)
+                                            ->where('userType', 'agent')->get();
+
+        $vehicleCategories = $addVehiclerenewal->pluck('category')->unique();
+        $stateVehicleList = collect();
+        foreach ($vehicleCategories as $category) { 
+            $results = VehicleRegistrationPrice::with(['vehicleType', 'stateInfo'])
+                ->where('state_id', $stateId)
+                ->where('vehicleType_id', $category)
+                ->get();
+            
+            $stateVehicleList = $stateVehicleList->merge($results); 
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'State ID received successfully',
+            'stateId' => $stateId,
+            'addVehiclerenewal' => $addVehiclerenewal,
+            'vehicleCategories' => $vehicleCategories,
+            'stateVehicleList' => $stateVehicleList,
         ]);
     }
 

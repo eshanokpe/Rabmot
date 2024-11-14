@@ -35,6 +35,6 @@ class VehiclePaperRenewal extends Model
 
     public function ownerInfo()
     {
-        return $this->belongsTo(User::class, 'owner_id', 'id');
+        return $this->belongsTo(AddVehicleRenewal::class, 'owner_id', 'id');
     }
 }

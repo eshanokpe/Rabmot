@@ -32,25 +32,27 @@ export default function VehicleRegistration() {
     const [preferredNumber, setPreferredNumber] = useState('');
 
     const handleUserChange = (event) => {
-        const selectedUserId = event.target.value;
-        setUserId(selectedUserId);
-    }
-
-    const handleStateChange = (event) => {
-        const selectedStateId = event.target.value;
-        setStateId(selectedStateId);
-
-        if (selectedStateId) {
-            axios.post(`${url}/agent/state-selection`, { 
-                stateId: selectedStateId 
+        const selectedOwnerId = event.target.value;
+        setUserId(selectedOwnerId);
+        setVehicleCategoryId('');
+        if (selectedOwnerId && stateId) {
+            axios.post(`${url}/agent/owner-vehicleRegistration-selection`, { 
+                stateId: stateId ,
+                ownerId: selectedOwnerId,
             }).then(response => {
                 setStateVehicleList(response.data.stateVehicleList);
             }).catch(error => {
                 console.error('Error sending stateId:', error);
             });
         }
+    }
+
+    const handleStateChange = (event) => {
+        const selectedStateId = event.target.value;
+        setStateId(selectedStateId);
+        
         if (selectedStateId) {
-            axios.get(`${url}/agent/user-selection`)
+            axios.get(`${url}/agent/ownerVehicleRegistration-selection`)
             .then(response => {
                 setUserList(response.data.userList);
             })
@@ -364,7 +366,7 @@ export default function VehicleRegistration() {
                                                         <option disabled value="">-- Select Vehicle Type --</option>
                                                         {stateVehicleList.map((vehicleType) => (
                                                         <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                            {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                            {vehicleType.vehicle_type.name} 
                                                         </option>
                                                         ))}
                                                     </select>

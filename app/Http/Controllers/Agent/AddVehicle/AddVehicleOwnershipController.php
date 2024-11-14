@@ -41,6 +41,20 @@ class AddVehicleOwnershipController extends Controller
         return view('agent.pages.process.changeofownership', compact('user','email', 'id', 'vehicleList', 'vehicleitem', 'vehicleCount', 'state'));
     }
 
+    public function handleOwnerSelection() 
+    {
+        $user = Auth::guard('agent')->user();
+
+        $userList = AddVehicleOwnership::where('userType', 'agent')
+        ->where('user_id', $user->id)
+        ->get();
+
+        return response()->json([
+            'userList' => $userList,
+            'userId' => $user->id,
+        ]);
+    }
+
     public function getUserAddVehiclesOwnership()
     {
         $user = Auth::guard('agent')->user();
@@ -64,15 +78,16 @@ class AddVehicleOwnershipController extends Controller
         ]);
     }
 
-    public function handleStateSelection(Request $request)
+    public function handleOwnerVehicleSelection(Request $request)
     {
         $user = Auth::guard('agent')->user();
         $userId = $user->id;
         $userEmail = $user->email;
-
+        $ownerId = $request->input('ownerId');
         $stateId = $request->input('stateId');
         $addVehicleregistration = AddVehicleOwnership::where('user_id', $userId)
                                                         ->where('user_email', $userEmail)
+                                                        ->where('id', $ownerId)
                                                         ->where('userType', 'agent')
                                                         ->get();
 
@@ -323,9 +338,10 @@ class AddVehicleOwnershipController extends Controller
             'process_type' => 'Change of Ownership',
             'vehicle_category' => $vehicleType,
             'vehiclelicenseexpiry_date' => $vLExpirydate,
-            'hacneypermit' => $hackneyPermit,
+            'vehiclelicenseexpiry' => $vLExpirydate,
+            'hackneypermitexpiry' => $hackneyPermit, 
             'platenumber' => $plateType,
-
+            'policeCMRIS' => $policeCMRISTotal,
             'payment_status' => 0.00,
             'totalamount' => $totalAmount,
         ]);

@@ -105,7 +105,7 @@
                                                         <td>{{ $orderNumber }}</td> 
                                                         <td>
                                                             {{ $item->model->process_id }}
-                                                            @if($item->model->owner_id != null) <b><br/> ({{$item->model->ownerInfo->fullname}})</b> @endif
+                                                            @if($item->model->owner_id != null) <b><br/> ({{$item->model->ownerInfo->ownerfullname}})</b> @endif
                                                             @if($item->model->process_type == 'Dealer`s Plate Number') <br/> <b>({{$item->model->fullname}})</b> @endif
                                                             @if($item->model->process_type == 'New Driver License') <br/> <b>({{$item->model->lastname}} {{$item->model->firstname}})</b> @endif
                                                             @if($item->model->process_type == 'Driver License Renewal') <br/> <b>({{$item->model->lastname}} {{$item->model->firstname}})</b> @endif
@@ -126,6 +126,8 @@
                                                                 Validity: {{ isset($newdriverlicense) ? $newdriverlicense->lengthofyear : 'N/A' }} Years
                                                             @elseif ($item->model->process_type == 'Change of Ownership')
                                                                 {{ $item->model->vehicle_category }}<br>
+                                                                @if($item->model->platenumber != null) {{$item->model->platenumber}}<br> @endif
+                                                                
                                                                 @if ($item->model->vehiclelicenseexpiry)
                                                                     Vehicle Expiring Date<br>
                                                                 @endif

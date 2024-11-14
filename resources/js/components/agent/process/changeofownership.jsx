@@ -31,8 +31,19 @@ export default function ChangeofOwnership() {
     const [isPoliceCmrisChecked, setIsPoliceCmrisChecked] = useState(false);
 
     const handleUserChange = (event) => {
-        const selectedUserId = event.target.value;
-        setUserId(selectedUserId);
+        const selectedOwnerId = event.target.value;
+        setUserId(selectedOwnerId);
+        setVehicleCategoryId('');
+        if(selectedOwnerId && stateId){
+            axios.post(`${url}/agent/owner-vehicleOwnership-vehicleCategory`, { 
+                stateId: stateId ,
+                ownerId: selectedOwnerId,
+            }).then(response => {
+                setStateVehicleList(response.data.stateVehicleList || []);
+            }).catch(error => {
+                console.error('Error sending stateId:', error);
+            });
+        }
     }
 
     useEffect(() => {
@@ -73,16 +84,10 @@ export default function ChangeofOwnership() {
         };
         calculateTotalAmount();
 
-        axios.post(`${url}/agent/state-selection`, { 
-            stateId 
-        }).then(response => {
-            setStateVehicleList(response.data.stateVehicleList || []);
-        }).catch(error => {
-            console.error('Error sending stateId:', error);
-        });
+      
 
         if (stateId) {
-            axios.get(`${url}/agent/user-selection`)
+            axios.get(`${url}/agent/owner-vehicleOwnership-selection`)
             .then(response => {
                 setUserList(response.data.userList);
             })
@@ -135,8 +140,7 @@ export default function ChangeofOwnership() {
         }
     };
     const handleSelectChange = (event, option) => {
-        // console.log(`plateType:${plateType}`,);
-
+       
         const value = event.target.value;
         switch (option) {
             case 'stateId':
@@ -308,7 +312,7 @@ export default function ChangeofOwnership() {
                                                             <div className=" col-md-10">
                                                                 <label className="form-label">Select Owner</label>
                                                                 <select
-                                                                    required
+                                                                    required 
                                                                     value={userId || ''}
                                                                     onChange={handleUserChange}
                                                                     name="userId"
@@ -334,7 +338,7 @@ export default function ChangeofOwnership() {
                                                                 <option disabled value="">-- Select Vehicle Type --</option>
                                                                 {stateVehicleList.map((vehicleType) => (
                                                                 <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                    {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                    {vehicleType.vehicle_type.name}
                                                                 </option>
                                                                 ))}
                                                             </select>

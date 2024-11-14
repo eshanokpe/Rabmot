@@ -73,9 +73,9 @@
                                                     @foreach($cartContent as $item)
                                                         <tr>
                                                             <td>{{ $item->model->process_id }}</td>
-                                                            <td>
+                                                            <td> 
                                                                 {{ $item->model->process_type }}
-                                                                @if($item->model->owner_id != null) <b><br/> ({{$item->model->ownerInfo->fullname}})</b> @endif
+                                                                @if($item->model->owner_id != null) <b><br/> ({{$item->model->ownerInfo->ownerfullname}})</b> @endif
                                                                 @if($item->model->process_type == 'Dealer`s Plate Number') <br/> <b>({{$item->model->fullname}})</b> @endif
                                                                 @if($item->model->process_type == 'New Driver License') <br/> <b>({{$item->model->lastname}} {{$item->model->firstname}})</b> @endif
                                                                 @if($item->model->process_type == 'Driver License Renewal') <br/> <b>({{$item->model->lastname}} {{$item->model->firstname}})</b> @endif
@@ -92,6 +92,7 @@
                                                             @elseif($item->model->process_type == 'Change of Ownership')
                                                                 <td>
                                                                     {{ $item->model->vehicle_category }}<br>
+                                                                    @if($item->model->platenumber != null) {{$item->model->platenumber}}<br> @endif
                                                                     @if($item->model->vehiclelicenseexpiry != null) Vehicle Expiring Date<br> @endif
                                                                     @if($item->model->insuranceexpiry != null) Insurance Expiring Date<br> @endif
                                                                     @if($item->model->roadworthinessexpiry != null) Roadworthiness Expiring Date <br> @endif

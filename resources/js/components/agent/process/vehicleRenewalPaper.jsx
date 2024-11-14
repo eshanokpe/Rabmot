@@ -42,17 +42,13 @@ export default function AgentVehicleRenewalPaper() {
     const [policeCMRISTotal, setPoliceCMRISTotal] = useState(0);
 
     const handleUserChange = (event) => {
-        const selectedUserId = event.target.value;
-        setUserId(selectedUserId);
-    }
-    const handleStateChange = (event) => {
-        const selectedStateId = event.target.value;
-        setStateId(selectedStateId);
         setVehicleCategoryId('');
-
-        if (selectedStateId) {
-            axios.post(`${url}/agent/state-selection`, {
-                stateId: selectedStateId,
+        const selectedOwnerId = event.target.value;
+        setUserId(selectedOwnerId);
+        if(selectedOwnerId && stateId){
+            axios.post(`${url}/agent/owner-vehicleRenewal-selection`, {
+                stateId: stateId,
+                ownerId: selectedOwnerId,
             })
             .then(response => {
                 console.log('Successfully sent stateId:', response.data);
@@ -62,6 +58,13 @@ export default function AgentVehicleRenewalPaper() {
                 console.error('Error sending stateId:', error);
             });
         }
+    }
+    const handleStateChange = (event) => {
+        const selectedStateId = event.target.value;
+        setStateId(selectedStateId);
+        setVehicleCategoryId('');
+
+        
         if (selectedStateId) {
             axios.get(`${url}/agent/user-selection`)
             .then(response => {
@@ -137,8 +140,6 @@ export default function AgentVehicleRenewalPaper() {
                 setHackneyPermitCost(response.data.hackneyPermitCost);
                 setPoliceCMRISCost(response.data.policeCmrisCost);
                 setVehicleInspectionPickanddropCost(response.data.vehicleInspectionPickanddropCost);
-
-               
             })
             .catch(error => {
                 console.error('Error sending vehicleCategoryId:', error);
@@ -147,7 +148,6 @@ export default function AgentVehicleRenewalPaper() {
     };
 
     useEffect(() => {
-        
         axios.get(`${url}/agent/get-user-add-vehicles-renewal`)
             .then(response => {
                 setVehicleCount(response.data.vehicleCount);
@@ -190,8 +190,6 @@ export default function AgentVehicleRenewalPaper() {
         setHackneyPermitTotal(hackneyPermitTotal);
         setPoliceCMRISTotal(policeCMRISTotal);
         setVehicleInspectionPickanddropTotal(vehicleInspectionPickanddropTotal);
-
-        
     };
     calculateTotalAmount();
     },[
@@ -424,7 +422,7 @@ export default function AgentVehicleRenewalPaper() {
                                                                     <option disabled value="">-- Select Vehicle Type --</option>
                                                                     {stateVehicleList.map((vehicleType) => (
                                                                         <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                            {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                            {vehicleType.vehicle_type.name} 
                                                                         </option>
                                                                     ))}
                                                                 </select>
@@ -596,4 +594,3 @@ if (document.getElementById('agentVehicleRenewalPaper')) {
         </React.StrictMode> 
     ); 
 }
-

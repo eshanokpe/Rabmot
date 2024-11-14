@@ -23,7 +23,7 @@ class AddVehicleRenewal extends Model
         'chassisnumber',
         'enginenumber', 
         'vehiclecolor',
-        'vehiclename',
+        'vehiclename', 
         'vehicledocumentname',
         'ownersphonenumber',
         'registeredaddressofvehicle',
@@ -52,4 +52,6 @@ class AddVehicleRenewal extends Model
     {
         return $this->belongsTo(VehicleType::class, 'category');
     }
+
+    
 }

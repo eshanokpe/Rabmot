@@ -106,7 +106,7 @@ class AgentDashboardController extends Controller
 
         return response()->json([
             'userList' => $userList,
-            'userId' => $user->id,
+            'userId' => $user->id, 
         ]);
     }
 
@@ -117,6 +117,8 @@ class AgentDashboardController extends Controller
         $email = $user->email;
 
         $processhistory = ProcessHistory::where('user_id', $id)
+                                        ->where('user_email', $email)
+                                        ->where('userType', 'agent')
                                         ->latest()
                                         ->get();
 
@@ -139,7 +141,9 @@ class AgentDashboardController extends Controller
         $email = $user->email;
 
         $transactionhistory = ProcessHistory::where('user_id', $id)
-                                        ->get();
+                                            ->where('userType', $email)
+                                            ->where('userType', 'agent')
+                                            ->get();
 
         return view('agent.pages.transactionhistory', compact('id', 'email', 'transactionhistory'));
     }
