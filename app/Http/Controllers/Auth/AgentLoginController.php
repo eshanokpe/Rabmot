@@ -13,7 +13,7 @@ use App\Models\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Models\PasswordModel;
-use Mail;
+use Mail; 
 use Carbon\Carbon;
 use App\Mail\AgentEmailForgetPassword;
  
@@ -124,9 +124,12 @@ class AgentLoginController extends Controller
         return redirect()->back()->with('success', 'Password updated successfully. You can now login.');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('agent')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('agent.login');
     }
 }

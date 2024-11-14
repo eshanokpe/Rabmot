@@ -1,5 +1,5 @@
-@extends('user.layouts.app') 
-@section('content')
+@extends('agent.layouts.app') 
+@section('content') 
 <style>
     .order-status {
         padding: 5px;

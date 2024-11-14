@@ -84,44 +84,29 @@
             </a>
         </li>
 
-        <li>
-
+        {{-- <li>
             <a href="{{ route('topics.index') }}">
-
                 <div class="parent-icon icon-color-13"><i class="bx bx-chat"></i>
-
                 </div>
-
                 <div class="menu-title">Discussions</div>
-
             </a>
-
+        </li> --}}
+        <li>
+            <a href="{{ route('agent.faq') }}">
+                <div class="parent-icon icon-color-13"><i class="bx bx-help-circle"></i>
+                </div>
+                <div class="menu-title">FAQ</div>
+            </a>
         </li>
 
         <li>
-
-					<a href="{{ route('home.faq') }}">
-
-						<div class="parent-icon icon-color-13"><i class="bx bx-help-circle"></i>
-
-						</div>
-
-						<div class="menu-title">FAQ</div>
-
-					</a>
-
-				</li>
-
-        
-
-        <li>
-            <a  href="{{ route('logout') }}" onclick="event.preventDefault();
+            <a  href="{{ route('agent.logout') }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit()">
                 <div class="parent-icon icon-color-13"><i class="bx bx-power-off"></i>
                 </div>
                 <div class="menu-title">Logout</div>
             </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            <form id="logout-form" action="{{ route('agent.logout') }}" method="POST" class="d-none">
                 @csrf
             </form>
         </li>

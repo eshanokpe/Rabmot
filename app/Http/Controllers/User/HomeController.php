@@ -109,7 +109,7 @@ class HomeController extends Controller
     }
 
    
-   
+    
     public function faq()
     {
         $id = Auth::user()->id;

@@ -117,6 +117,8 @@ Route::prefix('agent')->group(function () {
         Route::post('update-profile', [ProfileController::class, 'updateProfile']);
         Route::get('profile', [ProfileController::class, 'index'])->name('agent.profile');
 
+        Route::get('faq', [AgentDashboardController::class, 'faq'])->name('agent.faq');
+
         Route::post('/logout', [AgentLoginController::class, 'logout'])->name('agent.logout');
 
     });

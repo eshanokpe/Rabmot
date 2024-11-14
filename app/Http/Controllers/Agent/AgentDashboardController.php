@@ -145,7 +145,7 @@ class AgentDashboardController extends Controller
                                             ->where('userType', 'agent')
                                             ->get();
 
-        return view('agent.pages.transactionhistory', compact('id', 'email', 'transactionhistory'));
+        return view('agent.pages.transactionhistory', compact('user','id', 'email', 'transactionhistory'));
     }
 
     public function deletetransactionhistory(Request $request){
@@ -155,6 +155,15 @@ class AgentDashboardController extends Controller
         return response()->json([
             'message' => 'Transaction History deleted successfully', 
         ]);
+    }
+
+    public function faq()
+    {
+        $user = Auth::guard('agent')->user();
+        $id = $user->id;
+        $email = $user->email;
+
+       return view('agent.pages.faq', compact('id', 'email','user'));
     }
 
 

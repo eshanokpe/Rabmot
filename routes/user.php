@@ -100,8 +100,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
-    
-        Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
+     
         Route::get('success', [HomeController::class, 'success'])->name('home.success');
         Route::get('deleteprocesshistory', [HomeController::class, 'deleteprocesshistory'])->name('home.deleteprocesshistory');
         Route::get('deletetransactionhistory', [HomeController::class, 'deletetransactionhistory'])->name('home.deletetransactionhistory');
