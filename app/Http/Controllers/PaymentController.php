@@ -123,7 +123,7 @@ class PaymentController extends Controller{
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        dd($data);
+        // dd($data);
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $cartItems = Cart::content();
