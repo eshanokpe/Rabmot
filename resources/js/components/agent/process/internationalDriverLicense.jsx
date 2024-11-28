@@ -5,12 +5,13 @@ import axios from 'axios';
 export default function InternationalDriverLicense() {
     
     const url = window.location.origin;
+    const [buttonloading, setButtonLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
     const [lengthYearList, setLengthYearsList] = useState([]);
     const [lengthYear, setLengthYear] = useState('');
-
     
     const [firstName, setSelectedFirstName] = useState('');
     const [middleName, setSelectedMiddleName] = useState('');
@@ -129,7 +130,7 @@ export default function InternationalDriverLicense() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setButtonLoading(true);
         const formData = new FormData();
         formData.append('userType', 'agent');
         formData.append('stateId', stateId);
@@ -159,6 +160,7 @@ export default function InternationalDriverLicense() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/agent/cart`;
+                setButtonLoading(false);
             },1100)
             setErrors({});
         } catch (error) {
@@ -425,8 +427,15 @@ export default function InternationalDriverLicense() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={buttonloading} 
+                                                >
+                                                    {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                                </button>
                                             </div>
                                         </form>
                                     </div>

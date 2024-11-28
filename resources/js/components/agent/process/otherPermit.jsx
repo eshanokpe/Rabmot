@@ -12,10 +12,12 @@ import DriverLicenseReIssue from  './otherPermit/DriverLicenseReIssue';
 import LearnerPermit from  './otherPermit/LearnerPermit';
 import TintedPermit from './otherPermit/TintedPermit';
 import CMRIS from './otherPermit/CMRIS';
-
+ 
 export default function OtherPermit() {
 
 const url = window.location.origin;
+const [loading, setLoading] = useState(false);
+
 const [permitType, setPermitType] = useState([]);
 const [permitTypeId, setPermitTypeId] = useState('');
 //RiderCard
@@ -100,7 +102,7 @@ const [errors, setErrors] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('userType', 'agent');
         formData.append('permitTypeId', permitTypeId);
@@ -155,6 +157,7 @@ try {
         console.log('Upload successful', response.data);
         setTimeout(()=>{
         window.location.href = `${url}/agent/cart`;
+        setLoading(false);
         },1100)
         setErrors({});
     } catch (error) {
@@ -433,8 +436,15 @@ return (
                                     </div>
 
 
-                                    <div className=" col-md-12 align-items-center text-center ">
-                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                    
+                                    <div className="col-md-12 align-items-center text-center">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary"
+                                            disabled={loading} 
+                                        >
+                                            {loading ? 'Processing...' : 'Process Payment'} 
+                                        </button>
                                     </div>
                                 </form>
                             </div>

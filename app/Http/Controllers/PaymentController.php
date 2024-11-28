@@ -46,6 +46,7 @@ class PaymentController extends Controller{
             "paymentReference" => $transaction_ref,
             "productType" => $process_type,
             "productId" => $process_id,
+            "request" => $$request->all();
         ];
   
         // Initiate the payment request
@@ -113,13 +114,12 @@ class PaymentController extends Controller{
             Session::flash('error', 'Payment initiation failed!');
             return redirect()->route('home.cart'); // Redirect to cart or another appropriate page
         }
-       
     }
    
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        
+        dd($data);
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $cartItems = Cart::content();
@@ -161,7 +161,7 @@ class PaymentController extends Controller{
                     'status' => 0,
                 ]);
             }
-            
+             
             if($payment->save()){    
                 $user = User::where('email',$email)->get()->first();
                 $user_email = new PendingMode($user); 

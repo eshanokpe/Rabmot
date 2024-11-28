@@ -11,8 +11,6 @@
     <!--page-content-wrapper-->
     <div class="page-content-wrapper">
          <!--header-->
-		
-
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -240,31 +238,31 @@
                                     @csrf
                                     <div class="col-12 col-sm-8">
                                         <label for="">Delivery Option</label>
-                                        <select id="selection" required name="permitType" id="permitType" class="form-select mb-3">
-                                            <option disabled selected="selected" value=""> Choose Delivery Option</option>
-                                    
-                                            <option value="1"> Scan and send to mail</option>
-                                            <option value="2"> Pick Up from nearest location </option>
-                                            <option value="3"> Delivery to door step </option>
+                                        <select id="selection" required name="delivery_option" class="form-select mb-3">
+                                            <option disabled selected value="">Choose Delivery Option</option>
+                                            <option data-type="email" value="1">Scan and send to mail</option>
+                                            <option data-type="pickup" value="2">Pick Up from nearest location</option>
+                                            <option data-type="delivery" value="3">Delivery to door step</option>
                                         </select>
+                                        
+                                      
                                     </div>
-                                    <div id="elementToHide1" class="col-sm-8 hidden mb-3">
+                                    <div id="elementToHide1" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Enter Email Address</label>
-                                        <input type="text" class="form-control" placeholder="email address" value="{{ $email }}" >
+                                        <input type="text" name="email" class="form-control" placeholder="email address" value="{{ $email }}" >
                                        
                                     </div>
-                                    <div id="elementToHide2" class="col-sm-8 hidden mb-3">
+                                    <div id="elementToHide2" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Select Location</label>
-                                        <select id="selection2"  name="permitType" id="permitType"class="form-select">
-                                            <option disabled selected="selected" value=""> Choose Preferred State</option>
-                                    
-                                            <option value="1"> Lagos</option>
-                                            <option value="2"> Abuja </option>
-                                            <option value="3"> Port Harcourt</option>
-                                            <option value="4"> Abeokuta</option>
-                                            <option value="5"> Ibadan</option>
+                                        <select id="selection2"  name="location" id="location"class="form-select">
+                                            <option disabled selected value="">Choose Preferred State</option>
+                                            <option data-id="lagos" value="1">Lagos</option>
+                                            <option data-id="abuja" value="2">Abuja</option>
+                                            <option data-id="portharcourt" value="3">Port Harcourt</option>
+                                            <option data-id="abeokuta" value="4">Abeokuta</option>
+                                            <option data-id="ibadan" value="5">Ibadan</option>
                                         </select>
-                                        <div id="elementToHide21" class="col-sm-8 hidden mt-3">
+                                        <div id="elementToHide21" style="display: none;" class="col-sm-8 hidden mt-3">
                                             <p>
                                                 <b>Lagos Office Address</b><br>
                                             1st floor AMG Workspace 22 Road,
@@ -296,9 +294,9 @@
                                             </p>
                                         </div>                                    
                                     </div>
-                                    <div id="elementToHide3" class="col-sm-8 hidden">
+                                    <div id="elementToHide3" style="display: none;" class="col-sm-8 hidden">
                                         <label for="">Enter Address</label>
-                                        <input type="text" class="form-control" placeholder="your address" >
+                                        <textarea  class="form-control" name="address" placeholder="Your address" ></textarea>
                                         <br>
                                     </div>
                                    
@@ -327,92 +325,64 @@
 
 <!--end page-wrapper-->
 <script>
-    var selection1 = document.getElementById("selection2");
-    var elementToHide21 = document.getElementById("elementToHide21");
-    var elementToHide22 = document.getElementById("elementToHide22");
-    var elementToHide23 = document.getElementById("elementToHide23");
-    var elementToHide24 = document.getElementById("elementToHide24");
-    var elementToHide25 = document.getElementById("elementToHide25");
-    selection1.addEventListener("change", function() {
-        if (selection1.value === "1") {
+    const selection1 = document.getElementById("selection2");
+    const elementToHide21 = document.getElementById("elementToHide21");
+    const elementToHide22 = document.getElementById("elementToHide22");
+    const elementToHide23 = document.getElementById("elementToHide23");
+    const elementToHide24 = document.getElementById("elementToHide24");
+    const elementToHide25 = document.getElementById("elementToHide25");
+
+    selection1.addEventListener("change", function () {
+        const selectedOption = selection1.options[selection1.selectedIndex];
+        const selectedId = selectedOption.dataset.id;
+
+        // Hide all elements initially
+        elementToHide21.style.display = "none";
+        elementToHide22.style.display = "none";
+        elementToHide23.style.display = "none";
+        elementToHide24.style.display = "none";
+        elementToHide25.style.display = "none";
+
+        // Show the relevant element based on data-id
+        if (selectedId === "lagos") {
             elementToHide21.style.display = "block";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "2") {
+        } else if (selectedId === "abuja") {
             elementToHide22.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "3") {
+        } else if (selectedId === "portharcourt") {
             elementToHide23.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "4") {
+        } else if (selectedId === "abeokuta") {
             elementToHide24.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "5") {
+        } else if (selectedId === "ibadan") {
             elementToHide25.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-        }
-        else {
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-    })
-</script>
-<script>
-    var selection = document.getElementById("selection");
-    var elementToHide1 = document.getElementById("elementToHide1");
-    var elementToHide2 = document.getElementById("elementToHide2");
-    var elementToHide3 = document.getElementById("elementToHide3");
-    
-    selection.addEventListener("change", function() {
-    if (selection.value === "1") {
-        elementToHide1.style.display = "block";
-        elementToHide2.style.display = "none";
-        elementToHide3.style.display = "none";
-        elementToHide21.style.display = "none";
-        elementToHide22.style.display = "none";
-        elementToHide23.style.display = "none";
-        elementToHide24.style.display = "none";
-        elementToHide25.style.display = "none";
-    } else if (selection.value === "2") {
-        elementToHide2.style.display = "block";
-        elementToHide1.style.display = "none";
-        elementToHide3.style.display = "none";
-    } else if (selection.value === "3") {
-        elementToHide3.style.display = "block";
-        elementToHide1.style.display = "none";
-        elementToHide2.style.display = "none";
-        elementToHide21.style.display = "none";
-        elementToHide22.style.display = "none";
-        elementToHide23.style.display = "none";
-        elementToHide24.style.display = "none";
-        elementToHide25.style.display = "none";
-    }else {
-            elementToHide1.style.display = "none";
-            elementToHide2.style.display = "none";
-            elementToHide3.style.display = "none";
         }
     });
+
+</script>
+<script>
+    const selection = document.getElementById("selection");
+    const elementToHide1 = document.getElementById("elementToHide1");
+    const elementToHide2 = document.getElementById("elementToHide2");
+    const elementToHide3 = document.getElementById("elementToHide3");
+
+    selection.addEventListener("change", function () {
+        const selectedOption = selection.options[selection.selectedIndex];
+        const selectedType = selectedOption.dataset.type;
+
+        // Hide all elements initially
+        elementToHide1.style.display = "none";
+        elementToHide2.style.display = "none";
+        elementToHide3.style.display = "none";
+
+        // Show the corresponding element based on data-type
+        if (selectedType === "email") {
+            elementToHide1.style.display = "block";
+        } else if (selectedType === "pickup") {
+            elementToHide2.style.display = "block";
+        } else if (selectedType === "delivery") {
+            elementToHide3.style.display = "block";
+        }
+    });
+
 </script>
 
 

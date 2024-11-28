@@ -4,7 +4,9 @@ import axios from 'axios';
 
 export default function NewDriverLicense() {
     
-    const url = window.location.origin;
+    const url = window.location.origin; 
+    const [buttonloading, setButtonLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
@@ -143,7 +145,7 @@ export default function NewDriverLicense() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setButtonLoading(true);
         const formData = new FormData();
         formData.append('userType', 'agent');
         formData.append('stateId', stateId);
@@ -177,6 +179,7 @@ export default function NewDriverLicense() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/agent/cart`;
+                setButtonLoading(false);
             },1100)
             setErrors({});
         } catch (error) {
@@ -480,9 +483,9 @@ export default function NewDriverLicense() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
-                                            </div>
+                                            <button type="submit" className="btn btn-primary" disabled={buttonloading} >
+                                                {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                            </button>
                                         </form>
                                     </div>
                                 </div>

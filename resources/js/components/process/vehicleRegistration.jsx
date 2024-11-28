@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function VehicleRegistration() {
      
     const url = window.location.origin; 
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -168,6 +170,8 @@ export default function VehicleRegistration() {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButtonLoading(true);
+        
         const formData = {
             stateId,
             vehicleCategoryId,
@@ -195,6 +199,7 @@ export default function VehicleRegistration() {
             setVehicleList(response.data.vehicleList);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setButtonLoading(false);
             },1100)
         })
         .catch(error => {
@@ -504,8 +509,14 @@ export default function VehicleRegistration() {
                                                     </div>
 
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonLoading} 
+                                                        >
+                                                            {buttonLoading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

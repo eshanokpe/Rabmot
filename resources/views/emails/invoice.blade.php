@@ -157,7 +157,7 @@
                             <p>1st floor AMG Workspace 22 Road, Festac Town, Lagos Nigeria</p>
                             <p>info@rabmotlicensing.com, suppport@rabmotlicensing.com</p>
                             <p>Phone: +234815 520 6810, +234708 817 3662, 07088173662</p>
-                            <p>Company ID: BN 3510510</p>
+                            <p>Company ID: RC 7488687</p>
                             <p>Website: www.rabmotlicensing.com</p>
                         </div>
                     </div>

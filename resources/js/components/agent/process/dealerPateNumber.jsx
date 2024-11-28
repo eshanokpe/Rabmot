@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function DealerPateNumber() {
     
     const url = window.location.origin;
+    const [buttonloading, setButtonLoading] = useState(false);
+
     const [stateId, setStateId] = useState('');
     const [stateList, setStateList] = useState([]);
     const [lengthYearsList, setLengthYearsList] = useState([]);
@@ -106,7 +108,7 @@ export default function DealerPateNumber() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setButtonLoading(true);
         const formData = new FormData();
         formData.append('userType', 'agent');
         formData.append('stateId', stateId);
@@ -136,6 +138,8 @@ export default function DealerPateNumber() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/agent/cart`;
+                setButtonLoading(false);
+
             },1100)
             setErrors({});
         } catch (error) {
@@ -386,8 +390,14 @@ export default function DealerPateNumber() {
                                             </div>
 
 
-                                            <div className="  col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={buttonloading} 
+                                                >
+                                                    {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                                </button>
                                             </div>
                                         </form>
                                     </div>

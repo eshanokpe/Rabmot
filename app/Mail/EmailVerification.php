@@ -20,7 +20,7 @@ class EmailVerification extends Mailable
      */
     public function __construct($user)
     {
-        $this->user = $user;
+        $this->user = $user; 
     }
 
     /**
@@ -33,7 +33,7 @@ class EmailVerification extends Mailable
         return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
         ->subject('Email Verification')
         ->markdown('emails.verification-email')->with([
-            'email_token' => $this->user->email_token, 
+            'email_token' => $this->user->email_token,  
             'fullname' => $this->user->fullname
         ]);
 

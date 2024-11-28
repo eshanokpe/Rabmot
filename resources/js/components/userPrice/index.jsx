@@ -99,5 +99,5 @@ if (document.getElementById('userPrice')) {
         <React.StrictMode>
             <UserPrice />
         </React.StrictMode>
-    );
+    ); 
 }

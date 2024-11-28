@@ -15,7 +15,7 @@
                     <a class="nav-link"  href="{{ route('pricing')}}" id="a-nav">Check Pricing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link"  href="{{ route('processpapers')}}" id="a-nav">Process Papers</a>
+                    <a class="nav-link"  href="{{ auth()->check() ? route('home') : route('processpapers') }}" id="a-nav">Process Papers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"  href="{{ route('contactus')}}" id="a-nav">Contact Us</a>

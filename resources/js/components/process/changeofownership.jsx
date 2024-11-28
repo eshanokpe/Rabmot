@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function ChangeofOwnership() {
     
     const url = window.location.origin;
+    const [buttonloading, setButonLoading] = useState(false);
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -147,6 +148,7 @@ export default function ChangeofOwnership() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButonLoading(true);
         const formData = {
             stateId,
             vehicleCategoryId,
@@ -173,6 +175,7 @@ export default function ChangeofOwnership() {
 
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setButonLoading(false);
             },1100)
         })
         .catch(error => {
@@ -441,8 +444,14 @@ export default function ChangeofOwnership() {
                                                     </div> 
 
 
-                                                    <div className=" col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonloading} 
+                                                        >
+                                                            {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

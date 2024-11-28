@@ -5,12 +5,14 @@ import axios from 'axios';
 export default function InternationalDriverLicense() {
     
     const url = window.location.origin;
+    const [loading, setLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
     const [lengthYearList, setLengthYearsList] = useState([]);
     const [lengthYear, setLengthYear] = useState('');
-
+ 
     
     const [firstName, setSelectedFirstName] = useState('');
     const [middleName, setSelectedMiddleName] = useState('');
@@ -127,9 +129,9 @@ export default function InternationalDriverLicense() {
     };
     
 
-   const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('userType', 'user');
         formData.append('stateId', stateId);
@@ -159,13 +161,17 @@ export default function InternationalDriverLicense() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setLoading(false);
             },1100)
+           
             setErrors({});
         } catch (error) {
             console.error('Error uploading files', error);
             if (error.response && error.response.data && error.response.data.errors) {
                 setErrors(error.response.data.errors); 
             }
+        }finally {
+            
         }
     };
 
@@ -425,9 +431,16 @@ export default function InternationalDriverLicense() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={loading} // Disable button while loading
+                                                >
+                                                    {loading ? 'Processing...' : 'Process Payment'} {/* Change text while loading */}
+                                                </button>
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>

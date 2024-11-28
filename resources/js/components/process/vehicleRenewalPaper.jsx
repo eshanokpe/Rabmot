@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function VehicleRenewalPaper() {
     const url = window.location.origin;
+    const [buttonLoading, setButtonloading] = useState(false);
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -219,6 +220,8 @@ export default function VehicleRenewalPaper() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButtonloading(true);
+
         if (totalAmount === 0) {
             // Show a message or alert to the user
             alert('Please select an option to proceed. The total amount cannot be 0.');
@@ -253,9 +256,9 @@ export default function VehicleRenewalPaper() {
         })
         .then(response => {
             console.log('Successfully sent vehicleCategoryId:', response.data);
-            // setVehicleList(response.data.vehicleList);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setButtonloading(false);
             },1100)
         })
         .catch(error => {
@@ -565,8 +568,14 @@ export default function VehicleRenewalPaper() {
 
                                                     </div>
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonLoading} 
+                                                        >
+                                                            {buttonLoading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

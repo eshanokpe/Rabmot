@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function DriverLicenseRenewal() {
     
     const url = window.location.origin;
+    const [buttonloading, setButtonLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
@@ -108,6 +110,7 @@ export default function DriverLicenseRenewal() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
+        setButtonLoading(true);
 
         const formData = new FormData();
         formData.append('userType', 'agent');
@@ -133,6 +136,7 @@ export default function DriverLicenseRenewal() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/agent/cart`;
+                setButtonLoading(false);
             },1100)
             setErrors({});
         } catch (error) {
@@ -362,8 +366,14 @@ export default function DriverLicenseRenewal() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={buttonloading} 
+                                                >
+                                                    {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
