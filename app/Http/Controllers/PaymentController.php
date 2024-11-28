@@ -46,7 +46,7 @@ class PaymentController extends Controller{
             "paymentReference" => $transaction_ref,
             "productType" => $process_type,
             "productId" => $process_id,
-            "request" => $$request->all();
+            "request" => $$request->all(),
         ];
   
         // Initiate the payment request
