@@ -177,6 +177,9 @@ class PaymentController extends Controller{
                 // echo "Failed Transaction!";
                 return redirect()->route('home.cart'); 
             }
+        }else{ 
+            Session::flash('error', 'Data Not Found!');
+            return redirect()->route('home.cart'); 
         }
     }
     
