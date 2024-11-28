@@ -35,7 +35,7 @@ class PaymentController extends Controller{
         $uuid = bin2hex(random_bytes(6));  
         $transaction_ref = strtoupper(trim($uuid));
         $newdriverlicense = NewDriverLicense::where('process_id', $process_id)->first();
-           
+        dd($request->all());
         $payload = [
             "amount" =>  $floatNumber,
             "callbackUrl" => "https://rabmotlicensing.com/home/payment_callbackSeerbit", 
@@ -46,7 +46,11 @@ class PaymentController extends Controller{
             "paymentReference" => $transaction_ref,
             "productType" => $process_type,
             "productId" => $process_id,
-            "request" => $request,
+            "address" => $request->address,
+            "address" => $request->address,
+            "delivery_option" => $request->delivery_option,
+            "scan_email" => $request->scan_email,
+            "location" => $request->location,
         ];
   
         // Initiate the payment request

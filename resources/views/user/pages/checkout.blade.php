@@ -240,27 +240,27 @@
                                         <label for="">Delivery Option</label>
                                         <select id="selection" required name="delivery_option" class="form-select mb-3">
                                             <option disabled selected value="">Choose Delivery Option</option>
-                                            <option data-type="email" value="1">Scan and send to mail</option>
-                                            <option data-type="pickup" value="2">Pick Up from nearest location</option>
-                                            <option data-type="delivery" value="3">Delivery to door step</option>
+                                            <option data-type="email" value="Scan and Send to Mail">Scan and send to mail</option>
+                                            <option data-type="pickup" value="Pick Up from nearest location">Pick Up from nearest location</option>
+                                            <option data-type="delivery" value="Delivery to door step">Delivery to door step</option>
                                         </select>
                                         
                                       
                                     </div>
                                     <div id="elementToHide1" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Enter Email Address</label>
-                                        <input type="text" name="email" class="form-control" placeholder="email address" value="{{ $email }}" >
+                                        <input type="text" name="scan_email" class="form-control" placeholder="email address" value="{{ $email }}" >
                                        
                                     </div>
                                     <div id="elementToHide2" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Select Location</label>
                                         <select id="selection2"  name="location" id="location"class="form-select">
                                             <option disabled selected value="">Choose Preferred State</option>
-                                            <option data-id="lagos" value="1">Lagos</option>
-                                            <option data-id="abuja" value="2">Abuja</option>
-                                            <option data-id="portharcourt" value="3">Port Harcourt</option>
-                                            <option data-id="abeokuta" value="4">Abeokuta</option>
-                                            <option data-id="ibadan" value="5">Ibadan</option>
+                                            <option data-id="lagos" value="Lagos">Lagos</option>
+                                            <option data-id="abuja" value="Abuja">Abuja</option>
+                                            <option data-id="portharcourt" value="Port Harcourt">Port Harcourt</option>
+                                            <option data-id="abeokuta" value="Abeokuta">Abeokuta</option>
+                                            <option data-id="ibadan" value="Ibadan">Ibadan</option>
                                         </select>
                                         <div id="elementToHide21" style="display: none;" class="col-sm-8 hidden mt-3">
                                             <p>
