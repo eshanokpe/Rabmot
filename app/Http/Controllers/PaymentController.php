@@ -173,13 +173,10 @@ class PaymentController extends Controller{
                 Cart::destroy(); 
                 return  redirect()->route('home.transactionHistory');
             }else{ 
-                Session::flash('error', 'Payment initiation failed!');
-                // echo "Failed Transaction!";
-                return redirect()->route('home.cart'); 
+                return redirect()->route('home.cart')->with('error', 'Payment initiation failed!');
             }
         }else{ 
-            Session::flash('error', 'Data Not Found!');
-            return redirect()->route('home.cart'); 
+            return redirect()->route('home.cart')->with('error', 'Data Not Found!');
         }
     }
     
