@@ -14,7 +14,7 @@ class ProcessHistory extends Model
         'userType',
         'user_email',
         'userType',
-        'process_number',
+        'process_number', 
         'process_id' ,
         'process_type' ,
         'process_DLR_lengthofyears',
@@ -34,6 +34,13 @@ class ProcessHistory extends Model
         'process_DPN_processtype', 
         'process_DPN_fullname', 
         'totalamount',
+        
+        'location',
+        'lagos_address',
+        'address',
+        'delivery_option',
+        'scan_email',
+
         'status', 
     ];
 }

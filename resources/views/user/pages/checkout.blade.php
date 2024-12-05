@@ -244,13 +244,10 @@
                                             <option data-type="pickup" value="Pick Up from nearest location">Pick Up from nearest location</option>
                                             <option data-type="delivery" value="Delivery to door step">Delivery to door step</option>
                                         </select>
-                                        
-                                      
                                     </div>
                                     <div id="elementToHide1" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Enter Email Address</label>
-                                        <input type="text" name="scan_email" class="form-control" placeholder="email address" value="{{ $email }}" >
-                                       
+                                        <input type="text" name="scan_email" class="form-control" placeholder="email address" value="" >
                                     </div>
                                     <div id="elementToHide2" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Select Location</label>
@@ -263,11 +260,15 @@
                                             <option data-id="ibadan" value="Ibadan">Ibadan</option>
                                         </select>
                                         <div id="elementToHide21" style="display: none;" class="col-sm-8 hidden mt-3">
-                                            <p>
-                                                <b>Lagos Office Address</b><br>
-                                            1st floor AMG Workspace 22 Road,
-                                             Lagos NIgeria.
-                                            </p>
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Lagos address</option>
+                                                <option value="Lagos Office Address: 1st floor AMG Workspace, 22 Road, Lagos, Nigeria.">
+                                                    Lagos Office Address: 1st floor AMG Workspace, 22 Road, Lagos, Nigeria.
+                                                </option>
+                                                <option value="Isheri Oshun Branch Address: Rilexgroups, Lilian Almaroof St, Ijegun, Ikotun/Ijegun 102213, Lagos, Nigeria.">
+                                                    Isheri Oshun Branch Address: Rilexgroups, Lilian Almaroof St, Ijegun, Ikotun/Ijegun 102213, Lagos, Nigeria.
+                                                </option>
+                                            </select>
                                         </div>
                                         <div id="elementToHide22" class="col-sm-8 hidden mt-3">
                                             <p>

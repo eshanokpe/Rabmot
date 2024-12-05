@@ -127,7 +127,7 @@
                                                             @elseif ($item->model->process_type == 'Change of Ownership')
                                                                 {{ $item->model->vehicle_category }}<br>
                                                                 @if($item->model->platenumber != null) {{$item->model->platenumber}}<br> @endif
-                                                                
+                                                                 
                                                                 @if ($item->model->vehiclelicenseexpiry)
                                                                     Vehicle Expiring Date<br>
                                                                 @endif
@@ -248,7 +248,7 @@
                                     <hr>
  
                                 </div>
-                                <form action="{{ route('agent.payment.initiate')}}" method="POST">
+                                {{-- <form action="{{ route('agent.payment.initiate')}}" method="POST">
                                     @csrf
                                     <div class="col-12 col-sm-8">
                                         <label for="">Delivery Option</label>
@@ -325,6 +325,86 @@
                                             <button type="submit" class="btn btn-primary px-5 text-center" >Make Payment</button>
                                         </center>
                                     </div>
+                                </form> --}}
+
+                                <form action="{{ route('agent.payment.initiate')}}" method="POST">
+                                    @csrf
+                                    <div class="col-12 col-sm-8">
+                                        <label for="">Delivery Option</label>
+                                        <select id="selection" required name="delivery_option" class="form-select mb-3">
+                                            <option disabled selected value="">Choose Delivery Option</option>
+                                            <option data-type="email" value="Scan and Send to Mail">Scan and send to mail</option>
+                                            <option data-type="pickup" value="Pick Up from nearest location">Pick Up from nearest location</option>
+                                            <option data-type="delivery" value="Delivery to door step">Delivery to door step</option>
+                                        </select>
+                                    </div>
+                                    <div id="elementToHide1" style="display: none;" class="col-sm-8 hidden mb-3">
+                                        <label for="">Enter Email Address</label>
+                                        <input type="text" name="scan_email" class="form-control" placeholder="email address" value="" >
+                                    </div>
+                                    <div id="elementToHide2" style="display: none;" class="col-sm-8 hidden mb-3">
+                                        <label for="">Select Location</label>
+                                        <select id="selection2"  name="location" id="location"class="form-select">
+                                            <option disabled selected value="">Choose Preferred State</option>
+                                            <option data-id="lagos" value="Lagos">Lagos</option>
+                                            <option data-id="abuja" value="Abuja">Abuja</option>
+                                            <option data-id="portharcourt" value="Port Harcourt">Port Harcourt</option>
+                                            <option data-id="abeokuta" value="Abeokuta">Abeokuta</option>
+                                            <option data-id="ibadan" value="Ibadan">Ibadan</option>
+                                        </select>
+                                        <div id="elementToHide21" style="display: none;" class="col-sm-8 hidden mt-3">
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Lagos address</option>
+                                                <option value="Lagos Office Address: 1st floor AMG Workspace, 22 Road, Lagos, Nigeria.">
+                                                    Lagos Office Address: 1st floor AMG Workspace, 22 Road, Lagos, Nigeria.
+                                                </option>
+                                                <option value="Isheri Oshun Branch Address: Rilexgroups, Lilian Almaroof St, Ijegun, Ikotun/Ijegun 102213, Lagos, Nigeria.">
+                                                    Isheri Oshun Branch Address: Rilexgroups, Lilian Almaroof St, Ijegun, Ikotun/Ijegun 102213, Lagos, Nigeria.
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div id="elementToHide22" class="col-sm-8 hidden mt-3">
+                                            <p>
+                                                <b>Abuja Office Address</b><br>
+                                                V I O Office Mabushi Kado Express Way Eagle Square, Abuja Nigeria.
+                                            </p>
+                                        </div>
+                                        <div id="elementToHide23" class="col-sm-8 hidden mt-3">
+                                            <p>
+                                                <b>Port Harcourt Office Address</b><br>
+                                                Deborah Lawson House, Abacha road, GRA, Port Harcourt, Rivers.
+                                            </p>
+                                        </div>
+                                        <div id="elementToHide24" class="col-sm-8 hidden mt-3">
+                                            <p>
+                                                <b>Abeokuta Office Address</b><br>
+                                                5 Peter B somide street Onikoko Abeokuta Ogun NIgeria.
+                                            </p>
+                                        </div>
+                                        <div id="elementToHide25" class="col-sm-8 hidden mt-3">
+                                            <p>
+                                                <b>Ibadan Office Address</b><br>
+                                                Onireke licencing office dugbe, Ibadan Nigeria.
+                                            </p>
+                                        </div>                                    
+                                    </div>
+                                    <div id="elementToHide3" style="display: none;" class="col-sm-8 hidden">
+                                        <label for="">Enter Address</label>
+                                        <textarea  class="form-control" name="address" placeholder="Your address" ></textarea>
+                                        <br>
+                                    </div>
+                                   
+                                    <input type="hidden" name="process_type" id="process_type" value="{{$item->model->process_type}}">
+                                    <input type="hidden" name="process_id" id="process_id" value="{{$item->model->process_id}}">
+                                    <input type="hidden" name="fullname" id="fullname" value="{{$fullname}}">
+                                    <input type="hidden" name="email" id="email" value="{{$email}}">
+                                    <input type="hidden" name="orderNo" id="orderNo" value="{{$orderNumber}}">
+                                    <input type="hidden" name="total" id="total" value="{{ Cart::total() }}">
+                                    <div class="col-12 " text-center>
+                                        <center>  
+                                            <button type="submit" class="btn btn-primary px-5 text-center" >Make Payment</button>
+                                        </center>
+                                    </div>
                                 </form>
                              
                        
@@ -339,92 +419,30 @@
 
 <!--end page-wrapper-->
 <script>
-    var selection1 = document.getElementById("selection2");
-    var elementToHide21 = document.getElementById("elementToHide21");
-    var elementToHide22 = document.getElementById("elementToHide22");
-    var elementToHide23 = document.getElementById("elementToHide23");
-    var elementToHide24 = document.getElementById("elementToHide24");
-    var elementToHide25 = document.getElementById("elementToHide25");
-    selection1.addEventListener("change", function() {
-        if (selection1.value === "1") {
-            elementToHide21.style.display = "block";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "2") {
-            elementToHide22.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "3") {
-            elementToHide23.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "4") {
-            elementToHide24.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-        else if (selection1.value === "5") {
-            elementToHide25.style.display = "block";
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-        }
-        else {
-            elementToHide21.style.display = "none";
-            elementToHide22.style.display = "none";
-            elementToHide23.style.display = "none";
-            elementToHide24.style.display = "none";
-            elementToHide25.style.display = "none";
-        }
-    })
-</script>
-<script>
-    var selection = document.getElementById("selection");
-    var elementToHide1 = document.getElementById("elementToHide1");
-    var elementToHide2 = document.getElementById("elementToHide2");
-    var elementToHide3 = document.getElementById("elementToHide3");
-    
-    selection.addEventListener("change", function() {
-    if (selection.value === "1") {
-        elementToHide1.style.display = "block";
-        elementToHide2.style.display = "none";
-        elementToHide3.style.display = "none";
-        elementToHide21.style.display = "none";
-        elementToHide22.style.display = "none";
-        elementToHide23.style.display = "none";
-        elementToHide24.style.display = "none";
-        elementToHide25.style.display = "none";
-    } else if (selection.value === "2") {
-        elementToHide2.style.display = "block";
-        elementToHide1.style.display = "none";
-        elementToHide3.style.display = "none";
-    } else if (selection.value === "3") {
-        elementToHide3.style.display = "block";
+    const selection = document.getElementById("selection");
+    const elementToHide1 = document.getElementById("elementToHide1");
+    const elementToHide2 = document.getElementById("elementToHide2");
+    const elementToHide3 = document.getElementById("elementToHide3");
+
+    selection.addEventListener("change", function () {
+        const selectedOption = selection.options[selection.selectedIndex];
+        const selectedType = selectedOption.dataset.type;
+
+        // Hide all elements initially
         elementToHide1.style.display = "none";
         elementToHide2.style.display = "none";
-        elementToHide21.style.display = "none";
-        elementToHide22.style.display = "none";
-        elementToHide23.style.display = "none";
-        elementToHide24.style.display = "none";
-        elementToHide25.style.display = "none";
-    }else {
-            elementToHide1.style.display = "none";
-            elementToHide2.style.display = "none";
-            elementToHide3.style.display = "none";
+        elementToHide3.style.display = "none";
+
+        // Show the corresponding element based on data-type
+        if (selectedType === "email") {
+            elementToHide1.style.display = "block";
+        } else if (selectedType === "pickup") {
+            elementToHide2.style.display = "block";
+        } else if (selectedType === "delivery") {
+            elementToHide3.style.display = "block";
         }
     });
+
 </script>
 
 

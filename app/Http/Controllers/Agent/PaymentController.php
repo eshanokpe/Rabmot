@@ -48,6 +48,10 @@ class PaymentController extends Controller{
             "paymentReference" => $transaction_ref,
             "productType" => $process_type,
             "productId" => $process_id,
+            "address" => $request->address,
+            "delivery_option" => $request->delivery_option,
+            "scan_email" => $request->scan_email,
+            "location" => $request->location,
         ];
   
         // Initiate the payment request
@@ -61,9 +65,16 @@ class PaymentController extends Controller{
             $payment->process_id = $process_id;
             $payment->process_type = $process_type;
             $payment->paymentReference = $transaction_ref;
-            
             $payment->full_name = $fullname;
+
             $payment->email = $email;
+            $payment->orderNo = $request->orderNo;
+            $payment->address = $request->address;
+            $payment->location = $request->location;
+            $payment->scan_email = $request->scan_email;
+            $payment->lagos_address = $request->lagos_address;
+            $payment->delivery_option = $request->delivery_option;
+
             $payment->amount = $floatNumber;
             $payment->trans_id = null;
             $payment->status = "0";
@@ -164,6 +175,13 @@ class PaymentController extends Controller{
                     'process_DPN_processtype' =>  $item->model->process_type ?? null, 
                     'process_DPN_fullname' =>  $item->model->fullname ?? null, 
                     'totalamount' => $item->price * $item->qty ?? null,
+
+                    'location' => $payment->location ?? null,
+                    'lagos_address' => $payment->lagos_address ?? null,
+                    'address' => $payment->address ?? null,
+                    'delivery_option' => $payment->delivery_option ?? null,
+                    'scan_email' => $payment->scan_email ?? null,
+
                     'status' => 0,
                 ]);
             }

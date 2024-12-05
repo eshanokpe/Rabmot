@@ -47,7 +47,6 @@ class PaymentController extends Controller{
             "productType" => $process_type,
             "productId" => $process_id,
             "address" => $request->address,
-            "address" => $request->address,
             "delivery_option" => $request->delivery_option,
             "scan_email" => $request->scan_email,
             "location" => $request->location,
@@ -59,16 +58,25 @@ class PaymentController extends Controller{
         $redirectLink_msg = $paymentUrl['data']['message'];
         
         if("Successful" == $redirectLink_msg){
-           
             $payment = new PaymentModel();
             $payment->process_id = $process_id;
             $payment->process_type = $process_type;
             $payment->paymentReference = $transaction_ref;
             $payment->full_name = $fullname;
             $payment->email = $email;
+            
+            $payment->orderNo = $request->orderNo;
+            $payment->address = $request->address;
+            $payment->location = $request->location;
+            $payment->scan_email = $request->scan_email;
+            $payment->lagos_address = $request->lagos_address;
+            $payment->delivery_option = $request->delivery_option;
+
             $payment->amount = $floatNumber;
             $payment->trans_id = null;
             $payment->status = "0";
+            
+
             $phone = Auth::user()->phone;
            
             if($payment->save()){
@@ -123,7 +131,7 @@ class PaymentController extends Controller{
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        dd($data);
+        // dd($data);
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $cartItems = Cart::content();
@@ -134,8 +142,10 @@ class PaymentController extends Controller{
             $trans_id = $data['linkingreference'];
             $status = $data['message'];
             $payment = PaymentModel::where('paymentReference', $ref_id)->firstOrFail();
+            // dd($payment);
             $payment->trans_id = $trans_id;
             $payment->status = $status;
+
             foreach ($cartItems as $item ){
                 //  dd($item->model);
                 ProcessHistory::create([ 
@@ -162,6 +172,14 @@ class PaymentController extends Controller{
                     'process_DPN_processtype' =>  $item->model->process_type ?? null, 
                     'process_DPN_fullname' =>  $item->model->fullname ?? null, 
                     'totalamount' => $item->price * $item->qty ?? null,
+                    
+                    'location' => $payment->location ?? null,
+                    'lagos_address' => $payment->lagos_address ?? null,
+                    'address' => $payment->address ?? null,
+                    'delivery_option' => $payment->delivery_option ?? null,
+                    'scan_email' => $payment->scan_email ?? null,
+
+
                     'status' => 0,
                 ]); 
             }
