@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\ProcessDocument;
 use App\Http\Controllers\Controller;
 use Auth;
-use Mail;
+use Mail; 
 use Illuminate\Http\Request;
 use Carbon\Carbon; 
 use App\Models\User;
@@ -21,7 +21,7 @@ class AdminProcessDocument extends Controller
         return view('admin.pages.processHistory.pending.pendingpaper', compact('items'));
     } 
 
-   public function viewpendingPaper($id){
+   public function viewpendingPaper($id){ 
       $items = ProcessHistory::find(decrypt($id));
         return view('admin.pages.processHistory.pending.viewpendingPaper', compact('items'));
    }

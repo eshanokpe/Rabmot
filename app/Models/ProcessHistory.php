@@ -15,7 +15,7 @@ class ProcessHistory extends Model
         'user_email',
         'userType',
         'process_number', 
-        'process_id' ,
+        'process_id' , 
         'process_type' ,
         'process_DLR_lengthofyears',
         'process_NDL_lengthofyear',

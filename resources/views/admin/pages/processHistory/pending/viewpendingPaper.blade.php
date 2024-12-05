@@ -9,7 +9,7 @@
         border-radius: 4px;
         align-items: center;
     }
-
+ 
    
     .pending {
         background-color: yellow;
@@ -75,68 +75,87 @@
                                 </div>
                             @endif
                             <script>
-                                // Function to display the error message
                                 document.addEventListener("DOMContentLoaded", function() {
-                                    // Select the success alert element by its ID
                                     var successAlert = document.getElementById('error-message');
                             
-                                    // Check if the alert element exists
                                     if (successAlert) {
-                                        // Set a timeout to hide the alert after 5 seconds (5000 milliseconds)
-                                        setTimeout(function() {
+                                         setTimeout(function() {
                                             successAlert.style.display = 'none';
-                                        }, 5000); // 5000 milliseconds = 5 seconds
+                                        }, 5000); 
                                     }
                                 });
                             </script>
-                            <div class="col-6 mt-2 ps-2">
+                            <div class="col-12 mt-2 ps-2">
                                 <form class="form-fieldset" action="{{ route('admin.update-pendingPaper-status', ['id' => encrypt($items->id) ]) }}" method="POST">
                                     @csrf
                                     @method('PUT')                                
                                     <div class="row">
                                         <div class="mb-3 col-6">
-                                            <label class="form-label required">Process ID</label>
-                                            <input type="text" class="form-control" autocomplete="off" disabled value="{{ $items->process_id}}"/>
-                                        </div>
-                                        <div class="mb-3 col-6">
-                                            <label class="form-label required">User Email</label> 
-                                            <input type="text" class="form-control"  autocomplete="off" disabled value="{{ $items->user_email}}"/>
-                                        </div>
-                                        <div class="mb-3 col-6">
-                                            <label class="form-label required">Process Type</label>
-                                            <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->process_type}}"/>
-                                        </div>
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Process ID</label>
+                                                <input type="text" class="form-control" autocomplete="off" disabled value="{{ $items->process_id}}"/>
+                                            </div>
 
-                                        <div class="mb-3 col-6">
-                                            <label class="form-label">Amount</label>
-                                            <input type="tel" class="form-control" autocomplete="off" disabled value="₦{{ number_format($items->totalamount,2,'.',',')}}"/>
-                                        </div>
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Process Type</label>
+                                                <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->process_type}}"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Amount</label>
+                                                <input type="tel" class="form-control" autocomplete="off" disabled value="₦{{ number_format($items->totalamount,2,'.',',')}}"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Date</label>
+                                                @php
+                                                    $date = \Carbon\Carbon::parse($items->created_at);
+                                                @endphp
+                                                <input type="tel" class="form-control" autocomplete="off" disabled value="{{ $date->format('F j, Y')}}"/>
+                                            </div>
 
-                                        <div class="mb-3 col-6">
-                                            <label class="form-label">Date</label>
-                                            @php
-                                                $date = \Carbon\Carbon::parse($items->created_at);
-                                            @endphp
-                                            <input type="tel" class="form-control" autocomplete="off" disabled value="{{ $date->format('F j, Y')}}"/>
-                                        </div>
-                                        <div class="mb-3 col-6">
-                                            <label class="form-label">Document Status</label>
-                                            <select class="form-select" id="select-option" name="status">
-                                                <option value="0" @if ($items->status == 0) selected @endif>Pending</option>
-                                                <option value="1" @if ($items->status == 1) selected @endif>Processing</option>
-                                                <option value="2" @if ($items->status == 2) selected @endif>Ready for Delivery</option>
-                                                <option value="3" @if ($items->status == 3) selected @endif>Delivery in progress</option>
-                                                <option value="4" @if ($items->status == 4) selected @endif>Delivered</option>
-                                            </select>
-                                        </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Document Status</label>
+                                                <select class="form-select" id="select-option" name="status">
+                                                    <option value="0" @if ($items->status == 0) selected @endif>Pending</option>
+                                                    <option value="1" @if ($items->status == 1) selected @endif>Processing</option>
+                                                    <option value="2" @if ($items->status == 2) selected @endif>Ready for Delivery</option>
+                                                    <option value="3" @if ($items->status == 3) selected @endif>Delivery in progress</option>
+                                                    <option value="4" @if ($items->status == 4) selected @endif>Delivered</option>
+                                                </select>
+                                            </div>
 
+                                        </div>
                                         <div class="mb-3 col-6">
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Delivery Option</label>
+                                                <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->delivery_option}}"/>
+                                            </div>
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Location</label>
+                                                <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->location}}</textarea>
+                                            </div>
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Lagos Address</label>
+                                                <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->lagos_address}}</textarea>
+                                            </div>
+                                            
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Scan Email</label>
+                                                <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->scan_email}}"/>
+                                            </div>
+                                        </div>
+                                        
+
+                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-3 col-4">
                                             <button type="submit" class="btn btn-primary ms-auto">Update Status</button>  
                                         </div>     
-                                        <div class="mb-3 col-6">
+                                        <div class="mb-3 col-4">
                                             <a href="{{ route("admin.pendingpaper") }}" class="btn btn-primary ms-auto">Back</a>  
                                         </div>                                  
                                     </div>
+
                                 </form>
                             </div>         
                             <div class="card-footer">
