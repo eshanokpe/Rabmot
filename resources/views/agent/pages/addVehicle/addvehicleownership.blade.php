@@ -229,7 +229,7 @@
 
                                         <div class="col-sm-6 col-md-6">
 											<label for="inputAddress2" class="form-label">Registered Address of Vehicle </label>
-											<input  type="text" class="form-control" name="registeredaddressofvehicle" id="registeredaddressofvehicle" placeholder="Address of Vehicle">
+											<input  type="text" class="form-control" name="registeredaddressofvehicle" id="registeredaddressofvehicle" placeholder="Registered Address of Vehicle">
 											@error('registeredaddressofvehicle')
 												<span class="text-danger">{{ $message }}</span>
 											@enderror

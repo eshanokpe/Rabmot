@@ -186,7 +186,7 @@
 										</div>
                                         <div class="col-sm-6 col-md-6">
 											<label for="inputAddress2" class="form-label"> Name written on Vehicle Paper <span style="color:red;">*</span></label>
-											<input required  type="text" class="form-control" name="vehiclename" id="enginenumber" placeholder="Vehicle Name"> 
+											<input required  type="text" class="form-control" name="vehiclename" id="enginenumber" placeholder="Name written on Vehicle Paper"> 
 											@error('vehiclelicense')
 												<span class="text-danger">{{ $message }}</span>
 											@enderror
