@@ -98,7 +98,7 @@
                                 <div class="form-bottom-area padding-top-30">
                                     <div class="remember-me">
                                         <label class="sign-in-area-switch">
-                                            <input required type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <input required type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : 'checked' }}>
                                             <span class="slider round"></span>
                                         </label>
                                         <label>Remember Me</label>

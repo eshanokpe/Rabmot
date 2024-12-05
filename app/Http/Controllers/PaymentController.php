@@ -123,7 +123,7 @@ class PaymentController extends Controller{
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        // dd($data);
+        dd($data);
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $cartItems = Cart::content();
@@ -163,7 +163,7 @@ class PaymentController extends Controller{
                     'process_DPN_fullname' =>  $item->model->fullname ?? null, 
                     'totalamount' => $item->price * $item->qty ?? null,
                     'status' => 0,
-                ]);
+                ]); 
             }
              
             if($payment->save()){    
