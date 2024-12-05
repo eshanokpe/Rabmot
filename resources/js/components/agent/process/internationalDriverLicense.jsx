@@ -315,7 +315,7 @@ export default function InternationalDriverLicense() {
                                                     </div>
                                                     <div className="col-md-5 mb-2">
                                                         <label for="inputFirstName" class="form-label"> Email Address </label>
-                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Mother Maiden Name" class="form-control" id="motherMaidenName"/>
+                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Email Address" class="form-control" id="motherMaidenName"/>
                                                     </div>
                                                     <div className="col-md-1 "></div>
                                                 </div>
