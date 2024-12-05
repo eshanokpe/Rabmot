@@ -151,7 +151,7 @@ class PaymentController extends Controller{
             foreach ($cartItems as $item ){
                 //  dd($item->model);
                 ProcessHistory::create([ 
-                    'user_id' => $id ?? null,
+                    'user_id' => Auth::user()->id ?? null,
                     'owner_id' => $item->model->owner_id,
                     'userType' => 'agent',         
                     'user_email' => $email ?? null,
