@@ -361,7 +361,7 @@ export default function VehicleRegistration() {
                                                                 <option disabled value="">-- Select Vehicle Type --</option>
                                                                 {stateVehicleList.map((vehicleType) => (
                                                                 <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                    {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                    {vehicleType.vehicle_type.name} 
                                                                 </option>
                                                                 ))}
                                                             </select>

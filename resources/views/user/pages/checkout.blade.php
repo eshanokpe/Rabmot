@@ -300,7 +300,7 @@
                                         <textarea  class="form-control" name="address" placeholder="Your address" ></textarea>
                                         <br>
                                     </div>
-                                   
+                                    
                                     <input type="hidden" name="process_type" id="process_type" value="{{$item->model->process_type}}">
                                     <input type="hidden" name="process_id" id="process_id" value="{{$item->model->process_id}}">
                                     <input type="hidden" name="fullname" id="fullname" value="{{$fullname}}">

@@ -247,7 +247,7 @@
                                     </div><br><br>
                                     <hr>
  
-                                </div>
+                                </div> 
                                 {{-- <form action="{{ route('agent.payment.initiate')}}" method="POST">
                                     @csrf
                                     <div class="col-12 col-sm-8">
@@ -418,6 +418,40 @@
 </div>
 
 <!--end page-wrapper-->
+<script>
+    const selection1 = document.getElementById("selection2");
+    const elementToHide21 = document.getElementById("elementToHide21");
+    const elementToHide22 = document.getElementById("elementToHide22");
+    const elementToHide23 = document.getElementById("elementToHide23");
+    const elementToHide24 = document.getElementById("elementToHide24");
+    const elementToHide25 = document.getElementById("elementToHide25");
+
+    selection1.addEventListener("change", function () {
+        const selectedOption = selection1.options[selection1.selectedIndex];
+        const selectedId = selectedOption.dataset.id;
+
+        // Hide all elements initially
+        elementToHide21.style.display = "none";
+        elementToHide22.style.display = "none";
+        elementToHide23.style.display = "none";
+        elementToHide24.style.display = "none";
+        elementToHide25.style.display = "none";
+
+        // Show the relevant element based on data-id
+        if (selectedId === "lagos") {
+            elementToHide21.style.display = "block";
+        } else if (selectedId === "abuja") {
+            elementToHide22.style.display = "block";
+        } else if (selectedId === "portharcourt") {
+            elementToHide23.style.display = "block";
+        } else if (selectedId === "abeokuta") {
+            elementToHide24.style.display = "block";
+        } else if (selectedId === "ibadan") {
+            elementToHide25.style.display = "block";
+        }
+    });
+
+</script>
 <script>
     const selection = document.getElementById("selection");
     const elementToHide1 = document.getElementById("elementToHide1");
