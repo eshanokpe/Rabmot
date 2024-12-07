@@ -65,14 +65,14 @@
 
         <li>
             <a href="{{ route('home.processHistory') }}">
-                <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>
+                <div class="parent-icon icon-color-13"><i class="bx bx-history"></i>
                 </div>
                 <div class="menu-title">Process History</div>
             </a>
         </li>
         <li>
             <a href="{{ route('home.transactionHistory') }}">
-                <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>
+                <div class="parent-icon icon-color-13"><i class="bx bx-history"></i>
                 </div>
                 <div class="menu-title">Transaction History</div>
             </a>

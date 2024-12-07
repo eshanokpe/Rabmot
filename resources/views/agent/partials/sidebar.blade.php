@@ -64,16 +64,26 @@
 
         <li>
             <a href="{{ route('agent.processHistory') }}">
-                <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>
+                <div class="parent-icon icon-color-13">
+                    <i class="bx bx-history"></i>
                 </div>
                 <div class="menu-title">Process History</div>
             </a>
         </li>
         <li>
             <a href="{{ route('agent.transactionHistory') }}">
-                <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>
+                <div class="parent-icon icon-color-13">
+                    <i class="bx bx-history"></i>
                 </div>
                 <div class="menu-title">Transaction History</div>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('agent.wallet') }}">
+                <div class="parent-icon icon-color-13">
+                    <i class="bx bx-wallet"></i>
+                </div>
+                <div class="menu-title">Wallet</div>
             </a>
         </li>
         <li>

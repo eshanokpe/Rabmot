@@ -135,13 +135,12 @@ class PaymentController extends Controller{
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        $user = Auth::guard('agent')->user();
+        $user = Auth::guard('agent')->user(); 
         $id = $user->id;
         $email = $user->email;
         $cartItems = Cart::content();
        
         if("Successful" == $data['message']){
-            //   dd($data);
             $ref_id = $data['reference'];
             $trans_id = $data['linkingreference'];
             $status = $data['message'];
@@ -151,7 +150,7 @@ class PaymentController extends Controller{
             foreach ($cartItems as $item ){
                 //  dd($item->model);
                 ProcessHistory::create([ 
-                    'user_id' => Auth::user()->id ?? null,
+                    'user_id' => Auth::user()->id ?? 'null',
                     'owner_id' => $item->model->owner_id,
                     'userType' => 'agent',         
                     'user_email' => $email ?? null,

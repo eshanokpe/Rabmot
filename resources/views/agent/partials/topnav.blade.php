@@ -102,12 +102,10 @@
 
                         <div class="d-flex user-box align-items-center">
                             @php
-                                
-
                                 // Access user details
-                                $name = $user->fullname;
-                                $email = $user->email;
-                                $profileImage = $user->profile_image;
+                                $name = Auth::user()->fullname;
+                                $email = Auth::user()->email;
+                                $profileImage = Auth::user()->profile_image;
                             @endphp
                             <div class="user-info">
 

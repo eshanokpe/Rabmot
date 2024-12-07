@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agent\CartController;
 use App\Http\Controllers\Agent\PaymentController;
+use App\Http\Controllers\Agent\WalletController;
 use App\Http\Controllers\Agent\CheckoutController;
 use App\Http\Controllers\Auth\AgentLoginController;
 use App\Http\Controllers\Agent\AgentDashboardController;
@@ -102,11 +103,15 @@ Route::prefix('agent')->group(function () {
         Route::post('/cart/delete', [CartController::class, 'destroy'])->name('agent.delete');
         Route::get('checkout', [CheckoutController::class, 'index'])->name('agent.checkout');
 
-         //Payment
-         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('agent.payment.initiate');
-         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('agent.payment');
-         
-
+        //Payment
+        Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('agent.payment.initiate');
+        Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('agent.payment');
+        
+        //wallet
+        Route::get('/wallet', [WalletController::class, 'index'])->name('agent.wallet'); 
+        Route::post('/create', [WalletController::class, 'create'])->name('agent.create');
+       
+ 
         Route::get('/profile', [AgentDashboardController::class, 'index'])->name('agent.profile');
         Route::get('/processHistory', [AgentDashboardController::class, 'processHistory'])->name('agent.processHistory');
         Route::get('/transactionHistory', [AgentDashboardController::class, 'transactionHistory'])->name('agent.transactionHistory');
