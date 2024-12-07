@@ -256,13 +256,7 @@ export default function ChangeofOwnership() {
                                                 <div className="col-12 col-lg-12 col-xl-12">
                                                     <div className="radius-15">
                                                         <div className="card-body">
-                                                            <h6 className="text-justify text-primary card-title">
-                                                                ELIGIBILITY:
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Only a vehicle used and registered before in Nigeria by the former owner is eligible for a Change of Ownership.
-                                                            </h6>
-                                                            <h6 className="text-justify text-success card-title">
+                                                           <h6 className="text-justify text-success card-title">
                                                                 INSTRUCTION:
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">

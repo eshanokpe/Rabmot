@@ -346,12 +346,6 @@ export default function VehicleRenewalPaper() {
                                                 <div className="col-12 col-lg-12 col-xl-12">
                                                     <div className="radius-15">
                                                         <div className="card-body">
-                                                            <h6 className="text-justify text-primary card-title">
-                                                                ELIGIBILITY:
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Only a vehicle used and registered before in Nigeria by the former owner is eligible for a Change of Ownership.
-                                                            </h6>
                                                             <h6 className="text-justify text-success card-title">
                                                                 INSTRUCTION:
                                                             </h6>
@@ -365,7 +359,7 @@ export default function VehicleRenewalPaper() {
                                                                 TIMELINE:
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                <b>Processing and Delivery Time:</b> 72 hours
+                                                                <b>Processing and Delivery Time:</b> 72 hours to 5 working days
                                                             </h6>
                                                         </div>
                                                     </div>
@@ -420,7 +414,7 @@ export default function VehicleRenewalPaper() {
                                                                     <option disabled value="">-- Select Vehicle Type --</option>
                                                                     {stateVehicleList.map((vehicleType) => (
                                                                         <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                            {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                            {vehicleType.vehicle_type.name} 
                                                                         </option>
                                                                     ))}
                                                                 </select>

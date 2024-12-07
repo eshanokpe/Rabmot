@@ -12,7 +12,7 @@ use App\Models\PaymentModel;
 use App\Models\ProcessHistory;
 use Auth;
 use Cart;
-use App\Models\User;
+use App\Models\Agent;
 use App\Mail\PendingMode;
 use Mail;
 use App\Mail\InvoiceMail;
@@ -150,7 +150,7 @@ class PaymentController extends Controller{
             foreach ($cartItems as $item ){
                 //  dd($item->model);
                 ProcessHistory::create([ 
-                    'user_id' => Auth::user()->id ?? 'null',
+                    'user_id' => Auth::guard('agent')->user()->id ?? 'null',
                     'owner_id' => $item->model->owner_id,
                     'userType' => 'agent',         
                     'user_email' => $email ?? null,
@@ -186,7 +186,7 @@ class PaymentController extends Controller{
             }
             
             if($payment->save()){    
-                $user = Agent::where('email',$email)->get()->first();
+                $user = Agent::where('email', $email)->get()->first();
                 $user_email = new PendingMode($user); 
                 Mail::to($user->email)->send($user_email);
                 Cart::destroy(); 
