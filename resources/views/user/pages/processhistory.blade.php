@@ -102,7 +102,7 @@
                                                     Validity: {{ $history->process_NDL_lengthofyear }} Years
                                                 @endif
                                                 @if( $history->process_type == 'Vehicle Paper Renewal')
-                                                        {{ $history }}
+                                                        {{ $history->process_type }}
                                                 @endif
                                                 @if( $history->process_type == 'Vehicle Registration')
                                                     {{ $history->process_VR_name }},
