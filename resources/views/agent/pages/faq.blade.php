@@ -70,199 +70,34 @@
 							<hr>
 
 							<div class="card border-top border-0 border-4 border-primary">
-								<div class="card-body">												
-									 {{-- <h5 class="card-title">Flush Accordion</h5>
-                                    <hr/> --}}
+                                <div class="card-body">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading1">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse1" aria-expanded="false" aria-controls="flush-collapse1">
-                                                 Is there a grace period after the expiration of my document(s)?
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse1" class="accordion-collapse collapse" aria-labelledby="flush-heading1" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>No, there is no provision in the law that allows for a grace period after the expiration of your document(s).
-                                                            </p>
+                                        @foreach($faqs as $key => $faq)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="flush-heading{{ $key }}">
+                                                    <button class="accordion-button collapsed" type="button" 
+                                                            data-bs-toggle="collapse" 
+                                                            data-bs-target="#flush-collapse{{ $key }}" 
+                                                            aria-expanded="{{ $key === 0 ? 'true' : 'false' }}" 
+                                                            aria-controls="flush-collapse{{ $key }}">
+                                                        {{ $faq->question }}
+                                                    </button>
+                                                </h2>
+                                                <div id="flush-collapse{{ $key }}" 
+                                                     class="accordion-collapse collapse {{ $key === 0 ? 'show' : '' }}" 
+                                                     aria-labelledby="flush-heading{{ $key }}" 
+                                                     data-bs-parent="#accordionFlushExample">
+                                                    <div class="accordion-body">
+                                                        <div class="card-body">
+                                                            <p>{{ $faq->answer }}</p>
+                                                        </div>
                                                     </div>
-                                                   
                                                 </div>
-
-                                             </div>
-                                        </div>
-								
+                                            </div>
+                                        @endforeach
                                     </div>
-                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading2">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse2" aria-expanded="false" aria-controls="flush-collapse2">
-                                                 Are driver's licenses issued from other states valid in Lagos State?
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse2" class="accordion-collapse collapse" aria-labelledby="flush-heading2" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>Driver's licenses issued from other states are valid in Lagos State as 
-                                                            long as the tripartite structure/arrangement is observed and the license is genuine.
-                                                            
-                                                            </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-
-                                     <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading4">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse4" aria-expanded="false" aria-controls="flush-collapse4">
-                                                 What happens if I fail the roadworthiness vehicle inspection test?
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse4" class="accordion-collapse collapse" aria-labelledby="flush-heading4" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>Your vehicle will not be retained. Instead, the faults identified during the test will be 
-                                                            communicated to you. You will be required to fix the identified faults and represent the vehicle for a re-test at no additional cost.
-                                                           
-                                                            
-                                                            </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading5">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse5" aria-expanded="false" aria-controls="flush-collapse5">
-                                                Why are privately registered pick-up trucks and buses given
-                                                             a 6-month validity on Roadworthiness Certificates?
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse5" class="accordion-collapse collapse" aria-labelledby="flush-heading5" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>According to the law, any commercially designed vehicle, including pick-up trucks and buses, has a Roadworthiness Certificate validity period of 6 months. 
-                                                            This ensures that these vehicles meet the required safety standards for commercial operations.
-                                                            
-                                                            
-                                                            </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-                                     <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading6">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse6" aria-expanded="false" aria-controls="flush-collapse6">
-                                                  Will I have to pay additional costs for inspection after paying for the Roadworthiness Certificate?
-
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse6" class="accordion-collapse collapse" aria-labelledby="flush-heading6" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>No, the cost of inspection is already included in the payment made for the Roadworthiness Certificate.
-                                                            </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-                                     
-                                    <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading8">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse8" aria-expanded="false" aria-controls="flush-collapse8">
-                                                  Where are the Enforcing Camera's located?
-
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse8" class="accordion-collapse collapse" aria-labelledby="flush-heading8" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>The Enforcing Cameras are strategically positioned throughout Lagos, but their specific locations are not disclosed to the general public.
-                                                        </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-									 
-									    <div class="accordion-item">
-                                            <h2 class="accordion-header" id="flush-heading9">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse9" aria-expanded="false" aria-controls="flush-collapse9">
-                                                 Is there a website where I can verify the authenticity of my vehicle papers?
-
-
-                                            </button>
-                                            </h2>
-                                            <div id="flush-collapse9" class="accordion-collapse collapse" aria-labelledby="flush-heading9" data-bs-parent="#accordionFlushExample">
-                                                
-                                                <div class="accordion-body">
-                                                    <div class="card-body">
-                                                        <p>
-                                                            <b> Yes, you can verify the legitimacy of your vehicle documents through the following websites:</b>
-                                                        </p>
-                                                        
-                                                        <p>  
-                                                        * To verify your vehicle license, visit <a href="http://verify.autoreg.ng/"> "www.verify.autoreg.ng,"</a> input your plate number, select "I am not a robot," and click search.
-                                                         </p>  
-                                                         <p>
-                                                         * To verify your vehicle insurance certificate, go to <a href="https://askniid.org/">"www.askniid.org,"</a> click on "check Policy," select "vehicle policy," and choose "single." Enter your plate number or insurance policy number, then click search.
-                                                         </p>
-                                                         <p>
-                                                         * To verify your roadworthiness certificate, dial <a href="tel:*554*38#">*554*38#</a>  on your phone. Standard SMS rates apply.
-                                                        </p>
-                                                        <p>
-                                                            * To verify your hackney permit, visit <a href="http://verify.autoreg.ng/"> "www.verify.autoreg.ng,"</a> input your plate number, select "I am not a robot," and click search.
-                                                         </p>
-                                                         <p>
-                                                         * To verify your driver's license, go to <a href="https://www.nigeriadriverslicence.org/"> "www.nigeriadriverslicence.org,"</a> click on "Edit Application," enter your driver's license number and date of birth, and click search. 
-                                                        </p>
-                                                    </div>
-                                                   
-                                                </div>
-
-                                             </div>
-                                        </div>
-								
-                                    </div>
-								</div>
-								
-
-							</div>
+                                </div>
+                            </div>
 
 							
 

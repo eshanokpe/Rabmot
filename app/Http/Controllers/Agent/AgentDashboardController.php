@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
-
+use App\Models\FAQs;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Agent;
@@ -162,8 +162,9 @@ class AgentDashboardController extends Controller
         $user = Auth::guard('agent')->user();
         $id = $user->id;
         $email = $user->email;
+        $faqs = FAQs::all();
 
-       return view('agent.pages.faq', compact('id', 'email','user'));
+       return view('agent.pages.faq', compact('id', 'email','user','faqs'));
     }
 
 

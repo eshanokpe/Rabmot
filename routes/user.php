@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController; 
+use App\Http\Controllers\CheckoutController;  
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\User\DealerPlateNumberContoller;
 use App\Http\Controllers\User\NewDriverLicenseController;
@@ -96,8 +96,8 @@ Route::middleware(['auth'])->group(function () {
         //Payment
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
-        
-        Route::get('faq', [HomeController::class, 'faq'])->name('home.faq');
+         
+        Route::get('faq', [HomeController::class, 'faq'])->name('home.faq'); 
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
      

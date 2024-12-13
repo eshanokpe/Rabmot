@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Auth;
+use App\Models\FAQs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
@@ -111,11 +112,12 @@ class HomeController extends Controller
    
     
     public function faq()
-    {
+    { 
         $id = Auth::user()->id;
         $email = Auth::user()->email;
+        $faqs = FAQs::all(); 
 
-       return view('user.pages.faq', compact('id', 'email'));
+       return view('user.pages.faq', compact('id', 'email','faqs'));
     }
 
 }

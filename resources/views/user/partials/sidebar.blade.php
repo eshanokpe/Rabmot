@@ -56,7 +56,7 @@
 				</li>
 				<li>
 				   <a href="{{url('home/internationaldriverlicense')}}"><i class="bx bx-right-arrow-alt"></i>International Driver License</a>
-				</li>
+				</li> 
 				<li>
 				   <a href="{{route('home.otherpermit')}}"><i class="bx bx-right-arrow-alt"></i>Other Permit</a>
 				</li>

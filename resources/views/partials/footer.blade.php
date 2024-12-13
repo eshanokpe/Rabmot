@@ -34,7 +34,8 @@
                 <h4>Company</h4>
                 <ul class="list-unstyled">
                     <li> <a href="{{ route('aboutus')}}">About Us</a></li>
-                    <li> <a href="{{ route('community')}}">FAQ</a></li>
+                    <li> <a href="{{ route('community')}}">Community</a></li>
+                    <li> <a href="{{ route('faq')}}">FAQ</a></li>
                     <li> <a href="{{ route('agent.login')}}">Agents Login</a></li>
                     <li> <a href="{{ route('policy')}}">Privacy Policy</a></li> 
 

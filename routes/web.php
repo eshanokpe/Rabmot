@@ -43,6 +43,7 @@ Route::get('/processpapers', [FrontendController::class, 'processpapers'])->name
 Route::get('/contactus', [FrontendController::class, 'contactus'])->name('contactus');
 Route::post('/formcontactus', [FrontendController::class, 'submitForm'])->name('contactus.form'); 
 Route::get('/community', [FrontendController::class, 'community'])->name('community');
+Route::get('/faq', [FrontendController::class, 'faq'])->name('faq');
 Route::get('/aboutus', [FrontendController::class, 'aboutus'])->name('aboutus');
 Route::get('/policy', [FrontendController::class, 'policy'])->name('policy');
 Route::get('/howitwork', [FrontendController::class, 'howitwork'])->name('howitwork');
