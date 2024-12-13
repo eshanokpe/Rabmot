@@ -122,7 +122,7 @@
                                                     <option value="4" @if ($items->status == 4) selected @endif>Delivered</option>
                                                 </select>
                                             </div>
-
+ 
                                         </div>
                                         <div class="mb-3 col-6">
                                             <div class="mb-3 ">
@@ -131,7 +131,7 @@
                                             </div>
                                             <div class="mb-3 ">
                                                 <label class="form-label required">Location</label>
-                                                <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->location}}</textarea>
+                                                <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->address}}</textarea>
                                             </div>
                                             <div class="mb-3 ">
                                                 <label class="form-label required">Lagos Address</label>
