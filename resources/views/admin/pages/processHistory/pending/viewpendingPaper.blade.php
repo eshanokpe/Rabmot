@@ -130,7 +130,7 @@
                                                 <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->delivery_option}}"/>
                                             </div>
                                             <div class="mb-3 ">
-                                                <label class="form-label required">Location</label>
+                                                <label class="form-label required">Address</label>
                                                 <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->address}}</textarea>
                                             </div>
                                             <div class="mb-3 ">
