@@ -9,7 +9,7 @@
         border-radius: 4px;
         align-items: center;
     }
-    
+     
     .pending {
         background-color: yellow  !important;
         color: black  !important;
@@ -102,7 +102,7 @@
                                                     Validity: {{ $history->process_NDL_lengthofyear }} Years
                                                 @endif
                                                 @if( $history->process_type == 'Vehicle Paper Renewal')
-                                                        {{ $history->process_VPR_vehicleType }}
+                                                        {{ $history }}
                                                 @endif
                                                 @if( $history->process_type == 'Vehicle Registration')
                                                     {{ $history->process_VR_name }},

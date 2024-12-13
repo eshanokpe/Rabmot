@@ -15,7 +15,7 @@ class TopicCommentController extends Controller
 {
     public function index()
     {
-        $topics = Topic::all();
+        $topics = Topic::all(); 
 
         return view('user.pages.topics.index', compact('topics'));
     }

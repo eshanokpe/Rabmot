@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Http;
 use Illuminate\Http\Request;
 use App\Models\FAQs;
+use App\Models\Topic;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,8 @@ class FrontendController extends Controller
     }
     public function community()
     {
-        return view('frontend.pages.community');
+        $topics = Topic::all(); 
+        return view('frontend.pages.community',compact('topics'));
     }
     public function faq()
     {

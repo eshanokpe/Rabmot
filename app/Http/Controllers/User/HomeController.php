@@ -74,7 +74,7 @@ class HomeController extends Controller
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $processhistory = ProcessHistory::where('user_id', $id)
-                                        ->latest()
+                                         ->latest()
                                         ->get();
 
         return view('user.pages.processhistory', compact('id', 'email', 'processhistory'));
@@ -95,6 +95,7 @@ class HomeController extends Controller
         $email = Auth::user()->email;
         $transactionhistory = ProcessHistory::where('user_id', $id)
                                        // ->where('status',0)
+                                       ->latest()
                                         ->get();
 
         return view('user.pages.transactionhistory', compact('id', 'email', 'transactionhistory'));
@@ -109,8 +110,6 @@ class HomeController extends Controller
         ]);
     }
 
-   
-    
     public function faq()
     { 
         $id = Auth::user()->id;
