@@ -86,13 +86,13 @@
                 <div class="menu-title">Transaction History</div>
             </a>
         </li>
-        <li>
+        {{-- <li>
             <a href="{{ route('home.wallet') }}">
                 <div class="parent-icon icon-color-13"><i class="bx bx-money"></i>
                 </div>
                 <div class="menu-title">Wallet</div>
             </a>
-        </li>
+        </li> --}}
         <li>
             <a href="{{ route('home.profile') }}">
                 <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>

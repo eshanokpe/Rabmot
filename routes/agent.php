@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agent\CartController;
 use App\Http\Controllers\Agent\PaymentController;
 use App\Http\Controllers\Agent\WalletController;
+use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Agent\CheckoutController;
 use App\Http\Controllers\Auth\AgentLoginController;
 use App\Http\Controllers\Agent\AgentDashboardController;

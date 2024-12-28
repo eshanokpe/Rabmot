@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PromoCode;
 use Carbon\Carbon;
-use Cart;
+use Cart; 
 
 class PromoCodeController extends Controller
 {
