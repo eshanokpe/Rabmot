@@ -76,48 +76,54 @@ class PromoCodeController extends Controller
 
     public function applyPromoCode(Request $request)
     {
-        $request->validate([
-            'promo_code' => 'required|string',
-        ]);
-        // dd('promoCode');
+        try {
+            // Validate the promo code input
+            $request->validate([
+                'promo_code' => 'required|string',
+            ]);
 
-        $currentDatetime = Carbon::now('Africa/Lagos');
-        $promoCode = PromoCode::where('code', $request->promo_code)
-            ->where('status', 'active')
-            ->where('start_datetime', '<=', $currentDatetime)  
-            ->where('end_datetime', '>=', $currentDatetime)  
-            ->first();
-        if (!$promoCode) {
-            return back()->with('error', 'Invalid or expired promo code.');
-        }
-
-        // Check usage limit, if applicable
-        if ($promoCode->usage_limit !== null && $promoCode->times_used >= $promoCode->usage_limit) {
-            return back()->with('error', 'Promo code usage limit has been reached.');
-        }
-        if ($promoCode) {
-            // Calculate the new total based on the discount
-            $cartTotal = preg_replace('/[^\d.]/', '', Cart::total());
+            $currentDatetime = Carbon::now('Africa/Lagos');
             
-            $discountPercentage = (float) $promoCode->discount_percentage;  // Cast to float if needed
+            // Retrieve the promo code from the database
+            $promoCode = PromoCode::where('code', $request->promo_code)
+                ->where('status', 'active')
+                ->where('start_datetime', '<=', $currentDatetime)
+                ->where('end_datetime', '>=', $currentDatetime)
+                ->first();
 
-            // dd($promoCode->discount_percentage);
+            // Handle invalid promo code or expired promo code
+            if (!$promoCode) {
+                return back()->with('error', 'Invalid or expired promo code.');
+            }
+
+            // Check if the promo code has reached its usage limit
+            if (!is_null($promoCode->usage_limit) && $promoCode->times_used >= $promoCode->usage_limit) {
+                return back()->with('error', 'Promo code usage limit has been reached.');
+            }
+
+            // Calculate the new total
+            $cartTotal = (float) preg_replace('/[^\d.]/', '', Cart::total());
+            $discountPercentage = (float) $promoCode->discount_percentage;
             $discountAmount = ($cartTotal * $discountPercentage) / 100;
             $newTotal = $cartTotal - $discountAmount;
-    
-            // Flash the new total to the session (only for the current request)
+
+            // Increment promo code usage count
+            $promoCode->increment('times_used');
+
+            // Flash the updated cart total and promo application status to the session
             session()->flash('promo_applied', true);
             session()->flash('new_total', $newTotal);
-        } else {
-            session()->flash('promo_applied', false);
-            session()->flash('new_total', null);
+
+            return back()->with('success', "Promo code applied! You received a {$discountPercentage}% discount.");
+        } catch (\Exception $e) {
+            // Log the exception for debugging purposes
+            \Log::error('Error applying promo code: ' . $e->getMessage());
+
+            // Return a generic error message to the user
+            return back()->with('error', 'An unexpected error occurred. Please try again later.');
         }
-
-        // Increment usage count
-        $promoCode->increment('times_used');
-
-        return back()->with('success', "Promo code applied! You received a {$discountPercentage}% discount.");
     }
+
 
 
 
