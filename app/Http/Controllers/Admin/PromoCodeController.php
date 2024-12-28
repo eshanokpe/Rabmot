@@ -81,7 +81,7 @@ class PromoCodeController extends Controller
         ]);
         // dd('promoCode');
 
-        $currentDatetime = Carbon::now(); 
+        $currentDatetime = Carbon::now('Africa/Lagos');
         $promoCode = PromoCode::where('code', $request->promo_code)
             ->where('status', 'active')
             ->where('start_datetime', '<=', $currentDatetime)  
