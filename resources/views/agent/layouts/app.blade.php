@@ -6,7 +6,7 @@
 
 	<head>
 		<!-- Required meta tags -->
-		<meta charset="utf-8" />
+		<meta charset="utf-8" /> 
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		<meta name="csrf-token" content="{{ csrf_token() }}" />
 		<title>Rabmot - Vehicle License Agency</title>
@@ -28,10 +28,20 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&amp;family=Roboto&amp;display=swap" />
 		<!-- Icons CSS -->
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/icons.css')}}" />
-		<!-- App CSS -->
+		<!-- App CSS --> 
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/app.css') }} " />
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/dark-sidebar.css')}}" />
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/dark-theme.css')}}" />
+		<!-- Toastr CSS -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+		<!-- jQuery (necessary for Toastr) -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<!-- Toastr JS -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 	</head>
 	<body>
 		<div class="wrapper">

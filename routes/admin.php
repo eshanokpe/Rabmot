@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProcessDocument\AdminProcessDocument;
 use App\Http\Controllers\Admin\Transaction\AdminTransactionController;
+use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProcessTypeController;
 use App\Http\Controllers\Admin\AdminAddVehicleController;
@@ -304,6 +305,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/view/delivered/paper/{id}', [AdminProcessDocument::class, 'viewDeliveredPaper'])->name('admin.viewdeliveredPaper');
         Route::put('/update/delivered/paper/{id}', [AdminProcessDocument::class, 'updateDeliveredPaperStatus'])->name('admin.update-delivered-status');
     
+        Route::get('/promocode/index', [PromoCodeController::class, 'index'])->name('admin.promocode.index'); 
+        Route::get('/promocode/create', [PromoCodeController::class, 'create'])->name('admin.promocode.create'); 
+        Route::post('/promocode/store', [PromoCodeController::class, 'store'])->name('admin.promocode.store'); 
+        Route::get('/promocode/edit/{id}', [PromoCodeController::class, 'edit'])->name('admin.promocode.edit'); 
+        Route::put('/promocode/update/{id}', [PromoCodeController::class, 'update'])->name('admin.promocode.update'); 
 
         Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 

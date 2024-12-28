@@ -9,7 +9,7 @@
         <!--page-content-wrapper-->
         <div class="page-content-wrapper">
             <div class="page-content">
-                <!--breadcrumb-->
+                <!--breadcrumb--> 
                 <div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
                     <div class="breadcrumb-title pe-3">My Cart</div>
                     <div class="ps-3">

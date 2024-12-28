@@ -5,7 +5,7 @@
 
 <!-- wrapper -->
 <div class="wrapper">
-    <div class="page-wrapper">
+    <div class="page-wrapper">  
         <!--page-content-wrapper-->
         <div class="page-content-wrapper">
             <div class="page-content">
@@ -68,7 +68,7 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody> 
                                                 @if(Cart::count() > 0)
                                                     @foreach($cartContent as $item)
                                                         <tr>
@@ -164,7 +164,7 @@
                                                     if(confirm("Do you really want to delete?")) {
                                                         $.ajax({
                                                             type:'POST',
-                                                            url:"{{ route('cart.delete') }}",
+                                                            url:"{{ route('agent.cart.delete') }}",
                                                             data:{
                                                                 itemId: itemId,
                                                             },

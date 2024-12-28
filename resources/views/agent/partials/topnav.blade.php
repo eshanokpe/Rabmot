@@ -103,16 +103,14 @@
                         <div class="d-flex user-box align-items-center">
                             @php
                                 // Access user details
-                                $name = Auth::user()->fullname;
-                                $email = Auth::user()->email;
-                                $profileImage = Auth::user()->profile_image;
+                                $user = auth('agent')->user();
+                                $name =  $user->fullname;
+                                $email = $user->email;
+                                $profileImage = $user->profile_image;
                             @endphp
                             <div class="user-info">
-
                                 <p class="user-name mb-0">Hi, {{ $name }}</p>
-
                                 <p class="designattion mb-0">Available</p>
-
                             </div>
                             @if($profileImage)
                                 <img src="{{ asset('/assets/profileimages/'.$profileImage) }}"

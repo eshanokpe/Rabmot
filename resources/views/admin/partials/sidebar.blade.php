@@ -11,7 +11,7 @@
         </h1>
 
         <div class="collapse navbar-collapse" id="sidebar-menu">
-            <ul class="navbar-nav pt-lg-3">
+            <ul class="navbar-nav pt-lg-3"> 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.dashboard')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -182,7 +182,6 @@
                     </div>
                 </li>
                 
-                
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -204,9 +203,6 @@
                         </span>
                     </a>
                 </li>
-              
-                
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -249,6 +245,17 @@
                             Other Permit
                          </a>
                     </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.promocode.index')}}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-users"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Promo Code
+                        </span>
+                    </a>
                 </li>
 
                 <li class="nav-item">

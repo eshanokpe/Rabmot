@@ -13,13 +13,9 @@
         <div class="footer">
 
             <p class="mb-0">Rabmot © {{ date('Y') }} | Developed By : <a href="" target="_blank">codervent</a>
-
             </p>
-
         </div>
-
     <!-- end footer -->
-
 </div>
 
 <!-- Bootstrap JS -->
@@ -43,15 +39,43 @@
 <script src="{{ asset('/assets/dashboard/js/app.js')}}"></script>
 
 
-</body>
 
 
 
 
 
 <!-- Mirrored from codervent.com/syndash/demo/vertical/index2.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 11 Apr 2023 18:46:36 GMT -->
+<style>
+    /* Increase font size of Toastr */
+    #toast-container > .toast {
+        font-size: 18px; /* You can change 18px to any size you want */
+    }
+</style>
 
-</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "timeOut": "3000",
+            "positionClass": "toast-top-right"
+        };
 
+        @if(session('success'))
+            toastr.success("{{ session('success') }}");
+        @endif
+        @if(session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+        
+        @if(session('status'))
+            toastr.success("{{ session('status') }}");
+        @endif
 
-
+        @if($errors->any()) 
+            @foreach($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    });
+</script>

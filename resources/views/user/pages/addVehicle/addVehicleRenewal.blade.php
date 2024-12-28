@@ -86,11 +86,12 @@
 									</div>
 									<div class="col-sm-6 col-md-4">
 										<label for="inputEmail" class="form-label">Year of Make (e.g 2000)</label>
+									
 										<select name="year0fmake" id="inputState" class="form-select">
 											<option selected="selected" disabled>-- select year </option>
 											<option value="2000">2000</option>
 											<option value="2001">2001</option>
-											<option value="2002"> 2002 </option>
+											<option value="2002">2002 </option>
 											<option value="2003">2003</option>
 											<option value="2004">2004</option>
 											<option value="2005"> 2005 </option>
@@ -112,6 +113,23 @@
 											<option value="2021">2021</option>
 											<option value="2022">2022</option>
 											<option value="2023"> 2023 </option>
+											<option value="2024"> 2024 </option>
+											<option value="2025"> 2025 </option>
+											<option value="2026"> 2026 </option>
+											<option value="2027"> 2027 </option>
+											<option value="2028"> 2028 </option>
+											<option value="2029"> 2029 </option>
+											<option value="2030"> 2030 </option>
+											<option value="2031"> 2031 </option>
+											<option value="2032"> 2032 </option>
+											<option value="2033"> 2033 </option>
+											<option value="2034"> 2034 </option>
+											<option value="2035"> 2035 </option>
+											<option value="2036"> 2036 </option>
+											<option value="2037"> 2037 </option>
+											<option value="2038"> 2038 </option>
+											<option value="2039"> 2039 </option>
+											<option value="2040"> 2040 </option>
 										</select>
 										@error('year0fmake')
 											<span class="text-danger">{{ $message }}</span>

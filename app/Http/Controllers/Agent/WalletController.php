@@ -62,7 +62,7 @@ class WalletController extends Controller
         ]);
 
         // For example, saving to a database:
-        $wallet = Wallet::create([
+        $wallet = Wallet::create([ 
             'user_id' => $id,
             'user_email' => $email,
             'userType' => 'agent',

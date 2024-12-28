@@ -100,7 +100,7 @@ Route::prefix('agent')->group(function () {
 
 
         Route::get('cart', [CartController::class, 'index'])->name('agent.cart'); 
-        Route::post('/cart/delete', [CartController::class, 'destroy'])->name('agent.delete');
+        Route::post('/cart/delete', [CartController::class, 'destroy'])->name('agent.cart.delete');
         Route::get('checkout', [CheckoutController::class, 'index'])->name('agent.checkout');
 
         //Payment
@@ -123,6 +123,7 @@ Route::prefix('agent')->group(function () {
         Route::get('profile', [ProfileController::class, 'index'])->name('agent.profile');
 
         Route::get('faq', [AgentDashboardController::class, 'faq'])->name('agent.faq');
+        Route::post('/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('agent.applyPromoCode');
 
         Route::post('/logout', [AgentLoginController::class, 'logout'])->name('agent.logout');
 

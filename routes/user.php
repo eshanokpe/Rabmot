@@ -5,6 +5,8 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;  
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Admin\PromoCodeController;
+use App\Http\Controllers\User\WalletController;
 use App\Http\Controllers\User\DealerPlateNumberContoller;
 use App\Http\Controllers\User\NewDriverLicenseController;
 use App\Http\Controllers\User\DriverLicenseRenewalController;
@@ -91,12 +93,12 @@ Route::middleware(['auth'])->group(function () {
 
 
         Route::get('cart', [CartController::class, 'index'])->name('home.cart'); 
-        Route::post('/cart/delete', [CartController::class, 'destroy'])->name('cart.delete');
+        Route::post('/cart/delete', [CartController::class, 'destroy'])->name('cart.delete'); 
         Route::get('checkout', [CheckoutController::class, 'index'])->name('home.checkout');
         //Payment
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
-         
+          
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq'); 
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
@@ -131,8 +133,7 @@ Route::middleware(['auth'])->group(function () {
     });
     // AddVehicleController
     Route::get('addvehicle', [HomeController::class, 'addvehicle'])->name('home.addVehicle');
- 
-   
+
 
     Route::post('postaddvehicleregistration', [AddVehicleRegistrationController::class, 'postAddVehicleRegistration'])->name('home.postAddVehicleRegistration');
     Route::post('post-new-vehicle-registration', [AddVehicleRegistrationController::class, 'postNewVehicleRegistration'])->name('home.postNewVehicleRegistration');
@@ -141,6 +142,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('postvehicleownership', [AddVehicleOwnershipController::class, 'postAddvehicleOwnership'])->name('home.postAddVehicleOwnership');
     Route::post('post/changeofOwnership', [AddVehicleOwnershipController::class, 'postchangeofownership'])->name('home.postchangeofownership');
 
+    Route::get('home/wallet', [WalletController::class, 'index'])->name('home.wallet'); 
+    Route::post('home/createWallet', [WalletController::class, 'createWallet'])->name('home.createWallet');
+    Route::post('/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('applyPromoCode');
 });
 
  

@@ -207,33 +207,38 @@
                                     <hr>
 
                                 </div>
+                                @php
+                                    $newTotal = session('new_total', null); // Retrieve the new total from session if available
+                                    $cartTotal = preg_replace('/[^\d.]/', '', Cart::total());
+                                    $totalToDisplay = $newTotal ? (float) $newTotal : (float) $cartTotal; // Default to cart total if no promo applied
+                                @endphp
                                 <div class="row">
                                     <div class="col-7 col-sm-8">
-                                        
-                                        <label for="">Enter a promo code</label>
-                                        <div class="input-group mb-3">
-                                        
-                                        <input type="text" class="form-control" placeholder="Enter promo code" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn btn-primary" type="button" id="button-addon2">Apply</button>
-                                        </div>
+                                        <form action="{{ route('applyPromoCode') }}" method="POST">
+                                            @csrf
+                                            <label for="promo_code">Enter a promo code</label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="promo_code" class="form-control" placeholder="Enter promo code" aria-label="Promo code" aria-describedby="button-addon2">
+                                                <button class="btn btn-primary" type="submit" id="button-addon2">Apply</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    
                                 </div>
-                            
-                            
+                                
                                 <div class="row">
-                                    
                                     <hr>
                                     <div class="col-7 col-sm-10">
-                                        <p> <b> Total Amount</b></p>
+                                        <p><b>Total Amount</b></p>
                                     </div>
                                     <div class="col-5 col-sm-2 text-center">
-                                    <p>₦{{ Cart::total()}}</p>
-                                    
-                                    </div><br><br>
-                                    <hr>
+                                        <p>₦{{ number_format($totalToDisplay, 2) }}</p>
+                                        {{-- <b>₦{{ Cart::total() }}</b> --}}
 
+                                    </div>
+                                    <br><br>
+                                    <hr>
                                 </div>
+
                                 <form action="{{ route('home.payment.initiate')}}" method="POST">
                                     @csrf
                                     <div class="col-12 col-sm-8">
@@ -306,7 +311,7 @@
                                     <input type="hidden" name="fullname" id="fullname" value="{{$fullname}}">
                                     <input type="hidden" name="email" id="email" value="{{$email}}">
                                     <input type="hidden" name="orderNo" id="orderNo" value="{{$orderNumber}}">
-                                    <input type="hidden" name="total" id="total" value="{{ Cart::total() }}">
+                                    <input type="hidden" name="total" id="total" value="{{ $totalToDisplay }}">
                                     <div class="col-12 " text-center>
                                         <center>  
                                             <button type="submit" class="btn btn-primary px-5 text-center" >Make Payment</button>
@@ -356,7 +361,7 @@
         } else if (selectedId === "ibadan") {
             elementToHide25.style.display = "block";
         }
-    });
+    }); 
 
 </script>
 <script>
