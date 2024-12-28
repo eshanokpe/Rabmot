@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PromoCode;
+use Carbon\Carbon;
 use Cart;
 
 class PromoCodeController extends Controller
@@ -80,10 +81,11 @@ class PromoCodeController extends Controller
         ]);
         // dd('promoCode');
 
+        $currentDatetime = Carbon::now(); 
         $promoCode = PromoCode::where('code', $request->promo_code)
             ->where('status', 'active')
-            ->where('start_datetime', '<=', now())
-            ->where('end_datetime', '>=', now())
+            ->where('start_datetime', '<=', $currentDatetime)  
+            ->where('end_datetime', '>=', $currentDatetime)  
             ->first();
         if (!$promoCode) {
             return back()->with('error', 'Invalid or expired promo code.');
