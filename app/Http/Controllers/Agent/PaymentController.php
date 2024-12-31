@@ -190,11 +190,11 @@ class PaymentController extends Controller{
                 $user_email = new PendingMode($user); 
                 Mail::to($user->email)->send($user_email);
                 Cart::destroy(); 
-                return  redirect()->route('home.transactionHistory');
+                return  redirect()->route('agent.transactionHistory');
             }else{ 
                 Session::flash('error', 'Payment initiation failed!');
                 // echo "Failed Transaction!";
-                return redirect()->route('home.cart'); 
+                return redirect()->route('agent.cart'); 
             }
         }
     }
