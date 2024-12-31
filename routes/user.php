@@ -12,6 +12,7 @@ use App\Http\Controllers\User\NewDriverLicenseController;
 use App\Http\Controllers\User\DriverLicenseRenewalController;
 use App\Http\Controllers\User\InternationalDriverLicenseController;
 use App\Http\Controllers\User\OtherPermitController;
+use App\Http\Controllers\User\ReferralController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\TopicCommentController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleRenewalController;
@@ -134,17 +135,16 @@ Route::middleware(['auth'])->group(function () {
     // AddVehicleController
     Route::get('addvehicle', [HomeController::class, 'addvehicle'])->name('home.addVehicle');
 
-
     Route::post('postaddvehicleregistration', [AddVehicleRegistrationController::class, 'postAddVehicleRegistration'])->name('home.postAddVehicleRegistration');
     Route::post('post-new-vehicle-registration', [AddVehicleRegistrationController::class, 'postNewVehicleRegistration'])->name('home.postNewVehicleRegistration');
-    
     
     Route::post('postvehicleownership', [AddVehicleOwnershipController::class, 'postAddvehicleOwnership'])->name('home.postAddVehicleOwnership');
     Route::post('post/changeofOwnership', [AddVehicleOwnershipController::class, 'postchangeofownership'])->name('home.postchangeofownership');
 
     Route::get('home/wallet', [WalletController::class, 'index'])->name('home.wallet'); 
     Route::post('home/createWallet', [WalletController::class, 'createWallet'])->name('home.createWallet');
-    Route::post('/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('applyPromoCode');
+    Route::post('home/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('applyPromoCode');
+    Route::get('home/referral-details', [ReferralController::class, 'index'])->name('home.referralDetails');
 });
 
  

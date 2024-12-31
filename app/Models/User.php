@@ -36,7 +36,7 @@ class User extends Authenticatable
         'referred_by',
         'referral_code',
         'referralsCount',
-        'referral_count',
+        'referrer_count'
     ];
 
     /**
