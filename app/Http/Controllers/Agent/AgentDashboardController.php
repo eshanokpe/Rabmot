@@ -141,7 +141,7 @@ class AgentDashboardController extends Controller
         $email = $user->email;
 
         $transactionhistory = ProcessHistory::where('user_id', $id)
-                                            ->where('userType', $email)
+                                            ->where('user_email', $email)
                                             ->where('userType', 'agent')
                                             ->get();
 
