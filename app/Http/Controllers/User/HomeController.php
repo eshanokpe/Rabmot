@@ -42,14 +42,14 @@ class HomeController extends Controller
         $user = Auth::user(); 
         $user = User::find($id);
 
-        $tokenCount = $user->latestTokenCount();
-        $referralsCount = $user->referrer_count;
-        $referralLink = route('signup') . '?ref=' . $user->referral_code;
-        $vehicle = AddVehicleRenewal::where('user_id', $id)->get();
-        $vehicleCount = $vehicle->count(); 
-        $getaddvehicle = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $id)->get();
-        
-        return view('user.home', compact('vehicleCount','getaddvehicle','referralLink', 'referralsCount','tokenCount'));
+        $data['tokenCount'] = $user->latestTokenCount();
+        $data['referralsCount'] = $user->referrer_count;
+        $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
+        $data['vehicle'] = AddVehicleRenewal::where('user_id', $id)->get();
+        $data['vehicleCount'] = $data['vehicle']->count(); 
+        $data['getaddvehicle'] = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $id)->get();
+         
+        return view('user.home', $data);
     }
  
     public function addvehicle()
@@ -95,6 +95,7 @@ class HomeController extends Controller
         $email = Auth::user()->email;
         $transactionhistory = ProcessHistory::where('user_id', $id)
                                        // ->where('status',0)
+                                       ->where('user_email', $email)
                                        ->latest()
                                         ->get();
 

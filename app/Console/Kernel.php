@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use  \App\Console\Commands\NotifyExpiry;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,9 +14,11 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+   
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // $schedule->command('notify:expiry')->hourly();
+        $schedule->command('notify:expiry')->dailyAt('15:00');
     }
 
     /**
@@ -26,7 +29,7 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
-
+        // \App\Console\Commands\NotifyExpiry::class;
         require base_path('routes/console.php');
     }
 }

@@ -43,7 +43,7 @@ class AddVehicleRenewal extends Model
         'hackneypermitpaper',
         'statecarriagepermit', 
         'localgovernmentpermit',
-        'midyearpermit',
+        'midyearpermit', 
         'meansofid',
     ];
 
@@ -53,5 +53,10 @@ class AddVehicleRenewal extends Model
         return $this->belongsTo(VehicleType::class, 'category');
     }
 
+    public function user()
+    {
+        // return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
     
 }

@@ -9,7 +9,7 @@
 		<!--page-wrapper-->
 		<div class="page-wrapper">
 			<!--page-content-wrapper-->
-			<div class="page-content-wrapper"> 
+			<div class="page-content-wrapper">  
 				<div class="page-content">
 					@include('user.pages.dashboard.index')
 
@@ -64,11 +64,8 @@
 														@php
 															//Get the current data (today)
 															$currentDate = new DateTime();
-															// Convert the expiry date string to a DateTime object
 															$expiryDate = DateTime::createFromFormat('Y-m-d', $vehicle->vehiclelicenseexpiry);
-															// Calcutlate the difference between the current data and the expiry data
 															$interval = $currentDate->diff($expiryDate);
-															// Get the remaining days, months, and years
 															$remainingDays = $interval->days;
 															$remainingMonths = $interval->m;
 															$remainingYears = $interval->y;

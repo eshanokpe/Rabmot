@@ -15,6 +15,7 @@ use App\Http\Controllers\User\OtherPermitController;
 use App\Http\Controllers\User\ReferralController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\TopicCommentController;
+use App\Http\Controllers\User\NotificationController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleRenewalController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleRegistrationController;
 use App\Http\Controllers\User\AddVehicle\AddVehicleOwnershipController;
@@ -145,7 +146,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('home/createWallet', [WalletController::class, 'createWallet'])->name('home.createWallet');
     Route::post('home/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('applyPromoCode');
     Route::get('home/referral-details', [ReferralController::class, 'index'])->name('home.referralDetails');
-});
+    
+    Route::get('home/notifications', [NotificationController::class, 'index'])->name('home.notifications.index');
+    Route::get('home/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('home.notifications.markAsRead');
+    Route::get('home/notifications/show/{id}', [NotificationController::class, 'show'])->name('home.notifications.show');
+    
+}); 
 
  
 
