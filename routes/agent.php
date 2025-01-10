@@ -128,6 +128,10 @@ Route::prefix('agent')->group(function () {
 
         Route::post('/logout', [AgentLoginController::class, 'logout'])->name('agent.logout');
 
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('agent.notifications.index');
+        Route::get('/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('agent.notifications.markAsRead');
+        Route::get('/notifications/show/{id}', [NotificationController::class, 'show'])->name('agent.notifications.show');
+        
     });
 });
 

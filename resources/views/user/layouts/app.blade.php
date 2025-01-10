@@ -45,26 +45,17 @@
 
 		@viteReactRefresh
         @vite('resources/js/app.jsx')
-
-		
-
 	</head>
 
 	<body>
 		<div class="wrapper">
-	
-		@include('user.partials.sidebar')
-		
-		@include('user.partials.topnav')
-		
-		<main class="py-4">
-
-			@yield('content')
-
-		</main>
-        @include('user.partials.footer')
+			@include('user.partials.sidebar')
+			@include('user.partials.topnav')
+			<main class="py-4">
+				@yield('content')
+			</main>
+			@include('user.partials.footer')
 		</div>
-	
 	</body>
 
 </html>
