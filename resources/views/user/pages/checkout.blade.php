@@ -285,32 +285,36 @@
                                             </select>
                                         </div>
                                         <div id="elementToHide22" class="col-sm-8 hidden mt-3">
-                                            <p>
-                                                <b>Abuja Office Address</b>
-                                                <input type="hidden" name="lagos_address" class="form-control" value="V I O Office Mabushi Kado Express Way Eagle Square, Abuja Nigeria." >
-                                                V I O Office Mabushi Kado Express Way Eagle Square, Abuja Nigeria.
-                                            </p>
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Abuja Office Address</option>
+                                                <option value=" V I O Office Mabushi Kado Express Way Eagle Square, Abuja Nigeria.">
+                                                    V I O Office Mabushi Kado Express Way Eagle Square, Abuja Nigeria.
+                                                </option>
+                                            </select>
                                         </div>
                                         <div id="elementToHide23" class="col-sm-8 hidden mt-3">
-                                            <p>
-                                                <b>Port Harcourt Office Address</b><br>
-                                                <input type="hidden" name="lagos_address" class="form-control" value="Deborah Lawson House, Abacha road, GRA, Port Harcourt, Rivers." >
-                                                Deborah Lawson House, Abacha road, GRA, Port Harcourt, Rivers.
-                                            </p>
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Port Harcourt Office Address</option>
+                                                <option value=" Deborah Lawson House, Abacha road, GRA, Port Harcourt, Rivers.">
+                                                    Deborah Lawson House, Abacha road, GRA, Port Harcourt, Rivers.
+                                                </option>
+                                            </select>
                                         </div>
                                         <div id="elementToHide24" class="col-sm-8 hidden mt-3">
-                                            <p>
-                                                <b>Abeokuta Office Address</b><br>
-                                                <input type="hidden" name="lagos_address" class="form-control" value="5 Peter B somide street Onikoko Abeokuta Ogun NIgeria." >
-                                                5 Peter B somide street Onikoko Abeokuta Ogun NIgeria.
-                                            </p>
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Abeokuta Office Address</option>
+                                                <option value="5 Peter B somide street Onikoko Abeokuta Ogun NIgeria.">
+                                                    5 Peter B somide street Onikoko Abeokuta Ogun NIgeria.
+                                                </option>
+                                            </select>
                                         </div>
                                         <div id="elementToHide25" class="col-sm-8 hidden mt-3">
-                                            <p>
-                                                <b>Ibadan Office Address</b><br>
-                                                <input type="hidden" name="lagos_address" class="form-control" value="Onireke licencing office dugbe, Ibadan Nigeria." >
-                                                Onireke licencing office dugbe, Ibadan Nigeria.
-                                            </p>
+                                            <select id="lagos_address" name="lagos_address" class="form-select">
+                                                <option disabled selected value="">Choose Ibadan Office Address</option>
+                                                <option value="Onireke licencing office dugbe, Ibadan Nigeria.">
+                                                    Onireke licencing office dugbe, Ibadan Nigeria.
+                                                </option>
+                                            </select>
                                         </div>                                    
                                     </div>
                                     <div id="elementToHide3" style="display: none;" class="col-sm-8 hidden">
