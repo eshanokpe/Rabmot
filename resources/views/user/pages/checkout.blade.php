@@ -249,7 +249,7 @@
                                 </div>
 
                                 <form action="{{ route('home.payment.initiate')}}" method="POST">
-                                    @csrf
+                                    @csrf  
                                     <div class="col-12 col-sm-8">
                                         <label for="">Delivery Option</label>
                                         <select id="selection" required name="delivery_option" class="form-select mb-3">
