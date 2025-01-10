@@ -19,7 +19,7 @@
 
 <!-- Vector map JavaScript -->
 
-<!-- App JS -->
+<!-- App JS -->   
 
 <script src="{{ asset('/assets/dashboard/js/app.js')}}"></script>
 
