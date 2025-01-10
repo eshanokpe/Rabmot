@@ -37,8 +37,7 @@ class AdminDashboardController extends Controller
       $user = Auth::guard('admin')->user();
       $userId = $user->id;
       $userEmail = $user->email;
-
-       
+         
       $userDetails = User::where('id', $user->id)->first();
       $items = ProcessHistory::where('status',0)->latest()->get();
       $countprocesshistory = ProcessHistory::count();

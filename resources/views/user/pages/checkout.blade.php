@@ -258,7 +258,7 @@
                                             <option data-type="pickup" value="Pick Up from nearest location">Pick Up from nearest location</option>
                                             <option data-type="delivery" value="Delivery to door step">Delivery to door step</option>
                                         </select>
-                                    </div>
+                                    </div> 
                                     <div id="elementToHide1" style="display: none;" class="col-sm-8 hidden mb-3">
                                         <label for="">Enter Email Address</label>
                                         <input type="text" name="scan_email" class="form-control" placeholder="email address" value="" >

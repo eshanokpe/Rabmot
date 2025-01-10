@@ -128,6 +128,10 @@
                                             <div class="mb-3 ">
                                                 <label class="form-label required">Delivery Option</label>
                                                 <input type="email" class="form-control"  autocomplete="off" disabled value="{{ $items->delivery_option}}"/>
+                                            </div> 
+                                            <div class="mb-3 ">
+                                                <label class="form-label required">Location</label>
+                                                <input  class="form-control"  autocomplete="off" disabled  value="{{ $items->location}}" />
                                             </div>
                                             <div class="mb-3 ">
                                                 <label class="form-label required">Address</label>
