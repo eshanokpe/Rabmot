@@ -10,7 +10,9 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $notificationsIndex = Auth::user()->notifications; 
+        $userAgent = Auth::guard('agent')->user();
+
+        $notificationsIndex = $userAgent->notifications; 
         return view('agent.notifications.index', compact('notificationsIndex'));
     }
 
