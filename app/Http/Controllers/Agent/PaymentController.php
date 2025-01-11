@@ -190,10 +190,10 @@ class PaymentController extends Controller{
                 $walletPayment->user_id = $id;
                 $walletPayment->user_email = $email;
                 $walletPayment->userType = 'agent'; // Adjust this field if needed
-                $walletPayment->amount = $item->price * $item->qty * 0.07 ?? null,
-                $walletPayment->process_id = $item->model->process_id ?? null,
-                $walletPayment->process_number = $orderNumber ?? null,
-                $walletPayment->process_type = $item->model->process_type ?? null,
+                $walletPayment->amount = $item->price * $item->qty * 0.07 ?? null;
+                $walletPayment->process_id = $item->model->process_id ?? null;
+                $walletPayment->process_number = $orderNumber ?? null;
+                $walletPayment->process_type = $item->model->process_type ?? null;
                 $walletPayment->save();
 
                 Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
