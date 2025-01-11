@@ -28,22 +28,27 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', function ($view) {
+            $notificationCount = 0;
+            $notifications = collect();
+
             if (Auth::check()) {
+                // Default guard (web)
                 $user = Auth::user();
                 $notificationCount = $user->unreadNotifications->count();
-                $view->with('notificationCount', $notificationCount);
-            } else {
-                $view->with('notificationCount', 0);
+                $notifications = $user->unreadNotifications;
+            } elseif (Auth::guard('agent')->check()) {
+                // Agent guard
+                $user = Auth::guard('agent')->user();
+                $notificationCount = $user->unreadNotifications->count();
+                $notifications = $user->unreadNotifications;
             }
+            $view->with([
+                'notificationCount' => $notificationCount,
+                'notifications' => $notifications,
+            ]);
+
         });
 
-        View::composer('*', function ($view) {
-            if (Auth::check()) {
-                $notifications = Auth::user()->unreadNotifications;
-                
-                $view->with('notifications', $notifications);
-            }
-        });
         
     }
 }

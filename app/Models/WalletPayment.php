@@ -12,7 +12,7 @@ class WalletPayment extends Model
     protected $fillable = [
         'user_id',
         'user_email',
-        'userType',
+        'userType', 
         'amount',
         'process_id',
         'process_number',

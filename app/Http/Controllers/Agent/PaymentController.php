@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 
 use App\Models\Order;
+use App\Models\WalletPayment;
 use Illuminate\Http\Request;
 use PHPUnit\TextUI\Exception;
 use Redirect;
@@ -185,8 +186,25 @@ class PaymentController extends Controller{
                 ]);
             }
             
-            if($payment->save()){    
+            if($payment->save()){    llet
+                $amountToAdd = $payment->amount * 0.05;
+
+                // Create a new WalletPayment entry
+                $walletPayment = new WalletPayment();
+                $walletPayment->user_id = $id;
+                $walletPayment->user_email = $email;
+                $walletPayment->userType = 'agent'; // Adjust this field if needed
+                $walletPayment->amount = $amountToAdd;
+                $walletPayment->process_id = $payment->process_id;
+                $walletPayment->process_number = $ref_id;
+                $walletPayment->process_type = $payment->process_type;
+                $walletPayment->save();
+                
+                Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
+               
+                
                 $user = Agent::where('email', $email)->get()->first();
+
                 $user_email = new PendingMode($user); 
                 Mail::to($user->email)->send($user_email);
                 Cart::destroy(); 
