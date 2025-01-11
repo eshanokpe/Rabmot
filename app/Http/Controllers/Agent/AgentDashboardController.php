@@ -41,6 +41,10 @@ class AgentDashboardController extends Controller
                                              ->where('user_email', $userEmail)
                                              ->where('userType', 'Agent')->get();
        
+        $vehicle = AddVehicleRenewal::where('user_id', $userId)
+                                    ->where('user_email', $userEmail)
+                                    ->where('userType', 'Agent')
+                                    ->get(); 
         $vehicleCount = AddVehicleRenewal::where('user_id', $userId)
                                     ->where('user_email', $userEmail)
                                     ->where('userType', 'Agent')
@@ -53,9 +57,9 @@ class AgentDashboardController extends Controller
                                     ->where('user_email', $userEmail)
                                     ->where('userType', 'Agent')
                                     ->count(); 
+                                    
         $totalCountVehicle = $vehicleCount + $ownershipCount + $registrationCount;
         
-
         return view('agent.dashboard', [
             'user' => $user,
             'userDetails' => $userDetails,
