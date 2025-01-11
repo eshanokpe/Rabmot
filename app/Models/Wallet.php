@@ -13,7 +13,7 @@ class Wallet extends Model
         'user_id',
         'user_email', 
         'userType',
-        'amount',
+        'amount', 
         'bank',
         'account_number',
         'account_name',
