@@ -188,7 +188,8 @@ class PaymentController extends Controller{
             }
             
             if($payment->save()){    
-                $amountToAdd = $payment->amount * 0.05;
+                dd($payment);
+                $amountToAdd = $item->price * $item->qty * 0.05;
 
                 // Create a new WalletPayment entry
                 $walletPayment = new WalletPayment();
@@ -200,6 +201,16 @@ class PaymentController extends Controller{
                 $walletPayment->process_number = $ref_id;
                 $walletPayment->process_type = $payment->process_type;
                 $walletPayment->save();
+
+                Walletpayment::create([ 
+                    'user_id' => $id ?? null,
+                    'user_email' => $email ?? null,
+                    'userType' => 'agent',
+                    'amount' => $item->price * $item->qty * 0.07 ?? null,
+                    'process_id' =>  $item->model->process_id ?? null,
+                    'process_number'=> $orderNumber ?? null,
+                    'process_type' => $item->model->process_type ?? null,
+                ]);
 
                 Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
                
