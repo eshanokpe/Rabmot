@@ -8,7 +8,7 @@
 	 
 		<!--page-wrapper-->
 		<div class="page-wrapper">
-			<!--page-content-wrapper-->
+			<!--page-content-wrapper--> 
 			<div class="page-content-wrapper"> 
 				<div class="page-content">
 					<div class="row"> 
@@ -35,7 +35,7 @@
 								<div class="card-body">
 									<div class="d-flex align-items-center">
 										<div>
-											<h2 class="mb-0 text-white">{{ $vehicleCount}} <i class='bx bxs-up-arrow-alt font-14 text-white'></i> </h2>
+											<h2 class="mb-0 text-white">{{ $totalCountVehicle}} <i class='bx bxs-up-arrow-alt font-14 text-white'></i> </h2>
 										</div>
 										<div class="ms-auto font-35 text-white">
 											<i class="bx bx-car"></i>

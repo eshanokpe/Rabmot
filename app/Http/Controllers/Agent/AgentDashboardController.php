@@ -12,6 +12,7 @@ use App\Models\VehicleType;
 use App\Models\ProcessHistory;
 use App\Models\OtherPermitPrice;
 use App\Models\AddVehicleRenewal;
+use App\Models\AddVehicleOwnership;
 use App\Models\VehicleRenewalPrice;
 use App\Models\VehicleRegistrationType;
 
@@ -39,18 +40,27 @@ class AgentDashboardController extends Controller
                                              ->where('user_email', $userEmail)
                                              ->where('userType', 'Agent')->get();
        
-        $vehicle = AddVehicleRenewal::where('user_id', $userId)
-                                     ->where('user_email', $userEmail)
-                                     ->where('userType', 'Agent')
-                                     ->get(); 
+        $vehicleCount = AddVehicleRenewal::where('user_id', $userId)
+                                    ->where('user_email', $userEmail)
+                                    ->where('userType', 'Agent')
+                                    ->count(); 
+        $ownershipCount = AddVehicleOwnership::where('user_id', $userId)
+                                    ->where('user_email', $userEmail)
+                                    ->where('userType', 'Agent')
+                                    ->count(); 
+        $registrationCount = AddVehicleRegistration::where('user_id', $userId)
+                                    ->where('user_email', $userEmail)
+                                    ->where('userType', 'Agent')
+                                    ->count(); 
+        $totalCountVehicle = $vehicleCount + $ownershipCount + $registrationCount;
         
-        $vehicleCount = $vehicle->count(); 
+
         return view('agent.dashboard', [
             'user' => $user,
             'userDetails' => $userDetails,
             'vehicle' => $vehicle,
             'getaddvehicle' => $getaddvehicle,
-            'vehicleCount' => $vehicleCount,
+            'totalCountVehicle' => $totalCountVehicle,
             'totalWalletAmount' => $totalWalletAmount
         ]);
     }
@@ -114,7 +124,7 @@ class AgentDashboardController extends Controller
     {
         $user = Auth::guard('agent')->user();
         $id = $user->id;
-        $email = $user->email;
+        $email = $user->email; 
 
         $processhistory = ProcessHistory::where('user_id', $id)
                                         ->where('user_email', $email)
