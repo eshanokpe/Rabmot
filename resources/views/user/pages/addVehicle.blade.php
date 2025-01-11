@@ -95,7 +95,8 @@
 						</a>
 					</div>
 					<div class="col-12 col-lg-3 ">
-						<a href="https://wa.me/message/5IEUSOTNA2ZZH1">
+						{{-- <a href="https://wa.me/message/5IEUSOTNA2ZZH1"> --}}
+						<a href="https://wa.me/+2347088173662">
 						<div class="card radius-15 w-100 text-center border-success">
 							<div class="card-body">
 								<i class="bx bx-car" style="font-size:48px; color:green;"></i>
