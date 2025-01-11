@@ -59,7 +59,8 @@ class AgentDashboardController extends Controller
                                     ->where('userType', 'Agent')
                                     ->count(); 
         $orderCount = ProcessHistory::where('user_id', $userId)
-                                    ->where('user_email', $email)
+                                    ->where('user_email', $userEmail)
+                                    ->where('userType', 'Agent')
                                     ->where('status', 0)
                                     ->count();
         $totalCountVehicle = $vehicleCount + $ownershipCount + $registrationCount;
