@@ -142,14 +142,15 @@
                         <a class="dropdown-item" href="{{ route('agent.transactionHistory') }}"><i
                                 class="bx bx-wallet"></i><span>Transaction History</span></a>
                         <div class="dropdown-divider mb-0"></div>
-                        <a class="dropdown-item" href="{{ route('agent.logout') }}" onclick="event.preventDefault()
-                            document.getElementById('logout-form').submit();">
-                            <i class="bx bx-power-off"></i><span>Logout</span>
-                        </a>
-                        <form id="logout-form" action="{{ route('agent.logout') }}" method="POST"
-                            class="d-none">
+
+                        <form id="logout-form" action="{{ route('agent.logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
+                        <a class="dropdown-item" href="{{ route('agent.logout') }}" 
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="bx bx-power-off"></i><span>Logout</span>
+                        </a>
+                    
                     </div>
 
                 </li>
