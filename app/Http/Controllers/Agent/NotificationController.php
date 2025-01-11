@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class NotificationController extends Controller
+{
+    public function index()
+    {
+        $notificationsIndex = Auth::user()->notifications; 
+        return view('agent.notifications.index', compact('notificationsIndex'));
+    }
+
+    public function markAsRead($id)
+    {
+        $userAgent = Auth::guard('agent')->user();
+        $notification = $userAgent->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        return view('agent.notifications.show', compact('notification'));
+    }
+
+    public function show($id)
+    {
+        $userAgent = Auth::guard('agent')->user();
+        $notification = $userAgent->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        return view('agent.notifications.show', compact('notification'));
+    }
+} 

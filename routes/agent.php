@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agent\CartController;
+use App\Http\Controllers\Agent\NotificationController;
 use App\Http\Controllers\Agent\PaymentController;
 use App\Http\Controllers\Agent\WalletController;
 use App\Http\Controllers\Admin\PromoCodeController;
