@@ -186,7 +186,7 @@ class PaymentController extends Controller{
                 ]);
             }
             
-            if($payment->save()){    llet
+            if($payment->save()){    
                 $amountToAdd = $payment->amount * 0.05;
 
                 // Create a new WalletPayment entry
@@ -199,7 +199,7 @@ class PaymentController extends Controller{
                 $walletPayment->process_number = $ref_id;
                 $walletPayment->process_type = $payment->process_type;
                 $walletPayment->save();
-                
+
                 Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
                
                 
