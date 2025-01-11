@@ -13,6 +13,7 @@ use App\Models\ProcessHistory;
 use App\Models\OtherPermitPrice;
 use App\Models\AddVehicleRenewal;
 use App\Models\AddVehicleOwnership;
+use App\Models\AddVehicleRegistration;
 use App\Models\VehicleRenewalPrice;
 use App\Models\VehicleRegistrationType;
 
