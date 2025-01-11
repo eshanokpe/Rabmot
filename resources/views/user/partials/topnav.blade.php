@@ -12,7 +12,7 @@
                  <input type="text" class="form-control" placeholder="search">
                  <button class="btn btn-search" type="button"><i class="lni lni-search-alt"></i></button>
             </div>
-        </div>
+        </div> 
         <div class="right-topbar ms-auto">
             <ul class="navbar-nav">
                 <li class="nav-item search-btn-mobile">
