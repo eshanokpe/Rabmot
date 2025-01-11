@@ -201,7 +201,7 @@ class PaymentController extends Controller{
             }
             
             if($payment->save()){    
-                dd($payment);
+                // dd($payment);
                 
                 $user = Agent::where('email', $email)->get()->first();
 
