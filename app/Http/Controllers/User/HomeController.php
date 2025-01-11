@@ -53,7 +53,10 @@ class HomeController extends Controller
         $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $id)->count();
         $data['registrationCount'] = AddVehicleRegistration::where('user_id', $id)->count();
 
-        $data['orderCount'] = Order::where('user_id', $id)->count();
+        $data['orderCount'] = ProcessHistory::where('user_id', $id)
+                                            ->where('user_email', $email)
+                                            ->where('status', 0)
+                                            ->count();
 
         $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
  
