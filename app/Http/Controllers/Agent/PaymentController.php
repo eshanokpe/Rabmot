@@ -185,35 +185,23 @@ class PaymentController extends Controller{
 
                     'status' => 0,
                 ]);
-            }
-            
-            if($payment->save()){    
-                dd($payment);
-                $amountToAdd = $item->price * $item->qty * 0.05;
-
                 // Create a new WalletPayment entry
                 $walletPayment = new WalletPayment();
                 $walletPayment->user_id = $id;
                 $walletPayment->user_email = $email;
                 $walletPayment->userType = 'agent'; // Adjust this field if needed
-                $walletPayment->amount = $amountToAdd;
-                $walletPayment->process_id = $payment->process_id;
-                $walletPayment->process_number = $ref_id;
-                $walletPayment->process_type = $payment->process_type;
+                $walletPayment->amount = $item->price * $item->qty * 0.07 ?? null,
+                $walletPayment->process_id = $item->model->process_id ?? null,
+                $walletPayment->process_number = $orderNumber ?? null,
+                $walletPayment->process_type = $item->model->process_type ?? null,
                 $walletPayment->save();
-
-                Walletpayment::create([ 
-                    'user_id' => $id ?? null,
-                    'user_email' => $email ?? null,
-                    'userType' => 'agent',
-                    'amount' => $item->price * $item->qty * 0.07 ?? null,
-                    'process_id' =>  $item->model->process_id ?? null,
-                    'process_number'=> $orderNumber ?? null,
-                    'process_type' => $item->model->process_type ?? null,
-                ]);
 
                 Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
                
+            }
+            
+            if($payment->save()){    
+                dd($payment);
                 
                 $user = Agent::where('email', $email)->get()->first();
 
