@@ -138,7 +138,7 @@
                                                 <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->address}}</textarea>
                                             </div>
                                             <div class="mb-3 ">
-                                                <label class="form-label required">Lagos Address</label>
+                                                <label class="form-label required">Office Address</label>
                                                 <textarea  class="form-control"  autocomplete="off" disabled >{{ $items->lagos_address}}</textarea>
                                             </div>
                                             

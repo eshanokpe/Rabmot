@@ -8,6 +8,8 @@ use App\Models\FAQs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
+use App\Models\AddVehicleOwnership; 
+use App\Models\AddVehicleRegistration; 
 use App\Models\AddVehicleRenewal; 
 use App\Models\User;
 use App\Models\VehicleType;
@@ -45,8 +47,12 @@ class HomeController extends Controller
         $data['tokenCount'] = $user->latestTokenCount();
         $data['referralsCount'] = $user->referrer_count;
         $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
-        $data['vehicle'] = AddVehicleRenewal::where('user_id', $id)->get();
-        $data['vehicleCount'] = $data['vehicle']->count(); 
+
+        $data['vehicleCount'] = AddVehicleRenewal::where('user_id', $id)->count();
+        $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $id)->count();
+        $data['registrationCount'] = AddVehicleRegistration::where('user_id', $id)->count();
+        $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
+
         $data['getaddvehicle'] = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $id)->get();
          
         return view('user.home', $data);

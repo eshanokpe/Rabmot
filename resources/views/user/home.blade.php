@@ -11,7 +11,7 @@
 			<!--page-content-wrapper-->
 			<div class="page-content-wrapper">  
 				<div class="page-content">
-					@include('user.pages.dashboard.index')
+					@include('user.pages.dashboard.index') 
 
 					<div class="card radius-5  overflow-hidden p-2">
 						<div class="card-header pt-10 border-bottom-0">

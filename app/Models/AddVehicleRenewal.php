@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddVehicleRenewal extends Model
 {
-    use HasFactory; 
+    use HasFactory;  
     protected $table = 'addvehiclerenewals'; 
     public $fillable = [ 
         'user_id', 
