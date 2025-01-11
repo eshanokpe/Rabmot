@@ -33,7 +33,7 @@
                                 <span class="msg-count">0</span>
                             @endif
                         <i class="bx bx-cart vertical-align-middle"></i>
-                    </a>
+                    </a>   
                 </li>
                 
                 <li class="nav-item dropdown dropdown-lg">
