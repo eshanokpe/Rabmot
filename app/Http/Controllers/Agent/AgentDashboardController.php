@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Models\FAQs;
+use App\Models\WalletPayment;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Agent;
@@ -33,9 +34,9 @@ class AgentDashboardController extends Controller
         $userDetails = Agent::where('id', $user->id)->first();
         
         // $userDetails = User::where('id', $user->id)->with('agentDetails')->first();
-        $totalWalletAmount = Wallet::where('user_id', $userId)
-        ->where('userType', 'agent')
-        ->where('user_email', $userEmail)->sum('amount');
+        $totalWalletAmount = WalletPayment::where('user_id', $userId)
+                            ->where('userType', 'agent')
+                            ->where('user_email', $userEmail)->sum('amount');
 
         $getaddvehicle = AddVehicleRenewal::with('vehicleTypeInfo')
                                              ->where('user_id', $userId) 
