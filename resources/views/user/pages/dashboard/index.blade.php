@@ -16,7 +16,7 @@
             </div>
 
         </div>
-    @endif
+    @endif 
     <div class="col-12 col-lg-4">
         <div class="card radius-15 bg-voilet">
             <div class="card-body">
@@ -42,11 +42,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div>
-                        <h2 class="mb-0 text-white">0<i class='bx bxs-down-arrow-alt font-14 text-white'></i> </h2>
+                        <h2 class="mb-0 text-white">{{ $orderCount }}<i class='bx bxs-down-arrow-alt font-14 text-white'></i> </h2>
                     </div>
                     <div class="ms-auto font-35 text-white"><i class="bx bx-cart-alt"></i>
                     </div>
-                </div>
+                </div> 
                 <div class="d-flex align-items-center">
                     <div>
                         <p class="mb-0 text-white">Orders</p>

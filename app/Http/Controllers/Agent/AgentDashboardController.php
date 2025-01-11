@@ -6,6 +6,7 @@ use App\Models\FAQs;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Agent;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\VehicleType;
@@ -57,7 +58,7 @@ class AgentDashboardController extends Controller
                                     ->where('user_email', $userEmail)
                                     ->where('userType', 'Agent')
                                     ->count(); 
-                                    
+        $orderCount = Order::where('user_id', $id)->count();
         $totalCountVehicle = $vehicleCount + $ownershipCount + $registrationCount;
         
         return view('agent.dashboard', [
@@ -66,7 +67,8 @@ class AgentDashboardController extends Controller
             'vehicle' => $vehicle,
             'getaddvehicle' => $getaddvehicle,
             'totalCountVehicle' => $totalCountVehicle,
-            'totalWalletAmount' => $totalWalletAmount
+            'totalWalletAmount' => $totalWalletAmount,
+            'orderCount' => $orderCount,
         ]);
     }
 

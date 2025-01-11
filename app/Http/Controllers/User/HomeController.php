@@ -11,6 +11,7 @@ use App\Models\State;
 use App\Models\AddVehicleOwnership; 
 use App\Models\AddVehicleRegistration; 
 use App\Models\AddVehicleRenewal; 
+use App\Models\Order;
 use App\Models\User;
 use App\Models\VehicleType;
 use App\Models\ProcessHistory;
@@ -51,8 +52,11 @@ class HomeController extends Controller
         $data['vehicleCount'] = AddVehicleRenewal::where('user_id', $id)->count();
         $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $id)->count();
         $data['registrationCount'] = AddVehicleRegistration::where('user_id', $id)->count();
-        $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
 
+        $data['orderCount'] = Order::where('user_id', $id)->count();
+
+        $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
+ 
         $data['getaddvehicle'] = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $id)->get();
          
         return view('user.home', $data);
