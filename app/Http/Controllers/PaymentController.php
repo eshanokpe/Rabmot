@@ -20,7 +20,7 @@ use Carbon\Carbon;
 
 class PaymentController extends Controller{
     
-     
+    
     
     public function initiatePayment(Request $request){
         $item = Order::whereOrderNumber($request->orderNo)->get();

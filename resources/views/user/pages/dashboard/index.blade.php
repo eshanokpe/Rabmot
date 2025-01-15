@@ -84,12 +84,11 @@
         <div class="d-lg-flex align-items-center">
             <br> 
             <div class="col-sm-6">
-                <h5 class="mb-0">COMMISSIONS EARNED</h5>
-                <!--<h6 class="mb-0">Total Referral: {{$referralsCount ?? 0 }} | Earned:  {{$tokenCount}} </h5>-->
+                <h5 class="mb-0">COMMISSIONS EARNED</h5> 
                 <h6 class="mb-0">
                     <snap><a href="{{ route('home.referralDetails')}}">Total Referral: {{ isset($referralsCount) ? $referralsCount : 0 }} </a></snap>
                     | 
-                     Earned: {{ isset($tokenCount) ? $tokenCount : 0 }}
+                    Earned: {{ isset($tokenCount) ? $tokenCount : 0 }}
                 </h6>
 
 

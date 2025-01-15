@@ -17,7 +17,8 @@ use App\Models\InternationalDriverLicensePrice;
  
 class PriceController extends Controller
 {
-    // 
+   
+
     public function pricing(){
       
         $vehicleregistrationTypes = VehicleRegistrationType::all();

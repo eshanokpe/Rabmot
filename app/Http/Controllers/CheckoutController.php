@@ -13,6 +13,8 @@ use Cart;
 
 class CheckoutController extends Controller
 {
+    
+
     public function index(){
         
         //Revert cart data

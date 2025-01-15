@@ -15,20 +15,20 @@
 
 					<div class="card radius-5  overflow-hidden p-2">
 						<div class="card-header pt-10 border-bottom-0">
-							@if($vehicleCount == 0)
-							<div class="">
-								<div class="col-12 pb-2">
-									<small class="mb-0 text-muted">Registerd Vehicle {{ $vehicleCount }}</small>
-								
-								</div>
-								<div class="col-12">
-									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										<span class="alert-link">Opps!</span> You need to add a vehicle to your account Page. 
-										<a href="{{ route('home.addVehicleRenewal') }}" class="alert-link">Add Vehicle </a>
-										
+							@if($vehicleCount == 0)  
+								<div class="">
+									<div class="col-12 pb-2">
+										<small class="mb-0 text-muted">Registerd Vehicle {{ $vehicleCount }}</small>
+									
+									</div>
+									<div class="col-12">
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											<span class="alert-link">Opps!</span> You need to add a vehicle to your account Page. 
+											<a href="{{ route('home.addVehicleRenewal') }}" class="alert-link">Add Vehicle </a>
+											
+										</div>
 									</div>
 								</div>
-							</div>
 							@else
 								<div class="">
 									<div class="col-12 pb-2">

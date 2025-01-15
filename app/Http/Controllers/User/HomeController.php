@@ -8,47 +8,79 @@ use App\Models\FAQs;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
+use App\Models\Order;
+use App\Models\User;
 use App\Models\AddVehicleOwnership; 
 use App\Models\AddVehicleRegistration; 
 use App\Models\AddVehicleRenewal; 
-use App\Models\Order;
-use App\Models\User;
+use App\Models\InternationalDriverLicense;
+use App\Models\NewDriverLicense;
+use App\Models\VehiclePaperRenewal;
+use App\Models\VehicleRegistration;
+use App\Models\DriverLicenseRenewal;
+use App\Models\OtherPermit;
 use App\Models\VehicleType;
 use App\Models\ProcessHistory;
 use App\Models\VehicleRegistrationType;
 use App\Models\OtherPermitPrice;
+use App\Models\ChangeOfOwnership;
+use App\Models\DealerPlateNumber;
 use App\Models\Topic;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
+    public function processDocument(){
         $id = Auth::user()->id;
         $email = Auth::user()->email;
-        $user = Auth::user(); 
-        $user = User::find($id);
 
+        $data['VehiclePaperRenewalCount'] = VehiclePaperRenewal::where('user_id', $id)
+                                                    ->where('user_email', $email)
+                                                    ->count();
+        $data['VehicleRegistrationPriceCount'] = VehicleRegistration::where('user_id', $id)
+                                                            ->where('user_email', $email)
+                                                            ->count();
+        $data['changeOfOwnershipCount'] = ChangeOfOwnership::where('user_id', $id)
+                                                            ->where('user_email', $email)
+                                                            ->count();
+        $data['dealerPlateNumberCount'] = DealerPlateNumber::where('user_id', $id)
+                                                            ->where('user_email', $email)
+                                                            ->count();
+        $data['driverLicenseRenewalCount'] = DriverLicenseRenewal::where('user_id', $id)
+                                                            ->where('user_email', $email)
+                                                            ->count();
+        $data['internationalDriverLicenseCount'] = InternationalDriverLicense::where('user_id', $id)
+                                                            ->where('user_email', $email)
+                                                            ->count();
+        $data['otherPermitCount'] = OtherPermit::where('user_id', $id)
+                                                ->where('user_email', $email)
+                                                ->count();
+        $data['newDriverLicenseCount'] = NewDriverLicense::where('user_id', $id)
+                                                ->where('user_email', $email)
+                                                ->count();
+
+        return $data;
+    }
+
+    public function index()
+    {
+        $vehicleDocumentProcessed = $this->processDocument(); // Simulate document processing logic
+        dd($vehicleDocumentProcessed);
+        $id = Auth::user()->id;
+        $email = Auth::user()->email;
+        // $user = Auth::user(); 
+        $user = User::find($id);
+ 
         $data['tokenCount'] = $user->latestTokenCount();
         $data['referralsCount'] = $user->referrer_count;
-        $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
 
+        $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
         $data['vehicleCount'] = AddVehicleRenewal::where('user_id', $id)->count();
         $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $id)->count();
         $data['registrationCount'] = AddVehicleRegistration::where('user_id', $id)->count();

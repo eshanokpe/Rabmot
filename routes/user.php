@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
    
     Route::prefix('/home')->middleware('auth')->group(function () {   
+        Route::get('/processVehicleDocument', [HomeController::class, 'processVehicleDocument']);
         Route::get('/pricing', [HomeController::class, 'pricing'])->name('home.pricing');
 
         Route::get('addvehiclerenewal', [AddVehicleRenewalController::class, 'index'])->name('home.addVehicleRenewal');
