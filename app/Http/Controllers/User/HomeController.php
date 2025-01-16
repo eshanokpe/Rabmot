@@ -105,15 +105,11 @@ class HomeController extends Controller
 
     public function hasProcessedDocument($referredUserId)
     {
-        $data['VehiclePaperRenewalCount'] = VehiclePaperRenewal::where('user_id', $referredUserId)->count();
-        $data['VehicleRegistrationPriceCount'] = VehicleRegistration::where('user_id', $referredUserId)->count();
-        $data['ChangeOfOwnershipCount'] = ChangeOfOwnership::where('user_id', $referredUserId)->count();
-        $data['DealerPlateNumberCount'] = DealerPlateNumber::where('user_id', $referredUserId)->count();
-        $data['DriverLicenseRenewalCount'] = DriverLicenseRenewal::where('user_id', $referredUserId)->count();
-        $data['InternationalDriverLicenseCount'] = InternationalDriverLicense::where('user_id', $referredUserId)->count();
-        $data['OtherPermitCount'] = OtherPermit::where('user_id', $referredUserId)->count();
-        $data['NewDriverLicenseCount'] = NewDriverLicense::where('user_id', $referredUserId)->count();
-    
+        $data = ProcessHistory::where('user_id', $referredUserId)
+                                    // ->where('user_email', $email)
+                                    ->where('status', 1)
+                                    ->latest()
+                                    ->count();
         return $data; 
     }
  
