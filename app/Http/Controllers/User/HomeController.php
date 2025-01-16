@@ -103,7 +103,6 @@ class HomeController extends Controller
         return view('user.home', $data);
     }
 
-
     public function hasProcessedDocument($referredUserId)
     {
         $data['VehiclePaperRenewalCount'] = VehiclePaperRenewal::where('user_id', $referredUserId)->count();

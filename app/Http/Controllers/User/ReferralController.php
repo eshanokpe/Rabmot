@@ -9,6 +9,7 @@ use App\Models\ProcessHistory;
 use App\Models\AddVehicleOwnership; 
 use App\Models\AddVehicleRegistration; 
 use App\Models\User; 
+use App\Models\Wallet;
 use App\Models\ReferralLog; 
 use App\Models\AddVehicleRenewal; 
  
@@ -44,7 +45,9 @@ class ReferralController extends Controller
         $data['registrationCount'] = AddVehicleRegistration::where('user_id', $userId)->where('user_email', $email)->count();
 
         $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
- 
+        $data['totalWalletAmount'] = Wallet::where('user_id', $userId)
+        ->where('userType', 'user')
+        ->where('user_email', $email)->sum('amount');  
 
         return view('user.pages.referralDetails', $data);
     }
