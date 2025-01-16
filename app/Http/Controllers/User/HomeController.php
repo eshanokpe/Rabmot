@@ -26,6 +26,8 @@ use App\Models\OtherPermitPrice;
 use App\Models\ChangeOfOwnership;
 use App\Models\DealerPlateNumber;
 use App\Models\Topic;
+use App\Models\Wallet; 
+use App\Models\ReferralLog; 
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -36,65 +38,85 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    public function processDocument(){
-        $id = Auth::user()->id;
-        $email = Auth::user()->email;
-
-        $data['VehiclePaperRenewalCount'] = VehiclePaperRenewal::where('user_id', $id)
-                                                    ->where('user_email', $email)
-                                                    ->count();
-        $data['VehicleRegistrationPriceCount'] = VehicleRegistration::where('user_id', $id)
-                                                            ->where('user_email', $email)
-                                                            ->count();
-        $data['changeOfOwnershipCount'] = ChangeOfOwnership::where('user_id', $id)
-                                                            ->where('user_email', $email)
-                                                            ->count();
-        $data['dealerPlateNumberCount'] = DealerPlateNumber::where('user_id', $id)
-                                                            ->where('user_email', $email)
-                                                            ->count();
-        $data['driverLicenseRenewalCount'] = DriverLicenseRenewal::where('user_id', $id)
-                                                            ->where('user_email', $email)
-                                                            ->count();
-        $data['internationalDriverLicenseCount'] = InternationalDriverLicense::where('user_id', $id)
-                                                            ->where('user_email', $email)
-                                                            ->count();
-        $data['otherPermitCount'] = OtherPermit::where('user_id', $id)
-                                                ->where('user_email', $email)
-                                                ->count();
-        $data['newDriverLicenseCount'] = NewDriverLicense::where('user_id', $id)
-                                                ->where('user_email', $email)
-                                                ->count();
-
-        return $data;
-    }
-
     public function index()
     {
-        $vehicleDocumentProcessed = $this->processDocument(); // Simulate document processing logic
-        dd($vehicleDocumentProcessed);
-        $id = Auth::user()->id;
+        $user = auth()->user();
+        $userId = Auth::user()->id;
         $email = Auth::user()->email;
+        $data['referrals'] = ReferralLog::where('referrer_id', $userId)
+        ->with('referredUser') 
+        ->get();
+
+        $referredIds = $data['referrals']->pluck('referred_id');
+
+        $processedDocuments = [];
+        foreach ($referredIds as $referredId) {
+            $documentCounts = $this->hasProcessedDocument($referredId);
+            $processedDocuments[$referredId] = array_sum($documentCounts);
+        }
+
+        if (!empty($processedDocuments)) {
+            foreach ($processedDocuments as $referredId => $count) {
+                // dd($count);
+                if ($count >= 0) {
+                    // Fetch the referrer for the referred_id
+                    $referralLog = ReferralLog::where('referred_id', $referredId)->first();
+                    if ($referralLog) {
+                        $referrerId = $referralLog->referrer_id;
+                        $referrer = User::find($referrerId); 
+                        if ($referrer) {
+                            // dd($referrer);
+                            $referrer->addToWallet(100); 
+                        }
+                    }
+                }
+            }
+        } 
+
+        // dd($vehicleDocumentProcessed);
+        $data['referrals'] = ReferralLog::where('referrer_id', $userId)
+        ->with('referredUser') 
+        ->get();
+        
         // $user = Auth::user(); 
-        $user = User::find($id);
+        $user = User::find($userId);
  
         $data['tokenCount'] = $user->latestTokenCount();
         $data['referralsCount'] = $user->referrer_count;
 
         $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
-        $data['vehicleCount'] = AddVehicleRenewal::where('user_id', $id)->count();
-        $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $id)->count();
-        $data['registrationCount'] = AddVehicleRegistration::where('user_id', $id)->count();
+        
+        $data['vehicleCount'] = AddVehicleRenewal::where('user_id', $userId)->where('user_email', $email)->count();
+        $data['ownershipCount'] = AddVehicleOwnership::where('user_id', $userId)->where('user_email', $email)->count();
+        $data['registrationCount'] = AddVehicleRegistration::where('user_id', $userId)->where('user_email', $email)->count();
 
-        $data['orderCount'] = ProcessHistory::where('user_id', $id)
+        $data['orderCount'] = ProcessHistory::where('user_id', $userId)
                                             ->where('user_email', $email)
                                             ->where('status', 0)
                                             ->count();
-
         $data['totalCountVehicle'] = $data['vehicleCount'] + $data['ownershipCount'] + $data['registrationCount'];
- 
-        $data['getaddvehicle'] = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $id)->get();
-         
+        $data['getaddvehicle'] = AddVehicleRenewal::with('vehicleTypeInfo')->where('user_id', $userId)->where('user_email', $email)->get();  
+        $data['totalWalletAmount'] = Wallet::where('user_id', $userId)
+                                    ->where('userType', 'user')
+                                    ->where('user_email', $email)->sum('amount');  
+
         return view('user.home', $data);
+    }
+
+    
+
+    public function hasProcessedDocument($referredUserId)
+    {
+        $data['VehiclePaperRenewalCount'] = VehiclePaperRenewal::where('user_id', $referredUserId)->count();
+        $data['VehicleRegistrationPriceCount'] = VehicleRegistration::where('user_id', $referredUserId)->count();
+        $data['ChangeOfOwnershipCount'] = ChangeOfOwnership::where('user_id', $referredUserId)->count();
+        $data['DealerPlateNumberCount'] = DealerPlateNumber::where('user_id', $referredUserId)->count();
+        $data['DriverLicenseRenewalCount'] = DriverLicenseRenewal::where('user_id', $referredUserId)->count();
+        $data['InternationalDriverLicenseCount'] = InternationalDriverLicense::where('user_id', $referredUserId)->count();
+        $data['OtherPermitCount'] = OtherPermit::where('user_id', $referredUserId)->count();
+        $data['NewDriverLicenseCount'] = NewDriverLicense::where('user_id', $referredUserId)->count();
+    
+        return $data; 
     }
  
     public function addvehicle()
@@ -105,7 +127,8 @@ class HomeController extends Controller
         return view('user.pages.addVehicle', compact('vehicleList'));
     }
 
-    public function pricing(){
+    public function pricing()
+    {
         $vehiclelist =  VehicleType::all();
         $vehiclecategories = VehicleRegistrationType::all();
         $states = State::all();

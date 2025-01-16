@@ -92,4 +92,27 @@ class User extends Authenticatable
         return $this->tokens()->latest()->value('token_count') ?? 0;
     }
 
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    public function addToWallet($amount)
+    {
+         $wallet = $this->wallet; 
+
+        if ($wallet) {
+            $wallet->amount += $amount; 
+            $wallet->save(); 
+        } else {
+            $this->wallet()->create([
+                'amount' => $amount,  
+                'user_email' => $this->email,
+                'userType' => 'user',
+                'status' => 0
+
+            ]);
+        }
+    }
+
 }

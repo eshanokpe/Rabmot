@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -132,6 +133,13 @@ class RegisterController extends Controller
              'referral_user_id' => $referringUser ? $referringUser->id : null,
              'token_count' => 0,
          ]);
+         $wallet = Wallet::create([ 
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'userType' => 'user',
+            'amount' => 0.00,
+            'status' => 0
+        ]);
      
          // Send email verification
          event(new Registered($user));
