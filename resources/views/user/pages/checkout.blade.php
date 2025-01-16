@@ -227,7 +227,7 @@
                                             @csrf
                                             <label for="promo_code">Enter a promo code</label>
                                             <div class="input-group mb-3">
-                                                <input type="text" name="promo_code" class="form-control" placeholder="Enter promo code" aria-label="Promo code" aria-describedby="button-addon2">
+                                                <input type="text" name="promo_code" class="form-control" placeholder="Enter promo code" aria-label="Promo code" aria-describedby="button-addon2" required>
                                                 <button class="btn btn-primary" type="submit" id="button-addon2">Apply</button>
                                             </div>
                                         </form>
