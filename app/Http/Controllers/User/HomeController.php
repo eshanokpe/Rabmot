@@ -71,7 +71,7 @@ class HomeController extends Controller
                     }
                 }
             }
-        } 
+        }   
 
         // dd($vehicleDocumentProcessed);
         $data['referrals'] = ReferralLog::where('referrer_id', $userId)
@@ -103,7 +103,6 @@ class HomeController extends Controller
         return view('user.home', $data);
     }
 
-    
 
     public function hasProcessedDocument($referredUserId)
     {
