@@ -58,7 +58,7 @@ class HomeController extends Controller
         if (!empty($processedDocuments)) {
             foreach ($processedDocuments as $referredId => $count) {
                 // dd($count);
-                if ($count >= 0) {
+                if ($count == 1) {
                     // Fetch the referrer for the referred_id
                     $referralLog = ReferralLog::where('referred_id', $referredId)->first();
                     if ($referralLog) {
