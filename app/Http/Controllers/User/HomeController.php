@@ -99,7 +99,7 @@ class HomeController extends Controller
         $data['totalWalletAmount'] = Wallet::where('user_id', $userId)
                                     ->where('userType', 'user')
                                     ->where('user_email', $email)->sum('amount');  
-
+          
         return view('user.home', $data);
     }
 
