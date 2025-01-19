@@ -49,29 +49,20 @@ class HomeController extends Controller
 
         $referredIds = $data['referrals']->pluck('referred_id');
 
-        $processedDocuments = [];
         foreach ($referredIds as $referredId) {
-            $documentCounts = $this->hasProcessedDocument($referredId);
-            $processedDocuments[$referredId] = array_sum($documentCounts);
-        }
-
-        if (!empty($processedDocuments)) {
-            foreach ($processedDocuments as $referredId => $count) {
-                // dd($count);
-                if ($count == 1) {
-                    // Fetch the referrer for the referred_id
-                    $referralLog = ReferralLog::where('referred_id', $referredId)->first();
-                    if ($referralLog) {
-                        $referrerId = $referralLog->referrer_id;
-                        $referrer = User::find($referrerId); 
-                        if ($referrer) {
-                            // dd($referrer);
-                            $referrer->addToWallet(100); 
-                        }
-                    }
+            $documentCount = $this->hasProcessedDocument($referredId);
+            // dd( $documentCount);
+            if ($documentCount > 0) {
+            $referralLog = ReferralLog::where('referred_id', $referredId)->first();
+            if ($referralLog) {
+                $referrerId = $referralLog->referrer_id;
+                $referrer = User::find($referrerId); 
+                if ($referrer) {
+                $referrer->addToWallet(100); 
                 }
             }
-        }   
+            }
+        }
 
         // dd($vehicleDocumentProcessed);
         $data['referrals'] = ReferralLog::where('referrer_id', $userId)
