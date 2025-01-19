@@ -14,6 +14,7 @@ class ReferralLog extends Model
         'referred_id',
         'referral_code',
         'referred_at',
+        'rewarded',
     ]; 
     protected $casts = [
         'referred_at' => 'datetime',
