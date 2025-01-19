@@ -7,6 +7,7 @@ use App\Models\VehiclePaperRenewal;
 use App\Models\DriverLicenseRenewal;
 use App\Models\NewDriverLicense;
 use App\Models\InternationalDriverLicense;
+use App\Models\Wallet;
 use App\Models\Order;
 use Auth;
 use Cart;
@@ -62,13 +63,16 @@ class CheckoutController extends Controller
             if ($items->model->process_type == 'International Driver License') {
                 $internationalDL = InternationalDriverLicense::where('process_id', $items->model->process_id)->first();
             }
+            $walletBalance = Wallet::where('user_id', $id)
+            ->where('userType', 'user')
+            ->where('user_email', $email)->sum('amount');  
             //  dd($newdriverlicense);
             return view('user.pages.checkout', compact(
                 'fullname', 'email', 
                 'cartItems', 'orderNumber', 
                 'newdriverlicense', 'driverlicenserenewal', 
                 'changeofownership', 'dealerplatenumber',
-                'vehiclerenewal', 'vehicleregistration', 'internationalDL'
+                'vehiclerenewal', 'vehicleregistration', 'internationalDL', 'walletBalance'
             ));
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error', $e], 500);

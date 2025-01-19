@@ -233,6 +233,58 @@
                                         </form>
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12 col-sm-8">
+                                        <div class="row">
+                                            <div class="col-7 col-sm-8">
+                                                <label for="wallet_balance">Wallet Balance</label>
+                                            </div>
+                                            <div class="col-5 col-sm-4 text-center">
+                                                <label for="">₦{{ number_format($walletBalance, 2) }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-7 col-sm-8">
+                                                <label for="use_wallet_balance">Use Wallet Balance</label>
+                                            </div>
+                                            <div class="col-5 col-sm-4 text-center">
+                                                <input type="checkbox" id="use_wallet_balance" name="use_wallet_balance" value="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- JavaScript -->
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        // Get elements
+                                        const walletCheckbox = document.getElementById('use_wallet_balance');
+                                        const totalAmountDisplay = document.getElementById('total-amount-display');
+                                        const totalInput = document.getElementById('total');
+                                        
+                                        // Values from PHP
+                                        const walletBalance = {{ $walletBalance }};
+                                        const initialTotal = {{ $totalToDisplay }};
+                                        
+                                        // Event listener for checkbox change
+                                        walletCheckbox.addEventListener('change', function () {
+                                            let updatedTotal = initialTotal;
+                                            
+                                            if (this.checked) {
+                                                updatedTotal -= walletBalance;
+                                            }
+                                            
+                                            // Prevent negative totals
+                                            updatedTotal = Math.max(0, updatedTotal);
+                                
+                                            // Update DOM
+                                            const formattedTotal = '₦' + updatedTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                            totalAmountDisplay.innerText = formattedTotal;
+                                            totalInput.value = updatedTotal;
+                                        });
+                                    });
+                                </script>
                                 
                                 <div class="row">
                                     <hr>
@@ -240,13 +292,12 @@
                                         <p><b>Total Amount</b></p>
                                     </div>
                                     <div class="col-5 col-sm-2 text-center">
-                                        <p>₦{{ number_format($totalToDisplay, 2) }}</p>
-                                        {{-- <b>₦{{ Cart::total() }}</b> --}}
-
+                                        <p id="total-amount-display">₦{{ number_format($totalToDisplay, 2) }}</p>
                                     </div>
                                     <br><br>
                                     <hr>
                                 </div>
+                                
 
                                 <form action="{{ route('home.payment.initiate')}}" method="POST">
                                     @csrf  
@@ -348,6 +399,7 @@
 
 <!--end page-wrapper-->
 <script>
+    const totalToDisplay = {{ $totalToDisplay }};
     const selection1 = document.getElementById("selection2");
     const elementToHide21 = document.getElementById("elementToHide21");
     const elementToHide22 = document.getElementById("elementToHide22");
