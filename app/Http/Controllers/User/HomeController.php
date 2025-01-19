@@ -51,14 +51,15 @@ class HomeController extends Controller
 
         foreach ($referredIds as $referredId) {
             $documentCount = $this->hasProcessedDocument($referredId);
-            // dd( $documentCount);
-            if ($documentCount > 0) {
+            if ($documentCount == 1) {
             $referralLog = ReferralLog::where('referred_id', $referredId)->first();
-            if ($referralLog) {
+            if ($referralLog && !$referralLog->rewarded) {
                 $referrerId = $referralLog->referrer_id;
                 $referrer = User::find($referrerId); 
                 if ($referrer) {
-                $referrer->addToWallet(100); 
+                $referrer->addToWallet(100);
+                $referralLog->rewarded = true;
+                $referralLog->save();
                 }
             }
             }
