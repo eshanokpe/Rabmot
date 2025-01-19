@@ -68,7 +68,7 @@ class HomeController extends Controller
         $data['referrals'] = ReferralLog::where('referrer_id', $userId)
         ->with('referredUser') 
         ->get();
-        
+             
         // $user = Auth::user(); 
         $user = User::find($userId);
  
