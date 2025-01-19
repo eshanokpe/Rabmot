@@ -97,8 +97,6 @@ class HomeController extends Controller
     public function hasProcessedDocument($referredUserId)
     {
         $data = ProcessHistory::where('user_id', $referredUserId)
-                                    // ->where('user_email', $email)
-                                    ->where('status', 1)
                                     ->latest()
                                     ->count();
         return $data; 
