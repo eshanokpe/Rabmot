@@ -44,8 +44,19 @@
             <div class="col-6  col-sm-6 col-md-2 p-2  footter">
                 <h4>Clients</h4>
                 <ul class="list-unstyled">
-                    <li> <a href="{{ route('processpapers')}}">Clients Login</a></li>
-                    <li> <a href="{{ route('signup')}}">Create Account</a></li>
+                    <li> 
+                        @if(auth()->check())
+                        @else
+                        <a href="{{ route('processpapers')}}">Clients Login</a>
+                        @endif
+                    </li>
+                    <li> 
+                        @if(auth()->check())
+                        @else
+                        <a href="{{ route('signup')}}">Create Account</a>
+                        @endif
+                    </li>
+
                     <li> <a href="{{ route('howitwork')}}">How it works</a></li>
                     <li> <a href="{{ route('terms')}}">Terms of Use</a></li> 
 

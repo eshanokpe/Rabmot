@@ -18,7 +18,7 @@
                     <li class="nav-item">
                         <a class="nav-link"  href="{{  route('home') }}" id="a-nav">Dashboard</a>
                     </li>
-                @else
+                @else 
                     <li class="nav-item">
                         <a class="nav-link"  href="{{ route('processpapers') }}" id="a-nav">Process Papers</a>
                     </li>
