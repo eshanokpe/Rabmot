@@ -22,6 +22,7 @@ class NotifyExpiry extends Command
             ->where(function ($query) use ($today) {
                 foreach (['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
                     $query->orWhereDate($field, $today->copy()->addDays(5)->format('Y-m-d'))
+                        ->orWhereDate($field, $today->copy()->addDays(1)->format('Y-m-d'))
                         ->orWhereDate($field, $today->copy()->addDays(10)->format('Y-m-d'))
                         ->orWhereDate($field, $today->copy()->addDays(15)->format('Y-m-d'))
                         ->orWhereDate($field, $today->copy()->addDays(20)->format('Y-m-d'))
@@ -35,6 +36,7 @@ class NotifyExpiry extends Command
             
             foreach (['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
                 if (in_array($vehicle->{$field}, [
+                    $today->copy()->addDays(1)->format('Y-m-d'),
                     $today->copy()->addDays(5)->format('Y-m-d'),
                     $today->copy()->addDays(10)->format('Y-m-d'),
                     $today->copy()->addDays(15)->format('Y-m-d'),
