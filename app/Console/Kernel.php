@@ -17,8 +17,8 @@ class Kernel extends ConsoleKernel
    
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('notify:expiry')->dailyAt('15:00');
-        $schedule->command('check:vehicle-renewals')->dailyAt('08:00');
+        $schedule->command('notify:expiry')->dailyAt('11:20');
+        $schedule->command('check:vehicle-renewals')->dailyAt('11:20');
     }
 
     /**
