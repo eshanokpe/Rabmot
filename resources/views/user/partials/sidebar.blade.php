@@ -1,9 +1,11 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
-        <div class="">
-            <img src="{{ asset('/assets/img/dashboard_logo.png') }}"
-                class="img-fluid w-75 logo-text" alt="" />
-        </div>
+        <a href="{{ route('index') }}">
+            <div class="">
+                <img src="{{ asset('/assets/img/dashboard_logo.png') }}"
+                    class="img-fluid w-75 logo-text" alt="" />
+            </div>
+        </a>
         <a href="javascript:;" class="toggle-btn ms-auto"> <i class="bx bx-menu"></i>
         </a>
     </div>

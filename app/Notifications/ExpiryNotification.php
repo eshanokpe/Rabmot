@@ -14,7 +14,7 @@ class ExpiryNotification extends Notification
 
     private $vehicle;
     private $expiringDetails;
-
+ 
     /**
      * Create a new notification instance.
      *

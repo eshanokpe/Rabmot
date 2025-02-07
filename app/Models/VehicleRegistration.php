@@ -13,7 +13,7 @@ class VehicleRegistration extends Model
         'user_id',
         'user_email',
         'owner_id',
-        'userType',
+        'userType', 
         'ownerEmail',
         'process_id',
         'process_type',

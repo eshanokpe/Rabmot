@@ -10,7 +10,7 @@
                         <!-- Page pre-title -->
                         <div class="page-pretitle">
                             Overview
-                        </div>
+                        </div> 
                         <h2 class="page-title">
                             View New Vehicle Registration Process Details
                         </h2>
@@ -44,27 +44,19 @@
                                 </div>
                             @endif
                             <script>
-                                // Wait for the document to be ready
                                 document.addEventListener("DOMContentLoaded", function() {
-                                    // Select the success alert element by its ID
                                     var successAlert = document.getElementById('error-alert');
-                            
-                                    // Check if the alert element exists
                                     if (successAlert) {
-                                        // Set a timeout to hide the alert after 5 seconds (5000 milliseconds)
                                         setTimeout(function() {
                                             successAlert.style.display = 'none';
-                                        }, 5000); // 5000 milliseconds = 5 seconds
+                                        }, 5000); 
                                     }
                                 });
                             </script>
 
                             <div class="col-12 mt-2 ps-2">
-
                                 <fieldset class="form-fieldset">
-
                                     <div class="row">
-
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">User Email</label>
                                             <input type="text" class="form-control" autocomplete="off" value="{{ $items->user_email}}" disabled/>
@@ -73,22 +65,52 @@
                                             <label class="form-label required">Process ID</label>
                                             <input type="text" class="form-control"  autocomplete="off" value="{{ $items->process_id}}" disabled/>
                                         </div>
-
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Process Type</label>
                                             <input type="text" class="form-control"  autocomplete="off" value="{{ $items->process_type}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label required">Vehicle Type</label>
-                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->categoryInfo->name}}" disabled/>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->categoryInfo->name ?? ''}}" disabled/>
                                         </div>
                                        
                                         <div class="row">
-                                       
-                                            <div class="mb-3 col-3">
+                                            <div class="mb-3 col-4">
                                                 <label class="form-label">Vehicle Registration Type</label>
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehicleregistrationType->name}}" disabled/>
+                                                    <input type="text" class="form-control" autocomplete="off" value="{{ $items->vehicleregistrationType->name ?? ''}}" disabled/>
+                                                </div>
+                                            </div> 
+                                            <div class="mb-3 col-4">
+                                                <label class="form-label">Plate Number Type</label>
+                                                @if($items->plateNumberType == 'RPN')
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" autocomplete="off" value="Random Plate Number" disabled/>
+                                                    </div>
+                                                @elseif($items->plateNumberType == 'PCN')
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" autocomplete="off" value="Personalized/Customize Number" disabled/>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            @if($items->plateNumberType == 'PCN')
+                                                <div class="mb-3 col-4">
+                                                    <label class="form-label"><b>Vehicle Preferred Number</b></label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" autocomplete="off" value="{{ $items->preferredNumber}}" disabled/>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <div class="mb-3 col-4">
+                                                <label class="form-label">Hackney Permit</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" autocomplete="off" value="{{ $items->hackneyPermit}}" disabled/>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-4">
+                                                <label class="form-label">Police CMRIS</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" autocomplete="off" value="{{ $items->policeCMRIS}}" disabled/>
                                                 </div>
                                             </div>
                                         </div>

@@ -208,7 +208,7 @@
 									</div> 
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Owners' Phone Number  <span style="color:red;">*</span></label>
-										<input  type="text" class="form-control" name="ownersphonenumber" id="ownersphonenumber" placeholder="Phone of Vehicle">
+										<input  type="text" class="form-control" name="ownersphonenumber" id="ownersphonenumber" placeholder="Owners' Phone Number">
 										@error('ownersphonenumber')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
@@ -222,7 +222,7 @@
 									</div>
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Email Address</label>
-										<input  type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="Address of Vehicle">
+										<input  type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="Email Address">
 										@error('emailAddress')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror

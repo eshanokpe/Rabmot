@@ -19,7 +19,6 @@
 								<div class="">
 									<div class="col-12 pb-2">
 										<small class="mb-0 text-muted">Registerd Vehicle {{ $vehicleCount }}</small>
-									
 									</div>
 									<div class="col-12">
 										<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -33,7 +32,6 @@
 								<div class="">
 									<div class="col-12 pb-2">
 										<small class="mb-0 text-muted">Registerd Vehicle {{ $vehicleCount }}</small>
-									
 									</div>
 									<div class="col-12">
 										@foreach ($getaddvehicle as $vehicle)

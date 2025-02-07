@@ -36,7 +36,7 @@
                         <i class="bx bx-cart vertical-align-middle"></i>
                     </a>   
                 </li>
-                   
+                    
                 <li class="nav-item dropdown dropdown-lg">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="javascript:;" data-bs-toggle="dropdown" aria-expanded="false">	<i class="bx bx-bell vertical-align-middle"></i>
                         <span class="msg-count">{{$notificationCount}}</span>
