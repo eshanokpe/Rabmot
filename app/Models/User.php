@@ -97,6 +97,11 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
+    public function processHistories()
+    {
+        return $this->hasMany(ProcessHistory::class, 'user_id');
+    }
+
     public function addToWallet($amount)
     {
          $wallet = $this->wallet; 

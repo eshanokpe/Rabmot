@@ -30,11 +30,13 @@ class AdminProcessDocument extends Controller
       $request->validate([
          'status' => 'required|in:0,1,2,3,4',
       ]); 
-      $user = ProcessHistory::where('id', decrypt($id))->first();
-      dd( $user);
+      $users = ProcessHistory::with('user')->find(decrypt($id));
+      
       if($request->input('status') == 1){
-         $users = User::where('email',$user->user_email)->get()->first();
+         // $users = User::where('email', $user->user_email)->get()->first();
          $email = new ProcessingMode($users); 
+         dd( $email);
+
          try{
             Mail::to($user->user_email)->send($email);
          } catch(Exception $th){
