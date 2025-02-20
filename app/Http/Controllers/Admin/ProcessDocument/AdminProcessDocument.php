@@ -31,10 +31,11 @@ class AdminProcessDocument extends Controller
          'status' => 'required|in:0,1,2,3,4',
       ]); 
       $user = ProcessHistory::where('id', decrypt($id))->first();
-      dd($user->user_email);
       if($request->input('status') == 1){
-         $users = User::where('email',$user->user_email)->get()->first();
-         dd($users);
+         // dd($user->user_email);
+         $users = User::where('email', $user->user_email)->first();
+
+         // dd($users);
          $email = new ProcessingMode($users); 
          try{
             Mail::to($user->user_email)->send($email);
@@ -43,7 +44,9 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 2){
-         $users = User::where('email',$user->user_email)->get()->first();
+         // $users = User::where('email',$user->user_email)->get()->first();
+         $users = User::where('email', $user->user_email)->first();
+
          $email = new ReadyforDeliveryMode($users);
          try{
             Mail::to($user->user_email)->send($email);
@@ -52,7 +55,9 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 3){
-         $users = User::where('email',$user->user_email)->get()->first();
+         // $users = User::where('email',$user->user_email)->get()->first();
+         $users = User::where('email', $user->user_email)->first();
+
          $email = new DeliveryinprogressMode($users);
          try{
             Mail::to($user->user_email)->send($email);
@@ -61,7 +66,9 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 4){
-         $users = User::where('email',$user->user_email)->get()->first();
+         // $users = User::where('email',$user->user_email)->get()->first();
+         $users = User::where('email', $user->user_email)->first();
+
          $email = new DeliveredMode($users);
          try{
             Mail::to($user->user_email)->send($email);
