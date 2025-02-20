@@ -7,6 +7,7 @@ use Mail;
 use Illuminate\Http\Request;
 use Carbon\Carbon; 
 use App\Models\User;
+use App\Models\Agent;
 use App\Models\ProcessHistory;
 use App\Mail\ProcessingMode;
 use App\Mail\ReadyforDeliveryMode;
@@ -32,10 +33,11 @@ class AdminProcessDocument extends Controller
       ]); 
       $user = ProcessHistory::where('id', decrypt($id))->first();
       if($request->input('status') == 1){
-         // dd($user->user_email);
+     
          $users = User::where('email', $user->user_email)->first();
-
-         // dd($users);
+         if (!$users) {
+            $users = Agent::where('email', $user->user_email)->first();
+         }
          $email = new ProcessingMode($users); 
          try{
             Mail::to($user->user_email)->send($email);
@@ -46,6 +48,9 @@ class AdminProcessDocument extends Controller
       if($request->input('status') == 2){
          // $users = User::where('email',$user->user_email)->get()->first();
          $users = User::where('email', $user->user_email)->first();
+         if (!$users) {
+            $users = Agent::where('email', $user->user_email)->first();
+         }
 
          $email = new ReadyforDeliveryMode($users);
          try{
