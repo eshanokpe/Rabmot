@@ -33,9 +33,10 @@ class AdminProcessDocument extends Controller
       $users = ProcessHistory::with('user')->find(decrypt($id));
       
       if($request->input('status') == 1){
+         dd($users);
+
          // $users = User::where('email', $user->user_email)->get()->first();
          $email = new ProcessingMode($users); 
-         dd( $email);
 
          try{
             Mail::to($user->user_email)->send($email);
