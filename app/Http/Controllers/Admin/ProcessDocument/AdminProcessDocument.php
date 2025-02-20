@@ -46,7 +46,6 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 2){
-         // $users = User::where('email',$user->user_email)->get()->first();
          $users = User::where('email', $user->user_email)->first();
          if (!$users) {
             $users = Agent::where('email', $user->user_email)->first();
@@ -60,9 +59,10 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 3){
-         // $users = User::where('email',$user->user_email)->get()->first();
          $users = User::where('email', $user->user_email)->first();
-
+         if (!$users) {
+            $users = Agent::where('email', $user->user_email)->first();
+         }
          $email = new DeliveryinprogressMode($users);
          try{
             Mail::to($user->user_email)->send($email);
@@ -71,9 +71,10 @@ class AdminProcessDocument extends Controller
          }
       }
       if($request->input('status') == 4){
-         // $users = User::where('email',$user->user_email)->get()->first();
          $users = User::where('email', $user->user_email)->first();
-
+         if (!$users) {
+            $users = Agent::where('email', $user->user_email)->first();
+         }
          $email = new DeliveredMode($users);
          try{
             Mail::to($user->user_email)->send($email);
