@@ -25,12 +25,18 @@ Route::prefix('agent')->group(function () {
     Route::get('/login',  [AgentLoginController::class, 'showLoginForm'])->name('agent.login');  
     Route::post('/login/agent',  [AgentLoginController::class, 'login'])->name('agent.loginSubmit');
     Route::get('/forgotpassword',  [AgentLoginController::class, 'forgotpassword'])->name('agent.forgotpassword');
+    Route::post('/forgotpassword/submit',  [AgentLoginController::class, 'forgotpasswordSubmit'])->name('agent.forgotpassword.submit');
+    Route::get('/reset-password/{token}', [AgentLoginController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('/reset/password/update', [AgentLoginController::class, 'passwordUpdate'])->name('agent.password.update');
+
   
     Route::middleware('auth.agent')->group(function () {
         Route::get('/',[AgentDashboardController::class, 'index'])->name('agent.index');
 
         Route::get('/dashboard', [AgentDashboardController::class, 'index'])->name('agent.dashboard');
 
+      
+        
         // AddVehicleController
         Route::get('addvehicle', [AgentAddVehicleController::class, 'index'])->name('agent.addVehicle');
         Route::get('/addvehiclerenewal', [AgentAddVehicleController::class, 'addVehicleRenewal'])->name('agent.addVehicleRenewal');

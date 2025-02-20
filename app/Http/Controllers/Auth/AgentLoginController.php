@@ -12,7 +12,7 @@ use DB;
 use App\Models\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use App\Models\PasswordModel;
+use App\Models\AgentPasswordModel;
 use Mail; 
 use Carbon\Carbon;
 use App\Mail\AgentEmailForgetPassword;
@@ -68,13 +68,13 @@ class AgentLoginController extends Controller
         }
 
         $token = Str::random(64);
-        PasswordModel::create([
+        AgentPasswordModel::create([ 
             'email' => $request->email,
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
 
-        $user = PasswordModel::where('email', $request->email)->first();
+        $user = AgentPasswordModel::where('email', $request->email)->first();
         $sendMail = new AgentEmailForgetPassword($user->email, $user->token);
 
         try {
@@ -87,7 +87,7 @@ class AgentLoginController extends Controller
 
     public function showResetPasswordForm($token)
     {
-        $passwordReset = PasswordModel::where('token', $token)->first();
+        $passwordReset = AgentPasswordModel::where('token', $token)->first();
         if (!$passwordReset) {
             return response()->view('errors404'); // Or any other error view
         }
@@ -106,7 +106,7 @@ class AgentLoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $passwordReset = PasswordModel::where('token', $request->token)->first();
+        $passwordReset = AgentPasswordModel::where('token', $request->token)->first();
 
         if (!$passwordReset) {
             return redirect()->back()->withErrors(['token' => 'Invalid token.'])->withInput();
