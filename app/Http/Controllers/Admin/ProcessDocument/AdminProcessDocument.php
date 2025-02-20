@@ -29,12 +29,12 @@ class AdminProcessDocument extends Controller
    public function updatePendingPaperStatus(Request $request, $id){
       $request->validate([
          'status' => 'required|in:0,1,2,3,4',
-      ]);
-      $user = ProcessHistory::find(decrypt($id));
+      ]); 
+      $user = ProcessHistory::where('id', decrypt($id))->first();
       
       if($request->input('status') == 1){
          $users = User::where('email',$user->user_email)->get()->first();
-         $email = new ProcessingMode($users);
+         $email = new ProcessingMode($users); 
          try{
             Mail::to($user->user_email)->send($email);
          } catch(Exception $th){

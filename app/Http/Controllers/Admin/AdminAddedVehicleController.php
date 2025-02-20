@@ -8,7 +8,7 @@ use App\Models\VehicleType;
 use App\Models\AddVehicleRenewal;
 use App\Models\AddVehicleOwnership;
 use App\Models\AddVehicleRegistration;
-
+ 
 
 class AdminAddedVehicleController extends Controller
 {

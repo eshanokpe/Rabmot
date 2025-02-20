@@ -9,8 +9,8 @@ class ProcessHistory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
-        'owner_id',
+        'user_id', 
+        'owner_id', 
         'userType',
         'user_email',
         'userType',
@@ -21,7 +21,7 @@ class ProcessHistory extends Model
         'process_NDL_lengthofyear',
         'process_CO_vc',
         'process_CO_vl' ,
-        'process_VR_name',
+        'process_VR_name', 
         'process_VR_vehicleregistrationType' ,
         'process_VR_numberplate', 
         'process_VR_preferrednumber', 

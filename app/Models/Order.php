@@ -19,5 +19,5 @@ class Order extends Model
         'product_amount',
         'product_qty',
         'total', 
-    ];
+    ]; 
 }

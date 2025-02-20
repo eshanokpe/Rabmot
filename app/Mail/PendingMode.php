@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class PendingMode extends Mailable
-{ 
+{  
     use Queueable, SerializesModels;
 
     protected $users; 
@@ -33,7 +33,7 @@ class PendingMode extends Mailable
         return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
         ->subject('Your Order is Pending Confirmation')
         ->markdown('emails.pending_mode')->with([
-            'fullname' => $this->users->fullname, 
+            'fullname' => $this->users->fullname,  
         ]);
 
        // return $this->markdown('emails.verification-email')->with(['email_token' => $this->user->email_token, 'fullname' => $this->user->fullname]);
