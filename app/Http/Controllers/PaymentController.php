@@ -131,25 +131,23 @@ class PaymentController extends Controller{
     public function handleGatewayCallbackSeerbit(Request $request){
        
         $data = $request->all();
-        // dd($data);
         $id = Auth::user()->id;
         $email = Auth::user()->email;
         $cartItems = Cart::content();
        
         if("Successful" == $data['message']){
-            //   dd($data);
+         
             $ref_id = $data['reference'];
             $trans_id = $data['linkingreference'];
             $status = $data['message'];
             $payment = PaymentModel::where('paymentReference', $ref_id)->firstOrFail();
-            // dd($payment);
             $payment->trans_id = $trans_id;
             $payment->status = $status;
-
+ 
             foreach ($cartItems as $item ){
-                //  dd($item->model);
                 ProcessHistory::create([ 
                     'user_id' => Auth::user()->id ?? null,
+                    'owner_id' => '',
                     'userType' => 'user',         
                     'user_email' => $email ?? null,
                     'process_number'=> $orderNumber ?? null,
@@ -186,7 +184,7 @@ class PaymentController extends Controller{
              
             if($payment->save()){    
                 $user = User::where('email',$email)->get()->first();
-                $user_email = new PendingMode($user); 
+                $user_email = new PendingMode($user);  
                 Mail::to($user->email)->send($user_email);
                 Cart::destroy(); 
                 return  redirect()->route('home.transactionHistory');

@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('cart', [CartController::class, 'index'])->name('home.cart'); 
         Route::post('/cart/delete', [CartController::class, 'destroy'])->name('cart.delete'); 
         Route::get('checkout', [CheckoutController::class, 'index'])->name('home.checkout');
-        //Payment
+        //Payment  
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
           

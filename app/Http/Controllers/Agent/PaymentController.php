@@ -149,7 +149,8 @@ class PaymentController extends Controller{
             $payment = PaymentModel::where('paymentReference', $ref_id)->firstOrFail();
             $payment->trans_id = $trans_id;
             $payment->status = $status;
-            foreach ($cartItems as $item ){
+
+            foreach ($cartItems as $item){
                 //  dd($item->model);
                 ProcessHistory::create([ 
                     'user_id' => Auth::guard('agent')->user()->id ?? 'null',
@@ -183,7 +184,7 @@ class PaymentController extends Controller{
                     'delivery_option' => $payment->delivery_option ?? null,
                     'scan_email' => $payment->scan_email ?? null,
 
-                    'status' => 0,
+                    'status' => 0, 
                 ]);
                 // Create a new WalletPayment entry
                 $walletPayment = new WalletPayment();
@@ -201,8 +202,6 @@ class PaymentController extends Controller{
             }
             
             if($payment->save()){    
-                // dd($payment);
-                
                 $user = Agent::where('email', $email)->get()->first();
 
                 $user_email = new PendingMode($user); 

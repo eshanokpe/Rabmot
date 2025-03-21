@@ -58,20 +58,20 @@
                                                 <a href="{{ route('admin.viewChangeOfOwnership', ['id'=> encrypt($item->id) ]) }}" class="btn ">View</a> 
                                             </span>
                                         </td>
-                                        <td>{{ $item->user_email}}</td>
-                                        <td>{{ $item->process_id}}</td>
-                                        <td>{{ $item->process_type}}</td>
-                                        <td> {{ $item->vehicle_category}}
+                                        <td>{{ $item->user_email??''}}</td>
+                                        <td>{{ $item->process_id ?? ""}}</td>
+                                        <td>{{ $item->process_type ??''}}</td>
+                                        <td> {{ $item->vehicle_category ?? ''}}
                                            
                                         </td>
-                                        <td>{{ $item->vehiclelicenseexpiry_date}} </td>
-                                        <td>{{ $item->addVehicleOwnership->ownerfullname}}</td>
-                                        <td>{{ $item->addVehicleOwnership->address}}</td>
-                                        <td>{{ $item->addVehicleOwnership->phonenumber}}</td>
-                                        <td>{{ $item->addVehicleOwnership->emailaddress}}</td>
-                                        <td>{{ $item->addVehicleOwnership->gender}}</td>
-                                        <td>{{ $item->addVehicleOwnership->occupation}}</td>
-                                        <td>{{ $item->payment_status}}</td>
+                                        <td>{{ $item->vehiclelicenseexpiry_date ?? ''}} </td>
+                                        <td>{{ $item->addVehicleOwnership->ownerfullname ?? ''}}</td>
+                                        <td>{{ $item->addVehicleOwnership->address ?? ''}}</td>
+                                        <td>{{ $item->addVehicleOwnership->phonenumber ?? ''}}</td>
+                                        <td>{{ $item->addVehicleOwnership->emailaddress ?? ''}}</td>
+                                        <td>{{ $item->addVehicleOwnership->gender ?? ''}}</td>
+                                        <td>{{ $item->addVehicleOwnership->occupation ?? ''}}</td>
+                                        <td>{{ $item->payment_status ?? ''}}</td>
                                         <td>₦{{ number_format($item->totalamount,2, '.', ',')}}</td>
                                        
                                         <td>
