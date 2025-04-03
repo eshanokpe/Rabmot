@@ -10,7 +10,7 @@
                     ADD Vehicle
                     </div>
                     <h2 class="page-title">
-                        Vehicles Renewal 
+                        Vehicles Renewal  
                     </h2>
                 </div>
             </div>
@@ -25,6 +25,26 @@
                             <h3 class="card-title">Client Vehicles</h3>
                         </div>
                         <div class="table-responsive">
+                            @if (session('delete'))
+                                <div class="col-sm-12">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="deleteAlert">
+                                        {{ session('delete') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    setTimeout(function() {
+                                        let alert = document.getElementById('deleteAlert');
+                                        if (alert) {
+                                            alert.style.transition = "opacity 0.5s";
+                                            alert.style.opacity = "0";
+                                            setTimeout(() => alert.remove(), 500);
+                                        }
+                                    }, 3000); // Removes after 3 seconds
+                                </script>
+                            @endif
+
                             <table class="table card-table table-vcenter text-nowrap datatable">
                                 <thead>
                                     <tr>
@@ -65,8 +85,15 @@
                                             <span class="dropdown">
                                                 <a href="{{route('admin.vehicle.renewals.view', encrypt($item->id))}}" class="btn ">View</a> 
                                             </span>
+                                            <span class="dropdown">
+                                                <a href="{{ route('admin.vehicle.renewals.delete', encrypt($item->id)) }}" 
+                                                   class="btn btn-danger"
+                                                   onclick="return confirm('Are you sure you want to delete this vehicle renewal?')">
+                                                   Delete
+                                                </a> 
+                                            </span>
                                         </td>
-                                        <td>{{ $item->user_email}}</td>
+                                        <td>{{  $item->user ? $item->user->email : 'N/A' }}</td>
                                         <td>{{ $item->vehicleTypeInfo->name}}</td>
                                         <td>{{ $item->vehiclemake}}</td>
                                         <td>{{ $item->vehiclemodel}}</td>

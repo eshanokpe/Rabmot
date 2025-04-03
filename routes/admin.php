@@ -76,10 +76,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/download/otherpermitpolicereport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download');
         Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status');
 
-        //Getaddvehiclerenewal
+        //Getaddvehiclerenewal 
         Route::get('/vehicle-renewals', [AdminAddedVehicleController::class, 'showAddVehicleRenewal'])->name('admin.vehicle.renewals');
         Route::get('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDetails'])->name('admin.vehicle.renewals.view');
+        Route::get('/vehicle-renewals/delete/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDelete'])->name('admin.vehicle.renewals.delete');
         Route::put('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'updateVehicleRenewal'])->name('admin.vehicle.renewals.update');
+
         Route::get('/vehicle-license-papers/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleLicensePapers'])->name('vehicle.license.papers.download');
         Route::get('/vehicle-insurance-papers/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleInsurancePapers'])->name('vehicle.insurance.papers.download');
         Route::get('/vehicle-roadworthiness/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleRoadworthiness'])->name('vehicle.roadworthiness.download');

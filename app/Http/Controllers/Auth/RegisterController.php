@@ -132,7 +132,7 @@ class RegisterController extends Controller
              'user_id' => $user->id,
              'referral_user_id' => $referringUser ? $referringUser->id : null,
              'token_count' => 0,
-         ]);
+         ]); 
          $wallet = Wallet::create([ 
             'user_id' => $user->id,
             'user_email' => $user->email,

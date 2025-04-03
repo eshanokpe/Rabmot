@@ -10,7 +10,7 @@
 
             <div class="row g-2 align-items-center">
 
-                <div class="col">
+                <div class="col"> 
                     <!-- Page pre-title -->
                     <div class="page-pretitle">
                         Overview
@@ -69,7 +69,7 @@
                                         <label class="form-label required">User Email</label>
 
                                         <input type="text" class="form-control" autocomplete="off"
-                                            value="{{ $items->user_email }}" disabled />
+                                            value="{{ $items->user->email }}" disabled />
 
                                     </div>
 

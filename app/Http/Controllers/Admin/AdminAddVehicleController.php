@@ -29,7 +29,7 @@ class AdminAddVehicleController extends Controller
             'roadworthinesspapers' => 'mimes:jpeg,docx,pdf,doc,jpg,png|max:2024', 
             'meansofid' => 'mimes:jpeg,docx,pdf,doc,jpg,png|max:2024', 
 
-            ],[ 
+            ],[  
             
             'vehiclelicensepapers.mimes' => 'Upload the right File Format (jpeg,jpg,docx,doc,pdf,png) ',
             'insurancepapers.mimes' => 'Upload the right File Format (jpeg,jpg,docx,doc,pdf,png) ',
@@ -102,11 +102,12 @@ class AdminAddVehicleController extends Controller
         // dd($admin);
         $ownerdetails = User::where('email', $request->owneremail)->get()->first();
         $ownerID = $ownerdetails->id;
+        $ownerEmail = $ownerdetails->email;
         
-        $vehiclerenewal = new Addvehiclerenewal();
+        $vehiclerenewal = new AddVehicleRenewal();
         $vehiclerenewal->user_id = $ownerID;
         $vehiclerenewal->userType = 'Admin';
-        $vehiclerenewal->user_email= $admin->email;
+        $vehiclerenewal->user_email= $ownerID; 
         $vehiclerenewal->ownerfullname = $request->ownerfullname;
         $vehiclerenewal->owneremail = $request->owneremail;
         $vehiclerenewal->category = $request->category;

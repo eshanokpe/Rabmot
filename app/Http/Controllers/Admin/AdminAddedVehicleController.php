@@ -13,7 +13,7 @@ use App\Models\AddVehicleRegistration;
 class AdminAddedVehicleController extends Controller
 {
     public function showAddVehicleRenewal(){
-        $items = AddVehicleRenewal::latest()->paginate(10);
+        $items = AddVehicleRenewal::with('user')->latest()->paginate(10);
         return view('admin.pages.showAddVehicle.showAddVehicleRenewal', compact('items'));
     }
 
@@ -24,6 +24,15 @@ class AdminAddedVehicleController extends Controller
         }
         $vehicleList = VehicleType::all();
         return view('admin.pages.showAddVehicle.showAddVehicleRenewalDetails', compact('items','vehicleList'));
+    }
+
+    public function showVehicleRenewalDelete($id){
+        $item = AddVehicleRenewal::find(decrypt($id));
+        if (!$item) {
+           return view('admin.404');
+        }
+        $item->delete();
+        return redirect()->back()->with('delete', 'Vehicle Renewal Updated successfully.');
     }
     
     public function updateVehicleRenewal(Request $request, $id)

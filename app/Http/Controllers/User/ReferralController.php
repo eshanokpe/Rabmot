@@ -25,7 +25,7 @@ class ReferralController extends Controller
         $email = Auth::user()->email;
         $user = Auth::user(); 
         $user = User::find($userId);
-
+ 
         $data['tokenCount'] = $user->latestTokenCount();
         $data['referralsCount'] = $user->referrer_count;
         $data['referralLink'] = route('signup') . '?ref=' . $user->referral_code;
@@ -50,5 +50,5 @@ class ReferralController extends Controller
         ->where('user_email', $email)->sum('amount');  
 
         return view('user.pages.referralDetails', $data);
-    }
+    } 
 }
