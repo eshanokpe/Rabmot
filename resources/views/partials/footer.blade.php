@@ -44,7 +44,7 @@
             <div class="col-6  col-sm-6 col-md-2 p-2  footter">
                 <h4>Clients</h4>
                 <ul class="list-unstyled">
-                    <li> 
+                    <li>  
                         @if(auth()->check())
                         @else
                         <a href="{{ route('processpapers')}}">Clients Login</a>

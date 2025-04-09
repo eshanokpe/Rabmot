@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use DB; 
+use DB;  
 use App\Models\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
