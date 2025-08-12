@@ -103,7 +103,7 @@ class PaymentController extends Controller{
                     Mail::to($email)->send(new InvoiceMail(
                         $request->orderNo, 
                         $fullname, 
-                        $email, 
+                        $email,  
                         $phone,
                         $item,
                         $cartItems,
@@ -182,14 +182,17 @@ class PaymentController extends Controller{
                 ]); 
             }
              
-            if($payment->save()){    
-                $user = User::where('email',$email)->get()->first();
-                $user_email = new PendingMode($user);  
-                Mail::to($user->email)->send($user_email);
-                Cart::destroy(); 
-                return  redirect()->route('home.transactionHistory');
-            }else{ 
-                return redirect()->route('home.cart')->with('error', 'Payment initiation failed!');
+            try {
+                $user = User::where('email', $email)->first();
+                Mail::to($user->email)->send(new PendingMode($user));
+                Cart::destroy();
+                return redirect()->route('home.transactionHistory');
+            } catch (\Exception $e) {
+                \Log::error('Email sending failed: ' . $e->getMessage());
+                // Still destroy cart and redirect, but log the error
+                Cart::destroy();
+                return redirect()->route('home.transactionHistory')
+                    ->with('warning', 'Payment successful but email notification failed');
             }
         }else{ 
             return redirect()->route('home.cart')->with('error', 'Data Not Found!');

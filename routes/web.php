@@ -29,7 +29,7 @@ require __DIR__.'/user.php';
 Route::get('/verifyemail/{token}', [RegisterController::class, 'verify']);
 Route::post('/forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
-Route::post('/reset-password/', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+Route::post('reset-password/', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 Route::get('/password/reset/', [ForgotPasswordController::class, 'showResetForm'])->name('password.request'); 
 Route::get('/verification/notice', [VerificationController::class, 'notice'])->name('verification.notice');
 

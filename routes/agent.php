@@ -26,7 +26,7 @@ Route::prefix('agent')->group(function () {
     Route::post('/login/agent',  [AgentLoginController::class, 'login'])->name('agent.loginSubmit');
     Route::get('/forgotpassword',  [AgentLoginController::class, 'forgotpassword'])->name('agent.forgotpassword');
     Route::post('/forgotpassword/submit',  [AgentLoginController::class, 'forgotpasswordSubmit'])->name('agent.forgotpassword.submit');
-    Route::get('/reset-password/{token}', [AgentLoginController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::get('/reset-password/{token}', [AgentLoginController::class, 'showResetPasswordForm'])->name('agent.reset.password.get');
     Route::post('/reset/password/update', [AgentLoginController::class, 'passwordUpdate'])->name('agent.password.update');
 
   

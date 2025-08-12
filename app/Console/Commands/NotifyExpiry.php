@@ -11,55 +11,114 @@ use Carbon\Carbon;
 class NotifyExpiry extends Command
 {
     protected $signature = 'notify:expiry';
-    protected $description = 'Notify users about upcoming expirations';
+    protected $description = 'Notify users about upcoming and expired vehicle documents';
 
     public function handle()
     {
         $today = Carbon::today();
+        $notificationIntervals = [1, 5, 10, 15, 20, 30];
+        
+        $expiryFields = [
+            'vehiclelicenseexpiry', 
+            'roadworthinessexpiry', 
+            'insuranceexpiry',
+            'hackneypermitexpiry',
+            'statecarriagepermitexpiry',
+            'hackneydutypermitexpiry',
+            'localgovernmentpermitexpiry'
+        ];
 
-        // Get vehicles with expiry dates 30, 15, 10, or 5 days away
-        $vehicles = AddVehicleRenewal::with('user')
-            ->where(function ($query) use ($today) {
-                foreach (['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
-                    $query->orWhereDate($field, $today->copy()->addDays(5)->format('Y-m-d'))
-                        ->orWhereDate($field, $today->copy()->addDays(1)->format('Y-m-d'))
-                        ->orWhereDate($field, $today->copy()->addDays(10)->format('Y-m-d'))
-                        ->orWhereDate($field, $today->copy()->addDays(15)->format('Y-m-d'))
-                        ->orWhereDate($field, $today->copy()->addDays(20)->format('Y-m-d'))
-                        ->orWhereDate($field, $today->copy()->addDays(30)->format('Y-m-d'));
+        // Get vehicles with documents expiring soon or already expired
+        $vehicles = AddVehicleRenewal::with(['user' => function($query) {
+                $query->whereNotNull('email'); // Only users with email
+            }])
+            ->where(function ($query) use ($today, $notificationIntervals, $expiryFields) {
+                foreach ($expiryFields as $field) {
+                    // Check for documents expiring in the specified intervals
+                    foreach ($notificationIntervals as $days) {
+                        $query->orWhereDate($field, $today->copy()->addDays($days));
+                    }
+                    
+                    // Check for documents that expired today or before
+                    $query->orWhereDate($field, '<=', $today);
+                    
+                    // Check for documents expiring today
+                    $query->orWhereDate($field, $today);
                 }
             })
+            ->whereHas('user') // Only vehicles with associated users
             ->get();
+
+        $notifiedCount = 0;
+        $errorCount = 0;
 
         foreach ($vehicles as $vehicle) {
             $expiringDetails = [];
             
-            foreach (['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
-                if (in_array($vehicle->{$field}, [
-                    $today->copy()->addDays(1)->format('Y-m-d'),
-                    $today->copy()->addDays(5)->format('Y-m-d'),
-                    $today->copy()->addDays(10)->format('Y-m-d'),
-                    $today->copy()->addDays(15)->format('Y-m-d'),
-                    $today->copy()->addDays(20)->format('Y-m-d'),
-                    $today->copy()->addDays(30)->format('Y-m-d')
-                ])) {
-                    $expiringDetails[$field] = $vehicle->{$field};
+            foreach ($expiryFields as $field) {
+                if (empty($vehicle->{$field})) continue;
+                
+                $expiryDate = Carbon::parse($vehicle->{$field});
+                $daysUntilExpiry = $today->diffInDays($expiryDate, false);
+
+                // Check if within notification range or expired
+                if (in_array($daysUntilExpiry, $notificationIntervals) || $daysUntilExpiry <= 0) {
+                    $status = $daysUntilExpiry < 0 ? 'expired' : 
+                              ($daysUntilExpiry == 0 ? 'expiring_today' : 'expiring_soon');
+                    
+                    $expiringDetails[$field] = [
+                        'date' => $vehicle->{$field},
+                        'days_remaining' => $daysUntilExpiry,
+                        'status' => $status,
+                        'field_name' => $this->getFieldDisplayName($field)
+                    ];
                 }
             }
 
-            if (!empty($expiringDetails)) {
-                \Log::info("Notifying user ID: {$vehicle->user->id} for vehicle ID: {$vehicle->id} with expiring fields: " . implode(', ', array_keys($expiringDetails)));
-                
+            if (!empty($expiringDetails) && $vehicle->user) {
                 try {
-                    Notification::send($vehicle->user, new ExpiryNotification($vehicle, $expiringDetails));
-                    \Log::info("Notification sent successfully for vehicle ID: {$vehicle->id}");
+                    Notification::send(
+                        $vehicle->user, 
+                        new ExpiryNotification($vehicle, $expiringDetails)
+                    );
+                    $notifiedCount++;
+                    
+                    \Log::info("Sent expiry notification to user {$vehicle->user->id} for vehicle {$vehicle->id}", [
+                        'expiring_details' => $expiringDetails
+                    ]);
                 } catch (\Exception $e) {
-                    \Log::error("Failed to send notification for vehicle ID: {$vehicle->id}, Error: {$e->getMessage()}");
+                    $errorCount++;
+                    \Log::error("Failed to notify user {$vehicle->user->id} for vehicle {$vehicle->id}", [
+                        'error' => $e->getMessage(),
+                        'expiring_details' => $expiringDetails
+                    ]);
                 }
             }
         }
 
-        $this->info('Notification process completed.');
+        $this->info("Notification process completed. Notified: {$notifiedCount}, Errors: {$errorCount}");
+        \Log::info("Expiry notification job completed", [
+            'notified_count' => $notifiedCount,
+            'error_count' => $errorCount,
+            'total_vehicles_processed' => $vehicles->count()
+        ]);
+    }
+
+    /**
+     * Get display name for expiry fields
+     */
+    protected function getFieldDisplayName($field): string
+    {
+        $names = [
+            'vehiclelicenseexpiry' => 'Vehicle License',
+            'roadworthinessexpiry' => 'Road Worthiness',
+            'insuranceexpiry' => 'Insurance',
+            'hackneypermitexpiry' => 'Hackney Permit',
+            'statecarriagepermitexpiry' => 'State Carriage Permit',
+            'hackneydutypermitexpiry' => 'Hackney Duty Permit',
+            'localgovernmentpermitexpiry' => 'Local Government Permit'
+        ];
+
+        return $names[$field] ?? ucfirst(str_replace('expiry', '', $field));
     }
 }
- 

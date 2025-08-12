@@ -22,7 +22,7 @@ class CheckoutController extends Controller
         $cartItems = Cart::content();
         if( $cartItems->isEmpty() ){
          return redirect()->route('home.cart')->with('error', 'Your cart is Empty. Add Items to process to checkout.');
-        }
+        } 
        
         $orderNumber = str_pad(mt_rand(1,999999), 6, '0', STR_PAD_LEFT);
         $id = Auth::user()->id;

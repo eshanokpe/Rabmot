@@ -101,7 +101,7 @@ Route::middleware(['auth'])->group(function () {
         //Payment  
         Route::post('payment', [PaymentController::class, 'initiatePayment'])->name('home.payment.initiate');
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('home.payment');
-          
+           
         Route::get('faq', [HomeController::class, 'faq'])->name('home.faq'); 
         Route::get('processhistory', [HomeController::class, 'processHistory'])->name('home.processHistory');
         Route::get('transactionhistory', [HomeController::class, 'transactionHistory'])->name('home.transactionHistory'); 
