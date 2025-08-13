@@ -147,7 +147,7 @@ class PaymentController extends Controller{
             foreach ($cartItems as $item ){
                 ProcessHistory::create([ 
                     'user_id' => Auth::user()->id ?? null,
-                    'owner_id' => '',
+                    'owner_id' => null,
                     'userType' => 'user',         
                     'user_email' => $email ?? null,
                     'process_number'=> $orderNumber ?? null,
@@ -196,7 +196,7 @@ class PaymentController extends Controller{
             }
         }else{ 
             return redirect()->route('home.cart')->with('error', 'Data Not Found!');
-        }
+        } 
     }
     
   
