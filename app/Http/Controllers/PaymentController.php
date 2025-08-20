@@ -21,7 +21,7 @@ use Carbon\Carbon;
 class PaymentController extends Controller{
     
     
-    
+        
     public function initiatePayment(Request $request){
         $item = Order::whereOrderNumber($request->orderNo)->get();
         $amount = Order::whereOrderNumber($request->orderNo)->sum('total');
