@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddVehicleOwnership extends Model
 {
-    use HasFactory;
-    public $fillable = [ 
+    use HasFactory; 
+    public $fillable = [  
         'user_id',
         'state_id',
         'userType',
@@ -18,13 +18,13 @@ class AddVehicleOwnership extends Model
         'category',
         'vehiclemake',
         'vehiclemodel',
-        'yearofmake',
+        'yearofmake', 
         'platenumber',
         'chassisnumber',
         'enginenumber',
         'vehiclecolor',
         'vehiclepapername',
-        'vehicledocumentname',
+        'vehicledocumentname', 
         'registeredaddressofvehicle',
         'ownerfullname',
         'ownersNIN',
@@ -47,13 +47,9 @@ class AddVehicleOwnership extends Model
         'meansofid',
     ];
 
-    public function categoryInfo()
-    {
-        return $this->belongsTo(VehicleCategory::class, 'category');
-    }
     
-    public function VehicleType()
+    public function vehicleTypeInfo()
     {
-        return $this->belongsTo(VehicleType::class, 'category', 'id');
+        return $this->belongsTo(VehicleType::class, 'category');
     }
 }

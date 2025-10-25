@@ -12,7 +12,7 @@
 <style type="text/css">
     	body{
         background:#eee;
-        margin-top:20px;
+        margin-top:20px; 
         }
         .text-danger strong {
         	color: #9f181c;
@@ -152,10 +152,12 @@
                     <div class="col-xs-6 col-sm-6 col-md-6 text-right">
                         <div class="receipt-right">
                             <p><b>Rabmot Automoblie and Licensing Agency.</b></p>
+                            <p>CAC RC Number: RC 7488687 </p>
+                            <p>TAX ID: 31717032-0001</p>
                             <p>1st floor AMG Workspace 22 Road, Festac Town, Lagos Nigeria</p>
                             <p>info@rabmotlicensing.com, suppport@rabmotlicensing.com</p>
-                            <p>Phone: +234815 520 6810, +234708 817 3662</p>
-                            <p>Company ID: BN 3510510</p>
+                            <p>Phone: +234815 520 6810, +234708 817 3662, 07088173662</p>
+                            <p>Company ID: RC 7488687</p>
                             <p>Website: www.rabmotlicensing.com</p>
                         </div>
                     </div>
@@ -176,7 +178,27 @@
             </div>
         <div>
         <br>    
-        <p>CAC Company Registration (Limited) and New Driver License Registration </p>
+        <p> 
+            @php
+            $processTypes = [];
+            @endphp
+            
+            @foreach($cartItems as $item)
+                @php
+                    $processType = $item->model->process_type;
+                @endphp
+            
+                @unless(in_array($processType, $processTypes))
+                    {{ $processType }}
+                    @unless ($loop->last && count($processTypes) === 1)
+                        ,
+                    @endunless
+                    @php
+                        $processTypes[] = $processType;
+                    @endphp
+                @endunless
+            @endforeach
+        </p>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -336,7 +358,7 @@
             <p> ₦{{ Cart::total()}}</p>
             
         </div>
-        <p>GAPhub link, <a href="https://appstaging.mygaphub.com/home" class="btn btn-primary">click here</a>.</p>
+        {{-- <p>GAPhub link, <a href="https://appstaging.mygaphub.com/home" class="btn btn-primary">click here</a>.</p> --}}
         
 </div>
 

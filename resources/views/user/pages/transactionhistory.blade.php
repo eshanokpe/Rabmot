@@ -88,8 +88,11 @@
 												<td>{{  $history->process_type }}</td>
 												<td> {{ $history->user_email}} </td>
 												<td>
+													@if( $history->process_type == 'Other Permit')
+															{{ $history->process_DPN_processtype }}
+													@endif
 													@if( $history->process_type == 'Vehicle Paper Renewal')
-															{{ $history->process_VPR_vehicleType }}
+															{{ $history->process_type }}
 													@endif
 													@if( $history->process_type == 'Vehicle Registration')
 														{{ $history->process_VR_name }},

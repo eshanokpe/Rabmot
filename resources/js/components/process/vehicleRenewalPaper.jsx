@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function VehicleRenewalPaper() {
     const url = window.location.origin;
+    const [buttonLoading, setButtonloading] = useState(false);
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -149,13 +150,13 @@ export default function VehicleRenewalPaper() {
     useEffect(() => {
     const calculateTotalAmount = () => {
         
-        const vehicleLicenseTotal = vehicleLicense ? vehicleLicenseCost * vehicleLicenseCount : 0;
-        const roadWorthinessTotal = roadWorthiness ? roadWorthinessCost : 0;
-        const thirdPartyInsuranceTotal = thirdPartyInsurance ? thirdPartyInsuranceCost : 0;
-        const proofOfOwnershipTotal = proofOfOwnership ? proofOfOwnershipCost : 0;
-        const hackneyPermitTotal = hackneyPermit ? hackneyPermitCost * hackneyPermitCount : 0;
-        const policeCMRISTotal = policeCMRIS ? policeCMRISCost : 0;
-        const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? vehicleInspectionPickanddropCost : 0;
+        const vehicleLicenseTotal = vehicleLicense ? Number(vehicleLicenseCost) * vehicleLicenseCount : 0;
+        const roadWorthinessTotal = roadWorthiness ? Number(roadWorthinessCost) : 0;
+        const thirdPartyInsuranceTotal = thirdPartyInsurance ? Number(thirdPartyInsuranceCost) : 0;
+        const proofOfOwnershipTotal = proofOfOwnership ? Number(proofOfOwnershipCost) : 0;
+        const hackneyPermitTotal = hackneyPermit ? Number(hackneyPermitCost) * hackneyPermitCount : 0;
+        const policeCMRISTotal = policeCMRIS ? Number(policeCMRISCost) : 0;
+        const vehicleInspectionPickanddropTotal = vehicleInspectionPickanddrop ? Number(vehicleInspectionPickanddropCost) : 0;
 
         setTotalAmount(
             vehicleLicenseTotal +
@@ -219,6 +220,8 @@ export default function VehicleRenewalPaper() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButtonloading(true);
+
         if (totalAmount === 0) {
             // Show a message or alert to the user
             alert('Please select an option to proceed. The total amount cannot be 0.');
@@ -253,9 +256,9 @@ export default function VehicleRenewalPaper() {
         })
         .then(response => {
             console.log('Successfully sent vehicleCategoryId:', response.data);
-            // setVehicleList(response.data.vehicleList);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setButtonloading(false);
             },1100)
         })
         .catch(error => {
@@ -343,12 +346,6 @@ export default function VehicleRenewalPaper() {
                                                 <div className="col-12 col-lg-12 col-xl-12">
                                                     <div className="radius-15">
                                                         <div className="card-body">
-                                                            <h6 className="text-justify text-primary card-title">
-                                                                ELIGIBILITY:
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Only a vehicle used and registered before in Nigeria by the former owner is eligible for a Change of Ownership.
-                                                            </h6>
                                                             <h6 className="text-justify text-success card-title">
                                                                 INSTRUCTION:
                                                             </h6>
@@ -362,7 +359,7 @@ export default function VehicleRenewalPaper() {
                                                                 TIMELINE:
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                <b>Processing and Delivery Time:</b> 72 hours
+                                                                <b>Processing and Delivery Time:</b> 72 hours to 5 working days
                                                             </h6>
                                                         </div>
                                                     </div>
@@ -417,7 +414,7 @@ export default function VehicleRenewalPaper() {
                                                                     <option disabled value="">-- Select Vehicle Type --</option>
                                                                     {stateVehicleList.map((vehicleType) => (
                                                                         <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                            {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                            {vehicleType.vehicle_type.name} 
                                                                         </option>
                                                                     ))}
                                                                 </select>
@@ -565,8 +562,14 @@ export default function VehicleRenewalPaper() {
 
                                                     </div>
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonLoading} 
+                                                        >
+                                                            {buttonLoading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

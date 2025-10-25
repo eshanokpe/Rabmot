@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddVehicleRenewal extends Model
 {
-    use HasFactory; 
+    use HasFactory;  
     protected $table = 'addvehiclerenewals'; 
     public $fillable = [ 
-        'user_id',
+        'user_id',  
         'userType',
         'user_email',
         'ownerfullname',
@@ -23,7 +23,7 @@ class AddVehicleRenewal extends Model
         'chassisnumber',
         'enginenumber', 
         'vehiclecolor',
-        'vehiclename',
+        'vehiclename', 
         'vehicledocumentname',
         'ownersphonenumber',
         'registeredaddressofvehicle',
@@ -41,9 +41,9 @@ class AddVehicleRenewal extends Model
         'insurancepapers',
         'roadworthinesspapers',
         'hackneypermitpaper',
-        'statecarriagepermit',
+        'statecarriagepermit', 
         'localgovernmentpermit',
-        'midyearpermit',
+        'midyearpermit', 
         'meansofid',
     ];
 
@@ -52,4 +52,11 @@ class AddVehicleRenewal extends Model
     {
         return $this->belongsTo(VehicleType::class, 'category');
     }
+
+    public function user()
+    {
+        // return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
 }

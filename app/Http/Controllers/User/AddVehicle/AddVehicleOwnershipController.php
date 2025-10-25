@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\User\AddVehicle;
 use Carbon\Carbon; 
-use Auth;
+use Auth; 
+use Cart;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -11,6 +12,7 @@ use App\Models\VehicleType;
 use App\Models\AddVehicleOwnership;
 use App\Services\AddVehicleOwnershipService; 
 use App\Models\VehicleRegistrationType; 
+use App\Models\ChangeOfOwnership; 
 use App\Models\ChangeofOwnershipPrice; 
 
 
@@ -165,7 +167,8 @@ class AddVehicleOwnershipController extends Controller
         ]);
     }
 
-    public function handleVehicleOwnershipCost(Request $request){
+    public function handleVehicleOwnershipCost(Request $request)
+    {
         $userId = Auth::id();
         $userEmail = Auth::user()->email;
         $stateId = $request->input('stateId');
@@ -176,172 +179,165 @@ class AddVehicleOwnershipController extends Controller
         $hackneyPermit = $request->input('hackneyPermit');
         $platenumber = $request->input('plateType');
         
-        $vehiclename = VehicleType::where('id', $vehicleAddOwnershipCategory )->first();
+        $vehiclename = VehicleType::where('id', $vehicleAddOwnershipCategory)->first();
         $changeofownershipPrice = ChangeofOwnershipPrice::where('state_id', $stateId)
-                                                        ->where('vehicle_type_id', $vehicleCategoryId)->get();
+                                                        ->where('vehicle_type_id', $vehicleCategoryId)
+                                                        ->first();
+
+        // Initialize variables
         $vehicleCost = 0;
         $RVLAmount = 0;
         $policeCMRIS = 0;
         $RHPermitAmount = 0;
         $vehiclelicenseAmount = 0;
         $hackneyPermitCost = 0;
-        
-        if(strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'RPN' && $addVehicleOwnership  || $hackneyPermit){
-            $vehicleCost =  $changeofownershipPrice->first()->random_cost;
-            $RVLAmount =  $changeofownershipPrice->first()->random_vehicleLicense;
-            $RHPermitAmount =  $changeofownershipPrice->first()->random_hacneyPermit;
-            $policeCMRIS =  $changeofownershipPrice->first()->random_policeCmris;
-            
-            switch($vLExpirydate){
-                case 'lessthan1month':
-                    $vehiclelicenseAmount = 0;
-                    break;
-                case 'morethan1month':
-                    $vehiclelicenseAmount = $RVLAmount;
-                    break;
-                case 'morethan1year':
-                    $vehiclelicenseAmount = $RVLAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $vehiclelicenseAmount = $RVLAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $vehiclelicenseAmount = $RVLAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $vehiclelicenseAmount = $RVLAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $vehiclelicenseAmount = $RVLAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $vehiclelicenseAmount = $RVLAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $vehiclelicenseAmount = $RVLAmount * 8;
-                    break;
-                default:
-                    $vehiclelicenseAmount = 0;
-            }
-            switch($hackneyPermit){
-                case 'lessthan1month':
-                    $hackneyPermitCost = 0;
-                    break;
-                case 'morethan1month':
-                    $hackneyPermitCost = $RHPermitAmount;
-                    break;
-                case 'morethan1year':
-                    $hackneyPermitCost = $RHPermitAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $hackneyPermitCost = $RHPermitAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $hackneyPermitCost = $RHPermitAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $hackneyPermitCost = $RHPermitAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $hackneyPermitCost = $RHPermitAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $hackneyPermitCost = $RHPermitAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $hackneyPermitCost = $RHPermitAmount * 8;
-                    break;
-                default:
-                    $hackneyPermitCost = 0;
-            }
-        } elseif(strpos($vehiclename->name, $vehiclename->name) !== false && $platenumber == 'CPN' && $addVehicleOwnership || $hackneyPermit){
-            $vehicleCost =  $changeofownershipPrice->first()->customised_cost;
-            $CVLAmount =  $changeofownershipPrice->first()->customised_vehicleLicense;
-            $CHPermitAmount =  $changeofownershipPrice->first()->customised_hacneyPermit;
-            $policeCMRIS =  $changeofownershipPrice->first()->customised_policeCmris;
-            switch($vLExpirydate){
-                case 'lessthan1month':
-                    $vehiclelicenseAmount = 0;
-                    break;
-                case 'morethan1month':
-                    $vehiclelicenseAmount = $CVLAmount;
-                    break;
-                case 'morethan1year':
-                    $vehiclelicenseAmount = $CVLAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $vehiclelicenseAmount = $CVLAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $vehiclelicenseAmount = $CVLAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $vehiclelicenseAmount = $CVLAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $vehiclelicenseAmount = $CVLAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $vehiclelicenseAmount = $CVLAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $vehiclelicenseAmount = $CVLAmount * 8;
-                    break;
-                default:
-                    $vehiclelicenseAmount = 0;
-            }
-            switch($hackneyPermit){
-                case 'lessthan1month':
-                    $hackneyPermitCost = "0";
-                    break;
-                case 'morethan1month':
-                    $hackneyPermitCost = $CHPermitAmount;
-                    break;
-                case 'morethan1year':
-                    $hackneyPermitCost = $CHPermitAmount * 2;
-                    break;
-                case 'morethan2year':
-                    $hackneyPermitCost = $CHPermitAmount * 3;
-                    break;
-                case 'morethan3year':
-                    $hackneyPermitCost = $CHPermitAmount * 4;
-                    break;
-                case 'morethan4year':
-                    $hackneyPermitCost = $CHPermitAmount * 5;
-                    break;
-                case 'morethan5year':
-                    $hackneyPermitCost = $CHPermitAmount * 6;
-                    break;
-                case 'morethan6year':
-                    $hackneyPermitCost = $CHPermitAmount * 7;
-                    break;
-                case 'morethan7year':
-                    $hackneyPermitCost = $CHPermitAmount * 8;
-                    break;
-                default:
-                    $hackneyPermitCost = "0";
-            }
-        }else{
-            $vehiclelicenseAmount = 0;
-            $hackneyPermitCost = 0;
-            $vehicleCost = 0;
+
+        if (
+            strpos($vehiclename->name, $vehiclename->name) !== false &&
+            $platenumber == 'RPN' && 
+            ($addVehicleOwnership || $hackneyPermit)
+        ) {
+            // Regular plate number
+            $vehicleCost = $changeofownershipPrice->random_cost;
+            $RVLAmount = $changeofownershipPrice->random_vehicleLicense;
+            $RHPermitAmount = $changeofownershipPrice->random_hacneyPermit;
+            $policeCMRIS = $changeofownershipPrice->random_policeCmris;
+
+            // Calculate vehicle license amount based on expiry date
+            $vehiclelicenseAmount = match ($vLExpirydate) {
+                'lessthan1month' => 0,
+                'morethan1month' => $RVLAmount,
+                'morethan1year' => $RVLAmount * 2,
+                'morethan2year' => $RVLAmount * 3,
+                'morethan3year' => $RVLAmount * 4,
+                'morethan4year' => $RVLAmount * 5,
+                'morethan5year' => $RVLAmount * 6,
+                'morethan6year' => $RVLAmount * 7,
+                'morethan7year' => $RVLAmount * 8,
+                default => 0
+            };
+
+            // Calculate hackney permit cost
+            $hackneyPermitCost = match ($hackneyPermit) {
+                'lessthan1month' => 0,
+                'morethan1month' => $RHPermitAmount,
+                'morethan1year' => $RHPermitAmount * 2,
+                'morethan2year' => $RHPermitAmount * 3,
+                'morethan3year' => $RHPermitAmount * 4,
+                'morethan4year' => $RHPermitAmount * 5,
+                'morethan5year' => $RHPermitAmount * 6,
+                'morethan6year' => $RHPermitAmount * 7,
+                'morethan7year' => $RHPermitAmount * 8,
+                default => 0
+            };
+        } elseif (
+            strpos($vehiclename->name, $vehiclename->name) !== false &&
+            $platenumber == 'CPN' && 
+            ($addVehicleOwnership || $hackneyPermit)
+        ) {
+            // Customised plate number
+            $vehicleCost = $changeofownershipPrice->customised_cost;
+            $CVLAmount = $changeofownershipPrice->customised_vehicleLicense;
+            $CHPermitAmount = $changeofownershipPrice->customised_hacneyPermit;
+            $policeCMRIS = $changeofownershipPrice->customised_policeCmris;
+
+            // Calculate vehicle license amount based on expiry date
+            $vehiclelicenseAmount = match ($vLExpirydate) {
+                'lessthan1month' => 0,
+                'morethan1month' => $CVLAmount,
+                'morethan1year' => $CVLAmount * 2,
+                'morethan2year' => $CVLAmount * 3,
+                'morethan3year' => $CVLAmount * 4,
+                'morethan4year' => $CVLAmount * 5,
+                'morethan5year' => $CVLAmount * 6,
+                'morethan6year' => $CVLAmount * 7,
+                'morethan7year' => $CVLAmount * 8,
+                default => 0
+            };
+
+            // Calculate hackney permit cost
+            $hackneyPermitCost = match ($hackneyPermit) {
+                'lessthan1month' => 0,
+                'morethan1month' => $CHPermitAmount,
+                'morethan1year' => $CHPermitAmount * 2,
+                'morethan2year' => $CHPermitAmount * 3,
+                'morethan3year' => $CHPermitAmount * 4,
+                'morethan4year' => $CHPermitAmount * 5,
+                'morethan5year' => $CHPermitAmount * 6,
+                'morethan6year' => $CHPermitAmount * 7,
+                'morethan7year' => $CHPermitAmount * 8,
+                default => 0
+            };
         }
-         
+
         return response()->json([
             'success' => true,
-            'message' => 'Vehicle Ownershipt Cost',
+            'platenumber' => $platenumber,
+            'message' => 'Vehicle Ownership Cost',
             'vehicleCost' => $vehicleCost,
             'hackneyPermitCost' => $hackneyPermitCost,
             'vehicleLicenseCost' => $vehiclelicenseAmount,
             'addVehicleOwnership' => $addVehicleOwnership,
-            'platenumber' => $platenumber,
             'policeCMRISCost' => $policeCMRIS,
         ]);
     }
 
-   
 
-    public function postchangeofownership(){
+    public function postChangeOfVehicleOwnership(Request $request){
+        $userId = Auth::id();
+        $userEmail = Auth::user()->email;
+        $stateId = $request->input('stateId');
+        $userType = $request->input('userType');
+        $vehicleCategoryId = $request->input('vehicleCategoryId');
+        $addVehicleOwnership = $request->input('addVehicleOwnership');
+        $vLExpirydate = $request->input('vLExpirydate');
+        $hackneyPermit = $request->input('hackneyPermit');
+        $plateType = $request->input('plateType');
+        $policeCMRISTotal = $request->input('policeCMRISTotal');
+
+        $totalAmount = $request->input('totalAmount');
+
+        $randomNumber = mt_rand(100000, 999999);
+        $processId = 'PROCO' . $randomNumber;
+        $vehicleitem = VehicleType::where('id', $vehicleCategoryId)->first();
+        $vehicleType = $vehicleitem->name;
+
+        ChangeOfOwnership::create([
+            'user_id' => $userId,
+            'user_email' => $userEmail,
+            'userType' => $userType,
+            'process_id' => $processId,
+            'process_type' => 'Change of Ownership',
+            'vehicle_category' => $vehicleType,
+            'vehiclelicenseexpiry_date' => $vLExpirydate,
+            'hacneypermit' => $hackneyPermit,
+            'platenumber' => $plateType,
+
+            'payment_status' => 0.00,
+            'totalamount' => $totalAmount,
+        ]);
+        $users = ChangeOfOwnership::where('process_id', $processId)->first();
+        Cart::add([
+            'id' => $users->id,
+            'name' => $users->process_type,
+            'price' => $users->totalamount,
+            'qty' => 1,
+            'options' => array(
+                'process_id' => $users->process_id,
+                'process_type' => $users->process_type,
+                'process_detials' => $vehicleitem->name,
+                'vehiclelicenseexpiry_date' => $vehicleitem->vehiclelicenseexpiry_date,
+                'insuranceexpiry' => $vehicleitem->insuranceexpiry,
+                'roadworthinessexpiry' => $vehicleitem->roadworthinessexpiry,
+                'hackneypermitexpiry' => $vehicleitem->hackneypermitexpiry,
+            )
+        ])->associate('App\Models\ChangeOfOwnership');
+
+        return response()->json([
+            'success' => true,
+            'message' => "New Change of Ownership has been added to Cart Successfully",
+            'vehicleType' => $vehicleType
+        ]);
 
     }
     

@@ -5,12 +5,14 @@ import axios from 'axios';
 export default function InternationalDriverLicense() {
     
     const url = window.location.origin;
+    const [loading, setLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
     const [lengthYearList, setLengthYearsList] = useState([]);
     const [lengthYear, setLengthYear] = useState('');
-
+ 
     
     const [firstName, setSelectedFirstName] = useState('');
     const [middleName, setSelectedMiddleName] = useState('');
@@ -26,7 +28,7 @@ export default function InternationalDriverLicense() {
     const [contactAddress, setContactAddress] = useState('');
     const [errors, setErrors] = useState({});
 
-    const [totalAmount, setTotalAmount] = useState(0); 
+    const [totalAmount, setTotalAmount] = useState(0.00); 
     
     const handleStateChange = (event) => {
         setStateId(event.target.value);
@@ -127,9 +129,9 @@ export default function InternationalDriverLicense() {
     };
     
 
-   const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('userType', 'user');
         formData.append('stateId', stateId);
@@ -159,13 +161,17 @@ export default function InternationalDriverLicense() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setLoading(false);
             },1100)
+           
             setErrors({});
         } catch (error) {
             console.error('Error uploading files', error);
             if (error.response && error.response.data && error.response.data.errors) {
                 setErrors(error.response.data.errors); 
             }
+        }finally {
+            
         }
     };
 
@@ -313,7 +319,7 @@ export default function InternationalDriverLicense() {
                                                     </div>
                                                     <div className="col-md-5 mb-2">
                                                         <label for="inputFirstName" class="form-label"> Email Address </label>
-                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Mother Maiden Name" class="form-control" id="motherMaidenName"/>
+                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Email Address" class="form-control" id="motherMaidenName"/>
                                                     </div>
                                                     <div className="col-md-1 "></div>
                                                 </div>
@@ -412,9 +418,11 @@ export default function InternationalDriverLicense() {
                  
                                                 <div className='row'>
                                                     <div className="col-md-1 mb-1"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
+                                                    <div className=" col-md-10 align-items-center text-center">
                                                         <div id="mainPrice" className="alert alert-info mt-3">
-                                                        Total Amount: ₦<span>{totalAmount.toLocaleString()}</span>
+                                                        Total Amount:
+                                                        <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+
                                                         </div>
                                                     </div>
                                                     <div className="col-md-1 mb-0"></div>
@@ -423,9 +431,16 @@ export default function InternationalDriverLicense() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={loading} // Disable button while loading
+                                                >
+                                                    {loading ? 'Processing...' : 'Process Payment'} {/* Change text while loading */}
+                                                </button>
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>

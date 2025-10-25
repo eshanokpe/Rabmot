@@ -63,20 +63,16 @@
 
                         style="background-image: url({{ asset('assets/dist/img/015m.jpg')}})"></span>
                     @php
-                     
-
+                        $user = Auth::guard('admin')->user();
+                        
                         // Access user details
                         $name = $user->name;
                         $email = $user->email;
                     @endphp  
                     <div class="d-none d-xl-block ps-2">
-
                         <div>{{ $name}}</div>
-                         
                         <div class="mt-1 small text-muted">{{$email}}</div>
-
                     </div>
- 
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -85,7 +81,7 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a href="{{route('admin.settings')}}" class="dropdown-item">Settings</a>
+                    <a href="{{route('admin.settings.index')}}" class="dropdown-item">Settings</a>
 
                     <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item">
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">

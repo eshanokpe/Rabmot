@@ -11,13 +11,13 @@ use Http;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
+    use AuthenticatesUsers; 
 
     /**
      * Where to redirect users after login.
      *
      * @var string
-     */
+     */ 
     protected $redirectTo = '/home';
     public function __construct()
     { 
@@ -31,7 +31,7 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
+    public function loginn(Request $request)
     {
         // Validate the reCAPTCHA response
         $recaptcha = $request->input('g-recaptcha-response');
@@ -48,11 +48,11 @@ class LoginController extends Controller
 
         // Validate login credentials
         $this->validateLogin($request);
-
-        // Attempt to log the user in
+        // Attempt to log the user in with "Remember Me" support
         $credentials = $this->credentials($request);
+        $remember = $request->filled('remember'); 
 
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
 
             // Check if the user's account is disabled
@@ -81,14 +81,65 @@ class LoginController extends Controller
         ]);
     }
 
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    public function login(Request $request)
+    {
+        // Validate reCAPTCHA
+        if (!$this->validateRecaptcha($request)) {
+            return redirect()->back()->with('recaptcha_error', 'Please verify that you are not a robot.');
+        }
+
+        // Validate login credentials
+        $this->validateLogin($request);
+
+        // Attempt login with "Remember Me" option
+        $credentials = $this->credentials($request);
+        $remember = $request->filled('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
+            return $this->handleAuthenticatedUser();
+        }
+
+        // Handle failed login
+        return back()->withErrors([
+            'email' => 'Invalid credentials.',
+        ]);
+    }
+
+
+    private function validateRecaptcha(Request $request): bool
+    {
+        $recaptcha = $request->input('g-recaptcha-response');
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => config('services.recaptcha.secretKey'),
+            'response' => $recaptcha,
+            'remoteip' => $request->ip(),
+        ]);
+
+        return $response->json('success', false);
+    }
+
+
+    private function handleAuthenticatedUser()
+    {
+        $user = Auth::user();
+
+        if ($user->status_id === 0) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Your account has been disabled. Contact the admin for further details.',
+            ]);
+        }
+
+        if (!$user->verified) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Please verify your account before logging in.',
+            ]);
+        }
+
+        return redirect()->intended('/home');
+    }
+    
     protected function validateLogin(Request $request)
     {
         $request->validate([
@@ -125,6 +176,11 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect to the login page or the home page
+        return redirect()->route('processpapers');
+    }
+
+    public function showLoginForm()
+    {
         return redirect()->route('processpapers');
     }
 }

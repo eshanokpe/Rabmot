@@ -9,17 +9,19 @@ class ProcessHistory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
+        'user_id', 
+        'owner_id', 
+        'userType',
         'user_email',
         'userType',
-        'process_number',
-        'process_id' ,
+        'process_number', 
+        'process_id' , 
         'process_type' ,
         'process_DLR_lengthofyears',
         'process_NDL_lengthofyear',
         'process_CO_vc',
         'process_CO_vl' ,
-        'process_VR_name',
+        'process_VR_name', 
         'process_VR_vehicleregistrationType' ,
         'process_VR_numberplate', 
         'process_VR_preferrednumber', 
@@ -32,6 +34,18 @@ class ProcessHistory extends Model
         'process_DPN_processtype', 
         'process_DPN_fullname', 
         'totalamount',
+        
+        'location',
+        'lagos_address',
+        'address',
+        'delivery_option',
+        'scan_email',
+
         'status', 
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

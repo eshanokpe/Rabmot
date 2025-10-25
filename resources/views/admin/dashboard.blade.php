@@ -389,16 +389,12 @@
                                 <h3 class="card-title">New Processess</h3>
 
                             </div>
-
-                            
-
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
                                         <tr>
                                             <th class="w-1">S/N
                                                 <i class="fa fa-arrow-up"></i>
-
                                            </th>
                                             <th>Process ID</th>
                                             <th>User Email</th>
@@ -442,7 +438,7 @@
                                                 </td>
                                                 <td class="text-end">
                                                     <span class="dropdown">
-                                                        <a href="{{ route('admin.viewpendingpaper', $item->id) }}" class="btn align-text-top">Actions</a>
+                                                        <a href="{{ route('admin.viewpendingpaper', encrypt($item->id) ) }}" class="btn align-text-top">Actions</a>
                                                     </span>
                                                 </td>
                                             </tr>

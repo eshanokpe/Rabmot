@@ -26,9 +26,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -111,9 +113,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -198,9 +202,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -226,11 +232,6 @@
                                     </div>
 
                                     <!--// Slider Inner-->
-
-    
-
-    
-
                                 </div>
 
                                 <!--// Slider Item Wrap-->
@@ -284,9 +285,12 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
+                                  
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -368,9 +372,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -452,9 +458,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -576,8 +584,11 @@
 
                                                 <div class="main-btn-wrap">
 
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -662,8 +673,11 @@
 
                                                 <div class="main-btn-wrap">
 
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -750,8 +764,11 @@
 
                                                 <div class="main-btn-wrap">
 
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -836,8 +853,11 @@
 
                                                 <div class="main-btn-wrap">
 
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -861,10 +881,6 @@
                                     </div>
 
                                     <!--// Slider Inner-->
-
-    
-
-    
 
                                 </div>
 
@@ -919,9 +935,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->
@@ -1003,9 +1021,11 @@
                                                 <!--// Slider Paragraph End-->
 
                                                 <div class="main-btn-wrap">
-
-                                                    <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
-
+                                                    @if(auth()->check())
+                                                        <a href="{{ route('home')}}" class="main-btn">View Dashboard</a>
+                                                    @else
+                                                        <a href="{{ route('signup')}}" class="main-btn">sign up Now</a>
+                                                    @endif
                                                 </div>
 
                                                 <!--// Main Btn Wrap End-->

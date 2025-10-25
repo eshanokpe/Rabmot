@@ -16,7 +16,7 @@
             -moz-appearance:textfield;
         }
          
-         
+          
         /* hide the arrows beside the input type number forms */
         input[type=date]::-webkit-inner-spin-button, 
         input[type=date]::-webkit-outer-spin-button { 

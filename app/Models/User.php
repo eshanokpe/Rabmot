@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
-{
+{ 
     use HasFactory, Notifiable;
 
     /**
@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'fullname',
+        'fullname', 
         'phone',
         'state',
         'role',
@@ -30,12 +30,13 @@ class User extends Authenticatable
         'gender',
         'address',
         'status_id',
+        'status',
         'password',
         'know_us',
         'referred_by',
         'referral_code',
         'referralsCount',
-        'referral_count',
+        'referrer_count'
     ];
 
     /**
@@ -89,6 +90,34 @@ class User extends Authenticatable
     public function latestTokenCount()
     {
         return $this->tokens()->latest()->value('token_count') ?? 0;
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    public function processHistories()
+    {
+        return $this->hasMany(ProcessHistory::class, 'user_id');
+    }
+
+    public function addToWallet($amount)
+    {
+         $wallet = $this->wallet; 
+
+        if ($wallet) {
+            $wallet->amount += $amount; 
+            $wallet->save(); 
+        } else {
+            $this->wallet()->create([
+                'amount' => $amount,  
+                'user_email' => $this->email,
+                'userType' => 'user',
+                'status' => 0
+
+            ]);
+        }
     }
 
 }

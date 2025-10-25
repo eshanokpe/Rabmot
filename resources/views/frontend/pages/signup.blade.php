@@ -6,7 +6,7 @@
          background-color: red !important;
      }
  </style>
- 
+  
 @extends('layouts.app')
 
 @section('content')

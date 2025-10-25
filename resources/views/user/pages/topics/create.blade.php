@@ -1,16 +1,10 @@
-@extends('user.layouts.dashboardheader') 
+@extends('user.layouts.app') 
 
 @section('content')
 <body>
 	<!--page-wrapper-->
 	<div class="wrapper">
 
-		<!--header-->
-		@include('user.layouts.topnav');
-		<!--end header-->
-		<!--sidebar-wrapper-->
-		@include('user.layouts.dashboardsidebar');
-		<!--end sidebar-wrapper-->
 		
 		<!--page-content-wrapper-->
 		<div class="page-content-wrapper">
@@ -30,15 +24,7 @@
 						
 					</div>
 					<!--end breadcrumb-->
-				<!-- <div class="row">
-					<div class=" radius-15">
-						
-							<div class="card-title text-center">
-								<h5 class="mb-0">Add New Vehicle</h5>
-							</div>
-						
-					</div>
-				</div>-->
+				
 				<br><br> 
 				<div class="row">
                 <div class="col-xl-10 mx-auto">

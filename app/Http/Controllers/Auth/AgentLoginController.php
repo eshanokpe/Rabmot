@@ -8,34 +8,36 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use DB; 
+use DB;  
 use App\Models\Agent;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use App\Models\PasswordModel;
-use Mail;
+use App\Models\AgentPasswordModel;
+use Mail; 
 use Carbon\Carbon;
 use App\Mail\AgentEmailForgetPassword;
-
+ 
 
 class AgentLoginController extends Controller
 {
     public function showLoginForm()
-    {
-        return view('auth.agent.agent-login'); // Create a view for the agent login form
+    { 
+        return view('auth.agent.agent-login'); 
     }
 
     public function login(Request $request)
-    {
+    { 
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'agent'])) {
+        $credentials = $request->only('email', 'password');
+        if (Auth::guard('agent')->attempt($credentials)) {
+            // $user = Auth::guard('agent')->user();
+            // return dd($user);
             return redirect()->route('agent.dashboard');
-        }
-
+        } 
+        
         return back()->withErrors(['error' => 'Invalid Agent Credentials']);
     }
 
@@ -66,13 +68,13 @@ class AgentLoginController extends Controller
         }
 
         $token = Str::random(64);
-        PasswordModel::create([
+        AgentPasswordModel::create([ 
             'email' => $request->email,
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
 
-        $user = PasswordModel::where('email', $request->email)->first();
+        $user = AgentPasswordModel::where('email', $request->email)->first();
         $sendMail = new AgentEmailForgetPassword($user->email, $user->token);
 
         try {
@@ -85,7 +87,7 @@ class AgentLoginController extends Controller
 
     public function showResetPasswordForm($token)
     {
-        $passwordReset = PasswordModel::where('token', $token)->first();
+        $passwordReset = AgentPasswordModel::where('token', $token)->first();
         if (!$passwordReset) {
             return response()->view('errors404'); // Or any other error view
         }
@@ -104,7 +106,7 @@ class AgentLoginController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $passwordReset = PasswordModel::where('token', $request->token)->first();
+        $passwordReset = AgentPasswordModel::where('token', $request->token)->first();
 
         if (!$passwordReset) {
             return redirect()->back()->withErrors(['token' => 'Invalid token.'])->withInput();
@@ -122,9 +124,12 @@ class AgentLoginController extends Controller
         return redirect()->back()->with('success', 'Password updated successfully. You can now login.');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
+        Auth::guard('agent')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return redirect()->route('agent.login');
     }
 }

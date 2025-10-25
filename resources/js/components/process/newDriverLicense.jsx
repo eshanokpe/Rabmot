@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function NewDriverLicense() {
     
     const url = window.location.origin;
+    const [loading, setLoading] = useState(false);
+
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
 
@@ -33,7 +35,7 @@ export default function NewDriverLicense() {
 
     const [errors, setErrors] = useState({});
 
-    const [totalAmount, setTotalAmount] = useState(0); 
+    const [totalAmount, setTotalAmount] = useState(0.00); 
     
     const handleStateChange = (event) => {
         setStateId(event.target.value);
@@ -144,7 +146,7 @@ export default function NewDriverLicense() {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('userType', 'user');
         formData.append('stateId', stateId);
@@ -178,6 +180,7 @@ export default function NewDriverLicense() {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setLoading(false);
             },1100)
             setErrors({});
         } catch (error) {
@@ -353,7 +356,7 @@ export default function NewDriverLicense() {
                                                     </div>
                                                     <div className="col-md-5 mb-2">
                                                         <label for="inputFirstName" class="form-label"> Email Address </label>
-                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Mother Maiden Name" class="form-control" id="motherMaidenName"/>
+                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Email Address" class="form-control" id="motherMaidenName"/>
                                                     </div>
                                                     <div className="col-md-1 m"></div>
                                                 </div>
@@ -425,10 +428,14 @@ export default function NewDriverLicense() {
                                                         <label htmlFor="vehicleForm" className="form-label">Blood group </label>
                                                         <select required value={bloodGroup || ''}  onChange={handleBloodGroup} name="addVehicleOwnership" id="addVehicleOwnership" className="form-select" >
                                                             <option disabled selected="selected" value="">Select Blood group</option>
-                                                            <option value="A">Blood Group A</option>
-                                                            <option value="B">Blood Group B</option>
-                                                            <option value="AB">Blood Group AB</option>
-                                                            <option value="O">Blood Group O</option>
+                                                            <option value="Blood Group A+"> Blood Group A+</option>
+                                                            <option value="Blood Group A-">Blood Group A-</option>
+                                                            <option value="Blood Group B+">Blood Group B+</option>
+                                                            <option value="Blood Group B-">Blood Group B-</option>
+                                                            <option value="Blood Group B-">Blood Group B-</option>
+                                                            <option value="Blood Group AB+">Blood Group AB+</option>
+                                                            <option value="Blood Group AB-">Blood Group AB-</option>
+                                                            <option value="Blood Group O+">Blood Group O+</option>
                                                         </select>
                                                     </div>
                                                     <div className="col-md-1"></div>
@@ -466,7 +473,9 @@ export default function NewDriverLicense() {
                                                     <div className="col-md-1 mb-1"></div>
                                                     <div className="card-body col-md-10 align-items-center text-center">
                                                         <div id="mainPrice" className="alert alert-info mt-3">
-                                                        Total Amount: ₦<span>{totalAmount.toLocaleString()}</span>
+                                                        Total Amount: 
+                                                        <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+
                                                         </div>
                                                     </div>
                                                     <div className="col-md-1 mb-0"></div>
@@ -479,9 +488,16 @@ export default function NewDriverLicense() {
                                             </div>
 
 
-                                            <div className=" col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={loading} // Disable button while loading
+                                                >
+                                                    {loading ? 'Processing...' : 'Process Payment'} {/* Change text while loading */}
+                                                </button>
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>

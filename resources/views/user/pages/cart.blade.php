@@ -9,7 +9,7 @@
         <!--page-content-wrapper-->
         <div class="page-content-wrapper">
             <div class="page-content">
-                <!--breadcrumb-->
+                <!--breadcrumb-->  
                 <div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
                     <div class="breadcrumb-title pe-3">My Cart</div>
                     <div class="ps-3">
@@ -106,8 +106,8 @@
                                                                     @endif
                                                                 </td>
                                                             @elseif($item->model->process_type == 'Vehicle Paper Renewal')
-                                                                <td>
-                                                                    {{ $item->model->vehicleType }}:
+                                                                <td> 
+                                                                    {{ $item->model->vehicleType }}: 
                                                                     @if($item->model->vehicleLicense) Vehicle License, @endif
                                                                     @if($item->model->roadWorthiness) Road Worthiness, @endif
                                                                     @if($item->model->thirdPartyInsurance) Third Party Insurance, @endif
@@ -115,11 +115,11 @@
                                                                     @if($item->model->vehicleInspectionPickanddrop) Vehicle Inspection Pickanddrop, @endif
                                                                     @if($item->model->hackneyPermit) Hackney Permit, @endif
                                                                     @if($item->model->policeCMRIS) Police CMRIS, @endif
-                                                                </td>
+                                                                </td> 
                                                             @elseif($item->model->process_type == 'Dealer`s Plate Number')
                                                                 <td>{{ $item->model->process_type }}, {{ $item->model->fullname }}</td>
                                                             @elseif($item->model->process_type == 'Other Permit')
-                                                                <td>{{ $item->model->permitInfo->name }}</td>
+                                                                <td>{{ $item->model->permitInfo->name }}</td> 
                                                             @elseif($item->model->process_type == 'policeCMRIS')
                                                                 <td>{{ $item->model->permittype }}</td>
                                                             @endif

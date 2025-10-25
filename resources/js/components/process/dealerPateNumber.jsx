@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function DealerPateNumber() {
     
     const url = window.location.origin;
+    const [loading, setLoading] = useState(false);
     const [stateId, setStateId] = useState('');
     const [stateList, setStateList] = useState([]);
     const [lengthYearsList, setLengthYearsList] = useState([]);
@@ -21,7 +22,7 @@ export default function DealerPateNumber() {
     const [pob, setPOB] = useState('');
     const [errors, setErrors] = useState({});
 
-    const [totalAmount, setTotalAmount] = useState(0); 
+    const [totalAmount, setTotalAmount] = useState(0.00); 
     
     const handleUserState= (e)=>{
         setHandleUserState(e.target.value);
@@ -73,7 +74,8 @@ export default function DealerPateNumber() {
                
             });
     }, [url]);
-useEffect(() => {
+    
+    useEffect(() => {
         // setStateList([]);
         axios
             .post(`${url}/home/get-dealer-platenumber-price`, {
@@ -81,7 +83,7 @@ useEffect(() => {
             })
             .then(response => {
                 console.log('Success Amount:', response.data);
-                setTotalAmount(response.data.amount  || []);
+                setTotalAmount(Number(response.data.amount  || 0));
             })
             .catch(error => {
                 console.error('Error sending :', error);
@@ -105,7 +107,7 @@ useEffect(() => {
 
    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const formData = new FormData();
         formData.append('userType', 'user');
         formData.append('stateId', stateId);
@@ -135,6 +137,7 @@ useEffect(() => {
             console.log('Upload successful', response.data);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setLoading(false);
             },1100)
             setErrors({});
         } catch (error) {
@@ -373,9 +376,11 @@ useEffect(() => {
                                                 </div>
                                                 <div className='row'>
                                                     <div className="col-md-1 mb-2"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
+                                                    <div className=" col-md-10 align-items-center text-center">
                                                         <div id="mainPrice" className="alert alert-info mt-3">
-                                                        Total Amount: ₦<span>{totalAmount.toLocaleString()}</span>
+                                                        Total Amount: 
+                                                        <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+                                                               
                                                         </div>
                                                     </div>
                                                     <div className="col-md-1 mb-2"></div>
@@ -383,9 +388,16 @@ useEffect(() => {
                                             </div>
 
 
-                                            <div className="  col-md-12 align-items-center text-center ">
-                                                <button type="submit" className="btn btn-primary">Process Payment</button>
+                                            <div className="col-md-12 align-items-center text-center">
+                                                <button
+                                                    type="submit"
+                                                    className="btn btn-primary"
+                                                    disabled={loading} // Disable button while loading
+                                                >
+                                                    {loading ? 'Processing...' : 'Process Payment'} {/* Change text while loading */}
+                                                </button>
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>

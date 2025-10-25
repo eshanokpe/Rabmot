@@ -33,7 +33,7 @@
         
 
 
-        <form action="{{route('admin.login')}}" method="POST" autocomplete="off" novalidate>
+        <form action="{{route('admin.loginSubmit')}}" method="POST" autocomplete="off" novalidate>
           @csrf
           <div class="mb-3">
               <label class="form-label">Email address</label>

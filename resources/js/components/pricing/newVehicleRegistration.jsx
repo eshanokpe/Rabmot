@@ -93,13 +93,13 @@ export default  function NewVehicleRegistration() {
     
           
           if(hackneyPermit){
-            hackneyPermitTotal = hackneyPermitCost; 
+            hackneyPermitTotal = Number(hackneyPermitCost); 
           }
           if(policeCMRIS){
-            policeCMRISTotal = policeCMRISCost;
+            policeCMRISTotal = Number(policeCMRISCost);
           }
           
-          totalAmount =  amount + hackneyPermitTotal + policeCMRISTotal;
+          totalAmount =  Number(amount) + Number(hackneyPermitTotal) + Number(policeCMRISTotal);
           setTotal(totalAmount);
         };
     

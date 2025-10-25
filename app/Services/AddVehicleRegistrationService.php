@@ -57,9 +57,9 @@ class AddVehicleRegistrationService
         if ($request->hasFile($fieldName)) {
             $file = $request->file($fieldName);
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('document/vehicleRegistration'), $filename);
+            $file->move(public_path('documents/vehicleRegistration'), $filename);
             return $filename;
-        }
+        } 
 
         return null;
     }

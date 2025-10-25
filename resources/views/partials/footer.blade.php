@@ -34,7 +34,8 @@
                 <h4>Company</h4>
                 <ul class="list-unstyled">
                     <li> <a href="{{ route('aboutus')}}">About Us</a></li>
-                    <li> <a href="{{ route('community')}}">FAQ</a></li>
+                    <li> <a href="{{ route('community')}}">Community</a></li>
+                    <li> <a href="{{ route('faq')}}">FAQ</a></li>
                     <li> <a href="{{ route('agent.login')}}">Agents Login</a></li>
                     <li> <a href="{{ route('policy')}}">Privacy Policy</a></li> 
 
@@ -43,8 +44,19 @@
             <div class="col-6  col-sm-6 col-md-2 p-2  footter">
                 <h4>Clients</h4>
                 <ul class="list-unstyled">
-                    <li> <a href="{{ route('processpapers')}}">Clients Login</a></li>
-                    <li> <a href="{{ route('signup')}}">Create Account</a></li>
+                    <li>  
+                        @if(auth()->check())
+                        @else
+                        <a href="{{ route('processpapers')}}">Clients Login</a>
+                        @endif
+                    </li>
+                    <li> 
+                        @if(auth()->check())
+                        @else
+                        <a href="{{ route('signup')}}">Create Account</a>
+                        @endif
+                    </li>
+
                     <li> <a href="{{ route('howitwork')}}">How it works</a></li>
                     <li> <a href="{{ route('terms')}}">Terms of Use</a></li> 
 

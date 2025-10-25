@@ -6,7 +6,7 @@ export default function OtherPermits() {
     const [otherPermits, setOtherPermits] = useState([]);
     const [selectedPermitId, setSelectedPermitId] = useState('');
     const [totalAmount, setTotalAmountOP] = useState('0.00');
-
+ 
     useEffect(() => { 
         const fetchStates = async () => {
             axios.get(`${url}/get-otherPermit`)
@@ -65,7 +65,7 @@ export default function OtherPermits() {
                                 </div>
                             </div>
                         </div>
-
+ 
                         <div className="col-sm-6 mb-3">
                             <div className="bg-white border1 shadow">
                                 <div className="note shadow-sm">

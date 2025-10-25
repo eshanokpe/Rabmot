@@ -2,8 +2,6 @@
 
 @section('content')
 
-    
-<body>
     <style>
         /* hide the arrows beside the input type number forms */
         input[type=number]::-webkit-inner-spin-button, 
@@ -11,7 +9,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            margin: 0; 
+            margin: 0;  
         }
         /* special handling for mozilla*/
         input[type=number] {

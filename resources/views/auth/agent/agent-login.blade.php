@@ -63,7 +63,7 @@
                   
 
       
-                  <form action="{{route('agent.login')}}" method="POST" autocomplete="off" novalidate>
+                  <form action="{{route('agent.loginSubmit')}}" method="POST" autocomplete="off" novalidate>
                     @csrf
                     <div class="mb-3">
                         <label class="form-label">Email address</label>

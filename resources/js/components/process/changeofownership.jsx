@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function ChangeofOwnership() {
     
     const url = window.location.origin;
+    const [buttonloading, setButonLoading] = useState(false);
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -25,6 +26,7 @@ export default function ChangeofOwnership() {
     const [vehicleLicenseCost, setVehicleLicenseCost] = useState(0);
 
     const [policeCmrisCost, setPoliceCmrisCost] = useState(0);
+    const [policeCMRISTotal, setPoliceCMRISTotal] = useState(0);
     const [isPoliceCmrisChecked, setIsPoliceCmrisChecked] = useState(false);
 
     useEffect(() => {
@@ -41,28 +43,28 @@ export default function ChangeofOwnership() {
     }, [url]);
 
     useEffect(() => {
-        // setVehicleList([]);
-        // setStateVehicleList([]);
-
-        axios.post(`${url}/home/vehicleOwnershipCost`, { 
-            stateId,
-            vehicleCategoryId,
-            addVehicleOwnership,
-            vLExpirydate,
-            hackneyPermit,
-            plateType
-         })
-            .then(response => {
-                console.log(` updated successfully`, response.data);
-                setVehicleCost(response.data.vehicleCost);
-                setHackneyPermitCost(response.data.hackneyPermitCost);
-                setVehicleLicenseCost(response.data.vehicleLicenseCost); 
-                setPoliceCmrisCost(response.data.policeCMRISCost); 
+        const calculateTotalAmount = () => {
+            axios.post(`${url}/home/vehicleOwnershipCost`, { 
+                stateId,
+                vehicleCategoryId,
+                addVehicleOwnership,
+                vLExpirydate,
+                hackneyPermit, 
+                plateType
             })
-            .catch(error => {
-                console.error(`Error updating ${option}:`, error);
-            });
-        
+                .then(response => {
+                    console.log(` updated successfully`, response.data);
+                    setVehicleCost(response.data.vehicleCost);
+                    setHackneyPermitCost(response.data.hackneyPermitCost);
+                    setVehicleLicenseCost(response.data.vehicleLicenseCost); 
+                    setPoliceCmrisCost(response.data.policeCMRISCost); 
+                })
+                .catch(error => {
+                    console.error(`Error updating ${option}:`, error);
+                });
+        };
+        calculateTotalAmount();
+
         axios.post(`${url}/home/changeofownership-state-selection`, { 
             stateId 
         }).then(response => {
@@ -70,7 +72,7 @@ export default function ChangeofOwnership() {
         }).catch(error => {
             console.error('Error sending stateId:', error);
         });
-        
+   
         axios.post(`${url}/home/vehicleOwnership-vehicleCategoryId-selection`, {
                 vehicleCategoryId,
                 stateId
@@ -87,15 +89,16 @@ export default function ChangeofOwnership() {
     useEffect(() => {
 
         const PoliceCmrisTotel = isPoliceCmrisChecked ? policeCmrisCost: 0;
-
+        setPoliceCMRISTotal(PoliceCmrisTotel);
         setTotalAmount(
             Number(vehicleCost) + Number(hackneyPermitCost) + Number(vehicleLicenseCost) + Number(PoliceCmrisTotel)
         );
+
     }, [vehicleCost, hackneyPermitCost, vehicleLicenseCost, isPoliceCmrisChecked, policeCmrisCost]);
 
 
     const handleVehicleOwnership = ()=>{
-        window.location.href = `${url}/home/changeofOwnership`;
+        window.location.href = `${url}/home/addvehicleownership`;
     }
 
     const sendUpdateToBackend = (option, value) => {
@@ -107,7 +110,7 @@ export default function ChangeofOwnership() {
         switch (name) {
             case "policeCMRIS":
                 setIsPoliceCmrisChecked(checked);
-                break;
+                break; 
             default:
                 break;
         }
@@ -145,6 +148,40 @@ export default function ChangeofOwnership() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButonLoading(true);
+        const formData = {
+            stateId,
+            vehicleCategoryId,
+            addVehicleOwnership,
+            vLExpirydate,
+            hackneyPermit,
+            plateType,
+            policeCMRISTotal,
+            totalAmount,
+        };
+        axios.post(`${url}/home/post-changeofownership`, {
+            stateId:stateId,
+            userType:'user',
+            vehicleCategoryId: vehicleCategoryId,
+            addVehicleOwnership:addVehicleOwnership,
+            vLExpirydate:vLExpirydate,
+            hackneyPermit:hackneyPermit,
+            plateType:plateType,
+            policeCMRISTotal:policeCMRISTotal,
+            totalAmount:totalAmount,
+        })
+        .then(response => {
+            console.log('Successfully sent vehicleCategoryId:', response.data);
+
+            setTimeout(()=>{
+                window.location.href = `${url}/home/cart`;
+                setButonLoading(false);
+            },1100)
+        })
+        .catch(error => {
+            console.error('Error sending vehicleCategoryId:', error);
+        });
+        console.log("Form data submitted: ", formData);
     }
 
     if (loading) {
@@ -184,7 +221,7 @@ export default function ChangeofOwnership() {
                                     <h5 className="mb-0 text-primary"> Change of Ownership</h5>
                                 </div>
                                 <hr />
-
+ 
                                 {vehicleCount < 1 ? (
                                     <>
                                         <div className="card border-top border-0 border-4 border-primary">
@@ -206,9 +243,9 @@ export default function ChangeofOwnership() {
                                                                 TIMELINE
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                72 Hours
+                                                                Processing and Delivery Time: 72 hours to 5 working days
                                                             </h6>
-                                                        </div>
+                                                        </div> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -228,12 +265,6 @@ export default function ChangeofOwnership() {
                                                 <div className="col-12 col-lg-12 col-xl-12">
                                                     <div className="radius-15">
                                                         <div className="card-body">
-                                                            <h6 className="text-justify text-primary card-title">
-                                                                ELIGIBILITY:
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Only a vehicle used and registered before in Nigeria by the former owner is eligible for a Change of Ownership.
-                                                            </h6>
                                                             <h6 className="text-justify text-success card-title">
                                                                 INSTRUCTION:
                                                             </h6>
@@ -291,7 +322,7 @@ export default function ChangeofOwnership() {
                                                                 <option disabled value="">-- Select Vehicle Type --</option>
                                                                 {stateVehicleList.map((vehicleType) => (
                                                                 <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                    {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                    {vehicleType.vehicle_type.name} 
                                                                 </option>
                                                                 ))}
                                                             </select>
@@ -312,7 +343,7 @@ export default function ChangeofOwnership() {
                                                                 <option value="add-vehicle-ownership">+ Add Vehicle Ownership</option>
                                                                 {vehicleList.map((vehicle) => (
                                                                 <option key={vehicle.id} value={vehicle.category}>
-                                                                    {vehicle.vehiclebrand} {vehicle.vehiclemodel} {vehicle.id}
+                                                                    {vehicle.vehiclemodel} -  {vehicle.platenumber} 
                                                                 </option>
                                                                 ))}
                                                             </select>
@@ -377,7 +408,7 @@ export default function ChangeofOwnership() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isPoliceCmrisChecked}
                                                                     onChange={(e) => handleCheckboxChange(e, 'policeCMRIS')}
@@ -394,18 +425,27 @@ export default function ChangeofOwnership() {
                                                            
                                                             </>
                                                         )}
-
-                                                        <div className="card-body col-md-12 align-items-center text-center">
-                                                            <div id="mainPrice" className="alert alert-info mt-3">
-                                                            Total Amount:
-                                                            <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+                                                        <div className="row mb-2 mt-2">
+                                                            <div className="col-md-1 mb-2"></div>
+                                                            <div className=" col-md-10 align-items-center text-center">
+                                                                <div id="mainPrice" className="alert alert-info mt-3">
+                                                                Total Amount:
+                                                                <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
+                                                                </div>
                                                             </div>
+                                                            <div className="col-md-1 mb-2"></div>
                                                         </div>
-                                                    </div>
+                                                    </div> 
 
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonloading} 
+                                                        >
+                                                            {buttonloading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

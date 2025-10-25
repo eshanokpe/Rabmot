@@ -13,16 +13,20 @@
 		<link rel="icon" href="{{ asset('/assets/img/fav.png')}}" type="image/png" />
 		<!-- Vector CSS -->
 		<link href="{{ asset('/assets/dashboard/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" rel="stylesheet" />
+		
 		<!--plugins-->
 		<link href="{{ asset('/assets/dashboard/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
 		<link href="{{ asset('/assets/dashboard/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
 		<link href="{{ asset('/assets/dashboard/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
+		
 		<!-- loader-->
 		<link href="{{ asset('/assets/dashboard/css/pace.min.css')}}" rel="stylesheet" />
 		<script src="{{ asset('/assets/dashboard/js/pace.min.js')}}"></script>
+		
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/bootstrap.min.css')}}" />
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&amp;family=Roboto&amp;display=swap" />
+		
 		<!-- Icons CSS -->
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/icons.css')}}" />
 		<!-- App CSS -->
@@ -31,7 +35,7 @@
 		<link rel="stylesheet" href="{{ asset('/assets/dashboard/css/dark-theme.css')}}" />
 		<!-- Toastr CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+ 
 		<!-- jQuery (necessary for Toastr) -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -41,23 +45,23 @@
 
 		@viteReactRefresh
         @vite('resources/js/app.jsx')
+<<<<<<< HEAD
+
+		
+
+=======
+>>>>>>> 0878ee32c3927d94116861ea07ce5cc16df3ed3e
 	</head>
 
 	<body>
 		<div class="wrapper">
-	
-		@include('user.partials.sidebar')
-		
-		@include('user.partials.topnav')
-		
-		<main class="py-4">
-
-			@yield('content')
-
-		</main>
-        @include('user.partials.footer')
+			@include('user.partials.sidebar')
+			@include('user.partials.topnav')
+			<main class="py-4">
+				@yield('content')
+			</main>
+			@include('user.partials.footer')
 		</div>
-	
 	</body>
 
 </html>

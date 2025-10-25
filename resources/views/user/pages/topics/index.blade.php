@@ -1,4 +1,4 @@
-@extends('user.layouts.dashboardheader') 
+@extends('user.layouts.app') 
 
 @section('content')
 <body>
@@ -43,20 +43,12 @@
 								<div class="col-sm-6">
 									<h5 class="mb-0 text-primary">Join Recent Disscussion</h5>
 								</div>
-                                
-                                
-								
-							 	
                             </div>
 							<hr>
 							<div class="card border-top border-0 border-4 border-primary">
 								<div class="card-body p-5">
 									
-									<!-- <ul>
-										@foreach ($topics as $topic)
-											<li><a href="{{ route('topics.show', $topic->id) }}">{{ $topic->title }}</a></li>
-										@endforeach
-									</ul> -->
+									
 									
 									@foreach ($topics as $topic)
 										<div class="accordion-item">
@@ -68,7 +60,7 @@
                                             </h2>
                                             <div id="flush-collapse{{ $topic->id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ $topic->id }}" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
-                                                   <a href="{{ route('topics.show', $topic->id) }}"> <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                   <a href="{{ route('topics.show', encrypt($topic->id) ) }}"> <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                                         <b>{{ $topic->content }}</b>
                                                     
 														<div class="text-end">
@@ -91,9 +83,7 @@
 
 			</div>
 		</div>
-			<!--footer-->
-		@include('user.layouts.dashboardfooter');
-		<!--end footer-->
+		
 	</div>
 
 

@@ -11,7 +11,7 @@
         </h1>
 
         <div class="collapse navbar-collapse" id="sidebar-menu">
-            <ul class="navbar-nav pt-lg-3">
+            <ul class="navbar-nav pt-lg-3"> 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.dashboard')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -63,28 +63,28 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.processvechiclePaperRenewal') }}">
+                        <a class="dropdown-item" href="{{ route('admin.processVehiclePaperRenewal') }}">
                             Vechicle Paper Renewal
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewvehicleRegistration')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewVehicleRegistration')}}">
                            New vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processchangeofownership')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processChangeOfOwnership')}}">
                            Change of Ownership
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewDriverlicense')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverlicense')}}">
                             New Driver License
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processnewDriverlicenseRenewal')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverLicenseRenewal')}}">
                             Driver License Renewal
                         </a>
-                        <a class="dropdown-item"href="{{ route('admin.processinternationalDriverlicense')}}"> 
+                        <a class="dropdown-item"href="{{ route('admin.processInternationalDriverLicense')}}"> 
                             International Driver License 
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.processdealerplateNumber')}}">
+                        <a class="dropdown-item" href="{{ route('admin.processDealerPlateNumber')}}">
                             Dealer's Plate Number
                          </a>
-                          <a class="dropdown-item" href="{{ route('admin.processotherPermit')}}">
+                          <a class="dropdown-item" href="{{ route('admin.processOtherPermit')}}">
                             Other Permit
                          </a>
                     </div>
@@ -101,13 +101,13 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{route('admin.getaddvehiclerenewal')}}"  rel="noopener">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewals')}}"  rel="noopener">
                             Vehicle Renewal
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.getaddnewvehicleregistration')}}">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registrations.new')}}">
                             New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.getaddchangeOfownership')}}" 
+                        <a class="dropdown-item" href="{{route('admin.changeOfOwnership')}}" 
                             rel="noopener">
                             Change Of Ownership
                         </a>
@@ -125,13 +125,13 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{route('admin.addvehiclerenewal')}}"  rel="noopener">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewal.add')}}" >
                            Vehicle Renewal
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.addnewvehicleregistration')}}">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registration.new')}}">
                             New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{route('admin.addchangeOfownership')}}" 
+                        <a class="dropdown-item" href="{{route('admin.vehicle.changeOfOwnership.add')}}" 
                             rel="noopener">
                             Change Of Ownership
                         </a>
@@ -145,43 +145,42 @@
                         <i class="fa fa-money-bill"></i>
                         </span>
                         <span class="nav-link-title">
-                            Price
+                            Price 
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.vehicleType') }}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicle.types') }}">
                             Vehicle Type
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.state') }}"> 
+                        <a class="dropdown-item" href="{{ route('admin.states') }}"> 
                             State
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice') }}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice.index') }}">
                             Vechicle Renewal Price
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice')}}">
-                           New vehicle Registration
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice.index')}}">
+                           New Vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice')}}">
+                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice.index')}}">
                            Change of Ownership
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense')}}">
+                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense.index')}}">
                             New Driver License
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal')}}">
+                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal.index')}}">
                             Driver License Renewal
                         </a>
-                        <a class="dropdown-item"href="{{ route('admin.intDriverlicense')}}"> 
+                        <a class="dropdown-item"href="{{ route('admin.intDriverLicense.index')}}"> 
                             International Driver License 
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.dealersPlatenumber')}}">
+                        <a class="dropdown-item" href="{{ route('admin.dealersPlateNumber.index')}}">
                             Dealer's Plate Number
                          </a>
-                          <a class="dropdown-item" href="{{ route('admin.otherPermit')}}">
+                          <a class="dropdown-item" href="{{ route('admin.otherPermit.index')}}">
                             Other Permit
                          </a>
                     </div>
                 </li>
-                
                 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
@@ -195,7 +194,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('admin.getAgent')}}">
+                    <a class="nav-link" href="{{route('admin.agents')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                         <i class="fa fa-users"></i>
                         </span>
@@ -204,9 +203,6 @@
                         </span>
                     </a>
                 </li>
-              
-                
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -218,41 +214,52 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.transaction') }}">
+                        <a class="dropdown-item" href="{{ route('admin.transactions') }}">
                             All Transaction
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.withdraw') }}">
+                        <a class="dropdown-item" href="{{ route('admin.transactions.agent') }}">
                             Agent Withdraw
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionPaperRenewal') }}">
+                        <a class="dropdown-item" href="{{ route('admin.transaction.paperRenewal') }}">
                             Vechicle Paper Renewal
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionVehicleRegistration')}}">
+                        <a class="dropdown-item" href="{{ route('admin.transaction.vehicleRegistration')}}">
                            New vehicle Registration
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionChangeofownership')}}">
+                        <a class="dropdown-item" href="{{ route('admin.transaction.changeOfOwnership')}}">
                            Change of Ownership
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionNewDriverlicense')}}">
+                        <a class="dropdown-item" href="{{ route('admin.transactions.newDriverLicense')}}">
                             New Driver License
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionDriverlicenseRenewal')}}">
+                        <a class="dropdown-item" href="{{ route('admin.transactions.driverLicenseRenewal')}}">
                             Driver License Renewal
                         </a>
-                        <a class="dropdown-item"href="{{ route('admin.transactionInternationalDriverlicense')}}"> 
+                        <a class="dropdown-item"href="{{ route('admin.transactions.internationalDriverLicense')}}"> 
                             International Driver License 
                         </a>
-                        <a class="dropdown-item" href="{{ route('admin.transactionDealerplateNumber')}}">
+                        <a class="dropdown-item" href="{{ route('admin.transactions.dealerPlateNumber')}}">
                             Dealer's Plate Number
                          </a>
-                          <a class="dropdown-item" href="{{ route('admin.transactionOtherPermit')}}">
+                          <a class="dropdown-item" href="{{ route('admin.transactions.otherPermit')}}">
                             Other Permit
                          </a>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.contactMessage') }}">
+                    <a class="nav-link" href="{{route('admin.promocode.index')}}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-users"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Promo Code
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.contactMessages.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-envelope"></i>
                         </span>
@@ -273,17 +280,14 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.question') }}">
-                            Question
-                        </a>
-                        <a class="dropdown-item" href=""> 
-                            Response
+                        <a class="dropdown-item" href="{{ route('admin.faq.index') }}">
+                            View FAQ
                         </a>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.settings') }}">
+                    <a class="nav-link" href="{{ route('admin.settings.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-gears"></i>
                         </span>
@@ -293,32 +297,18 @@
                     </a>
                 </li>
 
-
-
                 <li class="nav-item">
-
                     <a class="nav-link" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa-solid fa-right-from-bracket"></i>
-
                         </span>
-
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-
                             @csrf
-
                         </form>
-
                         <span class="nav-link-title">
-
                             Logout
-
                         </span>
-
                     </a>
-
                 </li>
 
             </ul>

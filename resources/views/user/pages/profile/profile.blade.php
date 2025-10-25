@@ -3,40 +3,22 @@
 @section('content')
 
 	<!-- wrapper -->
-
 	<div class="wrapper">
-
-		
 		<!--page-wrapper-->
-
 		<div class="page-wrapper">
-
 			<div class="page-content-wrapper">
-
 				<div class="page-content">
-
 					<!--breadcrumb-->
-
 					<div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
-
 						<div class="breadcrumb-title pe-3"> Profile</div>
-
 						<div class="ps-3">
-
 							<nav aria-label="breadcrumb">
-
 								<ol class="breadcrumb mb-0 p-0">
-
 									<li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
-
 									</li>
-
 									<li class="breadcrumb-item active" aria-current="page">User Profile</li>
-
 								</ol>
-
 							</nav>
-
 						</div>
 					</div>
 					<!--end breadcrumb-->
@@ -45,15 +27,15 @@
                     <div class="col-xl-12 mx-auto">
 						<div class="card radius-15">
 							<div class="card-body">
-                                 <div class="row">
+                                 <div class="row"> 
                                         <div class="col-md-4 border-right ">
                                             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                                                 @if($userdetails->profile_image)
-                                                    <img src="{{ asset('public/assets/profileimages/'.$userdetails->profile_image) }}" id="image_preview_container" class="rounded-circle shadow " width="250" height="250" alt="" />
+                                                    <img src="{{ asset('/assets/profileimages/'.$userdetails->profile_image) }}" id="image_preview_container" class="rounded-circle shadow " width="250" height="250" alt="" />
                                                 @else
-                                                    <img src="{{ asset('public/assets/img/avatar.png')}}" id="image_preview_container" class="rounded-circle shadow " width="250" height="250" alt="" />
+                                                    <img src="{{ asset('/assets/img/avatar.png')}}" id="image_preview_container" class="rounded-circle shadow " width="250" height="250" alt="" />
                                                 @endif
-                                                {{-- <img src="{{ asset('public/assets/img/avatar.png')}}" id="image_preview_container" class="rounded-circle shadow " width="200" height="200" alt="" />--}}
+                                                {{-- <img src="{{ asset('/assets/img/avatar.png')}}" id="image_preview_container" class="rounded-circle shadow " width="200" height="200" alt="" />--}}
                                                 <span class="font-weight-bold pt-3">
                                                     {{-- <input class="form-control" id="profile_image" type="file" name="profile_image" > --}}
                                                 </span>
@@ -132,9 +114,6 @@
 			
 
 		</div>
-
 		<!--end page-wrapper-->
-
-		
     </div>
 	@endsection

@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 
 export default function VehicleRegistration() {
-    
-    const url = window.location.origin;
+     
+    const url = window.location.origin; 
+    const [buttonLoading, setButtonLoading] = useState(false);
+
     const [vehicleCount, setVehicleCount] = useState(0);
     const [vehicleList, setVehicleList] = useState([]);
     const [stateList, setStateList] = useState([]);
@@ -13,12 +15,11 @@ export default function VehicleRegistration() {
     const [stateId, setStateId] = useState('');
     const [vehicleCategoryId, setVehicleCategoryId] = useState('');
     const [vehicleResType, setVehicleResType] = useState(null);
-
     const [loading, setLoading] = useState(true);
     const [addVehicleReg, setAddVehicleReg] = useState(null);
     const [plateType, setPlateType] = useState('RPN');
-
     const [totalAmount, setTotalAmount] = useState(0);
+    const [amount, setAmount] = useState(0);
     const [hackneyPermitCost, setHackneyPermitCost] = useState(0);
     const [policeCmrisCost, setPoliceCmrisCost] = useState(0);
     // State to track checkbox selections
@@ -30,8 +31,6 @@ export default function VehicleRegistration() {
 
     const [preferredNumber, setPreferredNumber] = useState('');
 
-
-    // Handle state change
     const handleStateChange = (event) => {
         const selectedStateId = event.target.value;
         setStateId(selectedStateId);
@@ -40,6 +39,7 @@ export default function VehicleRegistration() {
             axios.post(`${url}/home/vehicleRegistration-state-selection`, { 
                 stateId: selectedStateId 
             }).then(response => {
+                console.log('Success stateVehicleList:', response.data);
                 setStateVehicleList(response.data.stateVehicleList);
             }).catch(error => {
                 console.error('Error sending stateId:', error);
@@ -47,31 +47,27 @@ export default function VehicleRegistration() {
         }
     };
 
-    // Handle vehicle category change
     const handleVehicleCategoryId = (event) => {
         const vehicleCategoryId = event.target.value;
         setVehicleCategoryId(vehicleCategoryId);
     };
 
-
     useEffect(() => {
         setVehicleList([]);
         axios
-            .post(`${url}/home/vehicleRegistration-vehicleCategoryId-selection`, {
-                vehicleCategoryId,
-                stateId
-            })
-            .then(response => {
-                console.log('Success vehicleCategoryId:', response.data);
-                setVehicleList(response.data.vehicleList  || []);
-            })
-            .catch(error => {
-                console.error('Error sending vehicleCategoryId:', error);
-            });
-        
+        .post(`${url}/home/vehicleRegistration-vehicleCategoryId-selection`, {
+            vehicleCategoryId,
+            stateId
+        })
+        .then(response => {
+            console.log('Success vehicleCategoryId:', response.data.vehicleList);
+            setVehicleList(response.data.vehicleList);
+        })
+        .catch(error => {
+            console.error('Error sending vehicleCategoryId:', error);
+        });
     }, [vehicleCategoryId, stateId]);
 
-    // Handle add vehicle registration change
     const handleAddVehicleChange = (event) => {
         const addVehicleValue = event.target.value;
         setAddVehicleReg(addVehicleValue);
@@ -80,25 +76,17 @@ export default function VehicleRegistration() {
         } 
     };
 
-    // Handle vehicle resource type change
     const handleVehicleResType = (event) => {
         const selectedVehicleResType = event.target.value;
         setVehicleResType(selectedVehicleResType);
-       
-        sendVehicleRegCost(selectedVehicleResType);
     };
 
-    // Handle plate type change
     const handlePlateTypeChange = (event) => {
         const selectedValue = event.target.value;
         setPlateType(selectedValue);
-
-        sendVehicleRegCost(vehicleResType);
     };
 
-    // Fetch initial data on component mount
     useEffect(() => {
-        calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
         axios.get(`${url}/home/get-user-add-vehicles-registration`)
             .then(response => {
                 setVehicleCount(response.data.vehicleCount);
@@ -110,53 +98,58 @@ export default function VehicleRegistration() {
                 console.error('Error fetching vehicle data:', error);
                 setLoading(false);
             });
-    }, [url, isHackneyPermitChecked, hackneyPermitCost, isPoliceCmrisChecked, policeCmrisCost]);
-
+    }, [url]);
+ 
     // Send vehicle registration cost and update state
-    const sendVehicleRegCost = (vehicleResType) => {
-        console.log('Successfully sent VehicleResType:', vehicleResType);
-        console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
-        console.log('Successfully sent plateType:', plateType);
+    useEffect(() => {
+        const sendVehicleRegCost = () => {
+            console.log('Successfully sent stateId:', stateId);
+            console.log('Successfully sent VehicleResType:', vehicleResType);
+            console.log('Successfully sent vehicleCategoryId:', vehicleCategoryId);
+            console.log('Successfully sent plateType:', plateType);
 
-        axios.post(`${url}/home/vehicleRegistration-addVehicleRegCost`, {
-            stateId,
-            vehicleCategoryId,
-            addVehicleReg,
-            vehicleResType,
-            plateType
-        })
-        .then(response => {
-            console.log('Successfully sent vehicle registration cost:', response.data);
-            const { totalAmount, hackneyPermitCost, policeCmrisCost } = response.data;
-            setTotalAmount(totalAmount);
-            setHackneyPermitCost(hackneyPermitCost);
-            setPoliceCmrisCost(policeCmrisCost);
-            calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
-        })
-        .catch(error => {
-            console.error('Error sending vehicle registration cost:', error);
-        });
-    };
+            axios.post(`${url}/home/vehicleRegistrationAddVehicleRegCost`, {
+                stateId,
+                vehicleCategoryId,
+                addVehicleReg,
+                vehicleResType,
+                plateType
+            })
+            .then(response => {
+                console.log('Successfully sent vehicle registration cost:', response.data);
+                setAmount(response.data.amount);
+                setHackneyPermitCost(response.data.hackneyPermitCost);
+                setPoliceCmrisCost(response.data.policeCmrisCost);
+            })
+            .catch(error => {
+                console.error('Error sending vehicle registration cost:', error);
+            });
+        };
+        sendVehicleRegCost();
+    },[
+        stateId, vehicleCategoryId, addVehicleReg, 
+        vehicleResType, plateType
+    ]);
 
     // Calculate total amount
-    const calculateTotalAmount = (amount, hackneyPermitCost, policeCmrisCost) => {
-        let hackneyPermitTotal = 0;
-        let policeCMRISTotal = 0;
-
-        if (isHackneyPermitChecked) {
-            hackneyPermitTotal = hackneyPermitCost; 
-        }
-
-        if (isPoliceCmrisChecked) {
-            policeCMRISTotal = policeCmrisCost; 
-        }
-
-        setHackneyPermitTotal(hackneyPermitTotal);
-        setPoliceCMRISTotal(policeCMRISTotal);
-
-        const total = amount + hackneyPermitTotal + policeCMRISTotal;
-        setTotalAmount(total);  
-    };
+    useEffect(() => {
+        const calculateTotalAmount = () => {
+            const hackneyPermitTotal = isHackneyPermitChecked ? Number(hackneyPermitCost) : 0;
+            const policeCMRISTotal = isPoliceCmrisChecked ? Number(policeCmrisCost) : 0;
+            setHackneyPermitTotal(hackneyPermitTotal);
+            setPoliceCMRISTotal(policeCMRISTotal);
+            setTotalAmount(
+                Number(amount) + hackneyPermitTotal + policeCMRISTotal 
+            ); 
+            // Set the individual totals in state
+            
+        };
+        calculateTotalAmount();
+        },[
+            amount, isHackneyPermitChecked, hackneyPermitCost, 
+            isPoliceCmrisChecked, policeCmrisCost
+    ]);
+ 
 
     // Handle checkbox change
     const handleCheckboxChange = (event) => {
@@ -172,13 +165,13 @@ export default function VehicleRegistration() {
             default:
                 break;
         }
-        // Update total amount based on the current state of checkboxes and costs
-        calculateTotalAmount(totalAmount, hackneyPermitCost, policeCmrisCost);
     };
 
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
+        setButtonLoading(true);
+        
         const formData = {
             stateId,
             vehicleCategoryId,
@@ -203,9 +196,10 @@ export default function VehicleRegistration() {
         })
         .then(response => {
             console.log('Successfully sent vehicleCategoryId:', response.data);
-            // setVehicleList(response.data.vehicleList);
+            setVehicleList(response.data.vehicleList);
             setTimeout(()=>{
                 window.location.href = `${url}/home/cart`;
+                setButtonLoading(false);
             },1100)
         })
         .catch(error => {
@@ -277,7 +271,7 @@ export default function VehicleRegistration() {
                                                                 TIMELINE
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                72 Hours
+                                                                <b>Processing and Delivery Time:</b> 72 hours
                                                             </h6>
                                                         </div>
                                                     </div>
@@ -299,12 +293,6 @@ export default function VehicleRegistration() {
                                                 <div className="col-12 col-lg-12 col-xl-12">
                                                     <div className="radius-15">
                                                         <div className="card-body">
-                                                            <h6 className="text-justify text-primary card-title">
-                                                                ELIGIBILITY:
-                                                            </h6>
-                                                            <h6 className="card-subtitle mb-2">
-                                                                Only a vehicle used and registered before in Nigeria by the former owner is eligible for a Change of Ownership.
-                                                            </h6>
                                                             <h6 className="text-justify text-success card-title">
                                                                 INSTRUCTION:
                                                             </h6>
@@ -318,7 +306,7 @@ export default function VehicleRegistration() {
                                                                 TIMELINE:
                                                             </h6>
                                                             <h6 className="card-subtitle mb-2">
-                                                                <b>Processing and Delivery Time:</b> 72 hours
+                                                                <b>Processing and Delivery Time:</b> 72 hours to 5 working days
                                                             </h6>
                                                         </div>
                                                     </div>
@@ -373,7 +361,7 @@ export default function VehicleRegistration() {
                                                                 <option disabled value="">-- Select Vehicle Type --</option>
                                                                 {stateVehicleList.map((vehicleType) => (
                                                                 <option key={vehicleType.vehicle_type.id} value={vehicleType.vehicle_type.id}>
-                                                                    {vehicleType.vehicle_type.name} {vehicleType.vehicle_type.id}
+                                                                    {vehicleType.vehicle_type.name} 
                                                                 </option>
                                                                 ))}
                                                             </select>
@@ -387,18 +375,15 @@ export default function VehicleRegistration() {
                                                             <label htmlFor="vehicleForm" className="form-label">Select the Option of your choice</label>
                                                             <select
                                                                 required
-                                                                value={addVehicleReg || ''}
-                                                                name="vehicleType"
-                                                                id="vehicleForm"
-                                                                className="form-select"
-                                                                onChange={handleAddVehicleChange}
+                                                                value={addVehicleReg || ''} name="vehicleType"
+                                                                id="vehicleForm" className="form-select" onChange={handleAddVehicleChange}
                                                             >
                                                                 <option disabled value="">-- Select Vehicle --</option>
                                                                 <option value="add-registration">+ Add Vehicle Registration</option>
                                                                 {vehicleList.map((vehicle) => (
-                                                                <option key={vehicle.category} value={vehicle.category}>
-                                                                    {vehicle.vehiclebrand} {vehicle.vehiclemodel}
-                                                                </option>
+                                                                    <option key={vehicle.category} value={vehicle.category}>
+                                                                        {vehicle.vehiclebrand} {vehicle.vehiclemodel}
+                                                                    </option>
                                                                 ))}
                                                             </select>
                                                             </div>
@@ -432,7 +417,7 @@ export default function VehicleRegistration() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isHackneyPermitChecked}
                                                                     onChange={handleCheckboxChange}
@@ -448,7 +433,7 @@ export default function VehicleRegistration() {
 
                                                             <div className="row mb-0 card-body">
                                                                 <div className="col-1"></div>
-                                                                <div className="col-6">
+                                                                <div className="col-10">
                                                                 <input
                                                                     checked={isPoliceCmrisChecked}
                                                                     onChange={handleCheckboxChange}
@@ -462,9 +447,9 @@ export default function VehicleRegistration() {
                                                                 <div className="col-1"></div>
                                                             </div>
 
-                                                            <div className="row mb-2 mt-2">
+                                                            <div className="row ">
                                                                 <div className="col-md-1"></div>
-                                                                <div className="col-md-10">
+                                                                <div className="col-md-10 mb-2">
                                                                 <label htmlFor="plateType" className="form-label">Type of Plate Number</label>
                                                                 <select
                                                                     required
@@ -483,40 +468,49 @@ export default function VehicleRegistration() {
                                                             </div>
 
                                                             {plateType === 'PCN' && (
-                                                                <div className="row mb-2 mt-2">
-                                                                <div className="col-md-1 mb-2"></div>
-                                                                <div className="col-md-10 mb-2">
-                                                                    <div id="elementHide" className="col-sm-12 mb-3">
-                                                                    <label htmlFor="preferredNumber" className="mb-1">Enter Preferred Number</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        value={preferredNumber}
-                                                                        name="preferredNumber"
-                                                                        className="form-control mb-1"
-                                                                        placeholder="Preferred Number"
-                                                                        onChange={(e) => setPreferredNumber(e.target.value)}
-                                                                    />
-                                                                    <span style={{ color: 'red' }}>Must not be more than 8 characters</span>
+                                                                <div className="row">
+                                                                    <div className="col-md-1 "></div>
+                                                                    <div className="col-md-10 mb-2">
+                                                                        <div id="elementHide" className="col-sm-12 mb-3">
+                                                                        <label htmlFor="preferredNumber" className="mb-1">Enter Preferred Number</label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={preferredNumber}
+                                                                            name="preferredNumber"
+                                                                            className="form-control mb-1"
+                                                                            placeholder="Preferred Number"
+                                                                            onChange={(e) => setPreferredNumber(e.target.value)}
+                                                                        />
+                                                                        <span style={{ color: 'red' }}>Must not be more than 8 characters</span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div className="col-md-1 mb-2"></div>
+                                                                    <div className="col-md-1"></div>
                                                                 </div>
                                                             )}
                                                             </>
                                                         )}
+                                                        <div className="row ">
+                                                            <div className="col-md-1 "></div>
+                                                            <div className=" col-md-10 align-items-center text-center">
+                                                                <div id="mainPrice" className="alert alert-info mt-3">
+                                                                Total Amount: 
+                                                                <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
 
-                                                        <div className="card-body col-md-12 align-items-center text-center">
-                                                            <div id="mainPrice" className="alert alert-info mt-3">
-                                                            Total Amount: 
-                                                            <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
-
+                                                                </div>
                                                             </div>
+                                                            <div className="col-md-1 "></div>
                                                         </div>
                                                     </div>
 
 
-                                                    <div className="card-body  col-md-12 align-items-center text-center ">
-                                                        <button type="submit" className="btn btn-primary">Process Payment</button>
+                                                    <div className="col-md-12 align-items-center text-center">
+                                                        <button
+                                                            type="submit"
+                                                            className="btn btn-primary"
+                                                            disabled={buttonLoading} 
+                                                        >
+                                                            {buttonLoading ? 'Processing...' : 'Process Payment'} 
+                                                        </button>
                                                     </div>
                                                 </form>
                                             </div>

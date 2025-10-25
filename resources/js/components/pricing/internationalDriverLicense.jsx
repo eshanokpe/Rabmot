@@ -8,7 +8,7 @@ export default function InternationalDriverLicense() {
     const [lengthOfYearsIDL, setLengthOfYearsIDL] = useState([]);
     const [selectedLength, setSelectedLength] = useState('');
     const [totalAmount, setTotalAmountIDL] = useState('0.00');
-
+ 
     useEffect(() => { 
         const fetchStates = async () => {
             axios.get(`${url}/get-state/pricing`)
