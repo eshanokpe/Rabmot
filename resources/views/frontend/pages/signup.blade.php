@@ -47,15 +47,11 @@
     }
     
     .sign-register-area-inner {
-        position: relative;
-        z-index: 2;
+        
     }
     
     .sign-register-area-inner .title {
-        color: white !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        font-size: 24px;
-        margin-bottom: 15px;
+       
     }
 </style>
   
