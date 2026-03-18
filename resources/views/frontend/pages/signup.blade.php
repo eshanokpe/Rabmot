@@ -1,11 +1,63 @@
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
- <style> 
-     .toast-error {
-         background-color: red !important;
-     }
- </style>
+<style> 
+    .toast-error {
+        background-color: red !important;
+    }
+    
+    /* Enhanced Sign In Button Styles */
+    .sign-register-area-inner .main-btn.white.uppercase {
+        background-color: #ff4444 !important;
+        color: white !important;
+        border: 2px solid white !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        padding: 15px 40px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        display: inline-block !important;
+        text-decoration: none !important;
+        border-radius: 5px !important;
+    }
+    
+    .sign-register-area-inner .main-btn.white.uppercase:hover {
+        background-color: #ff6666 !important;
+        transform: scale(1.05) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    /* Optional: Make the entire left panel more prominent */
+    .sign-register-area {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .sign-register-area::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1;
+    }
+    
+    .sign-register-area-inner {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .sign-register-area-inner .title {
+        color: white !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+</style>
   
 @extends('layouts.app')
 
@@ -18,7 +70,7 @@
                     <div class="sign-register-area" style="background-image: url('{{ asset('assets/img/Car_11.png')}}')">
                         <div class="sign-register-area-inner">
                             <h4 class="title">Existing User</h4>
-                            <p style="color:white;">Already Have an Account? Sign In.</p>
+                            <p style="color:white; font-size: 16px; margin-bottom: 20px;">Already Have an Account? Sign In.</p>
                             <div class="main-btn-wrap text-center">
                                 <a href="{{ url('processpapers') }}" class="main-btn white uppercase">SIGN IN</a>
                             </div>
