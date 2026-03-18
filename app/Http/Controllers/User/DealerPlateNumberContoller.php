@@ -50,6 +50,7 @@ class DealerPlateNumberContoller extends Controller
                 'caccertificate' => 'required|mimes:jpeg,jpg,png,docx,doc|max:9048',
                 'passport' => 'required|mimes:jpeg,jpg,png|max:9048',
                 'companyletterhead' => 'required|mimes:jpeg,jpg,png|max:9048',
+                'dob' => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
             ]);
             $userType = $request->input('userType');
             $stateId = $request->input('stateId');
