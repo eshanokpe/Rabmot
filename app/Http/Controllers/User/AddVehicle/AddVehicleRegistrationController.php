@@ -57,7 +57,7 @@ class AddVehicleRegistrationController extends Controller
             'phonenumber' => 'required',
             'emailaddress' => 'required',
             'gender' => 'required',
-            'dateofbirth' => 'required',
+            'dateofbirth' => 'required|date|before:' . now()->subYears(18)->format('Y-m-d'),
             'custompapers' => 'required',
             'custompapers.*' => 'required|mimes:jpeg,docx,doc,pdf,xls,xlsx,jpg,jpeg,png|max:5024',
             'meansofid' => 'required|mimes:jpeg,docx,doc,pdf,jpg,png|max:5024',
