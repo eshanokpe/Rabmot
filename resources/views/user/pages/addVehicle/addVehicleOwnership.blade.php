@@ -234,6 +234,23 @@
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
 									</div>
+									<script>
+										function isNumberKey(evt) {
+											var charCode = (evt.which) ? evt.which : evt.keyCode;
+											// Allow only numbers (0-9)
+											if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+												return false;
+											}
+											return true;
+										}
+										// Optional: Clean pasted content to only numbers
+										document.getElementById('ownersNIN').addEventListener('paste', function(e) {
+											e.preventDefault();
+											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
+											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
+											this.value = numbersOnly;
+										});
+									</script>
 
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Address <span style="color:red;">*</span>  </label>
@@ -271,21 +288,7 @@
 											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
 											this.value = numbersOnly;
 										});
-										function isNumberKey(evt) {
-											var charCode = (evt.which) ? evt.which : evt.keyCode;
-											// Allow only numbers (0-9)
-											if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-												return false;
-											}
-											return true;
-										}
-										// Optional: Clean pasted content to only numbers
-										document.getElementById('ownersNIN').addEventListener('paste', function(e) {
-											e.preventDefault();
-											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
-											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
-											this.value = numbersOnly;
-										});
+										
 
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Email Address <span style="color:red;">*</span></label>
