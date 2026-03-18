@@ -276,86 +276,33 @@
 										@enderror
 									</div>
 									<div class="col-md-6">
-    <label for="dateofbirth" class="form-label"> Date of birth <span style="color:red;">*</span> </label>
-    <input required 
-           type="date" 
-           name="dateofbirth" 
-           class="form-control @error('dateofbirth') is-invalid @enderror" 
-           id="dateofbirth" 
-           max="{{ date('Y-m-d') }}"
-           min="{{ date('Y-m-d', strtotime('-100 years')) }}">
-    @error('dateofbirth')
-        <span class="text-danger">{{ $message }}</span>
-    @enderror
-    <small class="form-text text-muted" id="ageDisplay"></small>
-</div>
+										<label for="dateofbirth" class="form-label"> Date of birth <span style="color:red;">*</span> </label>
+										<input required type="date" name="dateofbirth" class="form-control @error('dateofbirth') is-invalid @enderror" id="dateofbirth" max="{{ date('Y-m-d') }}">
+										@error('dateofbirth')
+											<span class="text-danger">{{ $message }}</span>
+										@enderror
+									</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const dobInput = document.getElementById('dateofbirth');
-        
-        dobInput.addEventListener('change', function() {
-            validateDateOfBirth(this);
-        });
-        
-        dobInput.addEventListener('blur', function() {
-            validateDateOfBirth(this);
-        });
-    });
-
-    function validateDateOfBirth(input) {
-        const selectedDate = new Date(input.value);
-        const today = new Date();
-        const errorSpan = document.querySelector('.text-danger[for="dateofbirth"]');
-        const ageDisplay = document.getElementById('ageDisplay');
-        
-        // Reset custom validity
-        input.setCustomValidity('');
-        
-        // Check if date is valid
-        if (isNaN(selectedDate.getTime())) {
-            input.setCustomValidity('Please enter a valid date');
-            if (ageDisplay) ageDisplay.textContent = '';
-            return;
-        }
-        
-        // Check if date is in the future
-        if (selectedDate > today) {
-            input.setCustomValidity('Date of birth cannot be in the future');
-            if (ageDisplay) ageDisplay.textContent = '';
-            return;
-        }
-        
-        // Calculate age
-        const age = calculateAge(selectedDate);
-        
-        // Display age
-        if (ageDisplay) {
-            ageDisplay.textContent = `Age: ${age} years`;
-        }
-        
-        // Age validation examples (adjust as needed)
-        if (age < 18) {
-            input.setCustomValidity('You must be at least 18 years old');
-        } else if (age > 100) {
-            input.setCustomValidity('Please verify your date of birth');
-        } else {
-            input.setCustomValidity('');
-        }
-    }
-    
-    function calculateAge(birthDate) {
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        
-        return age;
-    }
-</script>
+									<script>
+										// Optional: Add client-side validation for age restriction
+										document.getElementById('dateofbirth').addEventListener('change', function() {
+											var selectedDate = new Date(this.value);
+											var today = new Date();
+											var age = today.getFullYear() - selectedDate.getFullYear();
+											var monthDiff = today.getMonth() - selectedDate.getMonth();
+											
+											if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
+												age--;
+											}
+											
+											// Example: Check if user is at least 18 years old
+											if (age < 18) {
+												this.setCustomValidity('You must be at least 18 years old');
+											} else {
+												this.setCustomValidity('');
+											}
+										});
+									</script>
 
 									<div class="col-md-6">
 										<label for="inputLastName" class="form-label"> Marital status  </label>
