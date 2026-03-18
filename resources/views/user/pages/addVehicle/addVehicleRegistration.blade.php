@@ -197,6 +197,26 @@
 										@enderror
 									</div>
 
+									
+									
+									<div class="col-md-6">
+										<label for="inputAddress2" class="form-label"> Residential Address </label>
+										<input  type="text" class="form-control" name="residentialaddress" id="residentialaddress" placeholder="Residential Address">
+										@error('phonenumber')
+											<span class="text-danger">{{ $message }}</span>
+										@enderror
+									</div>
+
+									<div class="col-md-6">
+										<label for="inputAddress2" class="form-label">  Phone Number <span style="color:red;">*</span></label>
+										<input required type="text" class="form-control" name="phonenumber" id="phonenumber"
+											onkeypress="return isNumberKey(event)" 
+											onpaste="return false"
+										 placeholder="Phone Number">
+										@error('phonenumber')
+											<span class="text-danger">{{ $message }}</span>
+										@enderror
+									</div>
 									<script>
 										function isNumberKey(evt) {
 											var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -214,23 +234,16 @@
 											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
 											this.value = numbersOnly;
 										});
+										function isNumberKey(evt) {
+											var charCode = (evt.which) ? evt.which : evt.keyCode;
+											// Allow only numbers (0-9)
+											if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+												return false;
+											}
+											return true;
+										}
+										
 									</script>
-									
-									<div class="col-md-6">
-										<label for="inputAddress2" class="form-label"> Residential Address </label>
-										<input  type="text" class="form-control" name="residentialaddress" id="residentialaddress" placeholder="Residential Address">
-										@error('phonenumber')
-											<span class="text-danger">{{ $message }}</span>
-										@enderror
-									</div>
-
-									<div class="col-md-6">
-										<label for="inputAddress2" class="form-label">  Phone Number <span style="color:red;">*</span></label>
-										<input required type="text" class="form-control" name="phonenumber" id="phonenumber" placeholder="Phone Number">
-										@error('phonenumber')
-											<span class="text-danger">{{ $message }}</span>
-										@enderror
-									</div>
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label">  Email Address <span style="color:red;">*</span></label>
 										<input required type="text" class="form-control" name="emailaddress" id="emailaddress" placeholder="Email Address">
