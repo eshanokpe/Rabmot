@@ -188,7 +188,7 @@
 									</div>
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label"> Applicant NIN  <span style="color:red;">*</span></label>
-										<input required type="number" class="form-control" name="applicantNIN" id="applicantNIN" placeholder="National Identity Number">
+										<input required type="text" class="form-control" name="applicantNIN" id="applicantNIN" placeholder="National Identity Number">
 										@error('applicantfullname')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
