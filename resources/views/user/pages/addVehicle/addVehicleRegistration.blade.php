@@ -68,6 +68,7 @@
 										@enderror
 									</div>
 
+									
 									<div class="col-md-6">
 										<label for="inputFirstName" class="form-label">Vehicle Make (e.g Toyota) <span style="color:red;">*</span></label>
 										<input required type="text" name="vehiclemake" class="form-control" id="vehiclemake" placeholder="Vehicle Brand (e.g Toyota)">
