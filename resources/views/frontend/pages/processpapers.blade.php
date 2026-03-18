@@ -5,7 +5,7 @@
     <style>
         /* Enhanced Sign Up Button Styles */
         .sign-register-area-inner .main-btn.white.uppercase {
-            background-color: #ff4444 !important;
+            background-color: #142444 !important;
             color: white !important;
             border: 2px solid white !important;
             font-size: 18px !important;
@@ -21,7 +21,7 @@
         }
         
         .sign-register-area-inner .main-btn.white.uppercase:hover {
-            background-color: #ff6666 !important;
+            background-color: #142444 !important;
             transform: scale(1.05) !important;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
         }
