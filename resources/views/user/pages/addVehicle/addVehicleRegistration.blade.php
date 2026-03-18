@@ -188,11 +188,33 @@
 									</div>
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label"> Applicant NIN  <span style="color:red;">*</span></label>
-										<input required type="text" class="form-control" name="applicantNIN" id="applicantNIN" placeholder="National Identity Number">
+										<input required type="text" class="form-control" name="applicantNIN" id="applicantNIN" placeholder="National Identity Number" 
+											onkeypress="return isNumberKey(event)" 
+											onpaste="return false"
+											maxlength="11">
 										@error('applicantfullname')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
 									</div>
+
+									<script>
+										function isNumberKey(evt) {
+											var charCode = (evt.which) ? evt.which : evt.keyCode;
+											// Allow only numbers (0-9)
+											if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+												return false;
+											}
+											return true;
+										}
+										
+										// Optional: Clean pasted content to only numbers
+										document.getElementById('applicantNIN').addEventListener('paste', function(e) {
+											e.preventDefault();
+											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
+											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
+											this.value = numbersOnly;
+										});
+									</script>
 									
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label"> Residential Address </label>
