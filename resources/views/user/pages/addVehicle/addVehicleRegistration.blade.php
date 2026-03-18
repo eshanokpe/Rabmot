@@ -210,7 +210,7 @@
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label">  Phone Number <span style="color:red;">*</span></label>
 										<input required type="text" class="form-control" name="phonenumber" id="phonenumber"
-											onkeypress="return isNumberKey(event)" 
+											onkeypress="return isPhoneNumber(event)" 
 											onpaste="return false"
 										 placeholder="Phone Number">
 										@error('phonenumber')
@@ -218,7 +218,7 @@
 										@enderror
 									</div>
 									<script>
-										function isNumberKey(evt) {
+										function isPhoneNumber(evt) {
 											var charCode = (evt.which) ? evt.which : evt.keyCode;
 											// Allow only numbers (0-9)
 											if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -242,7 +242,13 @@
 											}
 											return true;
 										}
-										
+										// Optional: Clean pasted content to only numbers
+										document.getElementById('phonenumber').addEventListener('paste', function(e) {
+											e.preventDefault();
+											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
+											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
+											this.value = numbersOnly;
+										});
 									</script>
 									<div class="col-md-6">
 										<label for="inputAddress2" class="form-label">  Email Address <span style="color:red;">*</span></label>
