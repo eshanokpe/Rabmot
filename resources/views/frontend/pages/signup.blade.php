@@ -57,6 +57,11 @@
         font-size: 24px;
         margin-bottom: 15px;
     }
+    
+    /* Style for clickable show/hide icons */
+    .btn-show-pass {
+        cursor: pointer;
+    }
 </style>
   
 @extends('layouts.app')
@@ -164,7 +169,7 @@
                                     </span>
                                 @enderror
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text btn-show-pass" data-target="password">
+                                    <span class="input-group-text btn-show-pass" onclick="togglePasswordVisibility('password', this)">
                                         <i class="show-hide-icon fa fa-eye"></i>
                                     </span>
                                 </div>
@@ -179,7 +184,7 @@
                                 </div>
                                 <input id="password_confirmation" placeholder="Confirm Password" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text btn-show-pass" data-target="password_confirmation">
+                                    <span class="input-group-text btn-show-pass" onclick="togglePasswordVisibility('password_confirmation', this)">
                                         <i class="show-hide-icon fa fa-eye"></i>
                                     </span>
                                 </div>
@@ -246,8 +251,25 @@
                                         data-action='submit'>SIGN UP</button>
                             </div>
                         </form>
-                        <!-- JavaScript for reCAPTCHA callback and password toggle -->
+                        
+                        <!-- JavaScript for password show/hide and reCAPTCHA callback -->
                         <script>
+                            // Password show/hide functionality
+                            function togglePasswordVisibility(inputId, element) {
+                                const passwordInput = document.getElementById(inputId);
+                                const icon = element.querySelector('i');
+                                
+                                if (passwordInput.type === 'password') {
+                                    passwordInput.type = 'text';
+                                    icon.classList.remove('fa-eye');
+                                    icon.classList.add('fa-eye-slash');
+                                } else {
+                                    passwordInput.type = 'password';
+                                    icon.classList.remove('fa-eye-slash');
+                                    icon.classList.add('fa-eye');
+                                }
+                            }
+
                             function validateForm() {
                                 const agreedCheckbox = document.getElementById('agreed');
                                 if (!agreedCheckbox.checked) {
@@ -262,29 +284,6 @@
                                     document.getElementById("signUpForm").submit();
                                 }
                             }
-                            
-                            // Password show/hide functionality
-                            document.addEventListener('DOMContentLoaded', function() {
-                                const toggleButtons = document.querySelectorAll('.btn-show-pass');
-                                
-                                toggleButtons.forEach(button => {
-                                    button.addEventListener('click', function() {
-                                        const targetId = this.getAttribute('data-target');
-                                        const passwordInput = document.getElementById(targetId);
-                                        const icon = this.querySelector('.show-hide-icon');
-                                        
-                                        if (passwordInput.type === 'password') {
-                                            passwordInput.type = 'text';
-                                            icon.classList.remove('fa-eye');
-                                            icon.classList.add('fa-eye-slash');
-                                        } else {
-                                            passwordInput.type = 'password';
-                                            icon.classList.remove('fa-eye-slash');
-                                            icon.classList.add('fa-eye');
-                                        }
-                                    });
-                                });
-                            });
                         </script>
                         <!--// Form -->
                     </div>
