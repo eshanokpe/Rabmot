@@ -63,7 +63,7 @@ class DealerPlateNumberContoller extends Controller
             $dob = $request->input('dob');
             $pob = $request->input('pob');
             $residentAddress = $request->input('residentAddress');
-            $userState = $request->input('userState');
+            $userState = $request->input('userState');  
             $localGovernment = $request->input('localGovernment');
             $totalAmount = $request->input('totalAmount');
 
