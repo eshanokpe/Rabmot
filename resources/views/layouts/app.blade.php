@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.0.2/dist/css/bootstrap.min.css')}}">
     <script src="{{ asset('assets/bootstrap-5.0.2/dist/js/bootstrap.bundle.min.js')}}"></script>
     <link rel="stylesheet" href="{{ asset('assets/fontawesome-6/dist-font/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}"> 
     <!-- Scripts -->  
     
      
