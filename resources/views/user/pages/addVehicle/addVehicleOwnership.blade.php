@@ -226,7 +226,10 @@
 									
 									<div class="col-md-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> New Owners NIN  <span style="color:red;">*</span></label>
-										<input required type="number" class="form-control" name="ownersNIN" id="ownersNIN" placeholder="National Identity Number">
+										<input required type="number" class="form-control" name="ownersNIN" id="ownersNIN"
+											onkeypress="return isNumberKey(event)" 
+											onpaste="return false"
+										 placeholder="National Identity Number">
 										@error('ownersNIN')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
@@ -242,7 +245,10 @@
 
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Phone Number <span style="color:red;">*</span></label>
-										<input required type="text" class="form-control" name="phonenumber" id="registeredaddressofvehicle" placeholder="Phone Number">
+										<input required type="text" class="form-control" name="phonenumber" id="registeredaddressofvehicle" 
+											onkeypress="return isPhoneNumber(event)" 
+											onpaste="return false"
+										placeholder="Phone Number">
 										@error('phonenumber')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
@@ -274,7 +280,7 @@
 											return true;
 										}
 										// Optional: Clean pasted content to only numbers
-										document.getElementById('phonenumber').addEventListener('paste', function(e) {
+										document.getElementById('ownersNIN').addEventListener('paste', function(e) {
 											e.preventDefault();
 											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
 											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
