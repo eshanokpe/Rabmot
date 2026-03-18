@@ -226,7 +226,7 @@
 									
 									<div class="col-md-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> New Owners NIN  <span style="color:red;">*</span></label>
-										<input required type="number" class="form-control" name="ownersNIN" id="ownersNIN"
+										<input required type="text" class="form-control" name="ownersNIN" id="ownersNIN"
 											onkeypress="return isNumberKey(event)" 
 											onpaste="return false"
 										 placeholder="National Identity Number">
@@ -265,7 +265,7 @@
 										}
 										
 										// Optional: Clean pasted content to only numbers
-										document.getElementById('applicantNIN').addEventListener('paste', function(e) {
+										document.getElementById('registeredaddressofvehicle').addEventListener('paste', function(e) {
 											e.preventDefault();
 											var pastedText = (e.clipboardData || window.clipboardData).getData('text');
 											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
