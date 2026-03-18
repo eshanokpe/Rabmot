@@ -62,7 +62,7 @@
 											@foreach($vehicleList as $vehicleList) 
 											<option value="{{$vehicleList->id}}"> {{$vehicleList->name}} </option>
 											@endforeach
-										</select>
+										</select> 
 										@error('category')
 											<span class="text-danger">{{ $message }}</span>
 										@enderror
