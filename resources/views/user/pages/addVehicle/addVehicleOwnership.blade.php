@@ -288,7 +288,7 @@
 											var numbersOnly = pastedText.replace(/[^0-9]/g, '');
 											this.value = numbersOnly;
 										});
-										
+									</script>
 
 									<div class="col-sm-6 col-md-6">
 										<label for="inputAddress2" class="form-label"> Email Address <span style="color:red;">*</span></label>
