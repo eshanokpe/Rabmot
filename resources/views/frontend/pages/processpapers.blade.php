@@ -65,7 +65,7 @@
         
         /* Optional: Enhance the form submit button as well */
         .sign-in-area .main-btn.uppercase {
-            background-color: #007bff !important;
+            background-color: #142444 !important;
             color: white !important;
             font-size: 16px !important;
             font-weight: bold !important;
@@ -74,7 +74,7 @@
         }
         
         .sign-in-area .main-btn.uppercase:hover {
-            background-color: #0056b3 !important;
+            background-color: #142444 !important;
             transform: scale(1.02) !important;
         }
     </style>
