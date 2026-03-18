@@ -50,7 +50,7 @@
 						<hr>
 						<div class="card border-top border-0 border-4 border-primary">
 							<div class="card-body p-5">
-								
+								  
 								<form class="row g-3" method="POST" action="{{ route('home.postAddVehicleRegistration') }}" enctype="multipart/form-data">
 									@csrf
 									<div class="col-md-12">
