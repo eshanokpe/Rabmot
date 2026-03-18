@@ -261,7 +261,7 @@
 									</div>								
 
 									<div class="col-sm-6 col-md-6">
-										<label for="inputAddress2" class="form-label"> Phone Number <span style="color:red;">*</span></label>
+										<label for="inputAddress2" class="form-label"> Phone Number xx<span style="color:red;">*</span></label>
 										<input required type="text" class="form-control" name="phonenumber" id="registeredaddressofvehicle" 
 											onkeypress="return isPhoneNumber(event)" 
 											onpaste="return false"
