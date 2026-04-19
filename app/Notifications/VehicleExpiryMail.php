@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Mail;
-
+ 
 use App\Models\AddVehicleRenewal;
 use App\Models\User;
 use Carbon\Carbon;

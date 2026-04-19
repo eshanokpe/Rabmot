@@ -1,5 +1,8 @@
+// resources/js/app.js
+
 import './bootstrap';
 
+// Import all your components
 import './components/pricing/index'; 
 import './Page/Home'; 
 
@@ -25,4 +28,3 @@ import './components/agent/process/newDriverLicense';
 import './components/agent/process/driverLicenseRenewal';
 import './components/agent/process/internationalDriverLicense';
 import './components/agent/profile/editProfile';
-
