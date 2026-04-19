@@ -18,9 +18,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(SendVehicleExpiryNotifications::class)
-            // ->dailyAt('08:00')
-            ->everyMinute()
-            ->withoutOverlapping()
+            ->dailyAt('08:00')
+            ->withoutOverlapping(10)
             ->appendOutputTo(storage_path('logs/vehicle-expiry-notifications.log'))
             ->emailOutputOnFailure(config('mail.from.address'));
     }
