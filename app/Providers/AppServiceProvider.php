@@ -5,8 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-use App\Models\Notification;
-use App\Models\User;
+use App\Models\Notifications;  // Use your custom model
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,23 +31,19 @@ class AppServiceProvider extends ServiceProvider
             $notifications = collect();
 
             if (Auth::check()) {
-                // Default guard (web)
-                $user = Auth::user();
-                $notificationCount = $user->unreadNotifications->count();
-                $notifications = $user->unreadNotifications;
+                $userId = Auth::id();
+                $notificationCount = Notifications::forUser($userId)->unread()->count();
+                $notifications = Notifications::forUser($userId)->unread()->latest()->take(5)->get();
             } elseif (Auth::guard('agent')->check()) {
-                // Agent guard
-                $user = Auth::guard('agent')->user();
-                $notificationCount = $user->unreadNotifications->count();
-                $notifications = $user->unreadNotifications;
+                $userId = Auth::guard('agent')->id();
+                $notificationCount = Notifications::forUser($userId)->unread()->count();
+                $notifications = Notifications::forUser($userId)->unread()->latest()->take(5)->get();
             }
+
             $view->with([
                 'notificationCount' => $notificationCount,
                 'notifications' => $notifications,
             ]);
-
         });
-
-        
     }
 }

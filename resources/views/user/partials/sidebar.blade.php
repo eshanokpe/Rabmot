@@ -88,6 +88,12 @@
                 <div class="menu-title">Transaction History</div>
             </a>
         </li>
+        <li>
+            <a href="{{ route('home.notifications.index') }}">
+                <div class="parent-icon icon-color-13"><i class="bx bx-bell"></i></div>
+                <div class="menu-title">Notifications</div>
+            </a>
+        </li>
         {{-- <li>
             <a href="{{ route('home.wallet') }}">
                 <div class="parent-icon icon-color-13"><i class="bx bx-money"></i>

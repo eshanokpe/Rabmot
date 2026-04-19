@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use  \App\Console\Commands\NotifyExpiry;
+use  App\Console\Commands\SendVehicleExpiryNotifications;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,8 +17,12 @@ class Kernel extends ConsoleKernel
    
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('notify:expiry')->dailyAt('12:00');
-        $schedule->command('check:vehicle-renewals')->dailyAt('12:00');
+        $schedule->command(SendVehicleExpiryNotifications::class)
+            // ->dailyAt('08:00')
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->appendOutputTo(storage_path('logs/vehicle-expiry-notifications.log'))
+            ->emailOutputOnFailure(config('mail.from.address'));
     }
 
     /**
@@ -29,7 +33,7 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         $this->load(__DIR__.'/Commands');
-        // \App\Console\Commands\NotifyExpiry::class;
+        // \App\Console\Commands\SendVehicleExpiryNotifications::class,
         require base_path('routes/console.php');
     }
 }

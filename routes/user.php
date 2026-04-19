@@ -148,11 +148,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('home/apply-promo-code', [PromoCodeController::class, 'applyPromoCode'])->name('applyPromoCode');
     Route::get('home/referral-details', [ReferralController::class, 'index'])->name('home.referralDetails');
     
-    Route::get('home/notifications', [NotificationController::class, 'index'])->name('home.notifications.index');
-    Route::get('home/notifications/read/{id}', [NotificationController::class, 'markAsRead'])->name('home.notifications.markAsRead');
-    Route::get('home/notifications/show/{id}', [NotificationController::class, 'show'])->name('home.notifications.show');
-    
+   
 }); 
-
+Route::middleware(['auth'])->prefix('notifications')->name('home.notifications.')->group(function () {
+    Route::get('/',                  [NotificationController::class, 'index'])->name('index');
+    Route::get('/{id}',              [NotificationController::class, 'show'])->name('show');
+    Route::get('/{id}/read',       [NotificationController::class, 'markAsRead'])->name('read');
+    Route::get('/mark-all-read',   [NotificationController::class, 'markAllAsRead'])->name('read-all');
+    Route::delete('/{id}',           [NotificationController::class, 'destroy'])->name('destroy');
+    Route::get('/unread-count',      [NotificationController::class, 'unreadCount'])->name('unread-count');
+});
  
-
+ 

@@ -11,7 +11,7 @@ use App\Models\AddVehicleRenewal;
 use App\Models\VehicleType;
 use App\Models\VehicleRenewalPrice;
 use App\Models\VehiclePaperRenewal;
-use Cart;
+use Cart; 
 use App\Http\Requests\AddVehicleRenewalRequest;
 use App\Services\AddVehicleRenewalService;
 
@@ -42,7 +42,7 @@ class AddVehicleRenewalController extends Controller
             $midyearpermit = $this->addVehicleRenewalService->handleFileUpload($request, 'midyearpermit', 'documents/vehiclerenewals');
             $localgovernmentpermit = $this->addVehicleRenewalService->handleFileUpload($request, 'localgovernmentpermit', 'documents/vehiclerenewals');
             $moiddocument = $this->addVehicleRenewalService->handleFileUpload($request, 'meansofid', 'documents/vehiclerenewals');
-
+           
             // Save the data
             $vehiclerenewal = new AddVehicleRenewal();
             $vehiclerenewal->fill($request->all());
@@ -58,11 +58,12 @@ class AddVehicleRenewalController extends Controller
             $vehiclerenewal->localgovernmentpermit = 'vehiclerenewals/'.$localgovernmentpermit;
             $vehiclerenewal->meansofid = 'vehiclerenewals/'.$moiddocument;
             $vehiclerenewal->save();
-       
+            \Log::info('Submited successfully.');
             return redirect()->route('home.vehicleRenewalPaper')->withSuccess('New Vehicle Renewal has been successfully created.');
         
         } catch (\Exception $e) {
-             return redirect()->back()->withError('Somthing went wrong in saving Vehicle Renewal data.'. $e->getMessage());
+             \Log::error('Error occurred while saving Vehicle Renewal data: ' . $e->getMessage());
+             return redirect()->back()->withError('Something went wrong in saving Vehicle Renewal data.');
         }
     }
 

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\Order;
-use App\Models\User;
+use App\Models\User; 
 use App\Models\AddVehicleOwnership; 
 use App\Models\AddVehicleRegistration; 
 use App\Models\AddVehicleRenewal; 
@@ -65,7 +65,6 @@ class HomeController extends Controller
             }
         }
 
-        // dd($vehicleDocumentProcessed);
         $data['referrals'] = ReferralLog::where('referrer_id', $userId)
         ->with('referredUser') 
         ->get();

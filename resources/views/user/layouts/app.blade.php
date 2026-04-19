@@ -45,12 +45,6 @@
 
 		@viteReactRefresh
         @vite('resources/js/app.jsx')
-<<<<<<< HEAD
-
-		
-
-=======
->>>>>>> 0878ee32c3927d94116861ea07ce5cc16df3ed3e
 	</head>
 
 	<body>

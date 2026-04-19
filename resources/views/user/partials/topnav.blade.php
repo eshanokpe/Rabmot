@@ -1,5 +1,64 @@
 
 
+<style>
+    /* Urgency border styling */
+    .dropdown-item.border-danger {
+        border-left: 4px solid #dc3545 !important;
+    }
+    
+    .dropdown-item.border-warning {
+        border-left: 4px solid #ffc107 !important;
+    }
+    
+    .dropdown-item.border-info {
+        border-left: 4px solid #0dcaf0 !important;
+    }
+    
+    /* Background subtle colors */
+    .bg-danger-subtle {
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+    
+    .bg-warning-subtle {
+        background-color: rgba(255, 193, 7, 0.1);
+    }
+    
+    .bg-info-subtle {
+        background-color: rgba(13, 202, 240, 0.1);
+    }
+    .notification-item {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%; 
+    }
+
+    .msg-name {
+        white-space: normal;
+        overflow: visible; 
+        word-wrap: break-word; 
+        margin: 0;
+    }
+
+    .msg-time {
+        white-space: nowrap; 
+        float: right; 
+    }
+
+    .msg-info {
+        white-space: normal; 
+        overflow: visible;
+        word-wrap: break-word;
+        margin: 0; 
+        max-width: 100%;
+    }
+    .dropdown-menu {
+        max-width: 300px; /* Set an appropriate width for the dropdown */
+        word-wrap: break-word; /* Handle long words */
+        overflow: visible; /* Ensure content can expand */
+    }
+
+
+</style>
 <header class="top-header">
     <nav class="navbar navbar-expand">
         <div class="left-topbar d-flex align-items-center">
@@ -50,54 +109,79 @@
                         </a> 
                         <div class="header-notifications-list ps">
                             @forelse ($notifications as $notification)
-                                <a class="dropdown-item" href="{{ route('home.notifications.markAsRead', $notification->id) }}">
+                                @php
+                                    $urgencyClass = '';
+                                    $urgencyIcon = 'bx-bell';
+                                    
+                                    if($notification->type === 'vehicle_expiry') {
+                                        $urgencyIcon = 'bxs-car';
+                                        if($notification->days_threshold == 1) {
+                                            $urgencyClass = 'border-danger';
+                                        } elseif($notification->days_threshold == 7) {
+                                            $urgencyClass = 'border-warning';
+                                        } elseif($notification->days_threshold == 15) {
+                                            $urgencyClass = 'border-info';
+                                        }
+                                    }
+                                @endphp
+                                
+                                <a class="dropdown-item {{ $urgencyClass }}" href="{{ route('home.notifications.read', encrypt($notification->id)) }}">
                                     <div class="d-flex align-items-center">
+                                        <div class="notification-icon me-3 
+                                            @if($notification->days_threshold == 1) bg-danger-subtle
+                                            @elseif($notification->days_threshold == 7) bg-warning-subtle
+                                            @elseif($notification->days_threshold == 15) bg-info-subtle
+                                            @else bg-light
+                                            @endif">
+                                            <i class="bx {{ $urgencyIcon }} 
+                                                @if($notification->days_threshold == 1) text-danger
+                                                @elseif($notification->days_threshold == 7) text-warning
+                                                @elseif($notification->days_threshold == 15) text-info
+                                                @else text-primary
+                                                @endif">
+                                            </i>
+                                        </div>
                                         <div class="flex-grow-1 notification-item">
-                                            <h6 class="msg-name"><snap><b>{{ $notification->data['title'] ?? 'Notification' }}</b></snap>
+                                            <h6 class="msg-name">
+                                                <span class="notification-title">
+                                                    @if($notification->type === 'vehicle_expiry')
+                                                        @if($notification->days_threshold == 1)
+                                                            <span class="badge bg-danger me-1">Urgent</span>
+                                                        @elseif($notification->days_threshold == 7)
+                                                            <span class="badge bg-warning me-1">Reminder</span>
+                                                        @elseif($notification->days_threshold == 15)
+                                                            <span class="badge bg-info me-1">Heads Up</span>
+                                                        @endif
+                                                    @endif
+                                                    <b>{{ $notification->title ?? 'Notification' }}</b>
+                                                </span>
                                                 <span class="msg-time float-end">{{ $notification->created_at->diffForHumans() }}</span>
                                             </h6>
-                                            <p class="msg-info">{{ $notification->data['message'] ?? 'No details available' }}</p>
+                                            <p class="msg-info">
+                                                {!! Str::limit(strip_tags($notification->message ?? 'No details available'), 150) !!}
+                                                
+                                                @if($notification->type === 'vehicle_expiry' && $notification->vehicle)
+                                                    <small class="d-block text-muted mt-1">
+                                                        <i class="bx bx-car"></i> 
+                                                        <strong>{{ $notification->vehicle->platenumber ?? 'N/A' }}</strong>
+                                                        @if($notification->vehicle->vehiclemake)
+                                                            - {{ $notification->vehicle->vehiclemake }}
+                                                        @endif
+                                                        @if($notification->document_field)
+                                                            <br>
+                                                            <i class="bx bx-file"></i> 
+                                                            Document: {{ str_replace(['expiry', 'vehicle', 'license'], ['', '', ''], ucfirst($notification->document_field)) }}
+                                                        @endif
+                                                    </small>
+                                                @endif
+                                            </p>
                                         </div>
-                                        <style>
-                                            .notification-item {
-                                                display: flex;
-                                                flex-direction: column;
-                                                max-width: 100%; 
-                                            }
-
-                                            .msg-name {
-                                                white-space: normal;
-                                                overflow: visible; 
-                                                word-wrap: break-word; 
-                                                margin: 0;
-                                            }
-
-                                            .msg-time {
-                                                white-space: nowrap; 
-                                                float: right; 
-                                            }
-
-                                            .msg-info {
-                                                white-space: normal; 
-                                                overflow: visible;
-                                                word-wrap: break-word;
-                                                margin: 0; 
-                                                max-width: 100%;
-                                            }
-                                            .dropdown-menu {
-                                                max-width: 300px; /* Set an appropriate width for the dropdown */
-                                                word-wrap: break-word; /* Handle long words */
-                                                overflow: visible; /* Ensure content can expand */
-                                            }
-
-
-                                        </style>
-                                        
                                     </div>
                                 </a>
                             @empty
                                 <div class="text-center p-3">
-                                    <p class="text-muted">No new notifications</p>
+                                    <i class="bx bx-bell-off fs-4 text-muted"></i>
+                                    <p class="text-muted mb-0">No new notifications</p>
                                 </div>
                             @endforelse
                         </div>
@@ -144,6 +228,9 @@
 
                         <a class="dropdown-item" href="{{ route('home.transactionHistory') }}">
                             <i class="bx bx-wallet"></i><span>Transaction History</span>
+                        </a>
+                        <a class="dropdown-item" href="{{ route('home.notifications.index') }}">
+                            <i class="bx bx-bell"></i><span>Notifications</span>
                         </a>
                         
                         <div class="dropdown-divider mb-0"></div>	
