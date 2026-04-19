@@ -9,15 +9,15 @@ use App\Models\AddVehicleRenewal;
 use App\Models\User;
 use App\Models\Notifications; 
 use App\Mail\VehicleExpiryMail;
-use Carbon\Carbon;
+use Carbon\Carbon; 
 
 class SendVehicleExpiryNotifications extends Command
 {
-    /**
+    /**. 
      * The name and signature of the console command.
      */
-    // protected $signature = 'notify:vehicle-expiry 
-    //                         {--dry-run : Run without actually sending notifications}';
+    protected $signature = 'notify:vehicle-expiry 
+                            {--dry-run : Run without actually sending notifications}';
 
     /**
      * The console command description.
