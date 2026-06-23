@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\ProductsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,13 @@ Route::get('/policy', [FrontendController::class, 'policy'])->name('policy');
 Route::get('/howitwork', [FrontendController::class, 'howitwork'])->name('howitwork');
 Route::get('/terms', [FrontendController::class, 'terms'])->name('terms');
 
+//products
+Route::get('/int-drivers-license', [ProductsController::class, 'int_drivers_license'])->name('int-drivers-license');
+Route::post('/int-drivers-license/store', [ProductsController::class, 'international_license_store'])->name('international-license.store');
+Route::get('/dealer-plate-number', [ProductsController::class, 'dealer_plate_number'])->name('dealer-plate-number');
+Route::post('/dealer-plate-number/store', [ProductsController::class, 'dealer_plate_number_store'])->name('dealer-plate-number.store');
+Route::get('/vehicle-renewal', [ProductsController::class, 'vehicle_renewal'])->name('vehicle-renewal');
+Route::post('/vehicle-renewal/store', [ProductsController::class, 'vehicle_renewal_store'])->name('vehicle-renewal.store');
 //pricing
 Route::get('/get-state/pricing', [PriceController::class, 'getState']);
 Route::post('/get-vehicle/renewal', [PriceController::class, 'getVehicleRenewalPrice']);
