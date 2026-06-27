@@ -596,7 +596,7 @@
                             <div class="row g-4 justify-content-center">
 
                                 <div class="col-lg-2 col-md-4 col-6">
-                                    <a href="#" class="service-card-link">
+                                    <a href="{{ route('driver-license') }}" class="service-card-link">
                                         <div class="service-card">
                                             <i class="fas fa-id-card"></i>
                                             <h6>

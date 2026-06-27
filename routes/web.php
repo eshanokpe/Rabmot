@@ -57,6 +57,9 @@ Route::get('/dealer-plate-number', [ProductsController::class, 'dealer_plate_num
 Route::post('/dealer-plate-number/store', [ProductsController::class, 'dealer_plate_number_store'])->name('dealer-plate-number.store');
 Route::get('/vehicle-renewal', [ProductsController::class, 'vehicle_renewal'])->name('vehicle-renewal');
 Route::post('/vehicle-renewal/store', [ProductsController::class, 'vehicle_renewal_store'])->name('vehicle-renewal.store');
+Route::get('/driver-license', [ProductsController::class, 'driver_license'])->name('driver-license');
+Route::post('/driver-license/store', [ProductsController::class, 'driver_license_store'])->name('driver-license.store');
+
 //pricing
 Route::get('/get-state/pricing', [PriceController::class, 'getState']);
 Route::post('/get-vehicle/renewal', [PriceController::class, 'getVehicleRenewalPrice']);
