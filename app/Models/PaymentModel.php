@@ -16,7 +16,7 @@ class PaymentModel extends Model
         'userType',
         'full_name', 
         'email', 
-
+ 
         'location',
         'lagos_address',
         'address',

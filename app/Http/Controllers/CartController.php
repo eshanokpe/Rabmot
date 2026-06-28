@@ -18,10 +18,7 @@ class CartController extends Controller
         $userEmail = Auth::user()->email;
         $cartItems = Cart::content();
         $cartCounts = Cart::count();
-        // return response()->json([
-        //     'success' => true,
-        //     'cartItems' => $cartItems,
-        // ]);
+        
         return view('user.pages.cart', ['cartContent' => $cartItems], ['cartCount' => $cartCounts]);
     }
 
