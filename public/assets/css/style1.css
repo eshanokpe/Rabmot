@@ -1,0 +1,77 @@
+@font-face {
+    font-family:Poppins-Thin;
+    src: url(font/Poppins-Thin.ttf);
+}
+@font-face {
+    font-family:Poppins-ThinItalic;
+    src: url(font/Poppins-LightItalic.ttf);
+}
+@font-face {
+    font-family:Poppins-Light;
+    src: url(font/Poppins-Light.ttf);
+}
+@font-face {
+    font-family:Poppins-Light-Italic;
+    src: url(font/Poppins-LightItalic.ttf);
+}
+
+@font-face {
+    font-family:Poppins-Regular;
+    src: url(font/Poppins-Regular.ttf);
+}
+@font-face {
+    font-family:Poppins-Regular-Italic;
+    src: url(font/Poppins-Italic.ttf);
+}
+@font-face {
+    font-family:Poppins-Medium;
+    src: url(font/Poppins-Medium.ttf);
+}
+@font-face {
+    font-family:Poppins-Medium-Italic;
+    src: url(font/Poppins-MediumItalic.ttf);
+}
+@font-face {
+    font-family:Poppins-Semibold;
+    src: url(font/Poppins-SemiBold.ttf);
+}
+@font-face {
+    font-family:Poppins-Semibold-Italic;
+    src: url(font/Poppins-SemiBoldItalic.ttf);
+}
+@font-face {
+    font-family:Poppins-Bold;
+    src: url(font/Poppins-Bold.ttf);
+}
+@font-face {
+    font-family:Poppins-Bold-Italic;
+    src: url(font/Poppins-BoldItalic.ttf);
+}
+@font-face {
+    font-family:Poppins-ExtralBold;
+    src: url(font/Poppins-ExtraBold.ttf);
+}
+@font-face {
+    font-family:Poppins-ExtralBold-Italic;
+    src: url(font/Poppins-ExtraBoldItalic.ttf);
+}
+
+
+
+.brand{
+    font-family: Poppins-ExtralBold;
+    font-size: 24;
+    color: #142444;
+}
+
+.a-nav{
+    font-family: Poppins-Medium;
+    font-size: 14px;
+    color: #fff;
+}
+
+#a-nav{
+    font-family: Poppins-Regular;
+    font-size: 14px;
+    color: #fff;
+}
