@@ -40,7 +40,7 @@ Auth::routes();
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/signin', [FrontendController::class, 'signin'])->name('signin');
 Route::get('/signup', [FrontendController::class, 'signup'])->name('signup');
-Route::get('/pricing', [PriceController::class, 'pricing'])->name('pricing');
+Route::get('/pricing', [PriceController::class, 'pricing'])->name('pricing'); 
 Route::get('/processpapers', [FrontendController::class, 'processpapers'])->name('processpapers');
 Route::get('/contactus', [FrontendController::class, 'contactus'])->name('contactus');
 Route::post('/formcontactus', [FrontendController::class, 'submitForm'])->name('contactus.form'); 
@@ -77,14 +77,19 @@ Route::post('/get-otherPermit/price', [PriceController::class, 'getOtherPermitPr
 Route::post('/get-internationaDriverLicense/length', [PriceController::class, 'getInternationaDriverLicenseLength']);
 Route::post('/get-internationaDriverLicense/price', [PriceController::class, 'getInternationaDriverLicensePrice']);
  
-// Allow both GET and POST for payment route
-Route::match(['get', 'post'], 'payment', [PaymentController::class, 'initiatePayment'])->name('payment.initiate');
+// Payment routes
+// Payment routes
+Route::get('/payment/initiate', [PaymentController::class, 'initiatePayment'])
+    ->name('payment.initiate');
 
-Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('payment');
-           
+Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbackSeerbit'])
+    ->name('payment.callback');
 
-Route::get('/application/success', function(Request $request) {
-    return view('frontend.pages.products.application-success', [
-        'reference' => $request->ref ?? 'N/A'
-    ]);
-})->name('application.success');
+Route::get('/application/success', [PaymentController::class, 'success'])
+    ->name('application.success');
+
+// Route::get('/application/success', function(Request $request) {
+//     return view('frontend.pages.products.application-success', [
+//         'reference' => $request->ref ?? 'N/A'
+//     ]);
+// })->name('application.success');

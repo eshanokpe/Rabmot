@@ -199,66 +199,74 @@ class DriverLicenseApplication extends Component
     }
 
     // --------------------------
-    // UPDATED PAYMENT LOGIC
+    // FIXED PAYMENT LOGIC
     // --------------------------
-        public function processPayment()
-{
-    $this->order_reference = 'DL-' . strtoupper(Str::random(8));
-    $this->process_id = 'NDL-' . strtoupper(Str::random(10));
+    public function processPayment()
+    {
+        $this->order_reference = 'DL-' . strtoupper(Str::random(8));
+        $this->process_id = 'NDL-' . strtoupper(Str::random(10));
 
-    // Save application
-    $application = NewDriverLicense::create([
-        'process_id'           => $this->process_id,
-        'surname'              => $this->surname,
-        'firstname'            => $this->firstname,
-        'othername'            => $this->othername,
-        'gender'               => $this->gender,
-        'dob'                  => $this->dob,
-        'place_of_birth'       => $this->place_of_birth,
-        'marital_status'       => $this->marital_status,
-        'nationality'          => $this->nationality,
-        'address'              => $this->address,
-        'state_origin'         => $this->state_origin,
-        'lga_origin'           => $this->lga_origin,
-        'phone'                => $this->phone,
-        'email'                => $this->email,
-        'nin'                  => $this->nin,
-        'occupation'           => $this->occupation,
-        'mother_maiden_name'   => $this->mother_maiden_name,
-        'blood_group'          => $this->blood_group,
-        'height'               => $this->height,
-        'nok_phone'            => $this->nok_phone,
-        'nok_nationality'      => $this->nok_nationality,
-        'totalamount'          => $this->total,
-        'status'               => 'pending',
-    ]);
+        // Save application
+        $application = NewDriverLicense::create([
+            'process_id'           => $this->process_id,
+            'surname'              => $this->surname,
+            'firstname'            => $this->firstname,
+            'othername'            => $this->othername,
+            'gender'               => $this->gender,
+            'dob'                  => $this->dob,
+            'place_of_birth'       => $this->place_of_birth,
+            'marital_status'       => $this->marital_status,
+            'nationality'          => $this->nationality,
+            'address'              => $this->address,
+            'state_origin'         => $this->state_origin,
+            'lga_origin'           => $this->lga_origin,
+            'phone'                => $this->phone,
+            'email'                => $this->email,
+            'nin'                  => $this->nin,
+            'occupation'           => $this->occupation,
+            'mother_maiden_name'   => $this->mother_maiden_name,
+            'blood_group'          => $this->blood_group,
+            'height'               => $this->height,
+            'nok_phone'            => $this->nok_phone,
+            'nok_nationality'      => $this->nok_nationality,
+            'totalamount'          => $this->total,
+            'status'               => 'pending',
+        ]);
 
-    // Save order
-    $order = Order::create([
-        'user_id'         => $this->is_authenticated ? Auth::id() : null,
-        'user_email'      => $this->email,
-        'userType'        => $this->is_authenticated ? 'user' : 'guest',
-        'order_number'    => $this->order_reference,
-        'process_id'      => $this->process_id,
-        'product_name'    => 'New Driver License',
-        'product_amount'  => $this->service_fee,
-        'product_qty'     => 1,
-        'total'           => $this->total,
-        'status'          => 'pending',
-    ]);
+        // Save order
+        $order = Order::create([
+            'user_id'         => $this->is_authenticated ? Auth::id() : null,
+            'user_email'      => $this->email,
+            'userType'        => $this->is_authenticated ? 'user' : 'guest',
+            'order_number'    => $this->order_reference,
+            'process_id'      => $this->process_id,
+            'product_name'    => 'New Driver License',
+            'product_amount'  => $this->service_fee,
+            'product_qty'     => 1,
+            'total'           => $this->total,
+            'status'          => 'pending',
+        ]);
 
-    // Redirect to payment
-    return redirect()->route('payment.initiate', [
-        'orderNo'         => $this->order_reference,
-        'total'           => $this->total,
-        'fullname'        => trim($this->surname . ' ' . $this->firstname . ' ' . $this->othername),
-        'email'           => $this->email,
-        'process_id'      => $this->process_id,
-        'process_type'    => 'New Driver License',
-        'address'         => $this->address,
-        'delivery_option' => 'email',
-    ]);
-}
+        // Store the order reference and process ID in session for the payment callback
+        session([
+            'pending_order_ref' => $this->order_reference,
+            'pending_process_id' => $this->process_id,
+            'pending_service' => 'New Driver License',
+            'pending_amount' => $this->total,
+        ]);
+
+        // Redirect to payment page
+        return redirect()->route('payment.initiate', [
+            'orderNo'         => $this->order_reference,
+            'total'           => $this->total,
+            'fullname'        => trim($this->surname . ' ' . $this->firstname . ' ' . $this->othername),
+            'email'           => $this->email,
+            'process_id'      => $this->process_id,
+            'process_type'    => 'New Driver License',
+            'address'         => $this->address,
+            'delivery_option' => 'email',
+        ]);
+    }
 
     public function skipSignup()
     {

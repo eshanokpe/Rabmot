@@ -251,7 +251,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif 
 
                         <!-- STEP 3: Physical Information -->
                         @if($step == 3)

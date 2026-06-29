@@ -48,7 +48,7 @@ class PaymentController extends Controller
 
         $amount = (float) str_replace(',', '', $total);
         $transaction_ref = 'SB-' . strtoupper(bin2hex(random_bytes(6)));
-
+ 
         $payload = [
             "amount"            => $amount,
             "callbackUrl"       => "https://rabmotlicensing.com/home/payment_callbackSeerbit",
@@ -174,5 +174,31 @@ class PaymentController extends Controller
         }
 
         return redirect()->route('home')->with('error', 'Payment not completed or failed.');
+    }
+
+    /**
+     * Display payment success page
+     */
+    public function success(Request $request)
+    {
+        $orderNo = $request->query('ref');
+        
+        // Find the order
+        $order = Order::where('order_number', $orderNo)->first();
+        
+        if (!$order) {
+            return redirect()->route('home')->with('error', 'Order not found.');
+        }
+        
+        // Get the application details
+        $application = null;
+        if ($order->process_id) {
+            $application = NewDriverLicense::where('process_id', $order->process_id)->first();
+        }
+        
+        return view('frontend.pages.products.application-success', [
+            'order' => $order,
+            'application' => $application,
+        ]);
     }
 }
