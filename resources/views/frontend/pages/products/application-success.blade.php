@@ -29,6 +29,42 @@
                             Thank you for choosing Rabmot Licensing. Your application has been received and is now being processed.
                         </p>
 
+                        @php
+                            // Get service type from order
+                            $serviceType = $order->product_name ?? 'Service Request';
+
+                            // Set processing time and next steps based on service
+                            if ($serviceType === 'New Driver License') {
+                                $processingTime = '5 – 10 Working Days';
+                                $nextSteps = [
+                                    'We will verify your details and documents.',
+                                    'An agent will contact you via email or phone within 24 hours if we need more information.',
+                                    'You will receive updates and your license details via email once ready.'
+                                ];
+                            } elseif ($serviceType === 'New Vehicle Registration (Lagos)') {
+                                $processingTime = '5 – 7 Working Days';
+                                $nextSteps = [
+                                    'We will verify your vehicle and ownership documents.',
+                                    'Our team will submit your application to the Lagos State authorities.',
+                                    'You will receive your new vehicle registration papers and plate number details via email once approved.'
+                                ];
+                            } elseif ($serviceType === 'Change of Ownership & Re-Registration') {
+                                $processingTime = '5 – 7 Working Days';
+                                $nextSteps = [
+                                    'We will verify the transfer agreement and all supporting documents.',
+                                    'We will process the change of ownership and re-register the vehicle in your name.',
+                                    'You will receive the updated registration certificate and new ownership documents via email once completed.'
+                                ];
+                            } else {
+                                $processingTime = '5 – 10 Working Days';
+                                $nextSteps = [
+                                    'We will verify your details and documents.',
+                                    'An agent will contact you if we need more information.',
+                                    'You will receive updates via email once processing is complete.'
+                                ];
+                            }
+                        @endphp
+
                         <!-- Reference Details -->
                         <div class="bg-gray-50 rounded-xl p-4 sm:p-6 mb-6 text-left">
                             <div class="flex justify-between py-2 border-b border-gray-200">
@@ -37,7 +73,7 @@
                             </div>
                             <div class="flex justify-between py-2 border-b border-gray-200">
                                 <span class="text-gray-500 text-sm">Service Type:</span>
-                                <span class="font-semibold text-gray-900 text-sm">New Driver License</span>
+                                <span class="font-semibold text-gray-900 text-sm">{{ $serviceType }}</span>
                             </div>
                             <div class="flex justify-between py-2 border-b border-gray-200">
                                 <span class="text-gray-500 text-sm">Payment Status:</span>
@@ -60,7 +96,7 @@
                         <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-center">
                             <p class="text-sm text-gray-600">
                                 <i class="fas fa-clock text-blue-500 mr-2"></i>
-                                <strong>Estimated Processing Time:</strong> 5 – 10 Working Days
+                                <strong>Estimated Processing Time:</strong> {{ $processingTime }}
                             </p>
                         </div>
 
@@ -71,18 +107,12 @@
                                 What happens next?
                             </h6>
                             <ul class="space-y-2 text-gray-600 text-sm">
+                                @foreach($nextSteps as $step)
                                 <li class="flex items-start">
                                     <span class="text-blue-500 mr-2">•</span>
-                                    We will verify your details and documents.
+                                    {{ $step }}
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-blue-500 mr-2">•</span>
-                                    An agent will contact you via email or phone within 24 hours if we need more information.
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-blue-500 mr-2">•</span>
-                                    You will receive updates and your license details via email once ready.
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
 

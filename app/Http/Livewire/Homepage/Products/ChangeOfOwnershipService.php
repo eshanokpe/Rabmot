@@ -184,6 +184,9 @@ class ChangeOfOwnershipService extends Component
         }
     }
 
+    /**
+     * Save application and redirect to payment
+     */
     public function processPayment()
     {
         $this->process_id = 'COO-LAG-' . Str::upper(Str::random(10));
@@ -198,7 +201,7 @@ class ChangeOfOwnershipService extends Component
             $chassisImgPath = $this->chassis_image->store('uploads/coo', 'public');
             $ninPath = $this->nin_slip->store('uploads/coo', 'public');
 
-            // Save application
+            // Save application record
             ChangeOfOwnership::create([
                 'process_id'           => $this->process_id,
                 'process_type'         => 'Change of Ownership & Re-Registration',
@@ -228,7 +231,7 @@ class ChangeOfOwnershipService extends Component
                 'status'               => 'pending',
             ]);
 
-            // Create order
+            // Create Order record
             Order::create([
                 'user_id'        => $this->is_authenticated ? Auth::id() : null,
                 'user_email'     => $this->emailaddress,
@@ -240,18 +243,39 @@ class ChangeOfOwnershipService extends Component
                 'status'         => 'pending',
             ]);
 
-            // Go to payment step
-            $this->step = 6;
+            // ✅ REDIRECT TO YOUR EXISTING PAYMENT PAGE — same as Vehicle Registration
+            return redirect()->route('payment.initiate', [
+                'orderNo'         => $this->order_reference,
+                'total'           => $this->totalamount,
+                'fullname'        => $this->fullname,
+                'email'           => $this->emailaddress,
+                'process_id'      => $this->process_id,
+                'process_type'    => 'Change of Ownership & Re-Registration',
+                'address'         => $this->address,
+                'delivery_option' => 'email',
+            ]);
 
         } catch (\Exception $e) {
             \Log::error('COO Error: ' . $e->getMessage());
-            session()->flash('error', 'Could not submit application. Please check your details.');
+            session()->flash('error', 'Could not submit application. Please check your details and try again.');
         }
     }
 
+    /**
+     * This will be called AFTER payment is successful
+     * You can hook this from your payment callback/return URL
+     */
     public function paymentSuccessful()
     {
-        $this->step = 7; // Show sign-up prompt
+        // Update payment status in DB
+        ChangeOfOwnership::where('process_id', $this->process_id)
+            ->update(['payment_status' => 'paid', 'status' => 'processing']);
+
+        Order::where('order_number', $this->order_reference)
+            ->update(['status' => 'paid']);
+
+        // Move to sign-up prompt
+        $this->step = 7;
     }
 
     public function skipSignup()
@@ -271,7 +295,6 @@ class ChangeOfOwnershipService extends Component
 
     public function render()
     {
-        
         return view('livewire.homepage.products.change-of-ownership', [
             'lagos_lgas'    => $this->lagos_lgas,
             'vehicle_makes' => $this->vehicle_makes,

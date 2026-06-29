@@ -13,7 +13,7 @@
                         <h2 class="service-title" style="font-size:32px; font-weight:700; margin-top:20px;">
                             Change of Ownership & Re-Registration
                         </h2>
-                        <p class="service-description" style="opacity:.9; line-height:1.8; margin:20px 0 30px;">
+                        <p class="service-description" style="color:#fff; opacity:.9; line-height:1.8; margin:20px 0 30px;">
                             Transfer vehicle ownership legally and re-register in your name. Fast, secure, and fully online.
                         </p>
                         <div class="info-card" style="display:flex; align-items:center; padding:15px; background:rgba(255,255,255,.08); border-radius:15px; margin-bottom:20px;">

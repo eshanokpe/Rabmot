@@ -10,6 +10,8 @@ use SeerbitLaravel\Facades\Seerbit;
 use App\Models\PaymentModel;
 use App\Models\ProcessHistory;
 use App\Models\NewDriverLicense;
+use App\Models\VehicleRegistration;       // Added
+use App\Models\ChangeOfOwnership;         // Added
 use Illuminate\Support\Facades\Auth;
 use Cart;
 use App\Models\User;
@@ -29,17 +31,17 @@ class PaymentController extends Controller
     public function initiatePayment(Request $request)
     {
         // Get data from request OR session (works for both GET and POST)
-        $orderNo       = $request->input('orderNo')       ?? session('orderNo');
-        $total         = $request->input('total')         ?? session('total');
-        $fullname      = $request->input('fullname')      ?? session('fullname');
-        $email         = $request->input('email')         ?? session('email');
-        $process_id    = $request->input('process_id')    ?? session('process_id');
-        $process_type  = $request->input('process_type')  ?? session('process_type');
-        $address       = $request->input('address')       ?? session('address');
+        $orderNo         = $request->input('orderNo')       ?? session('orderNo');
+        $total           = $request->input('total')         ?? session('total');
+        $fullname        = $request->input('fullname')      ?? session('fullname');
+        $email           = $request->input('email')         ?? session('email');
+        $process_id      = $request->input('process_id')    ?? session('process_id');
+        $process_type    = $request->input('process_type')  ?? session('process_type');
+        $address         = $request->input('address')       ?? session('address');
         $delivery_option = $request->input('delivery_option') ?? session('delivery_option');
-        $scan_email    = $request->input('scan_email')    ?? session('scan_email');
-        $location      = $request->input('location')      ?? session('location');
-        $lagos_address = $request->input('lagos_address') ?? session('lagos_address');
+        $scan_email      = $request->input('scan_email')    ?? session('scan_email');
+        $location        = $request->input('location')      ?? session('location');
+        $lagos_address   = $request->input('lagos_address') ?? session('lagos_address');
 
         // Validate required fields
         if (!$orderNo || !$email || !$process_id || !$total) {
@@ -51,7 +53,6 @@ class PaymentController extends Controller
  
         $payload = [
             "amount"            => $amount,
-            // "callbackUrl"       => "https://rabmotlicensing.com/home/payment_callbackSeerbit",
             "callbackUrl"       => route('home.payment'),
             "country"           => "NG",
             "currency"          => "NGN",
@@ -79,7 +80,7 @@ class PaymentController extends Controller
                 'paymentReference'  => $transaction_ref,
                 'full_name'         => $fullname,
                 'email'             => $email,
-                'orderNo'           => $orderNo,          // now saved as string
+                'orderNo'           => $orderNo,
                 'address'           => $address ?? '',
                 'location'          => $location ?? '',
                 'scan_email'        => $scan_email ?? '',
@@ -98,17 +99,25 @@ class PaymentController extends Controller
                 $invoiceCount = PaymentModel::whereDate('created_at', Carbon::today())->count() + 1;
                 $invoiceNumber = $invoiceDate . str_pad($invoiceCount, 3, '0', STR_PAD_LEFT);
 
+                // Get application data based on service type
+                $application = match(true) {
+                    $process_type === 'New Driver License'          => NewDriverLicense::where('process_id', $process_id)->first(),
+                    $process_type === 'New Vehicle Registration (Lagos)' => VehicleRegistration::where('process_id', $process_id)->first(),
+                    $process_type === 'Change of Ownership & Re-Registration' => ChangeOfOwnership::where('process_id', $process_id)->first(),
+                    default => null
+                };
+
                 Mail::to($email)->send(new InvoiceMail(
                     $orderNo,
                     $fullname,
                     $email,
                     $phone,
-                    [], // empty item list for direct application
+                    [],
                     collect([(object)['name' => $process_type, 'price' => $amount]]),
                     $amount,
                     $invoiceNumber,
                     Carbon::now()->format('M d, Y'),
-                    NewDriverLicense::where('process_id', $process_id)->first()
+                    $application
                 ));
             } catch (Exception $e) {
                 \Log::warning('Invoice email failed: ' . $e->getMessage());
@@ -138,9 +147,22 @@ class PaymentController extends Controller
             // Update Order status
             Order::where('order_number', $payment->orderNo)->update(['status' => 'paid']);
 
-            // Update Application status
-            if ($payment->process_type === 'New Driver License') {
-                NewDriverLicense::where('process_id', $payment->process_id)->update(['status' => 'processing']);
+            // ✅ Update Application status based on service type
+            switch ($payment->process_type) {
+                case 'New Driver License':
+                    NewDriverLicense::where('process_id', $payment->process_id)
+                        ->update(['payment_status' => 'paid', 'status' => 'processing']);
+                    break;
+
+                case 'New Vehicle Registration (Lagos)':
+                    VehicleRegistration::where('process_id', $payment->process_id)
+                        ->update(['payment_status' => 'paid', 'status' => 'processing']);
+                    break;
+
+                case 'Change of Ownership & Re-Registration':
+                    ChangeOfOwnership::where('process_id', $payment->process_id)
+                        ->update(['payment_status' => 'paid', 'status' => 'processing']);
+                    break;
             }
 
             // Create Process History — works for guests and logged-in users
@@ -191,16 +213,24 @@ class PaymentController extends Controller
             return redirect()->route('home')->with('error', 'Order not found.');
         }
         
-        // Get the application details
+        // ✅ Get application details based on service type
         $application = null;
         if ($order->process_id) {
-            $application = NewDriverLicense::where('process_id', $order->process_id)->first();
+            $payment = PaymentModel::where('process_id', $order->process_id)->first();
+            $processType = $payment->process_type ?? '';
+
+            $application = match(true) {
+                $processType === 'New Driver License'          => NewDriverLicense::where('process_id', $order->process_id)->first(),
+                $processType === 'New Vehicle Registration (Lagos)' => VehicleRegistration::where('process_id', $order->process_id)->first(),
+                $processType === 'Change of Ownership & Re-Registration' => ChangeOfOwnership::where('process_id', $order->process_id)->first(),
+                default => null
+            };
         }
         
         return view('frontend.pages.products.application-success', [
-            'order' => $order,
+            'order'      => $order,
             'application' => $application,
-            'reference' => $order->order_number, // Add this
+            'reference'  => $order->order_number,
         ]);
     }
 }
