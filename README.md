@@ -64,3 +64,5 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Mastercard: 5000 5500 0000 0029 (Expiry: 08/2028 | CVC: 072 | PIN: 0000)
