@@ -51,7 +51,8 @@ class PaymentController extends Controller
  
         $payload = [
             "amount"            => $amount,
-            "callbackUrl"       => "https://rabmotlicensing.com/home/payment_callbackSeerbit",
+            // "callbackUrl"       => "https://rabmotlicensing.com/home/payment_callbackSeerbit",
+            "callbackUrl"       => route('home.payment'),
             "country"           => "NG",
             "currency"          => "NGN",
             "email"             => $email,
@@ -199,6 +200,7 @@ class PaymentController extends Controller
         return view('frontend.pages.products.application-success', [
             'order' => $order,
             'application' => $application,
+            'reference' => $order->order_number, // Add this
         ]);
     }
 }

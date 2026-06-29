@@ -83,7 +83,7 @@ Route::get('/payment/initiate', [PaymentController::class, 'initiatePayment'])
     ->name('payment.initiate');
 
 Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbackSeerbit'])
-    ->name('payment.callback');
+    ->name('home.payment');
 
 Route::get('/application/success', [PaymentController::class, 'success'])
     ->name('application.success');

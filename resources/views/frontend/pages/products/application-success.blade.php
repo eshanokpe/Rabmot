@@ -3,74 +3,137 @@
 @section('title', 'Application Submitted Successfully')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-body p-5 text-center">
+<div class="min-h-screen bg-gray-50 py-12 md:py-16 lg:py-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-center">
+            <div class="w-full max-w-2xl">
+                <!-- Card -->
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden" id="receipt-content">
+                    <div class="p-6 sm:p-8 md:p-10 text-center">
 
-                    <!-- Success Icon -->
-                    <div class="mx-auto mb-4" style="width: 100px; height: 100px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-check-circle text-success" style="font-size: 48px;"></i>
-                    </div>
-
-                    <h2 class="mb-3" style="color: #142444; font-weight: 700;">Payment & Application Successful!</h2>
-                    <p class="text-muted mb-4">Thank you for choosing Rabmot Licensing. Your application has been received and is now being processed.</p>
-
-                    <!-- Reference Details -->
-                    <div class="bg-light rounded p-4 mb-4 text-left">
-                        <div class="row mb-3">
-                            <div class="col-6 text-muted">Order Reference:</div>
-                            <div class="col-6 text-right fw-bold text-dark">{{ $reference }}</div>
+                        <!-- Header / Logo -->
+                        <div class="mb-6">
+                            <img src="{{ asset('assets/img/rab.png') }}" alt="Rabmot Licensing" class="h-12 mx-auto">
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-6 text-muted">Service Type:</div>
-                            <div class="col-6 text-right fw-bold text-dark">New Driver License</div>
+
+                        <!-- Success Icon -->
+                        <div class="mx-auto mb-6 w-24 h-24 bg-green-50 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-500 text-5xl"></i>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-6 text-muted">Payment Status:</div>
-                            <div class="col-6 text-right">
-                                <span class="badge bg-success px-3 py-1">Paid</span>
+
+                        <!-- Title -->
+                        <h2 class="text-2xl sm:text-3xl font-bold mb-3" style="color: #142444;">
+                            Payment & Application Successful!
+                        </h2>
+                        <p class="text-gray-500 text-sm sm:text-base mb-6">
+                            Thank you for choosing Rabmot Licensing. Your application has been received and is now being processed.
+                        </p>
+
+                        <!-- Reference Details -->
+                        <div class="bg-gray-50 rounded-xl p-4 sm:p-6 mb-6 text-left">
+                            <div class="flex justify-between py-2 border-b border-gray-200">
+                                <span class="text-gray-500 text-sm">Order Reference:</span>
+                                <span class="font-semibold text-gray-900 text-sm">{{ $reference ?? $order->order_number ?? 'N/A' }}</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-200">
+                                <span class="text-gray-500 text-sm">Service Type:</span>
+                                <span class="font-semibold text-gray-900 text-sm">New Driver License</span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-200">
+                                <span class="text-gray-500 text-sm">Payment Status:</span>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
+                                    Paid
+                                </span>
+                            </div>
+                            <div class="flex justify-between py-2 border-b border-gray-200">
+                                <span class="text-gray-500 text-sm">Payment Date:</span>
+                                <span class="font-semibold text-gray-900 text-sm">{{ now()->format('M d, Y') }}</span>
+                            </div>
+                            <div class="flex justify-between py-2">
+                                <span class="text-gray-500 text-sm">Amount Paid:</span>
+                                <span class="font-semibold text-gray-900 text-sm">₦{{ number_format($order->total ?? 0, 2) }}</span>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6 text-muted">Estimated Processing:</div>
-                            <div class="col-6 text-right fw-bold text-dark">5 – 10 Working Days</div>
+
+                        <!-- Estimated Processing -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6 text-center">
+                            <p class="text-sm text-gray-600">
+                                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                <strong>Estimated Processing Time:</strong> 5 – 10 Working Days
+                            </p>
                         </div>
-                    </div>
 
-                    <!-- Next Steps Info -->
-                    <div class="alert alert-info text-left mb-4">
-                        <h6 class="fw-bold mb-2">What happens next?</h6>
-                        <ul class="mb-0 ps-3">
-                            <li>We will verify your details and documents.</li>
-                            <li>An agent will contact you via email or phone within 24 hours if we need more information.</li>
-                            <li>You will receive updates and your license details via email once ready.</li>
-                        </ul>
-                    </div>
+                        <!-- Next Steps Info -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 sm:p-6 mb-6 text-left">
+                            <h6 class="font-semibold text-gray-900 mb-2 flex items-center">
+                                <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                                What happens next?
+                            </h6>
+                            <ul class="space-y-2 text-gray-600 text-sm">
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    We will verify your details and documents.
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    An agent will contact you via email or phone within 24 hours if we need more information.
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-blue-500 mr-2">•</span>
+                                    You will receive updates and your license details via email once ready.
+                                </li>
+                            </ul>
+                        </div>
 
-                    <!-- Optional: Create Account Prompt -->
-                    @guest
-                    <div class="bg-warning bg-opacity-10 border border-warning rounded p-4 mb-4 text-left">
-                        <h6 class="fw-bold text-dark mb-2">Want to track your application easily?</h6>
-                        <p class="text-muted mb-3">Create a free account to view status, save details, and manage future applications.</p>
-                        <a href="{{ route('signup', ['ref' => $reference]) }}" class="btn btn-primary-custom" style="background: #142444; border: none;">
-                            <i class="fas fa-user-plus me-2"></i> Create My Account
-                        </a>
-                        <a href="{{ route('home') }}" class="btn btn-outline-secondary ms-2">Skip for Now</a>
-                    </div>
-                    @endguest
+                        <!-- Footer -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <p class="text-xs text-gray-400">
+                                &copy; {{ date('Y') }} Rabmot Licensing Agency. All rights reserved.
+                            </p>
+                            <p class="text-xs text-gray-400 mt-1">
+                                <i class="fas fa-envelope mr-1"></i> support@rabmotlicensing.com
+                                <span class="mx-2">|</span>
+                                <i class="fas fa-phone mr-1"></i> +2348155206810
+                            </p>
+                        </div>
 
-                    <!-- Action Buttons -->
-                    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-                        <a href="{{ route('home') }}" class="btn btn-primary-custom px-4" style="background: #142444; border: none;">
-                            <i class="fas fa-home me-2"></i> Back to Home
-                        </a>
-                        <button onclick="window.print()" class="btn btn-outline-secondary px-4">
-                            <i class="fas fa-download me-2"></i> Download Receipt
-                        </button>
-                    </div>
+                        <!-- Optional: Create Account Prompt (Hidden in Print) -->
+                        @guest
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 sm:p-6 mb-6 text-left no-print">
+                            <h6 class="font-semibold text-gray-900 mb-2 flex items-center">
+                                <i class="fas fa-user-plus text-yellow-600 mr-2"></i>
+                                Want to track your application easily?
+                            </h6>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Create a free account to view status, save details, and manage future applications.
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="{{ route('signup', ['ref' => $reference ?? $order->order_number ?? '']) }}" 
+                                   class="inline-flex items-center px-4 py-2 bg-[#142444] hover:bg-[#0f1c38] text-white font-medium rounded-lg transition duration-200">
+                                    <i class="fas fa-user-plus mr-2"></i> Create My Account
+                                </a>
+                                <a href="{{ route('home') }}" 
+                                   class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition duration-200">
+                                    Skip for Now
+                                </a>
+                            </div>
+                        </div>
+                        @endguest
 
+                        <!-- Action Buttons (Hidden in Print) -->
+                        <div class="flex flex-wrap justify-center gap-3 mt-4 no-print">
+                            <a href="{{ route('home') }}" 
+                               class="inline-flex items-center px-6 py-3 bg-[#142444] hover:bg-[#0f1c38] text-white font-semibold rounded-lg transition duration-200">
+                                <i class="fas fa-home mr-2"></i> Back to Home
+                            </a>
+                            <button onclick="window.print()" 
+                                    class="inline-flex items-center px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition duration-200">
+                                <i class="fas fa-download mr-2"></i> Download Receipt
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,9 +141,121 @@
 </div>
 
 <style>
+/* Hide print button and navigation when printing */
 @media print {
-    .btn, nav, footer { display: none !important; }
-    body { background: white !important; }
+    /* Hide everything except the receipt */
+    nav, footer, .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .min-h-screen {
+        min-height: auto !important;
+        padding: 0 !important;
+        background: white !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .max-w-2xl {
+        max-width: 100% !important;
+    }
+    
+    .bg-white {
+        background: white !important;
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 0 !important;
+    }
+    
+    .rounded-2xl {
+        border-radius: 0 !important;
+    }
+    
+    .shadow-lg {
+        box-shadow: none !important;
+    }
+    
+    /* Ensure everything fits on one page */
+    #receipt-content {
+        max-height: 100vh !important;
+        overflow: visible !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    
+    /* Reduce padding for print */
+    .p-6, .sm\:p-8, .md\:p-10 {
+        padding: 1.5rem !important;
+    }
+    
+    /* Ensure text is readable */
+    .text-gray-500 {
+        color: #6b7280 !important;
+    }
+    
+    .text-gray-900 {
+        color: #111827 !important;
+    }
+    
+    /* Keep colors for print */
+    .bg-green-50 {
+        background-color: #f0fdf4 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .bg-gray-50 {
+        background-color: #f9fafb !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .bg-blue-50 {
+        background-color: #eff6ff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .bg-green-100 {
+        background-color: #dcfce7 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .text-green-800 {
+        color: #166534 !important;
+    }
+    
+    .border {
+        border-color: #e5e7eb !important;
+    }
+    
+    .border-b {
+        border-bottom-color: #e5e7eb !important;
+    }
+    
+    /* Ensure the receipt fits on one page */
+    @page {
+        size: A4 portrait;
+        margin: 0.5cm;
+    }
+}
+
+/* Screen styles for no-print elements */
+@media screen {
+    .no-print {
+        display: block !important;
+    }
 }
 </style>
 @endsection
