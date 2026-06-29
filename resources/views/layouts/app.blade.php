@@ -79,7 +79,7 @@
     </main>
 
     <!-- Footer -->
-    @include('partials.footer')
+    <livewire:footer />
 
     <!-- Scripts -->
     @livewireScripts

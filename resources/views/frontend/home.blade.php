@@ -1,10 +1,9 @@
-
-
 @extends('layouts.app')
 
 @section('content')
-    @include('frontend.pages.home.slide') 
-    @include('frontend.pages.home.whoarewe')
-    @include('frontend.pages.home.testify')
-    @include('frontend.pages.home.howitwork')     
-@endsection 
+    <livewire:dynamic-slider />
+    <livewire:homepage.services-section />
+    <livewire:homepage.why-choose-us />
+    <livewire:homepage.testimonials />
+    <livewire:homepage.how-it-works />  
+@endsection  
