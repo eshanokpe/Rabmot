@@ -9,7 +9,7 @@
                         <div class="service-badge" style="display:inline-flex; align-items:center; padding:8px 18px; border-radius:30px; background:rgba(255,255,255,.15); font-size:14px; font-weight:600;">
                             <i class="fas fa-id-card mr-2"></i>
                             Fresh Application
-                        </div>
+                        </div> 
 
                         <h2 class="service-title" style="font-size:32px; font-weight:700; margin-top:20px;">
                             Driver's License
@@ -45,7 +45,7 @@
                                 <li style="margin-bottom:14px;">
                                     <i class="fas fa-check-circle" style="color:#38d39f; margin-right:10px;"></i>
                                     Active Email Address
-                                </li>
+                                </li> 
                                 <li style="margin-bottom:14px;">
                                     <i class="fas fa-check-circle" style="color:#38d39f; margin-right:10px;"></i>
                                     Accurate Personal Information

@@ -52,7 +52,11 @@ Route::get('/howitwork', [FrontendController::class, 'howitwork'])->name('howitw
 Route::get('/terms', [FrontendController::class, 'terms'])->name('terms');
 
 //products
+
+Route::get('/vehicle-registration', [ProductsController::class, 'vehicleRegistration'])->name('vehicle-registration');
 Route::get('/int-drivers-license', [ProductsController::class, 'int_drivers_license'])->name('int-drivers-license');
+Route::get('/change-ownership', [ProductsController::class, 'changeOwnership'])->name('change-ownership');
+
 Route::post('/int-drivers-license/store', [ProductsController::class, 'international_license_store'])->name('international-license.store');
 Route::get('/dealer-plate-number', [ProductsController::class, 'dealer_plate_number'])->name('dealer-plate-number');
 Route::post('/dealer-plate-number/store', [ProductsController::class, 'dealer_plate_number_store'])->name('dealer-plate-number.store');
@@ -88,8 +92,3 @@ Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbac
 Route::get('/application/success', [PaymentController::class, 'success'])
     ->name('application.success');
 
-// Route::get('/application/success', function(Request $request) {
-//     return view('frontend.pages.products.application-success', [
-//         'reference' => $request->ref ?? 'N/A'
-//     ]);
-// })->name('application.success');

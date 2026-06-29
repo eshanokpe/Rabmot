@@ -273,7 +273,7 @@ class AddVehicleRegistrationController extends Controller
 
         $randomNumber = mt_rand(100000, 999999);
         $processId = 'PRONVR' . $randomNumber;
-        try{
+        try{ 
             $registration = VehicleRegistration::create([
                 'user_id' => $userId,
                 'user_email' => $userEmail,
@@ -288,7 +288,7 @@ class AddVehicleRegistrationController extends Controller
                 'policeCMRIS' => $policeCMRISTotal,
                 'payment_status' => 'pending',
                 'totalamount' => $totalAmount,
-            ]);
+            ]); 
             // Add the registration to the shopping cart
             Cart::add([
                 'id' => $registration->id,

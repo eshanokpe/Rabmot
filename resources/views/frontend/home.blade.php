@@ -6,4 +6,4 @@
     <livewire:homepage.why-choose-us />
     <livewire:homepage.testimonials />
     <livewire:homepage.how-it-works />  
-@endsection 
+@endsection  

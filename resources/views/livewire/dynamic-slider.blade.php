@@ -26,30 +26,30 @@
                 
                 <!-- Content Container -->
                 <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-10 items-center w-full">
                         <!-- Left Text Content -->
-                        <div class="text-white space-y-7 md:space-y-8 max-w-2xl pl-12 sm:pl-14 md:pl-16 lg:pl-20">
+                        <div class="text-white space-y-7 md:space-y-8 max-w-5xl pl-8 sm:pl-14 md:pl-15 lg:pl-3">
                             <div class="space-y-5">
                                 <h3 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
                                     <span x-text="slide.title"></span>
                                 </h3>
                                 
-                                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-none">
-                                    <span class="text-yellow-400 drop-shadow-lg" x-text="slide.highlight"></span>
+                                <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-5xl font-extrabold leading-none">
+                                    <span style="color: #142444;" class=" drop-shadow-lg" x-text="slide.highlight"></span>
                                 </h1>
                             </div>
 
-                            <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light text-gray-100 leading-relaxed" x-text="slide.subtitle"></p>
+                            <p class="text-lg sm:text-xl md:text-2xl lg:text-2xl font-light text-gray-100 leading-relaxed" x-text="slide.subtitle"></p>
 
                             <div class="pt-3">
                                 @if(auth()->check())
                                     <a href="{{ route('home') }}" 
-                                       class=" md:text-1xl inline-block px-2 py-3 bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-[#142444] font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-yellow-500/25">
+                                       class=" md:text-1xl inline-block px-2 py-3 bg-white hover:bg-yellow-400 active:bg-yellow-600 text-[#142444] font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-yellow-500/25">
                                         View Dashboard
                                     </a>
                                 @else
                                     <a href="{{ route('signup') }}" 
-                                       class="md:text-1xl inline-block px-2 py-3 bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-[#142444] font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-yellow-500/25">
+                                       class="md:text-1xl inline-block px-2 py-3 bg-white hover:bg-yellow-400 active:bg-yellow-600 text-[#142444] font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-lg hover:shadow-yellow-500/25">
                                         Sign Up Now
                                     </a>
                                 @endif
@@ -100,7 +100,7 @@
                 <button 
                     @click="goToSlide(index)" 
                     :class="{
-                        'w-12 bg-yellow-400 shadow-md shadow-yellow-400/30': currentSlide === index, 
+                        'w-12 bg-white shadow-md shadow-yellow-400/30': currentSlide === index, 
                         'w-3 bg-white/40 hover:bg-white/70': currentSlide !== index
                     }"
                     class="h-3 rounded-full transition-all duration-300 ease-out"
@@ -251,10 +251,10 @@
         background: #142444;
     }
     ::-webkit-scrollbar-thumb {
-        background: #FBBF24;
+        background: #fff;
         border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: #F59E0B;
+        background: #fff;
     }
 </style>

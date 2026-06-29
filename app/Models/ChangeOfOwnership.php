@@ -10,6 +10,7 @@ class ChangeOfOwnership extends Model
     use HasFactory;
 
     protected $fillable = [
+        // Existing fields
         'user_id',
         'user_email',
         'owner_id',
@@ -23,7 +24,7 @@ class ChangeOfOwnership extends Model
         'phonenumber',
         'emailaddress',
         'gender',
-        'occupation', 
+        'occupation',
         'platenumber',
         'vehiclelicenseexpiry',
         'insuranceexpiry',
@@ -33,13 +34,26 @@ class ChangeOfOwnership extends Model
         'hackneydutypermitexpiry',
         'localgovernmentpermitexpiry',
         'policeCMRIS',
-        
         'vehiclelicensepapers',
         'proofofownership',
         'agreement',
         'meansofid',
         'payment_status',
         'totalamount',
+
+        // ✅ New fields matching your flow
+        'date_of_birth',
+        'place_of_birth',
+        'lga',
+        'state',
+        'chassis_number',
+        'engine_number',
+        'vehicle_make',
+        'vehicle_color',
+        'road_worthiness_paper',
+        'chassis_image',
+        'nin_slip',
+        'status',
     ];
 
     public function vehicleTypeInfo()

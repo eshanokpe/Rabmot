@@ -4,4 +4,4 @@
 
     <livewire:homepage.driver-license-application />
 
-@endsection
+@endsection 

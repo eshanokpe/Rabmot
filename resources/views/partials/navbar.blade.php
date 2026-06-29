@@ -82,7 +82,7 @@
                     <li>
                         <a href="{{ auth()->check() ? route('home') : route('processpapers') }}" id="a-nav">
                             <button 
-                                class="px-6 py-2 bg-yellow-500 hover:bg-yellow-400 text-[#142444] font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                                class="px-6 py-2 bg-white hover:bg-yellow-400 text-[#142444] font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                             >
                                 {{ auth()->check() ? 'Dashboard' : 'Sign In' }}
                             </button>
@@ -148,7 +148,7 @@
             </a>
             <a href="{{ auth()->check() ? route('home') : route('processpapers') }}" class="block mt-5">
                 <button 
-                    class="w-full py-3 bg-yellow-500 hover:bg-yellow-400 text-[#142444] font-semibold rounded-lg transition-all transform hover:scale-105"
+                    class="w-full py-3 bg-white hover:bg-yellow-400 text-[#142444] font-semibold rounded-lg transition-all transform hover:scale-105"
                 >
                     {{ auth()->check() ? 'Dashboard' : 'Sign In' }}
                 </button>
@@ -171,7 +171,7 @@
         left: 0;
         width: 0;
         height: 2px;
-        background-color: #FBBF24;
+        background-color: #fff;
         transition: width 0.3s ease;
     }
     

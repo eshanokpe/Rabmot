@@ -43,12 +43,12 @@
             <div class="space-y-6">
                 <!-- Section Header -->
                 <div class="mb-8">
-                    <span class="inline-block text-yellow-500 font-semibold text-sm uppercase tracking-wider mb-2">How It Works</span>
+                    <span class="inline-block text-black-500 font-semibold text-sm uppercase tracking-wider mb-2">How It Works</span>
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight" style="color: #142444;">
                         Streamline Your Vehicle <br>
-                        <span class="text-yellow-500">Paperwork In 5 Easy Steps</span>
+                        <span class="text-grey-500">Paperwork In 5 Easy Steps</span>
                     </h2>
-                    <div class="w-20 h-1 mt-3 rounded-full" style="background: linear-gradient(90deg, #142444, #FBBF24);"></div>
+                    <div class="w-20 h-1 mt-3 rounded-full" style="background: linear-gradient(90deg, #142444, #808080);"></div>
                 </div>
 
                 <!-- Steps -->

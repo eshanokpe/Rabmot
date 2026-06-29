@@ -8,14 +8,14 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-12 md:mb-10 lg:mb-15">
-            <span class="inline-block text-yellow-500 font-semibold text-sm uppercase tracking-wider mb-2">Our Services</span>
+            <span class="inline-block text-black-500 font-semibold text-sm uppercase tracking-wider mb-2">Our Services</span>
             <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-4xl font-bold mb-4" style="color: #142444;">
-                Professional <span class="text-yellow-500">Licensing</span> Solutions
+                Professional Licensing Solutions
             </h2>
             <p class="text-gray-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto px-4">
                 Fast, reliable, and professional vehicle licensing services at your fingertips
             </p>
-            <div class="w-24 h-1 mx-auto mt-4 rounded-full" style="background: linear-gradient(90deg, #142444, #FBBF24);"></div>
+            <div class="w-24 h-1 mx-auto mt-4 rounded-full" style="background: linear-gradient(90deg, #142444, #f9f8f6);"></div>
         </div>
 
         <!-- Services Grid -->
@@ -41,7 +41,7 @@
                                 'transform': hover ? 'translateY(-8px)' : 'translateY(0)',
                                 'boxShadow': hover ? '0 20px 40px rgba(20, 36, 68, 0.15)' : '0 4px 6px rgba(0,0,0,0.05)'
                             }"
-                            style="border-bottom: 4px solid #FBBF24; min-height: 180px;"
+                            style="border-bottom: 4px solid #142444; min-height: 180px;"
                         >
                             <!-- Icon Container -->
                             <div 
@@ -54,7 +54,7 @@
                                 <i 
                                     class="fas {{ $service['icon'] }} text-xl sm:text-2xl md:text-3xl transition-all duration-300"
                                     :style="{
-                                        'color': hover ? '#FBBF24' : '#142444'
+                                        'color': hover ? '#808080' : '#142444'
                                     }"
                                 ></i>
                             </div>
@@ -78,7 +78,7 @@
                                 class="service-arrow mt-2 transition-all duration-300"
                                 :style="{
                                     'transform': hover ? 'translateX(4px)' : 'translateX(0)',
-                                    'color': hover ? '#FBBF24' : '#142444'
+                                    'color': hover ? '#808080' : '#142444'
                                 }"
                             >
                                 <i class="fas fa-arrow-right text-xs sm:text-sm"></i>
@@ -104,7 +104,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 
 @push('styles')
 <style>

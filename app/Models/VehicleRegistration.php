@@ -9,7 +9,9 @@ class VehicleRegistration extends Model
 {
     use HasFactory;
 
+    // Added ALL fields used in the form/application
     protected $fillable = [
+        // Existing fields
         'user_id',
         'user_email',
         'owner_id',
@@ -23,8 +25,32 @@ class VehicleRegistration extends Model
         'preferredNumber',
         'hackneyPermit',
         'policeCMRIS',
-        'payment_status' ,
-        'totalamount', 
+        'payment_status',
+        'totalamount',
+
+        // New fields from your form
+        'fullname',
+        'gender',
+        'marital_status',
+        'dob',
+        'address',
+        'lga',
+        'state',
+        'phone',
+        'email',
+        'nin',
+        'chassis_number',
+        'engine_number',
+        'vehicle_make',
+        'vehicle_model',
+        'year',
+        'color',
+        'fuel_type',
+        'doc_custom_papers',
+        'doc_chassis_photo',
+        'doc_nin_slip',
+        'doc_address_proof',
+        'status', // pending / approved / rejected
     ];
 
     public function vehicleType(){

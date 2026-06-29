@@ -46,7 +46,7 @@
                 <div class="sm:col-span-1 lg:col-span-2 footer-col">
                     <h4 class="text-white font-semibold text-lg mb-4 relative">
                         Company
-                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-yellow-500 mt-1"></span>
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-grey-500 mt-1"></span>
                     </h4>
                     <ul class="space-y-2">
                         <li>
@@ -81,7 +81,7 @@
                 <div class="sm:col-span-1 lg:col-span-2 footer-col">
                     <h4 class="text-white font-semibold text-lg mb-4 relative">
                         Clients
-                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-yellow-500 mt-1"></span>
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-grey-500 mt-1"></span>
                     </h4>
                     <ul class="space-y-2">
                         <li>
@@ -115,24 +115,24 @@
                 <div class="sm:col-span-2 lg:col-span-3 footer-col">
                     <h4 class="text-white font-semibold text-lg mb-4 relative">
                         Contact Us
-                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-yellow-500 mt-1"></span>
+                        <span class="absolute bottom-0 left-0 w-8 h-0.5 bg-black-500 mt-1"></span>
                     </h4>
                     <ul class="space-y-3">
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt text-yellow-500 mt-1"></i>
+                            <i class="fas fa-map-marker-alt text-white mt-1"></i>
                             <span class="text-gray-300 text-sm">
                                 1st floor AMG Workspace 22 Road, <br>Festac Town, Lagos Nigeria.
                             </span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fas fa-envelope text-yellow-500"></i>
+                            <i class="fas fa-envelope text-white"></i>
                             <a href="mailto:support@rabmotlicensing.com?subject=Email%20Subject&body=Email%20Body" 
                                class="text-gray-300 hover:text-yellow-500 transition-colors duration-300 text-sm break-all">
                                 support@rabmotlicensing.com
                             </a>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fas fa-phone text-yellow-500"></i>
+                            <i class="fas fa-phone text-white"></i>
                             <div class="flex flex-wrap gap-1">
                                 <a href="tel:+2348155206810" class="text-gray-300 hover:text-yellow-500 transition-colors duration-300 text-sm">
                                     +2348155206810
@@ -216,7 +216,7 @@
         display: block;
         width: 30px;
         height: 2px;
-        background: #FBBF24;
+        background: #fff;
         margin-top: 4px;
         border-radius: 2px;
     }
@@ -237,7 +237,7 @@
         left: 0;
         width: 0;
         height: 1px;
-        background: #FBBF24;
+        background: #fff;
         transition: width 0.3s ease;
     }
 

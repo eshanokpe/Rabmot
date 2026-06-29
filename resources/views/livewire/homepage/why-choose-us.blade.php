@@ -5,14 +5,14 @@
             <div class="space-y-8">
                 <!-- Section Badge -->
                 <div>
-                    <span class="inline-block text-yellow-500 font-semibold text-sm uppercase tracking-wider">Why Choose Us?</span>
-                    <div class="w-16 h-1 mt-2 rounded-full" style="background: linear-gradient(90deg, #142444, #FBBF24);"></div>
+                    <span class="inline-block text-black-500 font-semibold text-sm uppercase tracking-wider">Why Choose Us?</span>
+                    <div class="w-16 h-1 mt-2 rounded-full" style="background: linear-gradient(90deg, #142444, #808080);"></div>
                 </div>
 
                 <!-- Description -->
                 <div class="space-y-4">
                     <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight" style="color: #142444;">
-                        Why <span class="text-yellow-500">Choose Us?</span>
+                        Why <span class="text-black-500">Choose Us?</span>
                     </h2>
                     <p class="text-gray-600 text-base sm:text-lg leading-relaxed max-w-lg">
                         We understand that the process of obtaining the necessary documents for your vehicle 

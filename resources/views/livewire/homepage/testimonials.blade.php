@@ -2,14 +2,14 @@
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-12 md:mb-16">
-            <span class="inline-block text-yellow-500 font-semibold text-sm uppercase tracking-wider mb-2">Testimonials</span>
+            <span class="inline-block text-black-500 font-semibold text-sm uppercase tracking-wider mb-2">Testimonials</span>
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold" style="color: #142444;">
-                What Our <span class="text-yellow-500">Clients Say</span>
+                What Our <span class="text-black-500">Clients Say</span>
             </h2>
             <p class="text-gray-600 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
                 Real reviews from real people who have used our services
             </p>
-            <div class="w-24 h-1 mx-auto mt-4 rounded-full" style="background: linear-gradient(90deg, #142444, #FBBF24);"></div>
+            <div class="w-24 h-1 mx-auto mt-4 rounded-full" style="background: linear-gradient(90deg, #142444, #808080);"></div>
         </div>
 
         <!-- Desktop View (2 columns) -->
@@ -25,7 +25,7 @@
                             'transform': hover ? 'translateY(-4px)' : 'translateY(0)',
                             'boxShadow': hover ? '0 20px 40px rgba(20, 36, 68, 0.12)' : '0 4px 6px rgba(0,0,0,0.05)'
                         }"
-                        style="border-left: 4px solid #FBBF24;"
+                        style="border-left: 4px solid #808080;"
                     >
                         <div class="flex items-start gap-4">
                             <!-- Avatar -->
@@ -33,14 +33,14 @@
                                 <img 
                                     src="{{ asset($testimonial['image']) }}" 
                                     alt="{{ $testimonial['name'] }}"
-                                    class="w-16 h-16 rounded-full object-cover border-2 border-yellow-500 shadow-md"
+                                    class="w-16 h-16 rounded-full object-cover border-2 border-grey-500 shadow-md"
                                 >
                             </div>
 
                             <!-- Content -->
                             <div class="flex-1 min-w-0">
                                 <!-- Stars -->
-                                <div class="flex text-yellow-500 mb-2">
+                                <div class="flex text-grey-500 mb-2">
                                     <i class="fas fa-star text-sm"></i>
                                     <i class="fas fa-star text-sm"></i>
                                     <i class="fas fa-star text-sm"></i>

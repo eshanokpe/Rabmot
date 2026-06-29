@@ -22,14 +22,14 @@ class ServicesSection extends Component
                 'id' => 'vehicle-registration',
                 'title' => 'Vehicle Registration',
                 'icon' => 'fa-car',
-                'route' => '#',
+                'route' => 'vehicle-registration',
                 'description' => 'Register your vehicle with ease'
             ],
             [
                 'id' => 'change-ownership',
                 'title' => 'Change Ownership',
                 'icon' => 'fa-exchange-alt',
-                'route' => '#',
+                'route' => 'change-ownership',
                 'description' => 'Transfer vehicle ownership smoothly'
             ],
             [
