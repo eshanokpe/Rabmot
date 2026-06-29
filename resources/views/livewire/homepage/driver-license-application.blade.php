@@ -2,9 +2,10 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Left Panel - Service Info -->
-            <div class="col-lg-4 mb-4">
+             <div class="col-lg-1"></div>
+            <div class="col-lg-3 mb-4">
                 <div class="service-banner" style="background:linear-gradient(145deg,#0d2b52,#173f73); border-radius:20px; overflow:hidden; position:sticky; top:20px; color:#fff; box-shadow:0 20px 40px rgba(0,0,0,.15);">
-                    <div class="service-overlay" style="padding:35px;">
+                    <div class="service-overlay" style="padding:28px;">
                         <div class="service-badge" style="display:inline-flex; align-items:center; padding:8px 18px; border-radius:30px; background:rgba(255,255,255,.15); font-size:14px; font-weight:600;">
                             <i class="fas fa-id-card mr-2"></i>
                             Fresh Application
@@ -13,11 +14,11 @@
                         <h2 class="service-title" style="font-size:32px; font-weight:700; margin-top:20px;">
                             Driver's License
                         </h2>
-                        <p class="service-description" style="opacity:.9; line-height:1.8; margin:20px 0 30px;">
+                        <p class="service-description" style="opacity:.9; line-height:1.8; margin:20px 0 30px; color:#fff">
                             Apply for your first Nigerian Driver's License online by completing the required information and making a secure payment.
                         </p>
 
-                        <div class="info-card" style="display:flex; align-items:center; padding:18px; background:rgba(255,255,255,.08); border-radius:15px; margin-bottom:20px;">
+                        <div class="info-card" style="display:flex; align-items:center; padding:15px; background:rgba(255,255,255,.08); border-radius:15px; margin-bottom:20px;">
                             <div class="icon" style="width:55px; height:55px; border-radius:50%; background:#fff; color:#173f73; display:flex; align-items:center; justify-content:center; font-size:22px; margin-right:15px;">
                                 <i class="fas fa-clock"></i>
                             </div>
@@ -63,7 +64,7 @@
             </div>
 
             <!-- Right Panel - Application Form -->
-            <div class="col-lg-8">
+            <div class="col-lg-7">
                 <div class="application-card" style="background:#fff; border-radius:15px; padding:35px; box-shadow:0 5px 25px rgba(0,0,0,.08);">
 
                     <!-- Stepper -->
