@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AdminVehicleRenewalPriceController;
 use App\Http\Controllers\Admin\AdminVehicleRegistrationPriceController;
 use App\Http\Controllers\Admin\OtherPermitPriceController;
 use App\Http\Controllers\Admin\InternationalDriverLicensePriceController;
+use App\Http\Controllers\Admin\NotificationController;
 
 
 

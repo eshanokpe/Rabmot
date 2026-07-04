@@ -10,12 +10,17 @@ use SeerbitLaravel\Facades\Seerbit;
 use App\Models\PaymentModel;
 use App\Models\ProcessHistory;
 use App\Models\NewDriverLicense;
-use App\Models\VehicleRegistration;       // Added
-use App\Models\ChangeOfOwnership;         // Added
+use App\Models\VehicleRegistration;
+use App\Models\ChangeOfOwnership;
+use App\Models\InternationalDriverLicense;
+use App\Models\DealerPlateNumber;
+use App\Models\VehiclePaperRenewal;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Cart;
 use App\Models\User;
 use App\Mail\PendingMode;
+use App\Mail\WelcomeWithCredentialsMail;
 use Mail;
 use App\Mail\InvoiceMail;
 use Carbon\Carbon;
@@ -101,9 +106,12 @@ class PaymentController extends Controller
 
                 // Get application data based on service type
                 $application = match(true) {
-                    $process_type === 'New Driver License'          => NewDriverLicense::where('process_id', $process_id)->first(),
-                    $process_type === 'New Vehicle Registration (Lagos)' => VehicleRegistration::where('process_id', $process_id)->first(),
-                    $process_type === 'Change of Ownership & Re-Registration' => ChangeOfOwnership::where('process_id', $process_id)->first(),
+                    $process_type === 'New Driver License'                       => NewDriverLicense::where('process_id', $process_id)->first(),
+                    $process_type === 'New Vehicle Registration (Lagos)'         => VehicleRegistration::where('process_id', $process_id)->first(),
+                    $process_type === 'Change of Ownership & Re-Registration'   => ChangeOfOwnership::where('process_id', $process_id)->first(),
+                    $process_type === "International Driver's License"           => InternationalDriverLicense::where('process_id', $process_id)->first(),
+                    $process_type === "Dealer's Plate Number"                   => DealerPlateNumber::where('process_id', $process_id)->first(),
+                    $process_type === 'Vehicle Papers Renewal'                  => VehiclePaperRenewal::where('process_id', $process_id)->first(),
                     default => null
                 };
 
@@ -147,7 +155,7 @@ class PaymentController extends Controller
             // Update Order status
             Order::where('order_number', $payment->orderNo)->update(['status' => 'paid']);
 
-            // ✅ Update Application status based on service type
+            // Update application status based on service type
             switch ($payment->process_type) {
                 case 'New Driver License':
                     NewDriverLicense::where('process_id', $payment->process_id)
@@ -163,13 +171,30 @@ class PaymentController extends Controller
                     ChangeOfOwnership::where('process_id', $payment->process_id)
                         ->update(['payment_status' => 'paid', 'status' => 'processing']);
                     break;
+
+                case "International Driver's License":
+                    // No status/payment_status columns on this table; tracked via Order + ProcessHistory instead.
+                    break;
+
+                case "Dealer's Plate Number":
+                    DealerPlateNumber::where('process_id', $payment->process_id)
+                        ->update(['payment_status' => 'paid']);
+                    break;
+
+                case 'Vehicle Papers Renewal':
+                    VehiclePaperRenewal::where('process_id', $payment->process_id)
+                        ->update(['payment_status' => 'paid']);
+                    break;
             }
 
-            // Create Process History — works for guests and logged-in users
+            // Resolve owning user (may be null for guests)
+            $ownerUser = User::where('email', $payment->email)->first();
+
+            // Create Process History
             ProcessHistory::create([
-                'user_id'         => Auth::check() ? Auth::id() : null,
+                'user_id'         => $ownerUser ? $ownerUser->id : null,
                 'owner_id'        => null,
-                'userType'        => Auth::check() ? 'user' : 'guest',
+                'userType'        => $ownerUser ? 'user' : 'guest',
                 'user_email'      => $payment->email,
                 'process_number'  => $payment->orderNo,
                 'process_id'      => $payment->process_id,
@@ -183,10 +208,45 @@ class PaymentController extends Controller
                 'status'          => 1,
             ]);
 
-            // Send confirmation email
+            // Auto-create account for guest users (first-time payers without an account)
+            $accountCreated = false;
+            $tempPassword   = null;
+
+            if (!$ownerUser) {
+                $tempPassword = Str::random(10);
+                $phone        = $this->resolvePhone($payment);
+
+                $ownerUser = User::create([
+                    'fullname'    => $payment->full_name,
+                    'email'       => $payment->email,
+                    'phone'       => $phone,
+                    'password'    => bcrypt($tempPassword),
+                    'email_token' => Str::random(60),
+                ]);
+
+                $accountCreated = true;
+            }
+
+            // Send welcome + credentials email for new accounts
+            if ($accountCreated) {
+                try {
+                    Mail::to($payment->email)->send(new WelcomeWithCredentialsMail(
+                        $payment->full_name,
+                        $payment->email,
+                        $tempPassword,
+                        $payment->process_type,
+                        $payment->process_id,
+                        $payment->amount
+                    ));
+                } catch (Exception $e) {
+                    \Log::warning('Welcome credentials email failed: ' . $e->getMessage());
+                }
+            }
+
+            // Send order pending confirmation email
             try {
-                $user = User::where('email', $payment->email)->first() ?? (object)['email' => $payment->email, 'fullname' => $payment->full_name];
-                Mail::to($payment->email)->send(new PendingMode($user));
+                $mailUser = (object)['fullname' => $payment->full_name, 'email' => $payment->email];
+                Mail::to($payment->email)->send(new PendingMode($mailUser));
             } catch (Exception $e) {
                 \Log::error('Confirmation email failed: ' . $e->getMessage());
             }
@@ -220,17 +280,40 @@ class PaymentController extends Controller
             $processType = $payment->process_type ?? '';
 
             $application = match(true) {
-                $processType === 'New Driver License'          => NewDriverLicense::where('process_id', $order->process_id)->first(),
-                $processType === 'New Vehicle Registration (Lagos)' => VehicleRegistration::where('process_id', $order->process_id)->first(),
-                $processType === 'Change of Ownership & Re-Registration' => ChangeOfOwnership::where('process_id', $order->process_id)->first(),
+                $processType === 'New Driver License'                       => NewDriverLicense::where('process_id', $order->process_id)->first(),
+                $processType === 'New Vehicle Registration (Lagos)'         => VehicleRegistration::where('process_id', $order->process_id)->first(),
+                $processType === 'Change of Ownership & Re-Registration'    => ChangeOfOwnership::where('process_id', $order->process_id)->first(),
+                $processType === "International Driver's License"           => InternationalDriverLicense::where('process_id', $order->process_id)->first(),
+                $processType === "Dealer's Plate Number"                    => DealerPlateNumber::where('process_id', $order->process_id)->first(),
+                $processType === 'Vehicle Papers Renewal'                   => VehiclePaperRenewal::where('process_id', $order->process_id)->first(),
                 default => null
             };
         }
-        
+
         return view('frontend.pages.products.application-success', [
-            'order'      => $order,
+            'order'       => $order,
             'application' => $application,
-            'reference'  => $order->order_number,
+            'reference'   => $order->order_number,
         ]);
+    }
+
+    /**
+     * Resolve the applicant's phone number from the application record.
+     * IDL and DPN store phonenumber; VPR does not have it.
+     */
+    protected function resolvePhone($payment): ?string
+    {
+        switch ($payment->process_type) {
+            case "International Driver's License":
+                $app = InternationalDriverLicense::where('process_id', $payment->process_id)->first();
+                return $app->phonenumber ?? null;
+
+            case "Dealer's Plate Number":
+                $app = DealerPlateNumber::where('process_id', $payment->process_id)->first();
+                return $app->phonenumber ?? null;
+
+            default:
+                return null;
+        }
     }
 }
