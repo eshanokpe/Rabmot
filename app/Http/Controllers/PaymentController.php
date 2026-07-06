@@ -121,13 +121,18 @@ class PaymentController extends Controller
                     $email,
                     $phone,
                     [],
-                    collect([(object)['name' => $process_type, 'price' => $amount]]),
+                    collect([(object)[
+                        'name'     => $process_type,
+                        'price'    => $amount,
+                        'subtotal' => $amount,
+                        'model'    => $application,
+                    ]]),
                     $amount,
                     $invoiceNumber,
                     Carbon::now()->format('M d, Y'),
                     $application
                 ));
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 \Log::warning('Invoice email failed: ' . $e->getMessage());
             }
 
