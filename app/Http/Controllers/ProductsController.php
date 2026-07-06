@@ -13,6 +13,14 @@ class ProductsController extends Controller
 {
     public function int_drivers_license(){
         return view('frontend.pages.products.int_drivers_license');
+    } 
+
+    public function vehicleRegistration(){
+        return view('frontend.pages.products.vehicle_registration');
+    }
+
+    public function changeOwnership(){
+        return view('frontend.pages.products.change_ownership');
     }
     
     public function international_license_store(Request $request){

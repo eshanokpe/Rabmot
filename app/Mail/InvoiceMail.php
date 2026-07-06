@@ -54,7 +54,8 @@ class InvoiceMail extends Mailable
         $this->fullname = $fullname;
         $this->email = $email;
         $this->phone = $phone;
-        $this->item = json_decode($item, true);
+        // ✅ Decode ONLY if it's a string; otherwise use as-is
+        $this->item = is_string($item) ? json_decode($item, true) : $item;
         $this->cartItems = $cartItems; 
         $this->totalAmount = $totalAmount;
         $this->invoiceNumber = $invoiceNumber;

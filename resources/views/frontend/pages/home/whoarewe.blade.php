@@ -11,7 +11,7 @@
                             <div class="padding-bottom-10">
                               <h4 class="title uppercase "> <b> WHY CHOOSE US ?</b></h4>
                             </div>
-                        </div>
+                        </div> 
                         <!--// Section Title End-->
                         <div class="paragraph padding-top-20 padding-bottom-25">
                             <p>

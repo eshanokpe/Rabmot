@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductsController;
 
@@ -39,7 +40,7 @@ Auth::routes();
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::get('/signin', [FrontendController::class, 'signin'])->name('signin');
 Route::get('/signup', [FrontendController::class, 'signup'])->name('signup');
-Route::get('/pricing', [PriceController::class, 'pricing'])->name('pricing');
+Route::get('/pricing', [PriceController::class, 'pricing'])->name('pricing'); 
 Route::get('/processpapers', [FrontendController::class, 'processpapers'])->name('processpapers');
 Route::get('/contactus', [FrontendController::class, 'contactus'])->name('contactus');
 Route::post('/formcontactus', [FrontendController::class, 'submitForm'])->name('contactus.form'); 
@@ -51,7 +52,11 @@ Route::get('/howitwork', [FrontendController::class, 'howitwork'])->name('howitw
 Route::get('/terms', [FrontendController::class, 'terms'])->name('terms');
 
 //products
+
+Route::get('/vehicle-registration', [ProductsController::class, 'vehicleRegistration'])->name('vehicle-registration');
 Route::get('/int-drivers-license', [ProductsController::class, 'int_drivers_license'])->name('int-drivers-license');
+Route::get('/change-ownership', [ProductsController::class, 'changeOwnership'])->name('change-ownership');
+
 Route::post('/int-drivers-license/store', [ProductsController::class, 'international_license_store'])->name('international-license.store');
 Route::get('/dealer-plate-number', [ProductsController::class, 'dealer_plate_number'])->name('dealer-plate-number');
 Route::post('/dealer-plate-number/store', [ProductsController::class, 'dealer_plate_number_store'])->name('dealer-plate-number.store');
@@ -75,4 +80,15 @@ Route::get('/get-otherPermit', [PriceController::class, 'getOtherPermit']);
 Route::post('/get-otherPermit/price', [PriceController::class, 'getOtherPermitPrice']);
 Route::post('/get-internationaDriverLicense/length', [PriceController::class, 'getInternationaDriverLicenseLength']);
 Route::post('/get-internationaDriverLicense/price', [PriceController::class, 'getInternationaDriverLicensePrice']);
+ 
+// Payment routes
+// Payment routes
+Route::get('/payment/initiate', [PaymentController::class, 'initiatePayment'])
+    ->name('payment.initiate');
+
+Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbackSeerbit'])
+    ->name('home.payment');
+
+Route::get('/application/success', [PaymentController::class, 'success'])
+    ->name('application.success');
 
