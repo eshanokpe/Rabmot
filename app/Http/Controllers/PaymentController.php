@@ -19,7 +19,7 @@ use App\Mail\PendingMode;
 use Mail;
 use App\Mail\InvoiceMail;
 use Carbon\Carbon;
-
+ 
 class PaymentController extends Controller
 {
     // Remove auth middleware so guests can access
@@ -191,9 +191,19 @@ class PaymentController extends Controller
                 \Log::error('Confirmation email failed: ' . $e->getMessage());
             }
 
-            // Redirect to success page
-            return redirect()->route('application.success', ['ref' => $payment->orderNo])
-                ->with('success', 'Payment completed successfully! Your application is now being processed.');
+            // --------------------------
+            // ✅ YOUR REQUIRED REDIRECT LOGIC
+            // --------------------------
+            if (Auth::check()) {
+                // Logged-in user → go to transaction history
+                Cart::destroy();
+                return redirect()->route('home.transactionHistory')
+                    ->with('success', 'Payment completed successfully! Your application is now being processed.');
+            } else {
+                // Guest user → go to success page
+                return redirect()->route('application.success', ['ref' => $payment->orderNo])
+                    ->with('success', 'Payment completed successfully! Your application is now being processed.');
+            }
         }
 
         return redirect()->route('home')->with('error', 'Payment not completed or failed.');

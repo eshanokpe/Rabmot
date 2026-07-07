@@ -85,3 +85,7 @@ rm -rf bootstrap/cache/*.php
 rm -rf storage/framework/views/*
 composer dump-autoload -o
 php artisan optimize:clear
+
+<div class="wrapper">
+		<div class="page-wrapper">
+			<div class="page-content-wrapper">
