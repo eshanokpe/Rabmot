@@ -171,4 +171,31 @@ class HomeController extends Controller
        return view('user.pages.faq', compact('id', 'email','faqs'));
     }
 
+    
+    public function getUserProfile()
+    {
+        $user = Auth::user();
+ 
+        return response()->json([
+            'user' => [
+                'user'                 => $user,
+                'fullname'            => $user->fullname ?? '',
+                'middlename'           => $user->middlename ?? '',
+                'lastname'             => $user->lastname ?? '',
+                'mother_maiden_name'   => $user->mother_maiden_name ?? '',
+                'email'                => $user->email ?? '',
+                'nin'                  => $user->nin ?? '',
+                'dob'                  => $user->dob ?? '',
+                'gender'               => $user->gender ?? '',
+                'state'                => $user->state ?? '',
+                'phone'                => $user->phone ?? '',
+                'address'              => $user->address ?? '',
+                'local_government'     => $user->local_government ?? '',
+                'local_government_pob' => $user->local_government_pob ?? '',
+                'marital_status'       => $user->marital_status ?? '',
+            ]
+        ]);
+    }
+
+
 }

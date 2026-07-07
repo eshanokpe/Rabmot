@@ -3,150 +3,206 @@ import ReactDOM from 'react-dom/client';
 import axios from 'axios';
 
 export default function NewDriverLicense() {
-    
     const url = window.location.origin;
     const [loading, setLoading] = useState(false);
 
     const [stateList, setStateList] = useState([]);
     const [stateId, setStateId] = useState('');
-
     const [lengthYearList, setLengthYearsList] = useState([]);
     const [lengthYear, setLengthYear] = useState('');
 
-    
-    const [firstName, setSelectedFirstName] = useState('');
-    const [middleName, setSelectedMiddleName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [middleName, setMiddleName] = useState('');
     const [lastName, setLastName] = useState('');
     const [motherMaidenName, setMotherMaidenName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
     const [nin, setNin] = useState('');
-    const [dob, setDOB] = useState('');
+    const [dob, setDob] = useState('');
     const [gender, setGender] = useState('');
-    const [userState, setHandleUserState] = useState('');
+    const [userState, setUserState] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [contactAddress, setContactAddress] = useState('');
     const [localGovernmentPOB, setLocalGovernmentPOB] = useState('');
-    const [bloodGroup, setBloodGroup] = useState('');
-    const [maritalStatus, setMaritalStatus] = useState('');
     const [localGovernment, setLocalGovernment] = useState('');
+    const [maritalStatus, setMaritalStatus] = useState('');
+
+    const [bloodGroup, setBloodGroup] = useState('');
     const [height, setHeight] = useState('');
+    const [facialMark, setFacialMark] = useState('');
+    const [glasses, setGlasses] = useState('');
+    const [disability, setDisability] = useState('');
     const [nextofkinName, setNextofkinName] = useState('');
-    const [phoneNextofkinName, setphoneNextofkinName] = useState('');
+    const [phoneNextofkinName, setPhoneNextofkinName] = useState('');
 
     const [errors, setErrors] = useState({});
+    const [touched, setTouched] = useState({});
+    const [totalAmount, setTotalAmount] = useState(0.00);
 
-    const [totalAmount, setTotalAmount] = useState(0.00); 
-    
-    const handleStateChange = (event) => {
-        setStateId(event.target.value);
+    // ✅ Flag: track if data came from backend
+    const [isLoadedFromApi, setIsLoadedFromApi] = useState(false);
+
+    // ✅ Rule: Disable ONLY if value came from API AND is not empty
+    const isReadOnly = (value) => isLoadedFromApi && value && value.trim() !== '';
+
+    // ✅ Real-time validation rules
+    const validateField = (name, value) => {
+        let msg = '';
+        switch (name) {
+            case 'firstName':
+                if (!value.trim()) msg = 'First name is required';
+                break;
+            case 'lastName':
+                if (!value.trim()) msg = 'Last name is required';
+                break;
+            case 'motherMaidenName':
+                if (!value.trim()) msg = 'Mother’s maiden name is required';
+                break;
+            case 'emailAddress':
+                if (!value.trim()) msg = 'Email is required';
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) msg = 'Invalid email format';
+                break;
+            case 'nin':
+                if (!value.trim()) msg = 'NIN is required';
+                else if (!/^\d{11}$/.test(value)) msg = 'NIN must be 11 digits';
+                break;
+            case 'dob':
+                if (!value) msg = 'Date of birth is required';
+                else if (new Date(value) >= new Date()) msg = 'Date of birth must be in the past';
+                break;
+            case 'gender':
+                if (!value) msg = 'Gender is required';
+                break;
+            case 'phoneNumber':
+                if (!value.trim()) msg = 'Phone number is required';
+                else if (!/^\d{10,15}$/.test(value.replace(/\D/g, ''))) msg = 'Enter a valid phone number';
+                break;
+            case 'userState':
+                if (!value.trim()) msg = 'State of residence is required';
+                break;
+            case 'localGovernment':
+                if (!value.trim()) msg = 'LGA of origin is required';
+                break;
+            case 'localGovernmentPOB':
+                if (!value.trim()) msg = 'LGA of birth is required';
+                break;
+            case 'maritalStatus':
+                if (!value.trim()) msg = 'Marital status is required';
+                break;
+            case 'contactAddress':
+                if (!value.trim()) msg = 'Contact address is required';
+                break;
+            case 'bloodGroup':
+                if (!value) msg = 'Select your blood group';
+                break;
+            case 'height':
+                if (!value.trim()) msg = 'Height is required';
+                break;
+            case 'glasses':
+                if (!value) msg = 'Select if you wear glasses';
+                break;
+            case 'disability':
+                if (!value) msg = 'Select disability status';
+                break;
+            case 'nextofkinName':
+                if (!value.trim()) msg = 'Next of kin name is required';
+                break;
+            case 'phoneNextofkinName':
+                if (!value.trim()) msg = 'Next of kin phone is required';
+                else if (!/^\d{10,15}$/.test(value.replace(/\D/g, ''))) msg = 'Enter a valid phone number';
+                break;
+            default:
+                break;
+        }
+        return msg;
     };
-    const handleLengthYears = (e) =>{
-        setLengthYear(e.target.value);
-    }
-    const handleLastName = (e) => {
-        setLastName(e.target.value);
-    }
-    const handleMiddleName = (e)=>{
-        setSelectedMiddleName(e.target.value);
-    }
-    const handleFirstName = (e)=>{
-        setSelectedFirstName(e.target.value);
-    }
-    const handleNIN = (e) =>{
-        setNin(e.target.value);
-    }
-    const handleGender = (e) =>{
-        setGender(e.target.value);
-    }
-    const handleDOB = (e) =>{
-        setDOB(e.target.value);
-    }
-    const handleUserState= (e)=>{
-        setHandleUserState(e.target.value);
-    }
-    const handlePhoneNumber = (e) =>{
-        setPhoneNumber(e.target.value);
-    }
-    const handleLocalGovernment =(e)=>{
-        setLocalGovernment(e.target.value);
-    }
-    const handleLocalGovernmentPOB =(e)=>{
-        setLocalGovernmentPOB(e.target.value);
-    }
-    const handleBloodGroup = (e) =>{
-        setBloodGroup(e.target.value);
-    }
-    const handleMaritalStatus = (e) =>{
-        setMaritalStatus(e.target.value);
-    }
-    const handleNextofkinName = (e) =>{
-        setNextofkinName(e.target.value);
-    }
-    const handlPhoneNextofkinName = (e) =>{
-        setphoneNextofkinName(e.target.value);
-    }
-    const handleHeight = (e) =>{
-        setHeight(e.target.value);
-    }
-    const handleContactAddress = (e) =>{
-        setContactAddress(e.target.value);
-    }
-    const handleMotherMaidenName = (e) => {
-        setMotherMaidenName(e.target.value);
-    }
 
-    const handleEmailAddress = (e) =>{
-        setEmailAddress(e.target.value);
-    }
+    // ✅ Validate all fields on submit
+    const validateAll = () => {
+        const fields = {
+            firstName, lastName, motherMaidenName, emailAddress, nin, dob, gender,
+            phoneNumber, userState, localGovernment, localGovernmentPOB, maritalStatus,
+            contactAddress, bloodGroup, height, glasses, disability, nextofkinName, phoneNextofkinName
+        };
+        const errs = {};
+        Object.keys(fields).forEach(key => {
+            const err = validateField(key, fields[key]);
+            if (err) errs[key] = err;
+        });
+        setErrors(errs);
+        return Object.keys(errs).length === 0;
+    };
 
+    // ✅ Load data from backend
     useEffect(() => {
-        axios.get(`${url}/home/get-state-newdriverlicense`)
-            .then(response => {
-                console.log('Success', response.data);
-                setStateList(response.data.stateList);
+        axios.get(`${url}/home/get-new-driverLicense`)
+            .then(res => {
+                const user = res.data.user;
+                setFirstName(user.firstname || '');
+                setMiddleName(user.middlename || '');
+                setLastName(user.lastname || '');
+                setMotherMaidenName(user.mother_maiden_name || '');
+                setEmailAddress(user.email || '');
+                setNin(user.nin || '');
+                setDob(user.dob || '');
+                setGender(user.gender || '');
+                setUserState(user.state || '');
+                setPhoneNumber(user.phone || '');
+                setContactAddress(user.address || '');
+                setLocalGovernment(user.local_government || '');
+                setLocalGovernmentPOB(user.local_government_pob || '');
+                setMaritalStatus(user.marital_status || '');
+                setBloodGroup(user.blood_group || '');
+                setHeight(user.height || '');
+                setFacialMark(user.facial_mark || '');
+                setGlasses(user.glasses || '');
+                setDisability(user.disability || '');
+                setNextofkinName(user.nextofkin_name || '');
+                setPhoneNextofkinName(user.nextofkin_phone || '');
+
+                // Mark: data loaded from API
+                setIsLoadedFromApi(true);
             })
-            .catch(error => {
-                console.error('Error fetching vehicle data:', error);
-               
-            });
+            .catch(err => console.error('Load error:', err));
+
+        axios.get(`${url}/home/get-state-newdriverlicense`)
+            .then(res => setStateList(res.data.stateList || []))
+            .catch(err => console.error('States error:', err));
     }, [url]);
 
     useEffect(() => {
-        setLengthYearsList([]);
-        axios.post(`${url}/home/get-new-newdriverlicense-lengthYears`, {
-                stateId
-            })
-            .then(response => {
-                console.log('Success Length:', response.data);
-                setLengthYearsList(response.data.lengthYears  || []);
-            })
-            .catch(error => {
-                console.error('Error sending :', error);
-            });
-        
+        if (!stateId) return;
+        axios.post(`${url}/home/get-new-newdriverlicense-lengthYears`, { stateId })
+            .then(res => setLengthYearsList(res.data.lengthYears || []))
+            .catch(err => console.error('Years error:', err));
     }, [stateId]);
 
     useEffect(() => {
-        axios.post(`${url}/home/get-new-newdriverlicense-price`, {
-                stateId,
-                lengthYear
-            })
-            .then(response => {
-                console.log('Success Amount:', response.data);
-                setTotalAmount(response.data.amount);
-            })
-            .catch(error => {
-                console.error('Error sending :', error);
-            });
-        
-    }, [lengthYear, stateId]);
+        if (!stateId || !lengthYear) return;
+        axios.post(`${url}/home/get-new-newdriverlicense-price`, { stateId, lengthYear })
+            .then(res => setTotalAmount(res.data.amount || 0))
+            .catch(err => console.error('Price error:', err));
+    }, [stateId, lengthYear]);
 
-  
-    
+    // ✅ Handle input change: remove read-only when user starts typing
+    const handleChange = (setter, fieldName) => (e) => {
+        const value = e.target.value;
+        // Once user types, disable "loaded from API" flag so field becomes editable
+        if (isLoadedFromApi) setIsLoadedFromApi(false);
+        setter(value);
+        setTouched({ ...touched, [fieldName]: true });
+        setErrors({ ...errors, [fieldName]: validateField(fieldName, value) });
+    };
 
-   const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setErrors({});
+
+        if (!validateAll()) {
+            setLoading(false);
+            return;
+        }
+
         const formData = new FormData();
         formData.append('userType', 'user');
         formData.append('stateId', stateId);
@@ -166,349 +222,509 @@ export default function NewDriverLicense() {
         formData.append('maritalStatus', maritalStatus);
         formData.append('bloodGroup', bloodGroup);
         formData.append('height', height);
+        formData.append('facialMark', facialMark);
+        formData.append('glasses', glasses);
+        formData.append('disability', disability);
         formData.append('nextofkinName', nextofkinName);
         formData.append('phoneNextofkinName', phoneNextofkinName);
         formData.append('contactAddress', contactAddress);
         formData.append('totalAmount', totalAmount);
-       
+
         try {
-            const response = await axios.post(`${url}/home/post/newdriverlicense`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            await axios.post(`${url}/home/post/newdriverlicense`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
-            console.log('Upload successful', response.data);
-            setTimeout(()=>{
-                window.location.href = `${url}/home/cart`;
-                setLoading(false);
-            },1100)
-            setErrors({});
-        } catch (error) {
-            console.error('Error uploading files', error);
-            if (error.response && error.response.data && error.response.data.errors) {
-                setErrors(error.response.data.errors); 
-            }
+            setTimeout(() => window.location.href = `${url}/home/cart`, 1100);
+        } catch (err) {
+            setLoading(false);
+            if (err.response?.data?.errors) setErrors(err.response.data.errors);
+            else alert('Submission failed. Please check your inputs.');
         }
     };
 
-    const states = [
-        'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta',
-        'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi',
-        'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba',
-        'Yobe', 'Zamfara', 'FCT'
-      ];
-
-
+    // Helper: show error only if field is touched or has error
+    const showError = (field) => touched[field] || errors[field];
 
     return (
-        <>
-            <div className="page-wrapper">
-                <div className="page-content-wrapper">
-                    <div className="page-content">
-                        <div className="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                            <div className="breadcrumb-title pe-3">Vehicle</div>
-                            <div className="ps-3">
-                                <nav aria-label="breadcrumb">
-                                    <ol className="breadcrumb mb-0 p-0">
-                                        <li className="breadcrumb-item">
-                                            <a href='home'>
-                                                <i className="bx bx-home-alt"></i>
-                                            </a>
-                                        </li>
-                                        <li className="breadcrumb-item active" aria-current="page">
-                                            New Driver License
-                                        </li>
-                                    </ol>
-                                </nav>
+        <div className="page-wrapper">
+            <div className="page-content-wrapper">
+                <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-5xl mx-auto">
+                        {/* Header */}
+                        <div className="mb-8">
+                            <nav className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                                <a href="/home" className="hover:text-[#142444] transition-colors">Home</a>
+                                <span>/</span>
+                                <span className="text-[#142444] font-medium">New Driver License</span>
+                            </nav>
+                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">New Driver License Application</h1>
+                            <p className="text-gray-500 text-sm mt-1">Complete the form below to apply for your new driver's license</p>
+                        </div>
+
+                        {/* Info Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <i className="bx bx-calendar text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium">Validity</p>
+                                        <p className="text-sm font-semibold text-gray-800">Select years required</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                        <i className="bx bx-time text-yellow-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium">Timeline</p>
+                                        <p className="text-sm font-semibold text-gray-800">4–6 weeks total</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-white rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <i className="bx bx-map text-green-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium">Available In</p>
+                                        <p className="text-sm font-semibold text-gray-800">Lagos, Abuja, Ibadan, Anambra</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="row">
-                            <div className="col-xl-10 mx-auto">
-                                <div className="card-title d-flex align-items-center">
+                        {/* Form */}
+                        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <div className="p-6 md:p-8">
+                                <form onSubmit={handleSubmit} className="space-y-8">
+                                    {/* Application Details */}
                                     <div>
-                                        <i className="bx bxs-car me-1 font-22 text-primary"></i>
-                                    </div>
-                                    <h5 className="mb-0 text-primary"> New Driver License</h5>
-                                </div>
-                                <hr />
-
-                        
-                                <div className="card border-top border-0 border-4 border-primary">
-                                    <div className="row">
-                                        <div className="col-12 col-lg-12 col-xl-12">
-                                            <div className="radius-15">
-                                                <div class="card-body">
-                                                    <h6 class="text-justify text-success card-title">
-                                                        INSTRUCTION:
-                                                    </h6>
-                                                    <h6 class="card-subtitle mb-2">
-                                                        <b>Select the number of years of validity you require.</b>
-                                                    </h6>
-                                                    <h6 class="text-justify text-primary card-title">
-                                                        PROCESS:
-                                                    </h6>
-                                                    <h6 class="card-subtitle mb-2">
-                                                        It takes 6 weeks, and you will only show up once for capturing and CBT In the 
-                                                        4th week and you will receive your temporary card immediately. Then, two 
-                                                        weeks later, an SMS will be sent to you stating your permanent card is ready… 
-                                                        then we will pick it up and deliver it to your doorstep.
-                                                    </h6> 
-                                                    <h6>
-                                                        <b>Note:</b> We only process new driver’s licenses in Lagos, Abuja, Ibadan, and 
-                                                        Anambra State
-                                                    </h6>
-                                                    <h6 class="text-justify card-title text-danger">
-                                                        TIMELINE
-                                                    </h6>
-                                                    <h6 class="card-subtitle mb-2">
-                                                        <b>Processing and Delivery Time:</b> 4-6 weeks
-                                                    </h6> 
-                                                </div>
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                            <span className="w-1 h-6 bg-[#142444] rounded-full"></span>
+                                            Application Details
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                                    Processing State <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    value={stateId}
+                                                    onChange={(e) => setStateId(e.target.value)}
+                                                    required
+                                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#142444] focus:border-[#142444] bg-white"
+                                                >
+                                                    <option value="">Select State</option>
+                                                    {stateList.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                                    Validity Period <span className="text-red-500">*</span>
+                                                </label>
+                                                <select
+                                                    value={lengthYear}
+                                                    onChange={(e) => setLengthYear(e.target.value)}
+                                                    required
+                                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#142444] focus:border-[#142444] bg-white"
+                                                >
+                                                    <option value="">Select Years</option>
+                                                    {lengthYearList.map(yr => <option key={yr.years_type} value={yr.years_type}>{yr.years_type} Years</option>)}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                        
-                      
-                                <div className="card border-top border-0 border-4 border-primary">
-                                    
-                                    <div className="row card-body p-4">
-                                        <form id="form_calc" action='' onSubmit={handleSubmit}>
-                                            
-                                            <div className="ct_opt card-body" id="ct_opt">
-                                                <div className="row ">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-10 mb-2">
-                                                        <label  className="form-label">Select State</label>
-                                                        <select required  value={stateId || ''}  onChange={handleStateChange}
-                                                            className="form-select" id="stateId" >
-                                                            <option disabled value="">-- Select State --</option>
-                                                            {stateList.map((state, index) => (
-                                                            <option key={index}  value={state.id}>
-                                                                {state.name}
-                                                            </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-                                                <div className="row">
-                                                    <div className="col-md-1"></div>
-                                                    <div class=" col-md-10 mb-2">
-                                                        <label for="inputState" class="form-label">Select length of years</label>
-                                                        <select required name="lengthofyear" id="lengthofyear" class="form-select" value={lengthYear || ''}  onChange={handleLengthYears}>
-                                                            <option disabled value='' >-- Select length of years --</option>
-                                                            {lengthYearList.map((length) =>(
-                                                            <option value={length.years_type}>
-                                                                {length.years_type} Years
-                                                            </option>
-                                                            ))}
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-                                                
-                                                <br/>
-                                                <div className="row">
-                                                    <div className="col-md-1 mb-2"></div>
-                                                    <div className="col-md-10">
-                                                        <h6 class="mb-0 text-dark"><b>Personal Information & Documents</b></h6>
-                                                        <hr></hr>
-                                                    </div>
-                                                    <div className="col-md-1 mb-2"></div>
-                                                </div>
-                                                
 
-                                                <div className="row ">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label">  First name </label>
-                                                        <input required value={firstName || ''}  onChange={handleFirstName} type="text" name="firstname" placeholder="Firstname" class="form-control" id="firstname"/>
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Last name  </label>
-                                                        <input required value={lastName || ''}  onChange={handleLastName} type="text" name="email" placeholder="Last name" class="form-control" id="lastname"/>
-                                                    </div>
-                                                   
-                                                    <div className="col-md-1 "></div>
-                                                </div>
-                                               
-                                                <div className="row">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Middle name </label>
-                                                        <input required value={middleName || ''}  onChange={handleMiddleName}  type="text" name="middlename" placeholder="Middle name" class="form-control" id="middlename"/>
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Mother’s maiden name</label>
-                                                        <input required value={motherMaidenName || ''}  onChange={handleMotherMaidenName} type="text" name="motherMaidenName" placeholder="Mother Maiden Name" class="form-control" id="motherMaidenName"/>
-                                                    </div>
-                                                    <div className="col-md-1 "></div>
-                                                </div>
-
-                                                <div className="row ">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> NIN </label>
-                                                        <input required value={nin || ''}  onChange={handleNIN}  type="number" name="nin" placeholder="NIN" class="form-control" id="nin"/>
-                                                        {errors.nin && <small style={{ color: 'red' }}>{errors.nin[0]}</small>}
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Email Address </label>
-                                                        <input required value={emailAddress || ''}  onChange={handleEmailAddress} type="text" name="motherMaidenName" placeholder="Email Address" class="form-control" id="motherMaidenName"/>
-                                                    </div>
-                                                    <div className="col-md-1 m"></div>
-                                                </div>
-
-                                                <div className="row ">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label className="form-label">Select Gender</label>
-                                                        <select required value={gender || ''}  onChange={handleGender} name="gender" id="gender" className="form-select"  >
-                                                            <option disabled selected="selected" value="">Select Gender</option>
-                                                            <option value="Male"> Male </option>
-                                                            <option value="Female"> Female </option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Date of birth </label>
-                                                        <input required value={dob || ''} placeholder='Date of birth'  onChange={handleDOB} type="date" name="dateofbirth" class="form-control" id="dateofbirth"/>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-                                               
-                                                <div className="row ">
-                                                    <div className="col-md-1 "></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label htmlFor="inputState" className="form-label">State</label>
-                                                        <select required name="state" id="inputState" className="form-select" value={userState} onChange={handleUserState}>
-                                                            <option disabled value="">Select State</option>
-                                                            {states.map((state, index) => (
-                                                            <option key={index} value={state}>
-                                                                {state}
-                                                            </option>
-                                                            ))} 
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Phone number </label>
-                                                        <input required value={phoneNumber || ''}  onChange={handlePhoneNumber} type="text" name="phonenumber" placeholder="Phone number" class="form-control" id="phonenumber"/>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-md-1"></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Local government of origin </label>
-                                                        <input required value={localGovernment} onChange={handleLocalGovernment} type="text" placeholder='Local government' name="localgovernment" class="form-control" id="localgovernment"/>
-                                                    </div>
-                                                    
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Local government place of birth  </label>
-                                                        <input required value={localGovernmentPOB} onChange={handleLocalGovernmentPOB} type="text" placeholder='Local government' name="localgovernment" class="form-control" id="localgovernment"/>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-
-                                                <div className="row ">
-                                                    <div className="col-md-1"></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label htmlFor="vehicleForm" className="form-label">Select Marital status</label>
-                                                        <select required value={maritalStatus || ''}  onChange={handleMaritalStatus} name="addVehicleOwnership" id="addVehicleOwnership" className="form-select" >
-                                                            <option disabled selected="selected" value="">Select Marital status </option>
-                                                            <option value="Single"> Single </option>
-                                                            <option value="Married"> Married </option>
-                                                            <option value="Divorced"> Divorced </option>
-                                                        </select>
-                                                    </div>
-                                                    
-                                                    <div className="col-md-5 mb-2">
-                                                        <label htmlFor="vehicleForm" className="form-label">Blood group </label>
-                                                        <select required value={bloodGroup || ''}  onChange={handleBloodGroup} name="addVehicleOwnership" id="addVehicleOwnership" className="form-select" >
-                                                            <option disabled selected="selected" value="">Select Blood group</option>
-                                                            <option value="Blood Group A+"> Blood Group A+</option>
-                                                            <option value="Blood Group A-">Blood Group A-</option>
-                                                            <option value="Blood Group B+">Blood Group B+</option>
-                                                            <option value="Blood Group B-">Blood Group B-</option>
-                                                            <option value="Blood Group B-">Blood Group B-</option>
-                                                            <option value="Blood Group AB+">Blood Group AB+</option>
-                                                            <option value="Blood Group AB-">Blood Group AB-</option>
-                                                            <option value="Blood Group O+">Blood Group O+</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-md-1"></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Height </label>
-												        <input required  type="text" value={height || ''}  onChange={handleHeight} name="height" placeholder="Height " class="form-control" id="phone"/>
-                                                    </div>
-                                                    
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Next of kin name </label>
-												        <input required  type="text" value={nextofkinName || ''}  onChange={handleNextofkinName} name="nextofkinname" placeholder="Next of kin name " class="form-control" id="phone"/>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-
-                                                <div className="row">
-                                                    <div className="col-md-1"></div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Phone number of Next of kin  </label>
-                                                        <input required placeholder='Phone number of Next of Kin'  type="text" value={phoneNextofkinName || ''} onChange={handlPhoneNextofkinName}  name="residentaddress" class="form-control" id="residentaddress"/>
-                                                    </div>
-                                                    <div className="col-md-5 mb-2">
-                                                        <label for="inputFirstName" class="form-label"> Contact Address  </label>
-                                                        <input required placeholder='Contact Address '  type="text" value={contactAddress || ''} onChange={handleContactAddress}  name="residentaddress" class="form-control" id="residentaddress"/>
-                                                    </div>
-                                                    <div className="col-md-1"></div>
-                                                </div>
-
-                 
-                                                <div className='row'>
-                                                    <div className="col-md-1 mb-1"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
-                                                        <div id="mainPrice" className="alert alert-info mt-3">
-                                                        Total Amount: 
-                                                        <span  >{new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 2 }).format(totalAmount)}</span>
-
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-1 mb-0"></div>
-                                                    <div className="col-md-1 mb-0"></div>
-                                                    <div className="card-body col-md-10 align-items-center text-center">
-                                                        <h5 class="mb-0 text-dark"><b>Processing Time:</b> 4 - 6 weeks</h5>
-                                                    </div>
-                                                    <div className="col-md-1 mb-0"></div>
-                                                </div>
+                                    {/* Personal Info */}
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                            <span className="w-1 h-6 bg-blue-500 rounded-full"></span>
+                                            Personal Information
+                                            <span className="text-sm font-normal text-gray-400 ml-2">(Auto‑filled if available)</span>
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {/* First Name */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">First Name <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={firstName}
+                                                    onChange={handleChange(setFirstName, 'firstName')}
+                                                    readOnly={isReadOnly(firstName)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('firstName') && errors.firstName ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-[#142444] focus:border-[#142444]'
+                                                    } ${isReadOnly(firstName) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('firstName') && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                                             </div>
 
-
-                                            <div className="col-md-12 align-items-center text-center">
-                                                <button
-                                                    type="submit"
-                                                    className="btn btn-primary"
-                                                    disabled={loading} // Disable button while loading
-                                                >
-                                                    {loading ? 'Processing...' : 'Process Payment'} {/* Change text while loading */}
-                                                </button>
+                                            {/* Middle Name */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Middle Name</label>
+                                                <input
+                                                    type="text"
+                                                    value={middleName}
+                                                    onChange={handleChange(setMiddleName, 'middleName')}
+                                                    readOnly={isReadOnly(middleName)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${isReadOnly(middleName) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
                                             </div>
 
-                                        </form>
+                                            {/* Last Name */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Last Name <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={lastName}
+                                                    onChange={handleChange(setLastName, 'lastName')}
+                                                    readOnly={isReadOnly(lastName)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('lastName') && errors.lastName ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(lastName) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('lastName') && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
+                                            </div>
+
+                                            {/* Mother's Maiden Name */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Mother's Maiden Name <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={motherMaidenName}
+                                                    onChange={handleChange(setMotherMaidenName, 'motherMaidenName')}
+                                                    readOnly={isReadOnly(motherMaidenName)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('motherMaidenName') && errors.motherMaidenName ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(motherMaidenName) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('motherMaidenName') && <p className="text-red-500 text-xs mt-1">{errors.motherMaidenName}</p>}
+                                            </div>
+
+                                            {/* NIN */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">NIN <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={nin}
+                                                    onChange={handleChange(setNin, 'nin')}
+                                                    readOnly={isReadOnly(nin)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('nin') && errors.nin ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(nin) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('nin') && <p className="text-red-500 text-xs mt-1">{errors.nin}</p>}
+                                            </div>
+
+                                            {/* Email */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="email"
+                                                    value={emailAddress}
+                                                    onChange={handleChange(setEmailAddress, 'emailAddress')}
+                                                    readOnly={isReadOnly(emailAddress)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('emailAddress') && errors.emailAddress ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(emailAddress) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('emailAddress') && <p className="text-red-500 text-xs mt-1">{errors.emailAddress}</p>}
+                                            </div>
+
+                                            {/* Gender */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Gender <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={gender}
+                                                    onChange={handleChange(setGender, 'gender')}
+                                                    readOnly={isReadOnly(gender)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('gender') && errors.gender ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(gender) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('gender') && <p className="text-red-500 text-xs mt-1">{errors.gender}</p>}
+                                            </div>
+
+                                            {/* DOB */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Date of Birth <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="date"
+                                                    value={dob}
+                                                    onChange={handleChange(setDob, 'dob')}
+                                                    readOnly={isReadOnly(dob)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('dob') && errors.dob ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(dob) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('dob') && <p className="text-red-500 text-xs mt-1">{errors.dob}</p>}
+                                            </div>
+
+                                            {/* State */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">State of Residence <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={userState}
+                                                    onChange={handleChange(setUserState, 'userState')}
+                                                    readOnly={isReadOnly(userState)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('userState') && errors.userState ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(userState) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('userState') && <p className="text-red-500 text-xs mt-1">{errors.userState}</p>}
+                                            </div>
+
+                                            {/* Phone */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="tel"
+                                                    value={phoneNumber}
+                                                    onChange={handleChange(setPhoneNumber, 'phoneNumber')}
+                                                    readOnly={isReadOnly(phoneNumber)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('phoneNumber') && errors.phoneNumber ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(phoneNumber) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('phoneNumber') && <p className="text-red-500 text-xs mt-1">{errors.phoneNumber}</p>}
+                                            </div>
+
+                                            {/* LGA Origin */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">LGA of Origin <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={localGovernment}
+                                                    onChange={handleChange(setLocalGovernment, 'localGovernment')}
+                                                    readOnly={isReadOnly(localGovernment)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('localGovernment') && errors.localGovernment ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(localGovernment) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('localGovernment') && <p className="text-red-500 text-xs mt-1">{errors.localGovernment}</p>}
+                                            </div>
+
+                                            {/* LGA Birth */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">LGA of Birth <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={localGovernmentPOB}
+                                                    onChange={handleChange(setLocalGovernmentPOB, 'localGovernmentPOB')}
+                                                    readOnly={isReadOnly(localGovernmentPOB)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('localGovernmentPOB') && errors.localGovernmentPOB ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(localGovernmentPOB) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('localGovernmentPOB') && <p className="text-red-500 text-xs mt-1">{errors.localGovernmentPOB}</p>}
+                                            </div>
+
+                                            {/* Marital Status */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Marital Status <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={maritalStatus}
+                                                    onChange={handleChange(setMaritalStatus, 'maritalStatus')}
+                                                    readOnly={isReadOnly(maritalStatus)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('maritalStatus') && errors.maritalStatus ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(maritalStatus) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('maritalStatus') && <p className="text-red-500 text-xs mt-1">{errors.maritalStatus}</p>}
+                                            </div>
+
+                                            {/* Address */}
+                                            <div className="md:col-span-2 lg:col-span-3">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Contact Address <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={contactAddress}
+                                                    onChange={handleChange(setContactAddress, 'contactAddress')}
+                                                    readOnly={isReadOnly(contactAddress)}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg transition-all ${
+                                                        showError('contactAddress') && errors.contactAddress ? 'border-red-500' : 'border-gray-300'
+                                                    } ${isReadOnly(contactAddress) ? 'bg-gray-50' : 'bg-white'}`}
+                                                />
+                                                {showError('contactAddress') && <p className="text-red-500 text-xs mt-1">{errors.contactAddress}</p>}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                               
-                               
+
+                                    {/* Personal Details */}
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                            <span className="w-1 h-6 bg-green-500 rounded-full"></span>
+                                            Personal Details
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Blood Group */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Blood Group <span className="text-red-500">*</span></label>
+                                                <select
+                                                    value={bloodGroup}
+                                                    onChange={handleChange(setBloodGroup, 'bloodGroup')}
+                                                    required
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('bloodGroup') && errors.bloodGroup ? 'border-red-500' : 'border-gray-300'}`}
+                                                >
+                                                    <option value="">Select Blood Group</option>
+                                                    <option value="A+">A+</option>
+                                                    <option value="A-">A-</option>
+                                                    <option value="B+">B+</option>
+                                                    <option value="B-">B-</option>
+                                                    <option value="AB+">AB+</option>
+                                                    <option value="AB-">AB-</option>
+                                                    <option value="O+">O+</option>
+                                                    <option value="O-">O-</option>
+                                                </select>
+                                                {showError('bloodGroup') && <p className="text-red-500 text-xs mt-1">{errors.bloodGroup}</p>}
+                                            </div>
+
+                                            {/* Height */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Height <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={height}
+                                                    onChange={handleChange(setHeight, 'height')}
+                                                    placeholder="e.g., 1.75m or 5ft9in"
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('height') && errors.height ? 'border-red-500' : 'border-gray-300'}`}
+                                                />
+                                                {showError('height') && <p className="text-red-500 text-xs mt-1">{errors.height}</p>}
+                                            </div>
+
+                                            {/* Facial Mark */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Facial Mark</label>
+                                                <input
+                                                    type="text"
+                                                    value={facialMark}
+                                                    onChange={handleChange(setFacialMark, 'facialMark')}
+                                                    placeholder="e.g., Scar / None"
+                                                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg"
+                                                />
+                                            </div>
+
+                                            {/* Glasses */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Wears Glasses? <span className="text-red-500">*</span></label>
+                                                <select
+                                                    value={glasses}
+                                                    onChange={handleChange(setGlasses, 'glasses')}
+                                                    required
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('glasses') && errors.glasses ? 'border-red-500' : 'border-gray-300'}`}
+                                                >
+                                                    <option value="">Select</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                                {showError('glasses') && <p className="text-red-500 text-xs mt-1">{errors.glasses}</p>}
+                                            </div>
+
+                                            {/* Disability */}
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Disability Status <span className="text-red-500">*</span></label>
+                                                <select
+                                                    value={disability}
+                                                    onChange={handleChange(setDisability, 'disability')}
+                                                    required
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('disability') && errors.disability ? 'border-red-500' : 'border-gray-300'}`}
+                                                >
+                                                    <option value="">Select</option>
+                                                    <option value="None">None</option>
+                                                    <option value="Visual Impairment">Visual Impairment</option>
+                                                    <option value="Hearing Impairment">Hearing Impairment</option>
+                                                    <option value="Physical Disability">Physical Disability</option>
+                                                    <option value="Speech Impairment">Speech Impairment</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                                {showError('disability') && <p className="text-red-500 text-xs mt-1">{errors.disability}</p>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Next of Kin */}
+                                    <div>
+                                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                            <span className="w-1 h-6 bg-purple-500 rounded-full"></span>
+                                            Next of Kin
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={nextofkinName}
+                                                    onChange={handleChange(setNextofkinName, 'nextofkinName')}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('nextofkinName') && errors.nextofkinName ? 'border-red-500' : 'border-gray-300'}`}
+                                                />
+                                                {showError('nextofkinName') && <p className="text-red-500 text-xs mt-1">{errors.nextofkinName}</p>}
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="tel"
+                                                    value={phoneNextofkinName}
+                                                    onChange={handleChange(setPhoneNextofkinName, 'phoneNextofkinName')}
+                                                    className={`w-full px-4 py-2.5 border rounded-lg ${showError('phoneNextofkinName') && errors.phoneNextofkinName ? 'border-red-500' : 'border-gray-300'}`}
+                                                />
+                                                {showError('phoneNextofkinName') && <p className="text-red-500 text-xs mt-1">{errors.phoneNextofkinName}</p>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Submit Section */}
+                                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                                        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                                            <div>
+                                                <p className="text-sm text-gray-600">Total Fee</p>
+                                                <p className="text-2xl font-bold text-[#142444]">
+                                                    {new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(totalAmount)}
+                                                </p>
+                                            </div>
+                                            <div className="text-center md:text-right">
+                                                <p className="text-sm text-gray-600">Processing Time</p>
+                                                <p className="text-sm font-semibold text-gray-800">4–6 weeks</p>
+                                            </div>
+                                            <button
+                                                type="submit"
+                                                disabled={loading}
+                                                className="w-full md:w-auto px-8 py-3 bg-[#142444] hover:bg-[#0f1c38] text-white font-semibold rounded-lg transition duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
+                                            >
+                                                {loading ? (
+                                                    <span className="flex items-center gap-2">
+                                                        <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                                                        </svg>
+                                                        Processing...
+                                                    </span>
+                                                ) : (
+                                                    <span className="flex items-center gap-2">
+                                                        <i className="bx bx-lock-alt"></i> Proceed to Payment
+                                                    </span>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+
+                        <p className="text-center text-xs text-gray-400 mt-6">
+                            <i className="bx bx-shield-alt mr-1"></i>
+                            Your information is secure and will only be used for license processing
+                        </p>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

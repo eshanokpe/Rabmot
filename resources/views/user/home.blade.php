@@ -1,135 +1,349 @@
-@extends('user.layouts.app') 
+@extends('user.layouts.app')
 
 @section('content')
-
-<!-- wrapper -->
-<div class="wrapper">
-    <!--header-->
-
-    <!--page-wrapper-->
+<div class="min-h-screen bg-gray-50 wrapper">
     <div class="page-wrapper">
-        <!--page-content-wrapper-->
         <div class="page-content-wrapper">  
-            <div class="page-content">
-                @include('user.pages.dashboard.index') 
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                
+                <!-- Welcome Section with CTA -->
+                <div class="bg-gradient-to-r from-[#142444] to-[#1a2d5a] rounded-2xl shadow-xl overflow-hidden mb-8">
+                    <div class="px-6 py-8 md:px-8 md:py-10">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                            <div>
+                                <h1 class="text-2xl md:text-3xl font-bold text-white">
+                                    Welcome back, {{ Auth::user()->fullname }}! 👋
+                                </h1>
+                                <p class="text-white/80 text-sm mt-1">
+                                    Here's what's happening with your vehicles today
+                                </p>
+                            </div>
+                            <a href="{{ route('home.addVehicleRenewal') }}" 
+                               class="inline-flex items-center px-6 py-3 bg-white text-[#142444] font-semibold rounded-xl hover:bg-gray-100 transition duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl whitespace-nowrap">
+                                <i class="bx bx-plus-circle mr-2 text-xl"></i>
+                                New Request
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="card radius-5 overflow-hidden p-2">
-                    <div class="card-header pt-10 border-bottom-0">
-                        @if($vehicleCount == 0)  
-                            <div class="">
-                                <div class="col-12 pb-2">
-                                    <small class="mb-0 text-muted">
-                                        <i class="bx bx-car me-1"></i>Registered Vehicles: {{ $vehicleCount }}
-                                    </small>
-                                </div>
-                                <div class="col-12">
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <i class="bx bx-info-circle me-2"></i>
-                                        <strong>No vehicles registered yet!</strong> Add your first vehicle to start tracking document expiries.
-                                        <a href="{{ route('home.addVehicleRenewal') }}" class="alert-link ms-2">
-                                            <i class="bx bx-plus-circle me-1"></i>Add Vehicle Now
-                                        </a>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                </div>
-                            </div> 
-                        @else
-                            <div class="">
-                                <div class="d-flex justify-content-between align-items-center pb-3">
-                                    <small class="mb-0 text-muted">
-                                        <i class="bx bx-car me-1"></i>Registered Vehicles: {{ $vehicleCount }}
-                                    </small>
-                                    <a href="{{ route('home.addVehicleRenewal') }}" class="btn btn-sm btn-primary">
-                                        <i class="bx bx-plus-circle me-1"></i>Add New Vehicle
-                                    </a>
-                                </div>
-                                <div class="col-12">
-                                    @foreach ($getaddvehicle as $vehicle)
-                                        @php
-                                            // Calculate overall vehicle status
-                                            $hasExpiringSoon = false;
-                                            $hasExpired = false;
-                                            $documents = [
-                                                'vehiclelicenseexpiry' => 'Vehicle License',
-                                                'roadworthinessexpiry' => 'Road Worthiness',
-                                                'insuranceexpiry' => 'Insurance',
-                                                'hackneypermitexpiry' => 'Hackney Permit',
-                                                'statecarriagepermitexpiry' => 'State Carriage Permit',
-                                                'hackneydutypermitexpiry' => 'Mid-Year Permit',
-                                                'localgovernmentpermitexpiry' => 'Local Government Permit',
-                                            ];
-                                            
-                                            $expiryStatuses = [];
-                                            foreach($documents as $field => $label) {
-                                                if($vehicle->$field) {
-                                                    $expiryDate = \Carbon\Carbon::parse($vehicle->$field);
-                                                    $daysLeft = now()->startOfDay()->diffInDays($expiryDate, false);
-                                                    
-                                                    if($daysLeft < 0) {
-                                                        $hasExpired = true;
-                                                        $expiryStatuses[$field] = ['label' => $label, 'days' => $daysLeft, 'status' => 'expired'];
-                                                    } elseif($daysLeft <= 15) {
-                                                        $hasExpiringSoon = true;
-                                                        $expiryStatuses[$field] = ['label' => $label, 'days' => $daysLeft, 'status' => 'expiring'];
-                                                    }
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <!-- Total Vehicles -->
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Vehicles</p>
+                                <h3 class="text-2xl font-bold text-gray-900">{{ $vehicleCount }}</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-car text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Expired Documents -->
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Expired</p>
+                                <h3 class="text-2xl font-bold text-red-600">
+                                    {{ $getaddvehicle->filter(function($v) {
+                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
+                                            if($v->$field && \Carbon\Carbon::parse($v->$field)->isPast()) {
+                                                return true;
+                                            }
+                                        }
+                                        return false;
+                                    })->count() }}
+                                </h3>
+                            </div>
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-error-circle text-red-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Expiring Soon -->
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Expiring Soon</p>
+                                <h3 class="text-2xl font-bold text-yellow-600">
+                                    {{ $getaddvehicle->filter(function($v) {
+                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
+                                            if($v->$field) {
+                                                $days = now()->startOfDay()->diffInDays(\Carbon\Carbon::parse($v->$field), false);
+                                                if($days >= 0 && $days <= 15) {
+                                                    return true;
                                                 }
                                             }
-                                            
-                                            // Determine border color based on status
-                                            $borderClass = '';
-                                            if($hasExpired) {
-                                                $borderClass = 'border-danger';
-                                            } elseif($hasExpiringSoon) {
-                                                $borderClass = 'border-warning';
-                                            } else {
-                                                $borderClass = 'border-success';
+                                        }
+                                        return false;
+                                    })->count() }}
+                                </h3>
+                            </div>
+                            <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-time text-yellow-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- All Valid -->
+                    <div class="bg-white rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">All Valid</p>
+                                <h3 class="text-2xl font-bold text-green-600">
+                                    {{ $getaddvehicle->filter(function($v) {
+                                        $allValid = true;
+                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
+                                            if($v->$field && \Carbon\Carbon::parse($v->$field)->isPast()) {
+                                                $allValid = false;
                                             }
-                                        @endphp
+                                        }
+                                        return $allValid;
+                                    })->count() }}
+                                </h3>
+                            </div>
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="bx bx-check-shield text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Cards Section -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-8">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 class="text-lg font-semibold text-gray-900">Our Services</h2>
+                                <p class="text-sm text-gray-500">Select a service to get started</p>
+                            </div>
+                            <span class="text-xs text-gray-400">6 services available</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                            <!-- Driver's License -->
+                            <a href="{{ route('home.newdriverlicense') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-blue-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-id-card text-blue-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    Driver's License
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Get your driver's license processed quickly
+                                </p>
+                            </a>
+
+                            <!-- Vehicle Registration -->
+                            <a href="{{ route('home.newVehicleRegistration') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-green-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-car text-green-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    Vehicle Registration
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Register your vehicle with ease
+                                </p>
+                            </a>
+
+                            <!-- Change Ownership -->
+                            <a href="{{ route('home.changeofOwnership') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-purple-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-transfer-alt text-purple-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    Change Ownership
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Transfer vehicle ownership smoothly
+                                </p>
+                            </a>
+
+                            <!-- International License -->
+                            <a href="{{ route('home.internationaldriverlicense') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-yellow-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-globe text-yellow-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    International License
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Get your international driving permit
+                                </p>
+                            </a>
+
+                            <!-- Dealer Plate Number -->
+                            <a href="{{ route('home.platenumber') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-red-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-purchase-tag-alt text-red-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    Dealer Plate Number
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Get dealer plate numbers for your business
+                                </p>
+                            </a>
+
+                            <!-- Vehicle Renewal -->
+                            <a href="{{ route('home.vehicleRenewalPaper') }}" 
+                               class="group bg-gray-50 hover:bg-[#142444] rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                                <div class="w-12 h-12 bg-indigo-100 group-hover:bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 transition-all duration-300">
+                                    <i class="bx bx-refresh text-indigo-600 group-hover:text-white text-2xl transition-all duration-300"></i>
+                                </div>
+                                <h6 class="text-sm font-semibold text-gray-700 group-hover:text-white transition-colors duration-300">
+                                    Vehicle Renewal
+                                </h6>
+                                <p class="text-xs text-gray-400 group-hover:text-white/70 mt-1 hidden md:block">
+                                    Renew your vehicle registration
+                                </p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content - Vehicles Section -->
+                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6">
+                        @if($vehicleCount == 0)
+                            <!-- Empty State -->
+                            <div class="text-center py-12">
+                                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="bx bx-car text-3xl text-gray-400"></i>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">No Vehicles Registered Yet</h3>
+                                <p class="text-gray-500 text-sm max-w-md mx-auto mb-6">
+                                    Add your first vehicle to start tracking document expiries and receive renewal reminders.
+                                </p>
+                                <a href="{{ route('home.addVehicleRenewal') }}" 
+                                   class="inline-flex items-center px-6 py-3 bg-[#142444] hover:bg-[#0f1c38] text-white font-medium rounded-lg transition duration-200">
+                                    <i class="bx bx-plus-circle mr-2"></i>
+                                    Add Your First Vehicle
+                                </a>
+                            </div>
+                        @else
+                            <!-- Header -->
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                                <div>
+                                    <h2 class="text-lg font-semibold text-gray-900">Your Vehicles</h2>
+                                    <p class="text-sm text-gray-500">{{ $vehicleCount }} vehicle(s) registered</p>
+                                </div>
+                                <a href="{{ route('home.addVehicleRenewal') }}" 
+                                   class="inline-flex items-center px-4 py-2 bg-[#142444] hover:bg-[#0f1c38] text-white text-sm font-medium rounded-lg transition duration-200">
+                                    <i class="bx bx-plus-circle mr-2"></i>
+                                    Add New Vehicle
+                                </a>
+                            </div>
+
+                            <!-- Active Orders Alert -->
+                            @if($activeOrders ?? false)
+                                <div class="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+                                    <i class="bx bx-package text-blue-500 text-xl mt-0.5"></i>
+                                    <div>
+                                        <h6 class="font-medium text-blue-800">Active Orders</h6>
+                                        <p class="text-sm text-blue-600">
+                                            You have {{ $activeOrders }} active order(s) in progress.
+                                            <a href="{{ route('home.processHistory') }}" class="text-[#142444] font-medium hover:underline">
+                                                View orders →
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Vehicle Cards -->
+                            <div class="space-y-4">
+                                @foreach ($getaddvehicle as $vehicle)
+                                    @php
+                                        $hasExpiringSoon = false;
+                                        $hasExpired = false;
+                                        $documents = [
+                                            'vehiclelicenseexpiry' => 'Vehicle License',
+                                            'roadworthinessexpiry' => 'Road Worthiness',
+                                            'insuranceexpiry' => 'Insurance',
+                                            'hackneypermitexpiry' => 'Hackney Permit',
+                                            'statecarriagepermitexpiry' => 'State Carriage Permit',
+                                            'hackneydutypermitexpiry' => 'Mid-Year Permit',
+                                            'localgovernmentpermitexpiry' => 'Local Government Permit',
+                                        ];
                                         
-                                        <div class="row border radius-2 p-3 mb-3 {{ $borderClass }}" style="border-left-width: 4px !important;">
-                                            <!-- Vehicle Icon -->
-                                            <div class="col-sm-1 d-flex align-items-center justify-content-center">
-                                                <div class="vehicle-icon-wrapper">
-                                                    @if($hasExpired)
-                                                        <i class="bx bxs-car text-danger" style="font-size:48px"></i>
-                                                        <span class="badge bg-danger position-absolute" style="top: 0; right: 0;">!</span>
-                                                    @elseif($hasExpiringSoon)
-                                                        <i class="bx bxs-car text-warning" style="font-size:48px"></i>
-                                                    @else
-                                                        <i class="bx bxs-car text-success" style="font-size:48px"></i>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Vehicle Info -->
-                                            <div class="col-sm-4">
-                                                <h6 class="mb-2">{{ $vehicle->vehiclemake ?? 'N/A' }}</h6>
-                                                <div class="vehicle-details">
-                                                    <div class="mb-1">
-                                                        <i class="bx bx-registered me-1 text-muted"></i>
-                                                        <strong>Plate:</strong> {{ $vehicle->platenumber ?? 'N/A' }}
-                                                    </div>
-                                                    <div class="mb-1">
-                                                        <i class="bx bx-category me-1 text-muted"></i>
-                                                        <strong>Type:</strong> 
-                                                        {{ $vehicle->vehicleTypeInfo->name ?? 'Not specified' }}
-                                                    </div>
-                                                    @if($vehicle->vehiclemodel)
-                                                        <div class="mb-1">
-                                                            <i class="bx bx-car me-1 text-muted"></i>
-                                                            <strong>Model:</strong> {{ $vehicle->vehiclemodel }}
+                                        $expiryStatuses = [];
+                                        foreach($documents as $field => $label) {
+                                            if($vehicle->$field) {
+                                                $expiryDate = \Carbon\Carbon::parse($vehicle->$field);
+                                                $daysLeft = now()->startOfDay()->diffInDays($expiryDate, false);
+                                                
+                                                if($daysLeft < 0) {
+                                                    $hasExpired = true;
+                                                    $expiryStatuses[$field] = ['label' => $label, 'days' => $daysLeft, 'status' => 'expired'];
+                                                } elseif($daysLeft <= 15) {
+                                                    $hasExpiringSoon = true;
+                                                    $expiryStatuses[$field] = ['label' => $label, 'days' => $daysLeft, 'status' => 'expiring'];
+                                                }
+                                            }
+                                        }
+                                        
+                                        $borderColor = $hasExpired ? 'border-red-500' : ($hasExpiringSoon ? 'border-yellow-500' : 'border-green-500');
+                                        $statusBadge = $hasExpired ? 'bg-red-100 text-red-700' : ($hasExpiringSoon ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700');
+                                        $statusText = $hasExpired ? 'Expired' : ($hasExpiringSoon ? 'Expiring Soon' : 'All Valid');
+                                    @endphp
+                                    
+                                    <div class="border-l-4 {{ $borderColor }} bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                                        <div class="p-4 md:p-5">
+                                            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                                                <!-- Vehicle Icon & Status -->
+                                                <div class="md:col-span-1 flex items-center">
+                                                    <div class="relative">
+                                                        <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+                                                            <i class="bx bxs-car text-3xl {{ $hasExpired ? 'text-red-500' : ($hasExpiringSoon ? 'text-yellow-500' : 'text-green-500') }}"></i>
                                                         </div>
-                                                    @endif
+                                                        <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full {{ $hasExpired ? 'bg-red-500' : ($hasExpiringSoon ? 'bg-yellow-500' : 'bg-green-500') }} text-white text-xs flex items-center justify-center">
+                                                            {{ $hasExpired ? '!' : ($hasExpiringSoon ? '⚠' : '✓') }}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            
-                                            <!-- Expiry Information -->
-                                            <div class="col-sm-4">
-                                                <div class="expiry-summary">
-                                                    <h6 class="mb-2">
-                                                        <i class="bx bx-calendar me-1"></i>Document Expiries
-                                                    </h6>
-                                                    <div class="expiry-list" style="max-height: 150px; overflow-y: auto;">
+                                                
+                                                <!-- Vehicle Info -->
+                                                <div class="md:col-span-3">
+                                                    <h6 class="font-semibold text-gray-900 text-lg">{{ $vehicle->vehiclemake ?? 'N/A' }}</h6>
+                                                    <div class="space-y-1 mt-2">
+                                                        <div class="flex items-center text-sm">
+                                                            <i class="bx bx-registered text-gray-400 mr-2"></i>
+                                                            <span class="text-gray-600">Plate: <strong class="text-gray-900">{{ $vehicle->platenumber ?? 'N/A' }}</strong></span>
+                                                        </div>
+                                                        <div class="flex items-center text-sm">
+                                                            <i class="bx bx-category text-gray-400 mr-2"></i>
+                                                            <span class="text-gray-600">Type: <strong class="text-gray-900">{{ $vehicle->vehicleTypeInfo->name ?? 'Not specified' }}</strong></span>
+                                                        </div>
+                                                        @if($vehicle->vehiclemodel)
+                                                            <div class="flex items-center text-sm">
+                                                                <i class="bx bx-car text-gray-400 mr-2"></i>
+                                                                <span class="text-gray-600">Model: <strong class="text-gray-900">{{ $vehicle->vehiclemodel }}</strong></span>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Expiry Information -->
+                                                <div class="md:col-span-4">
+                                                    <div class="flex items-center mb-2">
+                                                        <i class="bx bx-calendar text-gray-400 mr-2"></i>
+                                                        <span class="text-sm font-medium text-gray-700">Document Expiries</span>
+                                                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-medium {{ $statusBadge }}">
+                                                            {{ $statusText }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="expiry-list max-h-32 overflow-y-auto space-y-1 pr-2">
                                                         @foreach($documents as $field => $label)
                                                             @if($vehicle->$field)
                                                                 @php
@@ -137,33 +351,33 @@
                                                                     $daysLeft = now()->startOfDay()->diffInDays($expiryDate, false);
                                                                     
                                                                     if($daysLeft < 0) {
-                                                                        $statusClass = 'text-danger';
+                                                                        $statusClass = 'text-red-600';
                                                                         $icon = 'bx-error-circle';
-                                                                        $statusText = 'Expired';
+                                                                        $statusTextDisplay = 'Expired';
                                                                     } elseif($daysLeft == 0) {
-                                                                        $statusClass = 'text-danger';
+                                                                        $statusClass = 'text-red-600';
                                                                         $icon = 'bx-error';
-                                                                        $statusText = 'Expires today';
+                                                                        $statusTextDisplay = 'Expires today';
                                                                     } elseif($daysLeft <= 7) {
-                                                                        $statusClass = 'text-danger';
+                                                                        $statusClass = 'text-red-500';
                                                                         $icon = 'bx-time';
-                                                                        $statusText = $daysLeft . ' days';
+                                                                        $statusTextDisplay = $daysLeft . ' days';
                                                                     } elseif($daysLeft <= 15) {
-                                                                        $statusClass = 'text-warning';
+                                                                        $statusClass = 'text-yellow-500';
                                                                         $icon = 'bx-time';
-                                                                        $statusText = $daysLeft . ' days';
+                                                                        $statusTextDisplay = $daysLeft . ' days';
                                                                     } else {
-                                                                        $statusClass = 'text-success';
+                                                                        $statusClass = 'text-green-500';
                                                                         $icon = 'bx-check-circle';
-                                                                        $statusText = $daysLeft . ' days';
+                                                                        $statusTextDisplay = $daysLeft . ' days';
                                                                     }
                                                                 @endphp
                                                                 
-                                                                <div class="d-flex justify-content-between align-items-center mb-1 font-11">
-                                                                    <span class="text-muted">{{ $label }}:</span>
-                                                                    <span class="{{ $statusClass }}">
-                                                                        <i class="bx {{ $icon }} me-1"></i>
-                                                                        {{ $statusText }}
+                                                                <div class="flex justify-between items-center text-sm">
+                                                                    <span class="text-gray-600">{{ $label }}</span>
+                                                                    <span class="{{ $statusClass }} font-medium">
+                                                                        <i class="bx {{ $icon }} mr-1"></i>
+                                                                        {{ $statusTextDisplay }}
                                                                     </span>
                                                                 </div>
                                                             @endif
@@ -171,173 +385,57 @@
                                                     </div>
                                                     
                                                     @if($hasExpired)
-                                                        <div class="alert alert-danger py-1 px-2 mt-2 mb-0 font-11">
-                                                            <i class="bx bx-error me-1"></i>Some documents have expired!
+                                                        <div class="mt-2 p-1.5 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 flex items-center">
+                                                            <i class="bx bx-error mr-1"></i>
+                                                            Some documents have expired. Please renew immediately.
                                                         </div>
                                                     @elseif($hasExpiringSoon)
-                                                        <div class="alert alert-warning py-1 px-2 mt-2 mb-0 font-11">
-                                                            <i class="bx bx-time me-1"></i>Documents expiring soon!
+                                                        <div class="mt-2 p-1.5 bg-yellow-50 border border-yellow-200 rounded-lg text-xs text-yellow-700 flex items-center">
+                                                            <i class="bx bx-time mr-1"></i>
+                                                            Some documents are expiring soon. Please renew.
                                                         </div>
                                                     @endif
                                                 </div>
-                                            </div>
-                                            
-                                            <!-- Actions -->
-                                            <div class="col-sm-3">
-                                                <div class="row">
-                                                    <div class="col-6 p-1">
+                                                
+                                                <!-- Actions -->
+                                                <div class="md:col-span-4 lg:col-span-3 flex flex-col justify-center">
+                                                    <div class="grid grid-cols-2 gap-2">
                                                         <a href="{{ route('edit.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" 
-                                                           class="btn btn-sm btn-primary text-center w-100">
-                                                            Edit Vehicle
+                                                           class="px-3 py-2 bg-[#142444] hover:bg-[#0f1c38] text-white text-center text-sm font-medium rounded-lg transition duration-200">
+                                                            <i class="bx bx-edit mr-1"></i>
+                                                            Edit
                                                         </a>
-                                                    </div>
-                                                    <div class="col-6 p-1">
                                                         <a href="{{ route('delete.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id) ]) }}" 
-                                                           class="btn btn-sm btn-secondary text-center w-100" 
+                                                           class="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-center text-sm font-medium rounded-lg transition duration-200"
                                                            onclick="return confirm('Are you sure you want to delete this vehicle?')">
-                                                            Delete Vehicle
+                                                            <i class="bx bx-trash mr-1"></i>
+                                                            Delete
                                                         </a>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                    
-                                    <!-- Quick Stats Summary -->
-                                    <div class="row mt-4">
-                                        <div class="col-12">
-                                            <div class="card bg-light">
-                                                <div class="card-body">
-                                                    <h6 class="mb-3">
-                                                        <i class="bx bx-bar-chart-alt-2 me-1"></i>Summary
-                                                    </h6>
-                                                    <div class="row text-center">
-                                                        <div class="col-md-3 col-6 mb-2">
-                                                            <div class="border-end">
-                                                                <h3 class="mb-0 text-primary">{{ $vehicleCount }}</h3>
-                                                                <small class="text-muted">Total Vehicles</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-6 mb-2">
-                                                            <div class="border-end">
-                                                                <h3 class="mb-0 text-danger">
-                                                                    {{ $getaddvehicle->filter(function($v) {
-                                                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
-                                                                            if($v->$field && \Carbon\Carbon::parse($v->$field)->isPast()) {
-                                                                                return true;
-                                                                            }
-                                                                        }
-                                                                        return false;
-                                                                    })->count() }}
-                                                                </h3>
-                                                                <small class="text-muted">With Expired Docs</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-6 mb-2">
-                                                            <div class="border-end">
-                                                                <h3 class="mb-0 text-warning">
-                                                                    {{ $getaddvehicle->filter(function($v) {
-                                                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
-                                                                            if($v->$field) {
-                                                                                $days = now()->startOfDay()->diffInDays(\Carbon\Carbon::parse($v->$field), false);
-                                                                                if($days >= 0 && $days <= 15) {
-                                                                                    return true;
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        return false;
-                                                                    })->count() }}
-                                                                </h3>
-                                                                <small class="text-muted">Expiring Soon</small>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-6 mb-2">
-                                                            <div>
-                                                                <h3 class="mb-0 text-success">
-                                                                    {{ $getaddvehicle->filter(function($v) {
-                                                                        $allValid = true;
-                                                                        foreach(['vehiclelicenseexpiry', 'roadworthinessexpiry', 'insuranceexpiry', 'hackneypermitexpiry', 'statecarriagepermitexpiry', 'hackneydutypermitexpiry', 'localgovernmentpermitexpiry'] as $field) {
-                                                                            if($v->$field && \Carbon\Carbon::parse($v->$field)->isPast()) {
-                                                                                $allValid = false;
-                                                                            }
-                                                                        }
-                                                                        return $allValid;
-                                                                    })->count() }}
-                                                                </h3>
-                                                                <small class="text-muted">All Valid</small>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    @if($hasExpired || $hasExpiringSoon)
+                                                        <a href="{{ route('edit.vehiclePaperRenewal', ['encryptedId' => encrypt($vehicle->id)]) }}" 
+                                                           class="mt-2 px-3 py-2 bg-yellow-500 hover:bg-yellow-600 text-white text-center text-sm font-medium rounded-lg transition duration-200">
+                                                            <i class="bx bx-refresh mr-1"></i>
+                                                            Renew Documents
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
                         @endif
-                        
                     </div>
-                    <br>
                 </div>
             </div>
-            
-            <script>
-                var textToCopy = document.getElementById("textToCopy");
-                if(textToCopy) {
-                    textToCopy.addEventListener("click", function() {
-                        // Select the text in the input element
-                        textToCopy.select();
-                        textToCopy.setSelectionRange(0, 99999); // For mobile devices
-                    
-                        // Copy the text to the clipboard
-                        document.execCommand("copy");
-                    
-                        // Show a "Copied!" message
-                        var copiedMessage = document.getElementById("copiedMessage");
-                        copiedMessage.style.display = "block";
-                    
-                        // Hide the message after a short delay
-                        setTimeout(function() {
-                            copiedMessage.style.display = "none";
-                        }, 2000); // 2 seconds (adjust as needed)
-                    });
-                }
-            </script>
         </div>
-        <!--end page-content-wrapper-->
     </div>
-    <!--end page-wrapper-->
-
-    <!--footer-->
-    
-    <!--end footer-->
 </div>
-
-@endsection
 
 @push('styles')
 <style>
-    .vehicle-icon-wrapper {
-        position: relative;
-        display: inline-block;
-    }
-    
-    .border-danger {
-        border-color: #dc3545 !important;
-    }
-    
-    .border-warning {
-        border-color: #ffc107 !important;
-    }
-    
-    .border-success {
-        border-color: #198754 !important;
-    }
-    
-    .font-11 {
-        font-size: 11px;
-    }
-    
+    /* Custom scrollbar for expiry list */
     .expiry-list::-webkit-scrollbar {
         width: 4px;
     }
@@ -348,25 +446,30 @@
     }
     
     .expiry-list::-webkit-scrollbar-thumb {
-        background: #888;
+        background: #c1c7cd;
         border-radius: 10px;
     }
     
     .expiry-list::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: #a0a7ae;
     }
     
-    .vehicle-details {
-        font-size: 0.9rem;
+    /* Smooth transitions */
+    .transition-shadow {
+        transition: box-shadow 0.2s ease;
     }
     
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.875rem;
+    /* Focus styles */
+    *:focus-visible {
+        outline: 2px solid #142444;
+        outline-offset: 2px;
     }
     
-    .w-100 {
-        width: 100%;
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 </style>
 @endpush

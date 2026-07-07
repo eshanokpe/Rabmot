@@ -8,7 +8,7 @@
     
     .dropdown-item.border-warning {
         border-left: 4px solid #ffc107 !important;
-    }
+    } 
     
     .dropdown-item.border-info {
         border-left: 4px solid #0dcaf0 !important;

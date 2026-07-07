@@ -24,8 +24,10 @@ use App\Http\Controllers\User\AddVehicle\AddVehicleOwnershipController;
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    // Route::get('/get-state-newdriverlicense', [HomeController::class, 'getStateNewDriverLicense'])->name('get.ndl.states');
    
     Route::prefix('/home')->middleware('auth')->group(function () {   
+        Route::get('/get-new-driverLicense', [NewDriverLicenseController::class, 'getNewDriverLicense'])->name('get.new.driverLicense');
         Route::get('/processVehicleDocument', [HomeController::class, 'processVehicleDocument']);
         Route::get('/pricing', [HomeController::class, 'pricing'])->name('home.pricing');
 
@@ -76,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('get-new-newdriverlicense-lengthYears', [NewDriverLicenseController::class, 'getNDLengthYears']);
         Route::post('get-new-newdriverlicense-price', [NewDriverLicenseController::class, 'getNDLPrice']);
         Route::post('/post/newdriverlicense', [NewDriverLicenseController::class, 'postNewDriverLicense']);
-
+ 
         Route::get('drivers/license/renewal', [DriverLicenseRenewalController::class, 'index'])->name('home.driverslicenserenewal');
         Route::get('get-state-driverlicenserenewal', [DriverLicenseRenewalController::class, 'getState']);
         Route::post('get-driverlicenserenewal-lengthYears', [DriverLicenseRenewalController::class, 'getDLRLengthYears']);
