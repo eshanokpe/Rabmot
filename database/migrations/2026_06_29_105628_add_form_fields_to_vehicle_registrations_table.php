@@ -8,7 +8,8 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('vehicle_registrations', function (Blueprint $table) {
+        Schema::create('vehicle_registrations', function (Blueprint $table) {
+            $table->id();
             $table->string('fullname')->nullable();
             $table->string('gender')->nullable();
             $table->string('marital_status')->nullable();
@@ -31,18 +32,12 @@ return new class extends Migration
             $table->string('doc_nin_slip')->nullable();
             $table->string('doc_address_proof')->nullable();
             $table->string('status')->default('pending');
+            $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::table('vehicle_registrations', function (Blueprint $table) {
-            $table->dropColumn([
-                'fullname', 'gender', 'marital_status', 'dob', 'address', 'lga', 'state',
-                'phone', 'email', 'nin', 'chassis_number', 'engine_number', 'vehicle_make',
-                'vehicle_model', 'year', 'color', 'fuel_type', 'doc_custom_papers',
-                'doc_chassis_photo', 'doc_nin_slip', 'doc_address_proof', 'status'
-            ]);
-        });
+        Schema::dropIfExists('vehicle_registrations');
     }
 };
