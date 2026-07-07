@@ -16,4 +16,4 @@ return new class extends Migration
         // Rollback if needed
         DB::statement("ALTER TABLE payment_models MODIFY COLUMN orderNo VARCHAR(20) NOT NULL;");
     }
-};
+}; 

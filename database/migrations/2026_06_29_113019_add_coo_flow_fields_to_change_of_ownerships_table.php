@@ -8,7 +8,6 @@ return new class extends Migration
     public function up()
     {
         DB::statement("ALTER TABLE change_of_ownerships
-            ADD COLUMN date_of_birth DATE NULL,
             ADD COLUMN place_of_birth VARCHAR(100) NULL,
             ADD COLUMN lga VARCHAR(100) NULL,
             ADD COLUMN state VARCHAR(50) DEFAULT 'Lagos' NULL,
