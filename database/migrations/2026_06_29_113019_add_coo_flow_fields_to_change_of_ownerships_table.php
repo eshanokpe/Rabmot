@@ -8,7 +8,6 @@ return new class extends Migration
     public function up()
     {
         DB::statement("ALTER TABLE change_of_ownerships
-            ADD COLUMN chassis_image VARCHAR(255) NULL,
             ADD COLUMN status VARCHAR(30) DEFAULT 'pending' NULL,
             MODIFY COLUMN payment_status VARCHAR(30) DEFAULT 'unpaid' NOT NULL,
             MODIFY COLUMN process_id VARCHAR(50) NOT NULL,
