@@ -68,3 +68,20 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 Mastercard: 5000 5500 0000 0029 (Expiry: 08/2028 | CVC: 072 | PIN: 0000)
 
 php artisan make:livewire Homepage/Products/VehicleRegistration
+
+<!-- https://appstaging.rabmotlicensing.com -->
+https://rabmot.rabmotlicensing.com
+
+07058567588
+Dimension:1536 × 1024
+
+
+php artisan livewire:discover
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+rm -rf bootstrap/cache/*.php
+rm -rf storage/framework/views/*
+composer dump-autoload -o
+php artisan optimize:clear

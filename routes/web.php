@@ -11,6 +11,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\ProductsController;
+use App\Livewire\Auth\Login;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,8 @@ use App\Http\Controllers\ProductsController;
 require __DIR__.'/admin.php';
 require __DIR__.'/agent.php';
 require __DIR__.'/user.php';
+
+
 
 Route::get('/verifyemail/{token}', [RegisterController::class, 'verify']);
 Route::post('/forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 

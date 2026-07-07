@@ -106,17 +106,26 @@ class LoginController extends Controller
     }
 
 
-    private function validateRecaptcha(Request $request): bool
-    {
-        $recaptcha = $request->input('g-recaptcha-response');
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => config('services.recaptcha.secretKey'),
-            'response' => $recaptcha,
-            'remoteip' => $request->ip(),
-        ]);
+  private function validateRecaptcha(Request $request): bool
+{
+    $recaptcha = $request->input('g-recaptcha-response');
 
-        return $response->json('success', false);
+    if (empty($recaptcha)) {
+        \Log::warning('reCAPTCHA: No response token received');
+        return false;
     }
+
+    $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        'secret'   => config('services.recaptcha.secretKey'),
+        'response' => $recaptcha,
+        'remoteip' => $request->ip(),
+    ]);
+
+    $result = $response->json();
+    \Log::info('reCAPTCHA Response', $result);
+
+    return isset($result['success']) && $result['success'] === true;
+}
 
 
     private function handleAuthenticatedUser()

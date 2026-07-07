@@ -115,12 +115,14 @@
         window.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 
-    <!-- reCAPTCHA -->
-    <script src="https://www.google.com/recaptcha/api.js"></script>
     @if (session('recaptcha_error'))
     <script>
         $(document).ready(() => toastr.error("{{ session('recaptcha_error') }}"));
     </script>
     @endif
+
+    <!-- Page-specific scripts pushed via @push('scripts') in child views -->
+    @stack('scripts')
+
 </body>
 </html>
