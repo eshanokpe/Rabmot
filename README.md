@@ -89,3 +89,7 @@ php artisan optimize:clear
 <div class="wrapper">
 		<div class="page-wrapper">
 			<div class="page-content-wrapper">
+
+# Switch versions
+brew-php-switcher 8.2
+brew-php-switcher 8.4

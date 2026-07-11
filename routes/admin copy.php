@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminLoginController;
@@ -19,11 +19,11 @@ use App\Http\Controllers\Admin\AdminVehicleRegistrationPriceController;
 use App\Http\Controllers\Admin\OtherPermitPriceController;
 use App\Http\Controllers\Admin\InternationalDriverLicensePriceController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\NotificationController;
+ 
 
 
 
-
+ 
 Route::prefix('admin')->group(function () {
     Route::get('/login',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');  
     Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
@@ -31,15 +31,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
  
     Route::middleware('auth.admin')->group(function () {
-
-        // --------------------------
-        // ✅ ONLY Super Admin can manage admins
-        // --------------------------
         Route::middleware('admin.permission:manage_admins')->group(function () {
-            Route::resource('/admins', AdminController::class)->names('admin.admins');
+            Route::resource('/admins', AdminController::class)->name('admins.admins.index');
         });
-
         Route::get('/',[AdminDashboardController::class, 'index'])->name('admin.index');
+        
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         
         //Processe Type
@@ -126,95 +122,87 @@ Route::prefix('admin')->group(function () {
         Route::get('/vehicle-change-of-ownership/add', [AdminAddVehicleController::class, 'addVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.add');
         Route::post('/vehicle-change-of-ownership', [AdminAddVehicleController::class, 'storeVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.store');
 
-        // --------------------------
-        // ✅ ONLY Super Admin can manage pricing & vehicle types
-        // --------------------------
-        Route::middleware('admin.permission:set_service_pricing')->group(function () {
-            //Vehicle Type 
-            Route::get('/vehicle-types', [AdminVehiclePriceController::class, 'indexVehicleTypes'])->name('admin.vehicle.types');
-            Route::get('/vehicle-types/add', [AdminVehiclePriceController::class, 'createVehicleType'])->name('admin.vehicle.type.add');
-            Route::post('/vehicle-types/store', [AdminVehiclePriceController::class, 'storeVehicleType'])->name('admin.vehicle.type.store');
-            Route::get('/vehicle-types/{id}/edit', [AdminVehiclePriceController::class, 'editVehicleType'])->name('admin.vehicle.type.edit');
-            Route::post('/vehicle-types/update', [AdminVehiclePriceController::class, 'updateVehicleType'])->name('admin.vehicle.type.update');
-            
-            //state
-            Route::get('/states', [AdminVehiclePriceController::class, 'indexStates'])->name('admin.states');
-            Route::get('/states/create', [AdminVehiclePriceController::class, 'createState'])->name('admin.state.create');
-            Route::post('/states/store', [AdminVehiclePriceController::class, 'storeState'])->name('admin.state.store');
-            Route::post('/states/update', [AdminVehiclePriceController::class, 'updateState'])->name('admin.state.update');
-            Route::get('/states/{id}', [AdminVehiclePriceController::class, 'showStateEdit'])->name('admin.state.details');
-            
-            //Price Update 
-           // Vehicle renewal price management routes for admin
-            Route::get('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'index'])->name('admin.vehicleRenewalPrice.index'); 
-            Route::get('/vehicle-renewal-price/create', [AdminVehicleRenewalPriceController::class, 'create'])->name('admin.vehicleRenewalPrice.create'); 
-            Route::post('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'store'])->name('admin.vehicleRenewalPrice.store'); 
-            Route::get('/vehicle-renewal-price/{id}/edit', [AdminVehicleRenewalPriceController::class, 'edit'])->name('admin.vehicleRenewalPrice.edit');
-            Route::put('/vehicle-renewal-price/{id}', [AdminVehicleRenewalPriceController::class, 'update'])->name('admin.vehicleRenewalPrice.update'); 
-            Route::get('/vehicle-renewal-price/{id}', [AdminVehicleRenewalPriceController::class, 'destroy'])->name('admin.vehicleRenewalPrice.destroy'); 
+        //Vehicle Type 
+        Route::get('/vehicle-types', [AdminVehiclePriceController::class, 'indexVehicleTypes'])->name('admin.vehicle.types');
+        Route::get('/vehicle-types/add', [AdminVehiclePriceController::class, 'createVehicleType'])->name('admin.vehicle.type.add');
+        Route::post('/vehicle-types/store', [AdminVehiclePriceController::class, 'storeVehicleType'])->name('admin.vehicle.type.store');
+        Route::get('/vehicle-types/{id}/edit', [AdminVehiclePriceController::class, 'editVehicleType'])->name('admin.vehicle.type.edit');
+        Route::post('/vehicle-types/update', [AdminVehiclePriceController::class, 'updateVehicleType'])->name('admin.vehicle.type.update');
+        
+        //state
+        Route::get('/states', [AdminVehiclePriceController::class, 'indexStates'])->name('admin.states');
+        Route::get('/states/create', [AdminVehiclePriceController::class, 'createState'])->name('admin.state.create');
+        Route::post('/states/store', [AdminVehiclePriceController::class, 'storeState'])->name('admin.state.store');
+        Route::post('/states/update', [AdminVehiclePriceController::class, 'updateState'])->name('admin.state.update');
+        Route::get('/states/{id}', [AdminVehiclePriceController::class, 'showStateEdit'])->name('admin.state.details');
+        
+        //Price Update 
+       // Vehicle renewal price management routes for admin
+        Route::get('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'index'])->name('admin.vehicleRenewalPrice.index'); 
+        Route::get('/vehicle-renewal-price/create', [AdminVehicleRenewalPriceController::class, 'create'])->name('admin.vehicleRenewalPrice.create'); 
+        Route::post('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'store'])->name('admin.vehicleRenewalPrice.store'); 
+        Route::get('/vehicle-renewal-price/{id}/edit', [AdminVehicleRenewalPriceController::class, 'edit'])->name('admin.vehicleRenewalPrice.edit');
+        Route::put('/vehicle-renewal-price/{id}', [AdminVehicleRenewalPriceController::class, 'update'])->name('admin.vehicleRenewalPrice.update'); 
+        Route::get('/vehicle-renewal-price/{id}', [AdminVehicleRenewalPriceController::class, 'destroy'])->name('admin.vehicleRenewalPrice.destroy'); 
 
-            // Vehicle registration price management routes for admin
-            Route::get('/vehicle-registration-price', [AdminVehicleRegistrationPriceController::class, 'index'])->name('admin.vehicleRegistrationPrice.index');
-            Route::get('/vehicle-registration-price/create', [AdminVehicleRegistrationPriceController::class, 'create'])->name('admin.vehicleRegistrationPrice.create');
-            Route::post('/vehicle-registration-price', [AdminVehicleRegistrationPriceController::class, 'store'])->name('admin.vehicleRegistrationPrice.store');
-            Route::get('/vehicle-registration-price/{id}/edit', [AdminVehicleRegistrationPriceController::class, 'edit'])->name('admin.vehicleRegistrationPrice.edit');
-            Route::put('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'update'])->name('admin.vehicleRegistrationPrice.update');
-            Route::get('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'destroy'])->name('admin.vehicleRegistrationPrice.destroy');
+        // Vehicle registration price management routes for admin
+        Route::get('/vehicle-registration-price', [AdminVehicleRegistrationPriceController::class, 'index'])->name('admin.vehicleRegistrationPrice.index');
+        Route::get('/vehicle-registration-price/create', [AdminVehicleRegistrationPriceController::class, 'create'])->name('admin.vehicleRegistrationPrice.create');
+        Route::post('/vehicle-registration-price', [AdminVehicleRegistrationPriceController::class, 'store'])->name('admin.vehicleRegistrationPrice.store');
+        Route::get('/vehicle-registration-price/{id}/edit', [AdminVehicleRegistrationPriceController::class, 'edit'])->name('admin.vehicleRegistrationPrice.edit');
+        Route::put('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'update'])->name('admin.vehicleRegistrationPrice.update');
+        Route::get('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'destroy'])->name('admin.vehicleRegistrationPrice.destroy');
 
-           // Vehicle change of ownership price management routes for admin
-            Route::get('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'index'])->name('admin.vehicleChangeofOwnershipPrice.index');
-            Route::get('/vehicle-change-of-ownership-price/create', [VehicleChangeOfOwnershipPriceController::class, 'create'])->name('admin.vehicleChangeofOwnershipPrice.create');
-            Route::post('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'store'])->name('admin.vehicleChangeofOwnershipPrice.store');
-            Route::get('/vehicle-change-of-ownership-price/{id}/edit', [VehicleChangeOfOwnershipPriceController::class, 'edit'])->name('admin.vehicleChangeofOwnershipPrice.edit');
-            Route::put('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'update'])->name('admin.vehicleChangeofOwnershipPrice.update');
-            Route::get('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'destroy'])->name('admin.vehicleChangeofOwnershipPrice.destroy');
+       // Vehicle change of ownership price management routes for admin
+        Route::get('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'index'])->name('admin.vehicleChangeofOwnershipPrice.index');
+        Route::get('/vehicle-change-of-ownership-price/create', [VehicleChangeOfOwnershipPriceController::class, 'create'])->name('admin.vehicleChangeofOwnershipPrice.create');
+        Route::post('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'store'])->name('admin.vehicleChangeofOwnershipPrice.store');
+        Route::get('/vehicle-change-of-ownership-price/{id}/edit', [VehicleChangeOfOwnershipPriceController::class, 'edit'])->name('admin.vehicleChangeofOwnershipPrice.edit');
+        Route::put('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'update'])->name('admin.vehicleChangeofOwnershipPrice.update');
+        Route::get('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'destroy'])->name('admin.vehicleChangeofOwnershipPrice.destroy');
 
-           // Driver license price management routes for admin
-            Route::get('/new-driver-license', [DriverLicenseController::class, 'index'])->name('admin.newDriverLicense.index');
-            Route::get('/new-driver-license/create', [DriverLicenseController::class, 'create'])->name('admin.newDriverLicense.create');
-            Route::post('/new-driver-license', [DriverLicenseController::class, 'store'])->name('admin.newDriverLicense.store');
-            Route::get('/new-driver-license/{id}/edit', [DriverLicenseController::class, 'edit'])->name('admin.newDriverLicense.edit');
-            Route::put('/new-driver-license/{id}', [DriverLicenseController::class, 'update'])->name('admin.newDriverLicense.update');
-            Route::get('/new-driver-license/{id}', [DriverLicenseController::class, 'destroy'])->name('admin.newDriverLicense.destroy');
+       // Driver license price management routes for admin
+        Route::get('/new-driver-license', [DriverLicenseController::class, 'index'])->name('admin.newDriverLicense.index');
+        Route::get('/new-driver-license/create', [DriverLicenseController::class, 'create'])->name('admin.newDriverLicense.create');
+        Route::post('/new-driver-license', [DriverLicenseController::class, 'store'])->name('admin.newDriverLicense.store');
+        Route::get('/new-driver-license/{id}/edit', [DriverLicenseController::class, 'edit'])->name('admin.newDriverLicense.edit');
+        Route::put('/new-driver-license/{id}', [DriverLicenseController::class, 'update'])->name('admin.newDriverLicense.update');
+        Route::get('/new-driver-license/{id}', [DriverLicenseController::class, 'destroy'])->name('admin.newDriverLicense.destroy');
 
-            // Driver license renewal price management routes for admin
-            Route::get('/admin/driver-license-renewal', [DriverLicenseRenewalController::class, 'index'])->name('admin.driverLicenseRenewal.index');
-            Route::get('/admin/driver-license-renewal/create', [DriverLicenseRenewalController::class, 'create'])->name('admin.driverLicenseRenewal.create');
-            Route::post('/admin/driver-license-renewal', [DriverLicenseRenewalController::class, 'store'])->name('admin.driverLicenseRenewal.store');
-            Route::get('/admin/driver-license-renewal/{id}/edit', [DriverLicenseRenewalController::class, 'edit'])->name('admin.driverLicenseRenewal.edit');
-            Route::put('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'update'])->name('admin.driverLicenseRenewal.update');
-            Route::get('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'destroy'])->name('admin.driverLicenseRenewal.destroy');
+        // Driver license renewal price management routes for admin
+        Route::get('/admin/driver-license-renewal', [DriverLicenseRenewalController::class, 'index'])->name('admin.driverLicenseRenewal.index');
+        Route::get('/admin/driver-license-renewal/create', [DriverLicenseRenewalController::class, 'create'])->name('admin.driverLicenseRenewal.create');
+        Route::post('/admin/driver-license-renewal', [DriverLicenseRenewalController::class, 'store'])->name('admin.driverLicenseRenewal.store');
+        Route::get('/admin/driver-license-renewal/{id}/edit', [DriverLicenseRenewalController::class, 'edit'])->name('admin.driverLicenseRenewal.edit');
+        Route::put('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'update'])->name('admin.driverLicenseRenewal.update');
+        Route::get('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'destroy'])->name('admin.driverLicenseRenewal.destroy');
 
-            //IntDriverlicense
-           // International Driver License price management routes for admin
-            Route::get('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'index'])->name('admin.intDriverLicense.index');
-            Route::get('/international-driver-license/price/create', [InternationalDriverLicensePriceController::class, 'create'])->name('admin.intDriverLicense.create');
-            Route::post('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'store'])->name('admin.intDriverLicense.store');
-            Route::get('/international-driver-license/price/{id}/edit', [InternationalDriverLicensePriceController::class, 'edit'])->name('admin.intDriverLicense.edit');
-            Route::put('/international-driver-license/price/{id}', [InternationalDriverLicensePriceController::class, 'update'])->name('admin.intDriverLicense.update');
-            Route::get('/international-driver-license/price/{id}', [InternationalDriverLicensePriceController::class, 'destroy'])->name('admin.intDriverLicense.destroy');
+        //IntDriverlicense
+       // International Driver License price management routes for admin
+        Route::get('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'index'])->name('admin.intDriverLicense.index');
+        Route::get('/international-driver-license/price/create', [InternationalDriverLicensePriceController::class, 'create'])->name('admin.intDriverLicense.create');
+        Route::post('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'store'])->name('admin.intDriverLicense.store');
+        Route::get('/international-driver-license/price/{id}/edit', [InternationalDriverLicensePriceController::class, 'edit'])->name('admin.intDriverLicense.edit');
+        Route::put('/international-driver-license/price/{id}', [InternationalDriverLicensePriceController::class, 'update'])->name('admin.intDriverLicense.update');
+        Route::get('/international-driver-license/price/{id}', [InternationalDriverLicensePriceController::class, 'destroy'])->name('admin.intDriverLicense.destroy');
 
-            // Dealer Plate Number price management routes for admin
-            Route::get('/dealers-plate-number', [DealersPlateNumberPriceController::class, 'index'])->name('admin.dealersPlateNumber.index');
-            Route::get('/dealers-plate-number/create', [DealersPlateNumberPriceController::class, 'create'])->name('admin.dealersPlateNumber.create');
-            Route::post('/dealers-plate-number', [DealersPlateNumberPriceController::class, 'store'])->name('admin.dealersPlateNumber.store');
-            Route::get('/dealers-plate-number/{id}/edit', [DealersPlateNumberPriceController::class, 'edit'])->name('admin.dealersPlateNumber.edit');
-            Route::put('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'update'])->name('admin.dealersPlateNumber.update');
-            Route::get('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'destroy'])->name('admin.dealersPlateNumber.destroy');
+        // Dealer Plate Number price management routes for admin
+        Route::get('/dealers-plate-number', [DealersPlateNumberPriceController::class, 'index'])->name('admin.dealersPlateNumber.index');
+        Route::get('/dealers-plate-number/create', [DealersPlateNumberPriceController::class, 'create'])->name('admin.dealersPlateNumber.create');
+        Route::post('/dealers-plate-number', [DealersPlateNumberPriceController::class, 'store'])->name('admin.dealersPlateNumber.store');
+        Route::get('/dealers-plate-number/{id}/edit', [DealersPlateNumberPriceController::class, 'edit'])->name('admin.dealersPlateNumber.edit');
+        Route::put('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'update'])->name('admin.dealersPlateNumber.update');
+        Route::get('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'destroy'])->name('admin.dealersPlateNumber.destroy');
 
-            // otherpermit
-            Route::get('/other-permit', [OtherPermitPriceController::class, 'index'])->name('admin.otherPermit.index');
-            Route::get('/other-permit/create', [OtherPermitPriceController::class, 'create'])->name('admin.otherPermit.create');
-            Route::post('/other-permit', [OtherPermitPriceController::class, 'store'])->name('admin.otherPermit.store');
-            Route::get('/other-permit/{id}/edit', [OtherPermitPriceController::class, 'edit'])->name('admin.otherPermit.edit');
-            Route::put('/other-permit/{id}', [OtherPermitPriceController::class, 'update'])->name('admin.otherPermit.update');
-            Route::get('/other-permit/{id}', [OtherPermitPriceController::class, 'destroy'])->name('admin.otherPermit.destroy');
-            Route::post('/admin/other-permit-type', [OtherPermitPriceController::class, 'storeType'])->name('admin.otherPermit.storeType');
-        });
-
-        // --------------------------
-        // ✅ FAQ, Users, Agents - All Admins can access
-        // --------------------------
+        // otherpermit
+        Route::get('/other-permit', [OtherPermitPriceController::class, 'index'])->name('admin.otherPermit.index');
+        Route::get('/other-permit/create', [OtherPermitPriceController::class, 'create'])->name('admin.otherPermit.create');
+        Route::post('/other-permit', [OtherPermitPriceController::class, 'store'])->name('admin.otherPermit.store');
+        Route::get('/other-permit/{id}/edit', [OtherPermitPriceController::class, 'edit'])->name('admin.otherPermit.edit');
+        Route::put('/other-permit/{id}', [OtherPermitPriceController::class, 'update'])->name('admin.otherPermit.update');
+        Route::get('/other-permit/{id}', [OtherPermitPriceController::class, 'destroy'])->name('admin.otherPermit.destroy');
+        Route::post('/admin/other-permit-type', [OtherPermitPriceController::class, 'storeType'])->name('admin.otherPermit.storeType');
+        // FAQ 
         Route::prefix('faq/questions')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'showFAQ'])
                 ->name('admin.faq.index');
@@ -230,7 +218,6 @@ Route::prefix('admin')->group(function () {
             Route::put('/{id}', [AdminDashboardController::class, 'updateFaqQuestion'])
                 ->name('admin.faq.update');
         });
-
         //Users
         Route::get('/users', [AdminDashboardController::class, 'getUsers'])->name('admin.users');
         Route::get('/users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
@@ -247,48 +234,45 @@ Route::prefix('admin')->group(function () {
         Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('admin.getNotifications');
         Route::get('/notifications/{id}', [NotificationController::class, 'markAsRead'])->name('admin.markAsRead');
 
-        // --------------------------
-        // ✅ ONLY Super Admin can view financial reports & full transactions
-        // --------------------------
-        Route::middleware('admin.permission:view_financial_reports')->group(function () {
-            Route::get('/withdraw', [AdminDashboardController::class, 'withdraw'])->name('admin.withdraw');
-            Route::get('/editWithdraw/{id}', [AdminDashboardController::class, 'editWithdraw'])->name('admin.editWithdraw');
-            Route::put('/update/withdraw/{id}', [AdminDashboardController::class, 'updaterWithdrawStatus'])->name('admin.update-withdraw-status');
+        Route::get('/withdraw', [AdminDashboardController::class, 'withdraw'])->name('admin.withdraw');
+        Route::get('/editWithdraw/{id}', [AdminDashboardController::class, 'editWithdraw'])->name('admin.editWithdraw');
+        Route::put('/update/withdraw/{id}', [AdminDashboardController::class, 'updaterWithdrawStatus'])->name('admin.update-withdraw-status');
 
-            Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions');
-            Route::get('/transactions/{id}', [AdminTransactionController::class, 'viewTransaction'])->name('admin.transactions.show');
+        Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions');
+        Route::get('/transactions/{id}', [AdminTransactionController::class, 'viewTransaction'])->name('admin.transactions.show');
+ 
+        Route::prefix('transaction')->group(function () {
+            Route::get('/agent', [AdminTransactionController::class, 'transactionAgentWithdraw'])->name('admin.transactions.agent');
+            Route::get('/agent/{id}', [AdminTransactionController::class, 'editTransactionAgentWithdraw'])->name('admin.transactions.editAgentWithdraw');
+            Route::put('/agent/{id}', [AdminTransactionController::class, 'updateTransactionAgentWithdraw'])->name('admin.transactions.updateAgentWithdraw');
     
-            Route::prefix('transaction')->group(function () {
-                Route::get('/agent', [AdminTransactionController::class, 'transactionAgentWithdraw'])->name('admin.transactions.agent');
-                Route::get('/agent/{id}', [AdminTransactionController::class, 'editTransactionAgentWithdraw'])->name('admin.transactions.editAgentWithdraw');
-                Route::put('/agent/{id}', [AdminTransactionController::class, 'updateTransactionAgentWithdraw'])->name('admin.transactions.updateAgentWithdraw');
+            Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
+            Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');
+    
+            Route::get('/vehicle-registration', [AdminTransactionController::class, 'transactionVehicleRegistration'])->name('admin.transaction.vehicleRegistration');
+            Route::get('/vehicle-registration/{id}', [AdminTransactionController::class, 'showTransactionVehicleRegistration'])->name('admin.transaction.showVehicleRegistration');
+    
+            Route::get('/change-of-ownership', [AdminTransactionController::class, 'transactionChangeofownership'])->name('admin.transaction.changeOfOwnership');
+            Route::get('/change-of-ownership/{id}', [AdminTransactionController::class, 'showTransactionChangeofownership'])->name('admin.transaction.showChangeOfOwnership');
+    
+            Route::get('/new-driver-license', [AdminTransactionController::class, 'transactionNewDriverlicense'])->name('admin.transactions.newDriverLicense');
+            Route::get('/new-driver-license/{id}', [AdminTransactionController::class, 'showTransactionNewDriverlicense'])->name('admin.transactions.showNewDriverLicense');
+    
+            Route::get('/driver-license-renewal', [AdminTransactionController::class, 'transactionDriverlicenseRenewal'])->name('admin.transactions.driverLicenseRenewal');
+            Route::get('/driver-license-renewal/{id}', [AdminTransactionController::class, 'showTransactionDriverlicenseRenewal'])->name('admin.transactions.showDriverLicenseRenewal');
+    
+            Route::get('/international-driver-license', [AdminTransactionController::class, 'transactionInternationalDriverlicense'])->name('admin.transactions.internationalDriverLicense');
+            Route::get('/international-driver-license/{id}', [AdminTransactionController::class, 'showTransactionInternationalDriverlicense'])->name('admin.transactions.showInternationalDriverLicense');
+    
+            Route::get('/dealer-plate-number', [AdminTransactionController::class, 'transactionDealerPlateNumber'])->name('admin.transactions.dealerPlateNumber');
+            Route::get('/dealer-plate-number/{id}', [AdminTransactionController::class, 'showTransactionDealerPlateNumber'])->name('admin.transactions.showDealerPlateNumber');
         
-                Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
-                Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');
+            Route::get('/other-permit', [AdminTransactionController::class, 'transactionOtherPermit'])->name('admin.transactions.otherPermit');
+            Route::get('/other-permit/{id}', [AdminTransactionController::class, 'showTransactionOtherPermit'])->name('admin.transactions.showOtherPermit');
         
-                Route::get('/vehicle-registration', [AdminTransactionController::class, 'transactionVehicleRegistration'])->name('admin.transaction.vehicleRegistration');
-                Route::get('/vehicle-registration/{id}', [AdminTransactionController::class, 'showTransactionVehicleRegistration'])->name('admin.transaction.showVehicleRegistration');
-        
-                Route::get('/change-of-ownership', [AdminTransactionController::class, 'transactionChangeofownership'])->name('admin.transaction.changeOfOwnership');
-                Route::get('/change-of-ownership/{id}', [AdminTransactionController::class, 'showTransactionChangeofownership'])->name('admin.transaction.showChangeOfOwnership');
-        
-                Route::get('/new-driver-license', [AdminTransactionController::class, 'transactionNewDriverlicense'])->name('admin.transactions.newDriverLicense');
-                Route::get('/new-driver-license/{id}', [AdminTransactionController::class, 'showTransactionNewDriverlicense'])->name('admin.transactions.showNewDriverLicense');
-        
-                Route::get('/driver-license-renewal', [AdminTransactionController::class, 'transactionDriverlicenseRenewal'])->name('admin.transactions.driverLicenseRenewal');
-                Route::get('/driver-license-renewal/{id}', [AdminTransactionController::class, 'showTransactionDriverlicenseRenewal'])->name('admin.transactions.showDriverLicenseRenewal');
-        
-                Route::get('/international-driver-license', [AdminTransactionController::class, 'transactionInternationalDriverlicense'])->name('admin.transactions.internationalDriverLicense');
-                Route::get('/international-driver-license/{id}', [AdminTransactionController::class, 'showTransactionInternationalDriverlicense'])->name('admin.transactions.showInternationalDriverLicense');
-        
-                Route::get('/dealer-plate-number', [AdminTransactionController::class, 'transactionDealerPlateNumber'])->name('admin.transactions.dealerPlateNumber');
-                Route::get('/dealer-plate-number/{id}', [AdminTransactionController::class, 'showTransactionDealerPlateNumber'])->name('admin.transactions.showDealerPlateNumber');
-            
-                Route::get('/other-permit', [AdminTransactionController::class, 'transactionOtherPermit'])->name('admin.transactions.otherPermit');
-                Route::get('/other-permit/{id}', [AdminTransactionController::class, 'showTransactionOtherPermit'])->name('admin.transactions.showOtherPermit');
-            });
         });
 
+        
         Route::prefix('settings')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'settings'])
                 ->name('admin.settings.index');
@@ -336,5 +320,7 @@ Route::prefix('admin')->group(function () {
         Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
     }); 
+
+    
 
 });
