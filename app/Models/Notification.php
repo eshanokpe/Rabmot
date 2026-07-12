@@ -9,7 +9,7 @@ use App\Models\Property;
 
 class Notification extends DatabaseNotification
 {
-    use HasFactory;
+    use HasFactory; 
 
     protected $table = 'notifications';
  

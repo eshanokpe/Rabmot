@@ -12,7 +12,7 @@ class Admin extends Authenticatable
 
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'last_login', 'login_ip', 'otp',
-        'role' // NEW: super_admin or admin
+        'role', 'status' // ✅ Added here
     ];
 
     protected $hidden = [

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Notifications;  // Use your custom model
 
 class AppServiceProvider extends ServiceProvider
-{
+{ 
     /**
      * Register any application services.
      *

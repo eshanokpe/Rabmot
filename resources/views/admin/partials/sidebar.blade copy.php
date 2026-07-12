@@ -21,67 +21,58 @@
                     </a>
                 </li>
 
-                <!-- ✅ 5.5 Order Management Section - Corrected -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.orders.index') || request()->routeIs('admin.orders.status') ? 'active' : '' }}" 
-                    href="{{ route('admin.orders.index') }}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-list-ol"></i>
+                            <i class="fa fa-file"></i>
                         </span>
-                        <span class="nav-link-title">Order List</span>
+                        <span class="nav-link-title">Document Processes</span>
                     </a>
-
-                    <!-- Status Submenu (nested under Order List) -->
-                    <ul class="nav submenu ms-4 mt-1">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'submitted' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'submitted') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-circle text-secondary"></i>
-                                </span>
-                                <span class="nav-link-title">Submitted</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'agent_assigned' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'agent_assigned') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-user-tag text-info"></i>
-                                </span>
-                                <span class="nav-link-title">Agent Assigned</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'processing' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'processing') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-cog fa-spin text-warning"></i>
-                                </span>
-                                <span class="nav-link-title">Processing</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'ready' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'ready') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-check-circle text-primary"></i>
-                                </span>
-                                <span class="nav-link-title">Ready</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'delivered' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'delivered') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-truck text-success"></i>
-                                </span>
-                                <span class="nav-link-title">Delivered</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{route('admin.pendingpaper')}}">Pending Document</a>
+                        <a class="dropdown-item" href="{{route('admin.processedpaper')}}">Processing Document</a>
+                        <a class="dropdown-item" href="{{route('admin.readyfordelivery')}}">Ready for Delivery</a>
+                        <a class="dropdown-item" href="{{route('admin.deliveryinprogress')}}">Delivery in Progress</a>
+                        <a class="dropdown-item" href="{{route('admin.delivered')}}">Document Delivered</a>
+                    </div>
                 </li>
 
-                <!-- Rest of your existing menu items below -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-file"></i>
+                        </span>
+                        <span class="nav-link-title">Process Type</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.processVehiclePaperRenewal') }}">Vehicle Paper Renewal</a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewVehicleRegistration')}}">New Vehicle Registration</a>
+                        <a class="dropdown-item" href="{{ route('admin.processChangeOfOwnership')}}">Change of Ownership</a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverlicense')}}">New Driver License</a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverLicenseRenewal')}}">Driver License Renewal</a>
+                        <a class="dropdown-item" href="{{ route('admin.processInternationalDriverLicense')}}">International Driver License</a>
+                        <a class="dropdown-item" href="{{ route('admin.processDealerPlateNumber')}}">Dealer's Plate Number</a>
+                        <a class="dropdown-item" href="{{ route('admin.processOtherPermit')}}">Other Permit</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-car"></i>
+                        </span>
+                        <span class="nav-link-title">View Added Vehicle</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewals')}}">Vehicle Renewal</a>
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registrations.new')}}">New Vehicle Registration</a>
+                        <a class="dropdown-item" href="{{route('admin.changeOfOwnership')}}">Change Of Ownership</a>
+                    </div>
+                </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">

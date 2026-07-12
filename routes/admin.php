@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AdminVehicleRenewalPriceController;
 use App\Http\Controllers\Admin\AdminVehicleRegistrationPriceController;
 use App\Http\Controllers\Admin\OtherPermitPriceController;
 use App\Http\Controllers\Admin\InternationalDriverLicensePriceController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController;
 
@@ -336,5 +337,16 @@ Route::prefix('admin')->group(function () {
         Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
     }); 
+
+    Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/status/{status}', [OrderController::class, 'byStatus'])->name('orders.status');
+        Route::get('/orders/assigned', [OrderController::class, 'assigned'])->name('orders.assigned');
+        Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+        Route::put('/orders/{id}/eta', [OrderController::class, 'setEta'])->name('orders.set-eta');
+        Route::put('/orders/{id}/notes', [OrderController::class, 'addNotes'])->name('orders.add-notes');
+        Route::put('/orders/{id}/assign', [OrderController::class, 'assignAdmin'])->name('orders.assign');
+    });
 
 });
