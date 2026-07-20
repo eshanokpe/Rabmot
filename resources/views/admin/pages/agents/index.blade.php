@@ -1,4 +1,4 @@
-@extends('admin.layouts.app') 
+@extends('admin.layouts.app')
 @section('content')
     <div class="page-wrapper">
         <div class="page-header d-print-none">
@@ -16,10 +16,10 @@
                     <div class="text-end col-6">
                         <a href="{{route('admin.agent.create')}}">
                             <button type="submit" class="btn btn-primary">+Add Agent</button>
-                        </a> 
+                        </a>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
 
         <div class="page-body">
@@ -29,6 +29,34 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">List Of Agents</h3>
+                                <div class="card-actions">
+                                    <form method="GET" action="{{ route('admin.agents') }}" class="d-flex gap-2">
+                                        <input type="hidden" name="status" value="{{ request('status') }}">
+                                        <input type="hidden" name="approval_status" value="{{ request('approval_status') }}">
+                                        <input type="text" name="q" value="{{ request('q') }}" class="form-control form-control-sm" placeholder="Search username, name, email, phone">
+                                        <button type="submit" class="btn btn-sm btn-primary">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card-header">
+                                <div class="btn-group">
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('status'), ['status' => ''])) }}"
+                                       class="btn btn-sm {{ !request('status') ? 'btn-primary' : 'btn-outline-primary' }}">All Status</a>
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('status'), ['status' => 'active'])) }}"
+                                       class="btn btn-sm {{ request('status') == 'active' ? 'btn-primary' : 'btn-outline-primary' }}">Active</a>
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('status'), ['status' => 'disable'])) }}"
+                                       class="btn btn-sm {{ request('status') == 'disable' ? 'btn-primary' : 'btn-outline-primary' }}">Suspended</a>
+                                </div>
+                                <div class="btn-group ms-2">
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('approval_status'), ['approval_status' => ''])) }}"
+                                       class="btn btn-sm {{ !request('approval_status') ? 'btn-primary' : 'btn-outline-primary' }}">All Approval</a>
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('approval_status'), ['approval_status' => 'pending'])) }}"
+                                       class="btn btn-sm {{ request('approval_status') == 'pending' ? 'btn-primary' : 'btn-outline-primary' }}">Pending</a>
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('approval_status'), ['approval_status' => 'approved'])) }}"
+                                       class="btn btn-sm {{ request('approval_status') == 'approved' ? 'btn-primary' : 'btn-outline-primary' }}">Approved</a>
+                                    <a href="{{ route('admin.agents', array_merge(request()->except('approval_status'), ['approval_status' => 'rejected'])) }}"
+                                       class="btn btn-sm {{ request('approval_status') == 'rejected' ? 'btn-primary' : 'btn-outline-primary' }}">Rejected</a>
+                                </div>
                             </div>
                             <br>
                             @if(session('error'))
@@ -47,12 +75,12 @@
                                     if (successAlert) {
                                         setTimeout(function() {
                                             successAlert.style.display = 'none';
-                                        }, 10000); 
+                                        }, 10000);
                                     }
                                 });
                             </script>
                             <br>
-                            
+
                             <div class="table-responsive">
                                 <table class="table card-table table-vcenter text-nowrap datatable">
                                     <thead>
@@ -78,9 +106,21 @@
                                         <tr>
                                             <td><span class="text-muted">{{ $serial++}}</span></td>
                                              <td class="text-end">
-                                                <span class="dropdown">
-                                                    <a href="{{ route('admin.agent.edit', ['id' => encrypt($item->id)]) }}" class="btn">Edit</a>
-                                                 </span>
+                                                <a href="{{ route('admin.agent.show', ['id' => encrypt($item->id)]) }}" class="btn btn-sm">View</a>
+                                                <a href="{{ route('admin.agent.edit', ['id' => encrypt($item->id)]) }}" class="btn btn-sm">Edit</a>
+                                                @if ($item->status == 'active')
+                                                    <form method="POST" action="{{ route('admin.agent.suspend', ['id' => encrypt($item->id)]) }}" class="d-inline" onsubmit="return confirm('Suspend this agent?');">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger">Suspend</button>
+                                                    </form>
+                                                @elseif ($item->status == 'disable')
+                                                    <form method="POST" action="{{ route('admin.agent.activate', ['id' => encrypt($item->id)]) }}" class="d-inline" onsubmit="return confirm('Activate this agent?');">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-sm btn-outline-success">Activate</button>
+                                                    </form>
+                                                @endif
                                             </td>
                                              <td class="text-end">
                                                 @if ($item->status == 'active')
@@ -113,10 +153,15 @@
                                             </td>
                                         </tr>
                                         @empty
-                                            <p class="text-danger">No Data found</p>
+                                            <tr>
+                                                <td colspan="10"><p class="text-danger mb-0">No Data found</p></td>
+                                            </tr>
                                         @endforelse
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer">
+                                {{ $items->links() }}
                             </div>
                         </div>
                     </div>

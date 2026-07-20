@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\ProcessDocument\AdminProcessDocument;
 use App\Http\Controllers\Admin\Transaction\AdminTransactionController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminAgentApprovalController;
+use App\Http\Controllers\Admin\AdminAgentManagementController;
 use App\Http\Controllers\Admin\AdminProcessTypeController;
 use App\Http\Controllers\Admin\AdminAddVehicleController;
 use App\Http\Controllers\Admin\AdminVehiclePriceController;
@@ -221,11 +223,23 @@ Route::prefix('admin')->group(function () {
         Route::put('/users/{id}/status', [AdminDashboardController::class, 'updateUserStatus'])->name('admin.users.updateStatus');
     
         //Agent
-        Route::get('/agents', [AdminDashboardController::class, 'getAgent'])->name('admin.agents');
-        Route::get('/agents/create', [AdminDashboardController::class, 'createAgent'])->name('admin.agent.create');
-        Route::post('/agents', [AdminDashboardController::class, 'postcreateAgent'])->name('admin.agent.store');
-        Route::get('/agents/{id}/edit', [AdminDashboardController::class, 'editAgent'])->name('admin.agent.edit');
-        Route::put('/agents/{id}', [AdminDashboardController::class, 'updateAgent'])->name('admin.agent.update');
+        Route::get('/agents', [AdminAgentManagementController::class, 'index'])->name('admin.agents');
+        Route::get('/agents/create', [AdminAgentManagementController::class, 'create'])->name('admin.agent.create');
+        Route::post('/agents', [AdminAgentManagementController::class, 'store'])->name('admin.agent.store');
+        Route::get('/agents/{id}/edit', [AdminAgentManagementController::class, 'edit'])->name('admin.agent.edit');
+        Route::put('/agents/{id}', [AdminAgentManagementController::class, 'update'])->name('admin.agent.update');
+        Route::get('/agents/{id}', [AdminAgentManagementController::class, 'show'])->name('admin.agent.show');
+        Route::put('/agents/{id}/activate', [AdminAgentManagementController::class, 'activate'])->name('admin.agent.activate');
+        Route::put('/agents/{id}/suspend', [AdminAgentManagementController::class, 'suspend'])->name('admin.agent.suspend');
+        Route::put('/agents/{id}/reset-credentials', [AdminAgentManagementController::class, 'resetCredentials'])->name('admin.agent.resetCredentials');
+
+        //Agent Approvals
+        Route::get('/agent-approvals', [AdminAgentApprovalController::class, 'index'])->name('admin.agentApprovals.index');
+        Route::get('/agent-approvals/{id}', [AdminAgentApprovalController::class, 'show'])->name('admin.agentApprovals.show');
+        Route::put('/agent-approvals/{id}/approve', [AdminAgentApprovalController::class, 'approve'])->name('admin.agentApprovals.approve');
+        Route::put('/agent-approvals/{id}/reject', [AdminAgentApprovalController::class, 'reject'])->name('admin.agentApprovals.reject');
+        Route::get('/agent-approvals/{id}/download/means-of-id', [AdminAgentApprovalController::class, 'downloadMeansOfIdentification'])->name('admin.agentApprovals.download.meansOfId');
+        Route::get('/agent-approvals/{id}/download/passport', [AdminAgentApprovalController::class, 'downloadPassportPhotograph'])->name('admin.agentApprovals.download.passport');
 
         Route::get('/notificationslist', [NotificationController::class, 'index'])->name('admin.notificationList');
         Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('admin.getNotifications');

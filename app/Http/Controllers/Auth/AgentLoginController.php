@@ -33,11 +33,26 @@ class AgentLoginController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if (Auth::guard('agent')->attempt($credentials)) {
-            // $user = Auth::guard('agent')->user();
-            // return dd($user);
+            $agent = Auth::guard('agent')->user();
+
+            if ($agent->approval_status === 'pending') {
+                Auth::guard('agent')->logout();
+                return back()->withErrors(['error' => 'Your agent application is still under review. You will be notified by email once approved.']);
+            }
+
+            if ($agent->approval_status === 'rejected') {
+                Auth::guard('agent')->logout();
+                return back()->withErrors(['error' => 'Your agent application was not approved. Reason: ' . $agent->rejection_reason]);
+            }
+
+            if ($agent->status !== 'active') {
+                Auth::guard('agent')->logout();
+                return back()->withErrors(['error' => 'Your agent account has been suspended. Please contact support.']);
+            }
+
             return redirect()->route('agent.dashboard');
-        } 
-        
+        }
+
         return back()->withErrors(['error' => 'Invalid Agent Credentials']);
     }
 

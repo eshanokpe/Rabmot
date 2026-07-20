@@ -60,7 +60,29 @@
                             </ul>
                         </div>
                     @endif
-                  
+                    @if(session('success'))
+                        <div class="alert alert-success" id="success-alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger" id="error-alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            var successAlert = document.getElementById('success-alert');
+                            if (successAlert) {
+                                setTimeout(function() { successAlert.style.display = 'none'; }, 10000);
+                            }
+                            var errorAlert = document.getElementById('error-alert');
+                            if (errorAlert) {
+                                setTimeout(function() { errorAlert.style.display = 'none'; }, 10000);
+                            }
+                        });
+                    </script>
+
 
       
                   <form action="{{route('agent.loginSubmit')}}" method="POST" autocomplete="off" novalidate>
@@ -117,13 +139,17 @@
                     </div>
                 </div>
                     <div class="form-footer">
-      
+
                       <button type="submit" class="btn btn-primary w-100">Sign in</button>
-      
+
                     </div>
-      
+
                   </form>
-      
+
+                  <div class="text-center text-muted mt-3">
+                      New agent? <a href="{{route('agent.register')}}">Register here</a>
+                  </div>
+
                 </div>
       
               </div>

@@ -203,6 +203,16 @@
                         </span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.agentApprovals.index')}}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-user-check"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Agent Approvals
+                        </span>
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
