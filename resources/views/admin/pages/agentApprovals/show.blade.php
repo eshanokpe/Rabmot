@@ -13,6 +13,9 @@
                         </h2>
                     </div>
                     <div class="text-end col-6">
+                        <a href="{{ route('admin.agent.edit', ['id' => encrypt($item->id)]) }}" class="btn btn-outline-primary">
+                            Edit Agent
+                        </a>
                         <a href="{{ route('admin.agentApprovals.index') }}" class="btn btn-outline-secondary">
                             Back to List
                         </a>
@@ -112,13 +115,13 @@
                         </div>
                     </div>
 
-                    @if ($item->approval_status === 'pending')
                     <div class="col-12">
                         <div class="row row-cards">
+                            @if ($item->approval_status !== 'approved')
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Approve Application</h3>
+                                        <h3 class="card-title">{{ $item->approval_status === 'rejected' ? 'Re-approve Application' : 'Approve Application' }}</h3>
                                     </div>
                                     <div class="card-body">
                                         <form method="POST" action="{{ route('admin.agentApprovals.approve', ['id' => encrypt($item->id)]) }}" onsubmit="return confirm('Approve this agent application?');">
@@ -129,10 +132,12 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
+                            @if ($item->approval_status !== 'rejected')
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Reject Application</h3>
+                                        <h3 class="card-title">{{ $item->approval_status === 'approved' ? 'Revoke Approval' : 'Reject Application' }}</h3>
                                     </div>
                                     <div class="card-body">
                                         <form method="POST" action="{{ route('admin.agentApprovals.reject', ['id' => encrypt($item->id)]) }}">
@@ -143,14 +148,14 @@
                                                 <textarea name="rejection_reason" class="form-control @error('rejection_reason') is-invalid @enderror" rows="3">{{ old('rejection_reason') }}</textarea>
                                                 @error('rejection_reason') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                             </div>
-                                            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('Reject this agent application?');">Reject</button>
+                                            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('{{ $item->approval_status === 'approved' ? 'Revoke this agent\'s approval?' : 'Reject this agent application?' }}');">{{ $item->approval_status === 'approved' ? 'Revoke' : 'Reject' }}</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
-                    @endif
 
                 </div>
             </div>

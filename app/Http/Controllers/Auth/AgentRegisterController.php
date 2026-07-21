@@ -49,6 +49,14 @@ class AgentRegisterController extends Controller
             $passportFilename = time() . '_' . Str::slug($request->input('username')) . '_passport.' . $passportFile->getClientOriginalExtension();
             $passportFile->move(public_path('documents/agentApprovals'), $passportFilename);
 
+            $referredBy = null;
+            if ($request->filled('referral_code')) {
+                $referringAgent = Agent::where('referral_code', $request->input('referral_code'))->first();
+                if ($referringAgent) {
+                    $referredBy = $referringAgent->id;
+                }
+            }
+
             $agent = Agent::create([
                 'username' => $request->input('username'),
                 'email' => $request->input('email'),
@@ -63,6 +71,8 @@ class AgentRegisterController extends Controller
                 'means_of_identification_type' => $request->input('means_of_identification_type'),
                 'means_of_identification' => $idFilename,
                 'passport_photograph' => $passportFilename,
+                'referral_code' => Agent::generateReferralCode(),
+                'referred_by' => $referredBy,
             ]);
 
             try {
@@ -71,7 +81,12 @@ class AgentRegisterController extends Controller
                 // Registration still succeeds even if the confirmation email fails.
             }
 
-            return redirect()->route('agent.login')->with('success', 'Your application has been submitted and is pending review. You will be notified by email once it has been approved.');
+            $message = 'Your application has been submitted and is pending review. You will be notified by email once it has been approved.';
+            if ($request->filled('referral_code') && !$referredBy) {
+                $message .= ' Note: the referral code you entered was not recognized, so no referral was linked.';
+            }
+
+            return redirect()->route('agent.login')->with('success', $message);
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', 'Could not submit your application. Please try again.');
         }

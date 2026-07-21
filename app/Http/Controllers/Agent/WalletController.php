@@ -16,10 +16,13 @@ class WalletController extends Controller
         $fullname = $agent->fullname;
         $email = $agent->email;
 
-        $items = Wallet::latest()->get();
+        $items = Wallet::where('user_id', $id)
+        ->where('userType', 'agent')
+        ->where('user_email', $email)
+        ->latest()->get();
         $totalWithdrawAmount = Wallet::where('user_id', $id)
         ->where('userType', 'agent')
-        ->where('status', 2)
+        ->where('status', 'paid')
         ->where('user_email', $email)->sum('amount');
 
         $totalEarning = WalletPayment::where('user_id', $id)
@@ -27,8 +30,8 @@ class WalletController extends Controller
         ->where('user_email', $email)->sum('amount');
 
         $walletBalance = $totalEarning - $totalWithdrawAmount;
-        
-        return view('agent.pages.wallet', compact( 'items','totalEarning','totalWithdrawAmount','walletBalance')); 
+
+        return view('agent.pages.wallet', compact( 'items','totalEarning','totalWithdrawAmount','walletBalance'));
     }
 
     public function create(Request $request)
@@ -38,10 +41,9 @@ class WalletController extends Controller
         $fullname = $agent->fullname;
         $email = $agent->email;
 
-        $items = Wallet::latest()->get();
         $totalWithdrawAmount = Wallet::where('user_id', $id)
         ->where('userType', 'agent')
-        ->where('status', 2)
+        ->where('status', 'paid')
         ->where('user_email', $email)->sum('amount');
 
         $totalEarning = WalletPayment::where('user_id', $id)
@@ -70,7 +72,7 @@ class WalletController extends Controller
             'bank' => $validatedData['bank'],
             'account_number' => $validatedData['account_number'],
             'account_name' => $validatedData['account_name'],
-            'status' => 0
+            'status' => 'pending'
         ]);
         $notification = [
             'user_id' => $id,

@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -30,7 +32,7 @@ class MailNotify extends Mailable
      */
     public function build()
     {
-        return $this->from('info@rabmotlicensing.com', 'Cambo Tutorial')
+        return $this->from(...Setting::mailFrom())
         ->subject($this->data['subject'])
         ->view('emails.index')->with('data', $this->data);
     }

@@ -19,6 +19,7 @@ use App\Mail\PendingMode;
 use Mail;
 use App\Mail\InvoiceMail;
 use App\Models\NewDriverLicense;
+use App\Services\AgentReferralCommissionService;
 use Carbon\Carbon;
 
 class PaymentController extends Controller{
@@ -150,6 +151,15 @@ class PaymentController extends Controller{
             $payment->trans_id = $trans_id;
             $payment->status = $status;
 
+            $commissionService = new AgentReferralCommissionService();
+            $commissionRate = null;
+            if (!empty($user->referred_by)) {
+                $referrer = Agent::find($user->referred_by);
+                if ($referrer) {
+                    $commissionRate = $commissionService->resolveRateValueForAgent($referrer);
+                }
+            }
+
             foreach ($cartItems as $item){
                 //  dd($item->model);
                 ProcessHistory::create([ 
@@ -196,6 +206,15 @@ class PaymentController extends Controller{
                 $walletPayment->process_number = $orderNumber ?? null;
                 $walletPayment->process_type = $item->model->process_type ?? null;
                 $walletPayment->save();
+
+                $commissionService->creditForOrderItem(
+                    $user,
+                    $item->price * $item->qty,
+                    $item->model->process_id ?? null,
+                    $orderNumber ?? null,
+                    $item->model->process_type ?? null,
+                    $commissionRate
+                );
 
                 Notification::route('mail', $email)->notify(new WalletCreditNotification($walletPayment));
                

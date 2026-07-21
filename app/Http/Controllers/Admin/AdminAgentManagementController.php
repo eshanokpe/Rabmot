@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\ProcessHistory;
 use App\Models\Wallet;
 use App\Models\WalletPayment;
+use App\Services\AgentCommissionAuditLogger;
+use App\Services\AgentReferralCommissionService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +82,15 @@ class AdminAgentManagementController extends Controller
             $agentData['approval_status'] = 'approved';
             $agentData['approved_by'] = Auth::guard('admin')->user()->id;
             $agentData['approved_at'] = now();
+            $agentData['referral_code'] = Agent::generateReferralCode();
+
+            $agentData['referred_by'] = null;
+            if ($request->filled('referral_code')) {
+                $referringAgent = Agent::where('referral_code', $request->input('referral_code'))->first();
+                if ($referringAgent) {
+                    $agentData['referred_by'] = $referringAgent->id;
+                }
+            }
 
             try {
                 $sendMail = new AgentDetailMessage($agentData['email'], $agentData['fullname'], $agentData['username'], $request->input('password'));
@@ -158,15 +169,83 @@ class AdminAgentManagementController extends Controller
         $totalWithdrawn = Wallet::where('user_id', $agent->id)
             ->where('user_email', $agent->email)
             ->where('userType', 'agent')
-            ->where('status', 2)
+            ->where('status', 'paid')
             ->sum('amount');
 
         $walletBalance = $totalEarning - $totalWithdrawn;
 
+        $referredBy = $agent->referred_by ? Agent::find($agent->referred_by) : null;
+
+        $referredAgents = Agent::where('referred_by', $agent->id)->latest()->get();
+
+        $totalReferralCommission = WalletPayment::where('user_id', $agent->id)
+            ->where('user_email', $agent->email)
+            ->where('userType', 'agent')
+            ->where('type', 'referral_commission')
+            ->sum('amount');
+
+        $commissionResolution = (new AgentReferralCommissionService())->resolveRateForAgent($agent);
+
         return view('admin.pages.agents.show', compact(
             'agent', 'orders', 'processHistory', 'withdrawals',
-            'totalEarning', 'totalWithdrawn', 'walletBalance'
+            'totalEarning', 'totalWithdrawn', 'walletBalance',
+            'referredBy', 'referredAgents', 'totalReferralCommission',
+            'commissionResolution'
         ));
+    }
+
+    public function setOverride(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'override_rate' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $agent = Agent::find(decrypt($id));
+        if (!$agent) {
+            return redirect()->back()->with('error', 'Agent not found.');
+        }
+
+        $admin = Auth::guard('admin')->user();
+        $old = $agent->commission_override_rate;
+
+        $agent->commission_override_rate = $validated['override_rate'];
+        $agent->save();
+
+        (new AgentCommissionAuditLogger())->log(
+            $admin,
+            'override_set',
+            "Commission override for {$agent->fullname} ({$agent->username}) set to {$agent->commission_override_rate}%" . (is_null($old) ? '' : " (was {$old}%)"),
+            $old !== null ? (string) $old : null,
+            (string) $agent->commission_override_rate,
+            $agent->id
+        );
+
+        return redirect()->back()->with('success', 'Commission override set.');
+    }
+
+    public function clearOverride($id)
+    {
+        $agent = Agent::find(decrypt($id));
+        if (!$agent) {
+            return redirect()->back()->with('error', 'Agent not found.');
+        }
+
+        $admin = Auth::guard('admin')->user();
+        $old = $agent->commission_override_rate;
+
+        $agent->commission_override_rate = null;
+        $agent->save();
+
+        (new AgentCommissionAuditLogger())->log(
+            $admin,
+            'override_cleared',
+            "Commission override cleared for {$agent->fullname} ({$agent->username}); reverts to tier/base rate",
+            $old !== null ? (string) $old : null,
+            null,
+            $agent->id
+        );
+
+        return redirect()->back()->with('success', 'Commission override cleared.');
     }
 
     public function activate($id)

@@ -87,6 +87,14 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('agent.referral') }}">
+                <div class="parent-icon icon-color-13">
+                    <i class="bx bx-share-alt"></i>
+                </div>
+                <div class="menu-title">Referrals</div>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('agent.profile') }}">
                 <div class="parent-icon icon-color-13"><i class="bx bx-user"></i>
                 </div>

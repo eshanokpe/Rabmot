@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -33,7 +35,7 @@ class AgentDetailMessage extends Mailable
      */
     public function build()
     {
-        return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
+        return $this->from(...Setting::mailFrom())
         ->subject('Welcome to Rabmot Licensing Agency Sub Agent Program!')
         ->markdown('emails.agentdetails-email')->with([
             'fullname' => $this->fullname, 

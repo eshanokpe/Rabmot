@@ -120,6 +120,9 @@
                                     <li class="nav-item">
                                         <a href="#tab-referral" class="nav-link" data-bs-toggle="tab">Referral Hierarchy</a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="#tab-commission" class="nav-link" data-bs-toggle="tab">Commission</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="card-body">
@@ -233,11 +236,13 @@
                                                             <td>{{ $withdrawal->account_number }}</td>
                                                             <td>{{ $withdrawal->account_name }}</td>
                                                             <td>
-                                                                @if ($withdrawal->status == 0)
+                                                                @if ($withdrawal->status == 'pending')
                                                                     <span class="badge text-bg-warning">Pending</span>
-                                                                @elseif ($withdrawal->status == 1)
-                                                                    <span class="badge text-bg-info">Processing</span>
-                                                                @elseif ($withdrawal->status == 2)
+                                                                @elseif ($withdrawal->status == 'approved')
+                                                                    <span class="badge text-bg-info">Approved</span>
+                                                                @elseif ($withdrawal->status == 'rejected')
+                                                                    <span class="badge text-bg-danger">Rejected</span>
+                                                                @elseif ($withdrawal->status == 'paid')
                                                                     <span class="badge text-bg-success">Paid</span>
                                                                 @endif
                                                             </td>
@@ -252,12 +257,119 @@
                                     </div>
 
                                     <div class="tab-pane" id="tab-referral">
-                                        <div class="empty">
-                                            <p class="empty-title">Referral Hierarchy</p>
-                                            <p class="empty-subtitle text-muted">
-                                                Coming soon. Referral tracking and commission rules have not been finalized yet.
-                                            </p>
+                                        <div class="row row-cards mb-4">
+                                            <div class="col-md-4">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <div class="subheader">Referred By</div>
+                                                        <div class="h3 mb-0">
+                                                            @if ($referredBy)
+                                                                <a href="{{ route('admin.agent.show', ['id' => encrypt($referredBy->id)]) }}">{{ $referredBy->fullname }}</a>
+                                                            @else
+                                                                <span class="text-muted">No referrer</span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <div class="subheader">Agents Referred</div>
+                                                        <div class="h3 mb-0">{{ $referredAgents->count() }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <div class="subheader">Total Referral Commission Earned</div>
+                                                        <div class="h3 mb-0">₦{{ number_format($totalReferralCommission, 2) }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+
+                                        <h4>Agents Referred by {{ $agent->fullname }}</h4>
+                                        <div class="table-responsive">
+                                            <table class="table card-table table-vcenter text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Username</th>
+                                                        <th>Full Name</th>
+                                                        <th>Email</th>
+                                                        <th>Status</th>
+                                                        <th>Joined</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse ($referredAgents as $referred)
+                                                        <tr>
+                                                            <td>{{ $referred->username }}</td>
+                                                            <td><a href="{{ route('admin.agent.show', ['id' => encrypt($referred->id)]) }}">{{ $referred->fullname }}</a></td>
+                                                            <td>{{ $referred->email }}</td>
+                                                            <td>{{ ucfirst($referred->status) }}</td>
+                                                            <td>{{ \Carbon\Carbon::parse($referred->created_at)->format('F j, Y') }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr><td colspan="5" class="text-muted">This agent has not referred anyone yet.</td></tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="tab-commission">
+                                        <div class="row row-cards mb-4">
+                                            <div class="col-md-6">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <div class="subheader">Effective Commission Rate</div>
+                                                        <div class="h3 mb-0">{{ $commissionResolution['rate'] }}%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <div class="subheader">Rate Source</div>
+                                                        <div class="h3 mb-0">
+                                                            @if ($commissionResolution['source'] === 'override')
+                                                                Agent-Specific Override
+                                                            @elseif ($commissionResolution['source'] === 'tier')
+                                                                Tier "{{ $commissionResolution['tier']->name }}"
+                                                            @else
+                                                                Base Rate
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if ($agent->commission_override_rate !== null)
+                                            <div class="alert alert-info">
+                                                This agent has an active override of <strong>{{ $agent->commission_override_rate }}%</strong>, which takes precedence over any tier or the base rate.
+                                            </div>
+                                            <form method="POST" action="{{ route('admin.agent.clearOverride', ['id' => encrypt($agent->id)]) }}" class="mb-4" onsubmit="return confirm('Clear this agent\'s commission override?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger">Clear Override</button>
+                                            </form>
+                                        @endif
+
+                                        <h5>{{ $agent->commission_override_rate !== null ? 'Update Override' : 'Set Override' }}</h5>
+                                        <form method="POST" action="{{ route('admin.agent.setOverride', ['id' => encrypt($agent->id)]) }}" class="row">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="mb-3 col-4">
+                                                <label class="form-label required">Override Rate (%)</label>
+                                                <input type="number" step="0.01" min="0" max="100" name="override_rate" class="form-control" value="{{ $agent->commission_override_rate }}" required>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary">Save Override</button>
+                                            </div>
+                                        </form>
                                     </div>
 
                                 </div>

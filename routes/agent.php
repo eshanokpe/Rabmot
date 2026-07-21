@@ -5,6 +5,7 @@ use App\Http\Controllers\Agent\CartController;
 use App\Http\Controllers\Agent\NotificationController;
 use App\Http\Controllers\Agent\PaymentController;
 use App\Http\Controllers\Agent\WalletController;
+use App\Http\Controllers\Agent\ReferralController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Agent\CheckoutController;
 use App\Http\Controllers\Auth\AgentLoginController;
@@ -119,10 +120,12 @@ Route::prefix('agent')->group(function () {
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('agent.payment');
         
         //wallet
-        Route::get('/wallet', [WalletController::class, 'index'])->name('agent.wallet'); 
+        Route::get('/wallet', [WalletController::class, 'index'])->name('agent.wallet');
         Route::post('/create', [WalletController::class, 'create'])->name('agent.create');
-       
- 
+
+        //referral
+        Route::get('/referral', [ReferralController::class, 'index'])->name('agent.referral');
+
         Route::get('/profile', [AgentDashboardController::class, 'index'])->name('agent.profile');
         Route::get('/processHistory', [AgentDashboardController::class, 'processHistory'])->name('agent.processHistory');
         Route::get('/transactionHistory', [AgentDashboardController::class, 'transactionHistory'])->name('agent.transactionHistory');

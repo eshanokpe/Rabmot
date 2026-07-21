@@ -11,12 +11,19 @@ class Wallet extends Model
 
     protected $fillable =[
         'user_id',
-        'user_email', 
+        'user_email',
         'userType',
-        'amount', 
+        'amount',
         'bank',
         'account_number',
         'account_name',
-        'status'
+        'status',
+        'rejection_reason',
+        'transaction_reference',
+        'payment_proof',
+        'reviewed_by',
+        'reviewed_at',
+        'paid_by',
+        'paid_at',
     ];
 }

@@ -116,8 +116,12 @@
                                             <label class="form-label">Confirm Password</label>
                                             <input type="password" name="cpassword" class="form-control" autocomplete="off" required/>
                                         </div>
+                                        <div class="mb-3 col-6">
+                                            <label class="form-label">Referred By (Referral Code)</label>
+                                            <input type="text" name="referral_code" class="form-control" autocomplete="off"/>
+                                        </div>
                                         <div class="mb-3 col-12">
-                                            <input type="submit" class="btn btn-primary ms-auto" value="Create Account"/>    
+                                            <input type="submit" class="btn btn-primary ms-auto" value="Create Account"/>
                                         </div>
                                     </div>
                                 </form>

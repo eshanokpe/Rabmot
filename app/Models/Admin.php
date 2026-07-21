@@ -19,7 +19,8 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'last_login', 'login_ip', 'otp'
+        'name', 'email', 'password', 'phone', 'last_login', 'login_ip', 'otp',
+        'role', 'status', 'mfa_enabled', 'mfa_secret',
     ];
 
     /**
@@ -38,5 +39,16 @@ class Admin extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'mfa_enabled' => 'boolean',
     ];
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === 'super_admin';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
 }

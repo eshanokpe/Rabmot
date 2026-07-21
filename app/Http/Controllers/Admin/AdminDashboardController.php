@@ -150,8 +150,8 @@ class AdminDashboardController extends Controller
       return redirect()->back()->with('success', 'FAQs updated successfully');
    }
 
-   public function settings(){  
-      return view('admin.pages.settings.index');
+   public function settings(){
+      return view('admin.pages.account.password');
    }
 
    public function postSettings(Request $request) 

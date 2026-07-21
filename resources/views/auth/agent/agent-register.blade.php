@@ -150,6 +150,16 @@
                                 </div>
                             </div>
 
+                            <div class="agent-register-section-label mt-2">Referral (Optional)</div>
+                            <div class="row">
+                                <div class="mb-3 col-6 col-md-4 col-lg-3">
+                                    <label class="form-label">Referral Code</label>
+                                    <input type="text" name="referral_code" class="form-control @error('referral_code') is-invalid @enderror" value="{{ old('referral_code', request()->input('ref')) }}" autocomplete="off">
+                                    <small class="form-hint">If another agent referred you, enter their referral code.</small>
+                                    @error('referral_code') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                </div>
+                            </div>
+
                             <div class="agent-register-section-label mt-2">Account Security</div>
                             <div class="row">
                                 <div class="mb-3 col-6 col-md-4 col-lg-3">

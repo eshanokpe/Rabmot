@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\Notifications;  // Use your custom model
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (Schema::hasTable('settings')) {
+            $timezone = Setting::current()->timezone;
+            if ($timezone) {
+                date_default_timezone_set($timezone);
+                config(['app.timezone' => $timezone]);
+            }
+        }
+
         View::composer('*', function ($view) {
             $notificationCount = 0;
             $notifications = collect();

@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -30,7 +32,7 @@ class EmailConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
+        return $this->from(...Setting::mailFrom())
         ->subject('Email Confirmation')
         ->markdown('emails.confirmation-email')->with([
             'email_token' => $this->user->email_token, 

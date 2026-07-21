@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -29,7 +31,7 @@ class WelcomeWithCredentialsMail extends Mailable
 
     public function build()
     {
-        return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
+        return $this->from(...Setting::mailFrom())
             ->subject('Welcome to Rabmot – Your Account & Application Details')
             ->markdown('emails.welcome-with-credentials')
             ->with([

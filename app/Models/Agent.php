@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class Agent extends Authenticatable
 {
@@ -33,6 +34,9 @@ class Agent extends Authenticatable
         'means_of_identification_type',
         'means_of_identification',
         'passport_photograph',
+        'referral_code',
+        'referred_by',
+        'commission_override_rate',
     ];
 
     protected $casts = [
@@ -42,6 +46,15 @@ class Agent extends Authenticatable
     public function approvedBy()
     {
         return $this->belongsTo(Admin::class, 'approved_by');
+    }
+
+    public static function generateReferralCode(): string
+    {
+        do {
+            $code = 'RABMOTAG' . strtoupper(Str::random(6));
+        } while (self::where('referral_code', $code)->exists());
+
+        return $code;
     }
 }
  
