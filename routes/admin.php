@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\ProcessDocument\AdminProcessDocument;
 use App\Http\Controllers\Admin\Transaction\AdminTransactionController;
 use App\Http\Controllers\Admin\PromoCodeController;
+use App\Http\Controllers\Admin\BroadcastController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProcessTypeController;
 use App\Http\Controllers\Admin\AdminAddVehicleController;
@@ -347,6 +348,13 @@ Route::prefix('admin')->group(function () {
         Route::put('/orders/{id}/eta', [OrderController::class, 'setEta'])->name('orders.set-eta');
         Route::put('/orders/{id}/notes', [OrderController::class, 'addNotes'])->name('orders.add-notes');
         Route::put('/orders/{id}/assign', [OrderController::class, 'assignAdmin'])->name('orders.assign');
+    });
+    Route::prefix('admin')->name('admin.')->middleware(['auth:admin'])->group(function () {
+        // Broadcasts
+        Route::get('/broadcasts/compose', [BroadcastController::class, 'compose'])->name('broadcasts.compose');
+        Route::post('/broadcasts', [BroadcastController::class, 'store'])->name('broadcasts.store');
+        Route::get('/broadcasts/history', [BroadcastController::class, 'history'])->name('broadcasts.history');
+        Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('broadcasts.show');
     });
 
 });

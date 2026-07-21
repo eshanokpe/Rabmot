@@ -91,5 +91,8 @@ php artisan optimize:clear
 			<div class="page-content-wrapper">
 
 # Switch versions
-brew-php-switcher 8.2
-brew-php-switcher 8.4
+# Create a temporary alias that overrides the php command
+alias php='/usr/local/opt/php@8.2/bin/php'
+
+# Now check
+php -v

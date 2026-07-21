@@ -22,63 +22,32 @@
                 </li>
 
                 <!-- ✅ 5.5 Order Management Section - Corrected -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.orders.index') || request()->routeIs('admin.orders.status') ? 'active' : '' }}" 
-                    href="{{ route('admin.orders.index') }}">
+               
+                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-list-ol"></i>
                         </span>
                         <span class="nav-link-title">Order List</span>
                     </a>
-
-                    <!-- Status Submenu (nested under Order List) -->
-                    <ul class="nav submenu ms-4 mt-1">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'submitted' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'submitted') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-circle text-secondary"></i>
-                                </span>
-                                <span class="nav-link-title">Submitted</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'agent_assigned' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'agent_assigned') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-user-tag text-info"></i>
-                                </span>
-                                <span class="nav-link-title">Agent Assigned</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'processing' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'processing') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-cog fa-spin text-warning"></i>
-                                </span>
-                                <span class="nav-link-title">Processing</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'ready' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'ready') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-check-circle text-primary"></i>
-                                </span>
-                                <span class="nav-link-title">Ready</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.orders.status') && request()->route('status') === 'delivered' ? 'active' : '' }}" 
-                            href="{{ route('admin.orders.status', 'delivered') }}">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <i class="fa fa-truck text-success"></i>
-                                </span>
-                                <span class="nav-link-title">Delivered</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'submitted') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-circle text-secondary"></i></span>
+                            Submitted</a>
+                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'agent_assigned') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-tag text-info"></i></span>
+                            Agent Assigned</a>
+                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'processing') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cog fa-spin text-warning"></i></span>
+                            Processing</a>
+                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'ready') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-check-circle text-primary"></i></span>
+                            Ready</a>
+                         <a class="dropdown-item" href="{{ route('admin.orders.status', 'delivered') }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-truck text-success"></i></span>
+                            Delivered</a>
+                    </div>
                 </li>
 
                 <!-- Rest of your existing menu items below -->
@@ -164,6 +133,41 @@
                     </div>
                 </li>
                 @endif
+
+                <!-- 5.9 Messages / Broadcasts -->
+<li class="nav-item {{ request()->is('admin/broadcasts*') ? 'open' : '' }}">
+    <a class="nav-link {{ request()->is('admin/broadcasts*') ? 'active' : '' }}" 
+       href="#broadcast-submenu" data-bs-toggle="collapse" data-bs-auto-close="false" 
+       role="button" aria-expanded="{{ request()->is('admin/broadcasts*') ? 'true' : 'false' }}">
+        <span class="nav-link-icon d-md-none d-lg-inline-block">
+            <i class="fa fa-bullhorn"></i>
+        </span>
+        <span class="nav-link-title">Messages / Broadcasts</span>
+        <i class="fa fa-chevron-down ms-auto"></i>
+    </a>
+    <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
+        <ul class="nav submenu">
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.broadcasts.compose') ? 'active' : '' }}" 
+                   href="{{ route('admin.broadcasts.compose') }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-pencil-alt"></i>
+                    </span>
+                    <span class="nav-link-title">Compose Broadcast</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.broadcasts.history') ? 'active' : '' }}" 
+                   href="{{ route('admin.broadcasts.history') }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-history"></i>
+                    </span>
+                    <span class="nav-link-title">Broadcast History</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.promocode.index')}}">
