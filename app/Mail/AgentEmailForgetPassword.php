@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Setting;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -31,7 +33,7 @@ class AgentEmailForgetPassword extends Mailable
      */
     public function build()
     {
-        return $this->from('info@rabmotlicensing.com', 'Rabmot Licensing Agency')
+        return $this->from(...Setting::mailFrom())
         ->subject('Password Reset')
         ->markdown('emails.AgentforgetPassword-email')->with([
             'token' => $this->token, 

@@ -5,9 +5,11 @@ use App\Http\Controllers\Agent\CartController;
 use App\Http\Controllers\Agent\NotificationController;
 use App\Http\Controllers\Agent\PaymentController;
 use App\Http\Controllers\Agent\WalletController;
+use App\Http\Controllers\Agent\ReferralController;
 use App\Http\Controllers\Admin\PromoCodeController;
 use App\Http\Controllers\Agent\CheckoutController;
 use App\Http\Controllers\Auth\AgentLoginController;
+use App\Http\Controllers\Auth\AgentRegisterController;
 use App\Http\Controllers\Agent\AgentDashboardController;
 use App\Http\Controllers\Agent\AddVehicle\AddVehicleRenewalController;
 use App\Http\Controllers\Agent\AddVehicle\AddVehicleRegistrationController;
@@ -22,8 +24,10 @@ use App\Http\Controllers\Agent\ProfileController;
 
  
 Route::prefix('agent')->group(function () {
-    Route::get('/login',  [AgentLoginController::class, 'showLoginForm'])->name('agent.login');  
+    Route::get('/login',  [AgentLoginController::class, 'showLoginForm'])->name('agent.login');
     Route::post('/login/agent',  [AgentLoginController::class, 'login'])->name('agent.loginSubmit');
+    Route::get('/register', [AgentRegisterController::class, 'showRegistrationForm'])->name('agent.register');
+    Route::post('/register', [AgentRegisterController::class, 'register'])->name('agent.register.submit');
     Route::get('/forgotpassword',  [AgentLoginController::class, 'forgotpassword'])->name('agent.forgotpassword');
     Route::post('/forgotpassword/submit',  [AgentLoginController::class, 'forgotpasswordSubmit'])->name('agent.forgotpassword.submit');
     Route::get('/reset-password/{token}', [AgentLoginController::class, 'showResetPasswordForm'])->name('agent.reset.password.get');
@@ -116,10 +120,12 @@ Route::prefix('agent')->group(function () {
         Route::get('payment_callbackSeerbit', [PaymentController::class, 'handleGatewayCallbackSeerbit'])->name('agent.payment');
         
         //wallet
-        Route::get('/wallet', [WalletController::class, 'index'])->name('agent.wallet'); 
+        Route::get('/wallet', [WalletController::class, 'index'])->name('agent.wallet');
         Route::post('/create', [WalletController::class, 'create'])->name('agent.create');
-       
- 
+
+        //referral
+        Route::get('/referral', [ReferralController::class, 'index'])->name('agent.referral');
+
         Route::get('/profile', [AgentDashboardController::class, 'index'])->name('agent.profile');
         Route::get('/processHistory', [AgentDashboardController::class, 'processHistory'])->name('agent.processHistory');
         Route::get('/transactionHistory', [AgentDashboardController::class, 'transactionHistory'])->name('agent.transactionHistory');

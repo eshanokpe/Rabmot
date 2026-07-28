@@ -10,9 +10,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ProcessHistory;
 use App\Models\User;
-use App\Models\Agent;
-use App\Models\Order;
-use App\Models\PaymentModel;
+use App\Models\FAQs;
+use App\Models\ContactMessage;
+use App\Models\AddVehicleRenewal;
+use App\Models\WalletPayment;
 use App\Models\VehiclePaperRenewal;
 use App\Models\VehicleRegistration;
 use App\Models\ChangeofOwnershipPrice;
@@ -21,11 +22,8 @@ use App\Models\DriverLicenseRenewal;
 use App\Models\InternationalDriverLicense;
 use App\Models\DealerPlateNumber;
 use App\Models\OtherPermit;
-use App\Models\FAQs;
-use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Validator;
-use App\Mail\AgentDetailMessage;
- 
+
 class AdminDashboardController extends Controller
 {
     public function index()
@@ -138,85 +136,11 @@ class AdminDashboardController extends Controller
         return redirect()->back()->with('success', 'User status updated successfully');
     }
 
-    public function getAgent(){
-        $items = Agent::latest()->get();
-        return view('admin.pages.agents.index', compact('items'));
-    }
-
-    public function createAgent(){
-        return view('admin.pages.agents.create');
-    }
-
-    public function postcreateAgent(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'email' => 'required|string|email|max:255|unique:agents,email', 
-            'fullname' => 'required',
-            'phone_no' => 'nullable',
-            'password' => 'required|string|min:7',
-            'cpassword' => 'required|same:password',
-            'location' => 'nullable',
-            'gender' => 'required',
-        ]);
-     
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
-  
-        try {
-            $agentData = $request->only(['username', 'email', 'fullname', 'phone_no', 'location', 'gender']);
-            $agentData['password'] = Hash::make($request->input('password'));
-            $agentData['userType'] = 'agent';
-            $agentData['status'] = 1;
-          
-            try {
-                $sendMail = new AgentDetailMessage($agentData['email'], $agentData['fullname'], $agentData['username'], $request->input('password'));
-                Mail::to($agentData['email'])->send($sendMail);
-                Agent::create($agentData);
-                return redirect()->back()->with('success', 'Agent created successfully.');
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Failed to send email notification.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to create agent.');
-        }
-    }
-
-    public function editAgent($id){
-        $items = Agent::find(decrypt($id));
-        return view('admin.pages.agents.edit', compact('items'));
-    }
-
-    public function updateAgent(Request $request, $id)
-    {
-        $item = Agent::find($id);
-  
-        if ($request->input('status') == 'delete') {
-            $item->delete();
-            return redirect()->route('admin.agents')->with('success', 'Agent account deleted successfully');
-        } 
-        $item->username = $request->input('username');
-        $item->email = $request->input('email');
-        $item->fullname = $request->input('fullname');
-        $item->phone_no = $request->input('phone_no');
-        $item->location = $request->input('location');
-        $item->gender = $request->input('gender');
-  
-        if ($request->filled('password')) {
-            $item->password = Hash::make($request->input('password'));
-        }
-  
-        $item->status = $request->input('status');
-        $item->save();
-        return redirect()->back()->with('success', 'Agent updated successfully');
-    }
-
-    public function contactMessage()
-    {
-        $contactMsgs = ContactMessage::latest()->get();
-        return view('admin.pages.contactMessage.index', compact('contactMsgs'));
-    }
+   public function contactMessage()
+   {
+      $contactMsgs = ContactMessage::latest()->get();
+      return view('admin.pages.contactMessage.index', compact('contactMsgs'));
+   }
    
     public function showContactMessage($id)
     {
@@ -268,25 +192,6 @@ class AdminDashboardController extends Controller
         return view('admin.pages.settings.index');
     }
 
-    public function postSettings(Request $request) 
-    {
-        $validator = Validator::make($request->all(), [
-            'oldpassword' => 'required|string',
-            'password' => 'required|string|confirmed',
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withInput()->withErrors($validator);
-        }
 
-        $user = auth('admin')->user();
-        if (!Hash::check($request->oldpassword, $user->password)) {
-            return redirect()->back()->withErrors(['oldpassword' => 'The old password is incorrect.']);
-        }
-
-        $user->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        return redirect()->back()->with('success', 'Password changed successfully!');
-    }
+       
 }

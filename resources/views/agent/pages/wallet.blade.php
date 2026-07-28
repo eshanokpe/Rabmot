@@ -201,13 +201,15 @@
 																	<td>{{$item->bank}}</td>
 																	<td>{{$item->account_name}}</td>
 																	
-																	@if( $item->status == 0 )
+																	@if( $item->status == 'pending' )
 																		<td class="badge badge-success pending text-center mt-2"> Pending </td>
-																	@elseif ( $item->status == 1 )
-																		<td  class="badge badge-success processing mt-2"> Processing </td>
-																	@elseif ( $item->status == 2 )
+																	@elseif ( $item->status == 'approved' )
+																		<td  class="badge badge-success processing mt-2"> Approved </td>
+																	@elseif ( $item->status == 'rejected' )
+																		<td class="badge badge-danger text-center mt-2"> Rejected </td>
+																	@elseif ( $item->status == 'paid' )
 																		<td style="align-items: center"  class="mt-2 badge badge-success delivery">Paid</td>
-																	
+
 																	@endif
 																	 
 																	<td>

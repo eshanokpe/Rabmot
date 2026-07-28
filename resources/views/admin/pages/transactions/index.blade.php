@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="col-6 col-sm-6 col-lg-3">
-                                <a href="{{ route('admin.transactions.agent') }}">
+                                <a href="{{ route('admin.withdrawalQueue.index') }}">
                                 <div class="card card-sm">
                                     <div class="card-body">
                                         <div class="row align-items-center">

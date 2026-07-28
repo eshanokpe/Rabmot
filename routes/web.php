@@ -86,7 +86,6 @@ Route::post('/get-internationaDriverLicense/length', [PriceController::class, 'g
 Route::post('/get-internationaDriverLicense/price', [PriceController::class, 'getInternationaDriverLicensePrice']);
  
 // Payment routes
-// Payment routes
 Route::get('/payment/initiate', [PaymentController::class, 'initiatePayment'])
     ->name('payment.initiate');
 

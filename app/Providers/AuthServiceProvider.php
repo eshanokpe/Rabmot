@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +25,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        foreach (config('admin_permissions.areas') as $area => $roles) {
+            Gate::define("manage-{$area}", fn ($admin) => in_array($admin->role, $roles['manage']));
+            Gate::define("view-{$area}", fn ($admin) =>
+                in_array($admin->role, $roles['manage']) || in_array($admin->role, $roles['view'])
+            );
+        }
     }
 }

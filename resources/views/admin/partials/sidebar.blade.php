@@ -11,7 +11,7 @@
         </h1>
   
         <div class="collapse navbar-collapse" id="sidebar-menu">
-            <ul class="navbar-nav pt-lg-3"> 
+            <ul class="navbar-nav pt-lg-3">
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.dashboard')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -60,14 +60,20 @@
                         <span class="nav-link-title">+Add Vehicle</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{route('admin.vehicle.renewal.add')}}">Vehicle Renewal</a>
-                        <a class="dropdown-item" href="{{route('admin.vehicle.registration.new')}}">New Vehicle Registration</a>
-                        <a class="dropdown-item" href="{{route('admin.vehicle.changeOfOwnership.add')}}">Change Of Ownership</a>
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewal.add')}}" >
+                           Vehicle Renewal
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registration.new')}}">
+                            New Vehicle Registration
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.vehicle.changeOfOwnership.add')}}"
+                            rel="noopener">
+                            Change Of Ownership
+                        </a>
                     </div>
                 </li>
+                @endif
 
-                {{-- ✅ Only show Price section to Super Admin --}}
-                @if(Auth::guard('admin')->user()->hasPermission('set_service_pricing'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -99,7 +105,9 @@
                         <span class="nav-link-title">User's</span>
                     </a>
                 </li>
+                @endif
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-agents'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.agents')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -108,9 +116,30 @@
                         <span class="nav-link-title">Agent's</span>
                     </a>
                 </li>
-
-                {{-- ✅ Show full transaction menu only to Super Admin --}}
-                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.agentApprovals.index')}}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-user-check"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Agent Approvals
+                        </span>
+                    </a>
+                </li>
+                @endif
+                @if ($__admin && Gate::forUser($__admin)->allows('view-commissions'))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.commission.index')}}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-percent"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Commission Management
+                        </span>
+                    </a>
+                </li>
+                @endif
+                @if ($__admin && (Gate::forUser($__admin)->allows('view-orders') || Gate::forUser($__admin)->allows('view-withdrawals')))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -169,6 +198,7 @@
     </div>
 </li>
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-promocode'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.promocode.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -177,7 +207,9 @@
                         <span class="nav-link-title">Promo Code</span>
                     </a>
                 </li>
+                @endif
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-messaging'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.contactMessages.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -199,7 +231,9 @@
                         <a class="dropdown-item" href="{{ route('admin.faq.index') }}">View FAQ</a>
                     </div>
                 </li>
+                @endif
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-settings'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.settings.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -208,6 +242,20 @@
                         <span class="nav-link-title">Settings</span>
                     </a>
                 </li>
+                @endif
+
+                @if ($__admin && $__admin->isSuperAdmin())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.staff.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa-solid fa-user-shield"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Staff Accounts
+                        </span>
+                    </a>
+                </li>
+                @endif
 
                 {{-- ✅ Only Super Admin can manage other admins --}}
                 @if(Auth::guard('admin')->user()->hasPermission('manage_admins'))
@@ -236,4 +284,5 @@
             </ul>
         </div>
     </div>
+
 </aside>

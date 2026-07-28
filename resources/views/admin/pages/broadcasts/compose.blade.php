@@ -40,7 +40,6 @@
                                 <option value="">Select audience</option>
                                 <option value="all_users" {{ old('target_audience') == 'all_users' ? 'selected' : '' }}>All Users</option>
                                 <option value="all_agents" {{ old('target_audience') == 'all_agents' ? 'selected' : '' }}>All Agents</option>
-                                <option value="all_consumers" {{ old('target_audience') == 'all_consumers' ? 'selected' : '' }}>All Consumers</option>
                                 <option value="specific_user" {{ old('target_audience') == 'specific_user' ? 'selected' : '' }}>Specific User</option>
                                 <option value="specific_agent" {{ old('target_audience') == 'specific_agent' ? 'selected' : '' }}>Specific Agent</option>
                             </select>
