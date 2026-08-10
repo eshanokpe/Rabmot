@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BroadcastController;
+use App\Http\Controllers\Admin\AdminReportsController;
 
 
 
@@ -411,6 +412,15 @@ Route::prefix('admin')->group(function () {
         Route::post('/broadcasts', [BroadcastController::class, 'store'])->name('admin.broadcasts.store')->middleware('admin.can:manage-messaging');
         Route::get('/broadcasts/history', [BroadcastController::class, 'history'])->name('admin.broadcasts.history')->middleware('admin.can:view-messaging');
         Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('admin.broadcasts.show')->middleware('admin.can:view-messaging');
+
+        // ========== REPORTS ==========
+        Route::prefix('reports')->middleware('admin.can:view-reports')->group(function () {
+            Route::get('/revenue', [AdminReportsController::class, 'revenue'])->name('admin.reports.revenue');
+            Route::get('/orders', [AdminReportsController::class, 'orders'])->name('admin.reports.orders');
+            Route::get('/agent-performance', [AdminReportsController::class, 'agentPerformance'])->name('admin.reports.agentPerformance');
+            Route::get('/referrals', [AdminReportsController::class, 'referrals'])->name('admin.reports.referrals');
+            Route::get('/{report}/export/{format}', [AdminReportsController::class, 'export'])->name('admin.reports.export');
+        });
 
         Route::post('admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 

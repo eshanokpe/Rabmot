@@ -316,6 +316,24 @@
                 </li>
                 @endif
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-reports'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-chart-line"></i>
+                        </span>
+                        <span class="nav-link-title">Reports</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.reports.revenue') }}">Revenue Dashboard</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.orders') }}">Order Reports</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.agentPerformance') }}">Agent Performance</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.referrals') }}">Referral Reports</a>
+                    </div>
+                </li>
+                @endif
+
                 @if ($__admin && Gate::forUser($__admin)->allows('view-messaging'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
