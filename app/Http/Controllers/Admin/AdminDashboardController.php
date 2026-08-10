@@ -22,7 +22,10 @@ use App\Models\DriverLicenseRenewal;
 use App\Models\InternationalDriverLicense;
 use App\Models\DealerPlateNumber;
 use App\Models\OtherPermit;
+use App\Models\PaymentModel;
+use App\Models\Agent;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AdminDashboardController extends Controller
 {
@@ -188,10 +191,33 @@ class AdminDashboardController extends Controller
         return redirect()->back()->with('success', 'FAQ updated successfully');
     }
 
-    public function settings(){  
-        return view('admin.pages.settings.index');
+    public function settings(){
+        return view('admin.pages.account.password');
     }
 
+    public function postSettings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'oldpassword' => 'required|string',
+            'password' => 'required|string|confirmed',
+        ]);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors($validator);
+        }
 
-       
+        $user = auth('admin')->user();
+        if (!Hash::check($request->oldpassword, $user->password)) {
+            throw ValidationException::withMessages(['oldpassword' => 'The provided old password is incorrect.']);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->back()->with('success', 'Password changed successfully!');
+    }
+
 }
