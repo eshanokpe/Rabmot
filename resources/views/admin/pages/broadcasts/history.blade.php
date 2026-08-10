@@ -31,6 +31,7 @@
                                 <th>Channels</th>
                                 <th>Status</th>
                                 <th>Delivery</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,10 +66,13 @@
                                         No data
                                     @endif
                                 </td>
+                                <td>
+                                    <a href="{{ route('admin.broadcasts.show', $item) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">
+                                <td colspan="7" class="text-center py-4 text-muted">
                                     No broadcasts have been sent yet.
                                 </td>
                             </tr>

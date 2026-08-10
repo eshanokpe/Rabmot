@@ -27,4 +27,9 @@ class Broadcast extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
+    public function deliveries()
+    {
+        return $this->hasMany(BroadcastDelivery::class);
+    }
 }

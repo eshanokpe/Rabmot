@@ -411,6 +411,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/broadcasts/compose', [BroadcastController::class, 'compose'])->name('admin.broadcasts.compose')->middleware('admin.can:view-messaging');
         Route::post('/broadcasts', [BroadcastController::class, 'store'])->name('admin.broadcasts.store')->middleware('admin.can:manage-messaging');
         Route::get('/broadcasts/history', [BroadcastController::class, 'history'])->name('admin.broadcasts.history')->middleware('admin.can:view-messaging');
+        Route::get('/broadcasts/preview-count', [BroadcastController::class, 'previewCount'])->name('admin.broadcasts.previewCount')->middleware('admin.can:view-messaging');
         Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('admin.broadcasts.show')->middleware('admin.can:view-messaging');
 
         // ========== REPORTS ==========

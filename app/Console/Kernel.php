@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use  App\Console\Commands\SendVehicleExpiryNotifications;
+use App\Console\Commands\DispatchScheduledBroadcasts;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,6 +23,11 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping(10)
             ->appendOutputTo(storage_path('logs/vehicle-expiry-notifications.log'))
             ->emailOutputOnFailure(config('mail.from.address'));
+
+        $schedule->command(DispatchScheduledBroadcasts::class)
+            ->everyMinute()
+            ->withoutOverlapping(5)
+            ->appendOutputTo(storage_path('logs/broadcast-dispatch.log'));
     }
 
     /**

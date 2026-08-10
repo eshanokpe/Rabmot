@@ -14,6 +14,7 @@ class Notifications extends Model
         'user_email',
         'fullname',
         'userType',
+        'type',
         'title',
         'message',
         'read_at',
