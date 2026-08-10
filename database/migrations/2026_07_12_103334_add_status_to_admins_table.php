@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            // Add status column: 1 = Active, 0 = Inactive, default to 1
-            $table->tinyInteger('status')->default(1)->after('role');
-        });
+        if (!Schema::hasColumn('admins', 'status')) {
+            Schema::table('admins', function (Blueprint $table) {
+                // Add status column: 1 = Active, 0 = Inactive, default to 1
+                $table->tinyInteger('status')->default(1)->after('role');
+            });
+        }
     }
 
     /**
