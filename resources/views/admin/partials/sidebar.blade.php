@@ -54,7 +54,6 @@
                 {{-- NOTE: wrapped with a permission check to balance the stray @endif that followed this block.
                      Confirm 'view-vehicles' matches your actual Gate/permission name, or remove this @if/@endif
                      if this menu item should always be visible. --}}
-                @if ($__admin && Gate::forUser($__admin)->allows('view-vehicles'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -76,12 +75,8 @@
                         </a>
                     </div>
                 </li>
-                @endif
+                
 
-                {{-- NOTE: wrapped to balance the stray @endif that followed the Price dropdown.
-                     Confirm 'view-price' matches your actual Gate/permission name, or remove this @if/@endif
-                     if this menu item should always be visible. --}}
-                @if ($__admin && Gate::forUser($__admin)->allows('view-price'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -103,12 +98,8 @@
                         <a class="dropdown-item" href="{{ route('admin.otherPermit.index')}}">Other Permit</a>
                     </div>
                 </li>
-                @endif
+                
 
-                {{-- NOTE: wrapped to balance the stray @endif that followed the User's link.
-                     Confirm 'view-users' matches your actual Gate/permission name, or remove this @if/@endif
-                     if this menu item should always be visible. --}}
-                @if ($__admin && Gate::forUser($__admin)->allows('view-users'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -117,9 +108,8 @@
                         <span class="nav-link-title">User's</span>
                     </a>
                 </li>
-                @endif
+                
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-agents'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.agents')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -138,9 +128,7 @@
                         </span>
                     </a>
                 </li>
-                @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-commissions'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.commission.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -151,9 +139,8 @@
                         </span>
                     </a>
                 </li>
-                @endif
 
-                @if ($__admin && (Gate::forUser($__admin)->allows('view-orders') || Gate::forUser($__admin)->allows('view-withdrawals')))
+                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -212,7 +199,8 @@
                     </div>
                 </li>
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-promocode'))
+                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
+               
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.promocode.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -223,7 +211,8 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-messaging'))
+                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
+            
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.contactMessages.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -247,7 +236,7 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-settings'))
+                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.settings.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -258,7 +247,8 @@
                 </li>
                 @endif
 
-                @if ($__admin && $__admin->isSuperAdmin())
+                @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
+                
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.staff.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">

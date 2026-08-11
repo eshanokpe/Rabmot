@@ -322,6 +322,8 @@ Route::prefix('admin')->group(function () {
 
         // ========== TRANSACTION ROUTES ==========
         Route::prefix('transaction')->middleware('admin.can:view-orders')->group(function () {
+            Route::get('/agent', [AdminTransactionController::class, 'transactionAgentWithdraw'])->name('admin.transactions.agent');
+           
             Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
             Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');
 
