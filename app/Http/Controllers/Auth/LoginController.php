@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
-     */
+     */ 
     public function loginn(Request $request)
     {
         // Validate the reCAPTCHA response

@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <!-- Right panel: login form -->
             <div class="lg:col-span-3 p-8 sm:p-10">
                 <h2 class="text-2xl font-bold text-slate-900">Sign in to your account</h2>
@@ -90,7 +90,7 @@
                 @endif
 
                 <form method="POST" action="{{ route('login') }}" id="loginForm" class="mt-6 space-y-5">
-                    @csrf
+                    @csrf 
 
                     <!-- Email -->
                     <div>

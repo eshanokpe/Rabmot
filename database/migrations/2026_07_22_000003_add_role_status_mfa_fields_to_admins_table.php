@@ -6,16 +6,23 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
-{
+{ 
     public function up()
     {
         Schema::table('admins', function (Blueprint $table) {
             if (!Schema::hasColumn('admins', 'role')) {
                 $table->string('role')->default('staff')->after('email');
             }
+            
+            // Check if status column exists and what type it is
             if (!Schema::hasColumn('admins', 'status')) {
                 $table->string('status')->default('active')->after('role');
+            } else {
+                // If it exists but is integer, change it to string
+                // Use raw SQL to modify the column type
+                DB::statement('ALTER TABLE admins MODIFY status VARCHAR(255) DEFAULT "active"');
             }
+            
             if (!Schema::hasColumn('admins', 'mfa_enabled')) {
                 $table->boolean('mfa_enabled')->default(false)->after('status');
             }
@@ -31,6 +38,7 @@ return new class extends Migration
         DB::statement('ALTER TABLE admins MODIFY login_ip VARCHAR(255) NULL');
         DB::statement('ALTER TABLE admins MODIFY otp VARCHAR(255) NULL');
 
+        // Now this update will work with string values
         DB::table('admins')->update(['role' => 'super_admin', 'status' => 'active']);
     }
 
