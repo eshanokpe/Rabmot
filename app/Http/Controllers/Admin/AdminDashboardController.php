@@ -9,6 +9,8 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ProcessHistory;
+use App\Models\PaymentModel;
+use App\Models\Agent;
 use App\Models\User;
 use App\Models\FAQs;
 use App\Models\ContactMessage;

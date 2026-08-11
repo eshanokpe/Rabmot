@@ -9,7 +9,7 @@
                 <img src="{{ asset('/assets/dist/img/Rabmot.png')}}" alt="Rabmot licensing" class="navbar-brand-image">
             </a>
         </h1>
-  
+
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
                 <li class="nav-item">
@@ -22,8 +22,8 @@
                 </li>
 
                 <!-- ✅ 5.5 Order Management Section - Corrected -->
-               
-                 <li class="nav-item dropdown">
+
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -51,6 +51,10 @@
                 </li>
 
                 <!-- Rest of your existing menu items below -->
+                {{-- NOTE: wrapped with a permission check to balance the stray @endif that followed this block.
+                     Confirm 'view-vehicles' matches your actual Gate/permission name, or remove this @if/@endif
+                     if this menu item should always be visible. --}}
+                @if ($__admin && Gate::forUser($__admin)->allows('view-vehicles'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -74,6 +78,10 @@
                 </li>
                 @endif
 
+                {{-- NOTE: wrapped to balance the stray @endif that followed the Price dropdown.
+                     Confirm 'view-price' matches your actual Gate/permission name, or remove this @if/@endif
+                     if this menu item should always be visible. --}}
+                @if ($__admin && Gate::forUser($__admin)->allows('view-price'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -97,6 +105,10 @@
                 </li>
                 @endif
 
+                {{-- NOTE: wrapped to balance the stray @endif that followed the User's link.
+                     Confirm 'view-users' matches your actual Gate/permission name, or remove this @if/@endif
+                     if this menu item should always be visible. --}}
+                @if ($__admin && Gate::forUser($__admin)->allows('view-users'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -127,6 +139,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if ($__admin && Gate::forUser($__admin)->allows('view-commissions'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.commission.index')}}">
@@ -139,6 +152,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if ($__admin && (Gate::forUser($__admin)->allows('view-orders') || Gate::forUser($__admin)->allows('view-withdrawals')))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
@@ -164,39 +178,39 @@
                 @endif
 
                 <!-- 5.9 Messages / Broadcasts -->
-<li class="nav-item {{ request()->is('admin/broadcasts*') ? 'open' : '' }}">
-    <a class="nav-link {{ request()->is('admin/broadcasts*') ? 'active' : '' }}" 
-       href="#broadcast-submenu" data-bs-toggle="collapse" data-bs-auto-close="false" 
-       role="button" aria-expanded="{{ request()->is('admin/broadcasts*') ? 'true' : 'false' }}">
-        <span class="nav-link-icon d-md-none d-lg-inline-block">
-            <i class="fa fa-bullhorn"></i>
-        </span>
-        <span class="nav-link-title">Messages / Broadcasts</span>
-        <i class="fa fa-chevron-down ms-auto"></i>
-    </a>
-    <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
-        <ul class="nav submenu">
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.broadcasts.compose') ? 'active' : '' }}" 
-                   href="{{ route('admin.broadcasts.compose') }}">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="fa fa-pencil-alt"></i>
-                    </span>
-                    <span class="nav-link-title">Compose Broadcast</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.broadcasts.history') ? 'active' : '' }}" 
-                   href="{{ route('admin.broadcasts.history') }}">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="fa fa-history"></i>
-                    </span>
-                    <span class="nav-link-title">Broadcast History</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</li>
+                <li class="nav-item {{ request()->is('admin/broadcasts*') ? 'open' : '' }}">
+                    <a class="nav-link {{ request()->is('admin/broadcasts*') ? 'active' : '' }}"
+                       href="#broadcast-submenu" data-bs-toggle="collapse" data-bs-auto-close="false"
+                       role="button" aria-expanded="{{ request()->is('admin/broadcasts*') ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-bullhorn"></i>
+                        </span>
+                        <span class="nav-link-title">Messages / Broadcasts</span>
+                        <i class="fa fa-chevron-down ms-auto"></i>
+                    </a>
+                    <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
+                        <ul class="nav submenu">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.broadcasts.compose') ? 'active' : '' }}"
+                                   href="{{ route('admin.broadcasts.compose') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </span>
+                                    <span class="nav-link-title">Compose Broadcast</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('admin.broadcasts.history') ? 'active' : '' }}"
+                                   href="{{ route('admin.broadcasts.history') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <i class="fa fa-history"></i>
+                                    </span>
+                                    <span class="nav-link-title">Broadcast History</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
                 @if ($__admin && Gate::forUser($__admin)->allows('view-promocode'))
                 <li class="nav-item">
