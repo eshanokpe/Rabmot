@@ -30,10 +30,6 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BroadcastController;
 use App\Http\Controllers\Admin\AdminReportsController;
 
-
-
-
-
 Route::prefix('admin')->group(function () {
     Route::get('/login',  [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login/amin',  [AdminLoginController::class, 'login'])->name('admin.loginSubmit');
@@ -41,11 +37,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/forgotpassword',  [AdminLoginController::class, 'forgotpassword'])->name('admin.forgotpassword');
 
     Route::middleware('auth.admin')->group(function () {
-        Route::get('/',[AdminDashboardController::class, 'index'])->name('admin.index');
-
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.index');
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-        //Admin Staff Management
+        // Admin Staff Management
         Route::middleware('super.admin')->group(function () {
             Route::get('/staff', [AdminStaffController::class, 'index'])->name('admin.staff.index');
             Route::get('/staff/create', [AdminStaffController::class, 'create'])->name('admin.staff.create');
@@ -55,7 +50,7 @@ Route::prefix('admin')->group(function () {
             Route::put('/staff/{id}/toggle-status', [AdminStaffController::class, 'toggleStatus'])->name('admin.staff.toggleStatus');
         });
 
-        //Processe Type
+        // Process Type
         Route::get('/vehicle/paper-renewal', [AdminProcessTypeController::class, 'processVehiclePaperRenewal'])->name('admin.processVehiclePaperRenewal')->middleware('admin.can:view-orders');
         Route::get('/vehicle/paper-renewal/view/{id}', [AdminProcessTypeController::class, 'viewVehiclePaperRenewal'])->name('admin.viewVehiclePaperRenewal')->middleware('admin.can:view-orders');
 
@@ -97,7 +92,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/download/otherpermitpolicereport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download')->middleware('admin.can:manage-orders');
         Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status')->middleware('admin.can:manage-orders');
 
-        //Getaddvehiclerenewal
+        // Get add vehicle renewal
         Route::get('/vehicle-renewals', [AdminAddedVehicleController::class, 'showAddVehicleRenewal'])->name('admin.vehicle.renewals')->middleware('admin.can:view-vehicles');
         Route::get('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDetails'])->name('admin.vehicle.renewals.view')->middleware('admin.can:view-vehicles');
         Route::get('/vehicle-renewals/delete/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDelete'])->name('admin.vehicle.renewals.delete')->middleware('admin.can:manage-vehicles');
@@ -112,14 +107,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/vehicle-midyear-permit/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleMidyearPermit'])->name('vehicle.midyear.permit.download')->middleware('admin.can:manage-vehicles');
         Route::get('/vehicle-means-of-id/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleMeansOfId'])->name('vehicle.means.of.id.download')->middleware('admin.can:manage-vehicles');
 
-        //Getnewvehicleregistration
+        // Get new vehicle registration
         Route::get('/vehicle-registrations/new', [AdminAddedVehicleController::class, 'showAddNewVehicleRegistration'])->name('admin.vehicle.registrations.new')->middleware('admin.can:view-vehicles');
         Route::get('/vehicle-registrations/{id}', [AdminAddedVehicleController::class, 'showAddNewVehicleRegistrationDetails'])->name('admin.vehicle.registrations.view')->middleware('admin.can:view-vehicles');
         Route::put('/vehicle-registrations/{id}', [AdminAddedVehicleController::class, 'updateVehicleRegistration'])->name('admin.vehicle.registration.update')->middleware('admin.can:manage-vehicles');
         Route::get('/vehicle-registrations/download/custom-paper/{id}', [AdminAddedVehicleController::class, 'downloadVehicleRegistrationCustomPaper'])->name('vehicle.registration.custom.paper.download')->middleware('admin.can:manage-vehicles');
         Route::get('/vehicle-registrations/download/means-of-id/{id}', [AdminAddedVehicleController::class, 'downloadVehicleRegistrationMeansOfId'])->name('vehicle.registration.means.of.id.download')->middleware('admin.can:manage-vehicles');
 
-        //GetaddchangeOfownership
+        // Get add change of ownership
         Route::get('/change-of-ownership', [AdminAddedVehicleController::class, 'showAddChangeOfOwnership'])->name('admin.changeOfOwnership')->middleware('admin.can:view-vehicles');
         Route::get('/change-of-ownership/{id}', [AdminAddedVehicleController::class, 'viewAddChangeOfOwnership'])->name('admin.changeOfOwnership.view')->middleware('admin.can:view-vehicles');
         Route::put('/change-of-ownership/{id}', [AdminAddedVehicleController::class, 'updateChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.update')->middleware('admin.can:manage-vehicles');
@@ -129,7 +124,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/change-of-ownership/download/agreements/{id}', [AdminAddedVehicleController::class, 'downloadChangeOfOwnershipAgreements'])->name('changeOfOwnership.agreements.download')->middleware('admin.can:manage-vehicles');
         Route::get('/change-of-ownership/download/means-of-id/{id}', [AdminAddedVehicleController::class, 'downloadChangeOfOwnershipMeansOfID'])->name('changeOfOwnership.means.of.id.download')->middleware('admin.can:manage-vehicles');
 
-        //Add Vehicle Renewal
+        // Add Vehicle Renewal
         Route::get('/vehicle-renewal/add', [AdminAddVehicleController::class, 'addVehicleRenewal'])->name('admin.vehicle.renewal.add')->middleware('admin.can:view-vehicles');
         Route::post('/vehicle-renewal', [AdminAddVehicleController::class, 'storeVehicleRenewal'])->name('admin.vehicle.renewal.store')->middleware('admin.can:manage-vehicles');
 
@@ -139,21 +134,21 @@ Route::prefix('admin')->group(function () {
         Route::get('/vehicle-change-of-ownership/add', [AdminAddVehicleController::class, 'addVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.add')->middleware('admin.can:view-vehicles');
         Route::post('/vehicle-change-of-ownership', [AdminAddVehicleController::class, 'storeVehicleChangeOfOwnership'])->name('admin.vehicle.changeOfOwnership.store')->middleware('admin.can:manage-vehicles');
 
-        //Vehicle Type
+        // Vehicle Type
         Route::get('/vehicle-types', [AdminVehiclePriceController::class, 'indexVehicleTypes'])->name('admin.vehicle.types')->middleware('admin.can:view-vehicles');
         Route::get('/vehicle-types/add', [AdminVehiclePriceController::class, 'createVehicleType'])->name('admin.vehicle.type.add')->middleware('admin.can:view-vehicles');
         Route::post('/vehicle-types/store', [AdminVehiclePriceController::class, 'storeVehicleType'])->name('admin.vehicle.type.store')->middleware('admin.can:manage-vehicles');
         Route::get('/vehicle-types/{id}/edit', [AdminVehiclePriceController::class, 'editVehicleType'])->name('admin.vehicle.type.edit')->middleware('admin.can:view-vehicles');
         Route::post('/vehicle-types/update', [AdminVehiclePriceController::class, 'updateVehicleType'])->name('admin.vehicle.type.update')->middleware('admin.can:manage-vehicles');
 
-        //state
+        // State
         Route::get('/states', [AdminVehiclePriceController::class, 'indexStates'])->name('admin.states')->middleware('admin.can:view-vehicles');
         Route::get('/states/create', [AdminVehiclePriceController::class, 'createState'])->name('admin.state.create')->middleware('admin.can:view-vehicles');
         Route::post('/states/store', [AdminVehiclePriceController::class, 'storeState'])->name('admin.state.store')->middleware('admin.can:manage-vehicles');
         Route::post('/states/update', [AdminVehiclePriceController::class, 'updateState'])->name('admin.state.update')->middleware('admin.can:manage-vehicles');
         Route::get('/states/{id}', [AdminVehiclePriceController::class, 'showStateEdit'])->name('admin.state.details')->middleware('admin.can:view-vehicles');
 
-        //Service Pricing
+        // Service Pricing
         Route::get('/services', [AdminServicePricingController::class, 'index'])->name('admin.services.index')->middleware('admin.can:view-pricing');
         Route::get('/services/create', [AdminServicePricingController::class, 'create'])->name('admin.services.create')->middleware('admin.can:view-pricing');
         Route::post('/services', [AdminServicePricingController::class, 'store'])->name('admin.services.store')->middleware('admin.can:manage-pricing');
@@ -161,8 +156,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/services/{id}', [AdminServicePricingController::class, 'update'])->name('admin.services.update')->middleware('admin.can:manage-pricing');
         Route::put('/services/{id}/toggle-status', [AdminServicePricingController::class, 'toggleStatus'])->name('admin.services.toggleStatus')->middleware('admin.can:manage-pricing');
 
-        //Price Update
-       // Vehicle renewal price management routes for admin
+        // Price Update - Vehicle renewal price management routes for admin
         Route::get('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'index'])->name('admin.vehicleRenewalPrice.index')->middleware('admin.can:view-pricing');
         Route::get('/vehicle-renewal-price/create', [AdminVehicleRenewalPriceController::class, 'create'])->name('admin.vehicleRenewalPrice.create')->middleware('admin.can:view-pricing');
         Route::post('/vehicle-renewal-price', [AdminVehicleRenewalPriceController::class, 'store'])->name('admin.vehicleRenewalPrice.store')->middleware('admin.can:manage-pricing');
@@ -178,7 +172,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'update'])->name('admin.vehicleRegistrationPrice.update')->middleware('admin.can:manage-pricing');
         Route::get('/vehicle-registration-price/{id}', [AdminVehicleRegistrationPriceController::class, 'destroy'])->name('admin.vehicleRegistrationPrice.destroy')->middleware('admin.can:manage-pricing');
 
-       // Vehicle change of ownership price management routes for admin
+        // Vehicle change of ownership price management routes for admin
         Route::get('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'index'])->name('admin.vehicleChangeofOwnershipPrice.index')->middleware('admin.can:view-pricing');
         Route::get('/vehicle-change-of-ownership-price/create', [VehicleChangeOfOwnershipPriceController::class, 'create'])->name('admin.vehicleChangeofOwnershipPrice.create')->middleware('admin.can:view-pricing');
         Route::post('/vehicle-change-of-ownership-price', [VehicleChangeOfOwnershipPriceController::class, 'store'])->name('admin.vehicleChangeofOwnershipPrice.store')->middleware('admin.can:manage-pricing');
@@ -186,7 +180,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'update'])->name('admin.vehicleChangeofOwnershipPrice.update')->middleware('admin.can:manage-pricing');
         Route::get('/vehicle-change-of-ownership-price/{id}', [VehicleChangeOfOwnershipPriceController::class, 'destroy'])->name('admin.vehicleChangeofOwnershipPrice.destroy')->middleware('admin.can:manage-pricing');
 
-       // Driver license price management routes for admin
+        // Driver license price management routes for admin
         Route::get('/new-driver-license', [DriverLicenseController::class, 'index'])->name('admin.newDriverLicense.index')->middleware('admin.can:view-pricing');
         Route::get('/new-driver-license/create', [DriverLicenseController::class, 'create'])->name('admin.newDriverLicense.create')->middleware('admin.can:view-pricing');
         Route::post('/new-driver-license', [DriverLicenseController::class, 'store'])->name('admin.newDriverLicense.store')->middleware('admin.can:manage-pricing');
@@ -202,8 +196,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'update'])->name('admin.driverLicenseRenewal.update')->middleware('admin.can:manage-pricing');
         Route::get('/admin/driver-license-renewal/{id}', [DriverLicenseRenewalController::class, 'destroy'])->name('admin.driverLicenseRenewal.destroy')->middleware('admin.can:manage-pricing');
 
-        //IntDriverlicense
-       // International Driver License price management routes for admin
+        // International Driver License price management routes for admin
         Route::get('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'index'])->name('admin.intDriverLicense.index')->middleware('admin.can:view-pricing');
         Route::get('/international-driver-license/price/create', [InternationalDriverLicensePriceController::class, 'create'])->name('admin.intDriverLicense.create')->middleware('admin.can:view-pricing');
         Route::post('/international-driver-license/price', [InternationalDriverLicensePriceController::class, 'store'])->name('admin.intDriverLicense.store')->middleware('admin.can:manage-pricing');
@@ -219,7 +212,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'update'])->name('admin.dealersPlateNumber.update')->middleware('admin.can:manage-pricing');
         Route::get('/dealers-plate-number/{id}', [DealersPlateNumberPriceController::class, 'destroy'])->name('admin.dealersPlateNumber.destroy')->middleware('admin.can:manage-pricing');
 
-        // otherpermit
+        // Other permit
         Route::get('/other-permit', [OtherPermitPriceController::class, 'index'])->name('admin.otherPermit.index')->middleware('admin.can:view-pricing');
         Route::get('/other-permit/create', [OtherPermitPriceController::class, 'create'])->name('admin.otherPermit.create')->middleware('admin.can:view-pricing');
         Route::post('/other-permit', [OtherPermitPriceController::class, 'store'])->name('admin.otherPermit.store')->middleware('admin.can:manage-pricing');
@@ -227,6 +220,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/other-permit/{id}', [OtherPermitPriceController::class, 'update'])->name('admin.otherPermit.update')->middleware('admin.can:manage-pricing');
         Route::get('/other-permit/{id}', [OtherPermitPriceController::class, 'destroy'])->name('admin.otherPermit.destroy')->middleware('admin.can:manage-pricing');
         Route::post('/admin/other-permit-type', [OtherPermitPriceController::class, 'storeType'])->name('admin.otherPermit.storeType')->middleware('admin.can:manage-pricing');
+        
         // FAQ
         Route::prefix('faq/questions')->group(function () {
             Route::get('/', [AdminDashboardController::class, 'showFAQ'])
@@ -243,12 +237,13 @@ Route::prefix('admin')->group(function () {
             Route::put('/{id}', [AdminDashboardController::class, 'updateFaqQuestion'])
                 ->name('admin.faq.update')->middleware('admin.can:manage-faq');
         });
-        //Users
+        
+        // Users
         Route::get('/users', [AdminDashboardController::class, 'getUsers'])->name('admin.users')->middleware('admin.can:view-users');
         Route::get('/users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit')->middleware('admin.can:view-users');
         Route::put('/users/{id}/status', [AdminDashboardController::class, 'updateUserStatus'])->name('admin.users.updateStatus')->middleware('admin.can:manage-users');
 
-        //Agent
+        // Agent
         Route::get('/agents', [AdminAgentManagementController::class, 'index'])->name('admin.agents')->middleware('admin.can:view-agents');
         Route::get('/agents/create', [AdminAgentManagementController::class, 'create'])->name('admin.agent.create')->middleware('admin.can:view-agents');
         Route::post('/agents', [AdminAgentManagementController::class, 'store'])->name('admin.agent.store')->middleware('admin.can:manage-agents');
@@ -261,7 +256,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/agents/{id}/suspend', [AdminAgentManagementController::class, 'suspend'])->name('admin.agent.suspend')->middleware('admin.can:manage-agents');
         Route::put('/agents/{id}/reset-credentials', [AdminAgentManagementController::class, 'resetCredentials'])->name('admin.agent.resetCredentials')->middleware('admin.can:manage-agents');
 
-        //Agent Commission Management
+        // Agent Commission Management
         Route::get('/commission', [AdminAgentCommissionController::class, 'index'])->name('admin.commission.index')->middleware('admin.can:view-commissions');
         Route::put('/commission/base-rate', [AdminAgentCommissionController::class, 'updateBaseRate'])->name('admin.commission.updateBaseRate')->middleware('admin.can:manage-commissions');
         Route::post('/commission/preview', [AdminAgentCommissionController::class, 'previewCommission'])->name('admin.commission.preview')->middleware('admin.can:view-commissions');
@@ -269,7 +264,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/commission/tiers/{id}', [AdminAgentCommissionController::class, 'updateTier'])->name('admin.commission.tiers.update')->middleware('admin.can:manage-commissions');
         Route::delete('/commission/tiers/{id}', [AdminAgentCommissionController::class, 'destroyTier'])->name('admin.commission.tiers.destroy')->middleware('admin.can:manage-commissions');
 
-        //Agent Approvals
+        // Agent Approvals
         Route::get('/agent-approvals', [AdminAgentApprovalController::class, 'index'])->name('admin.agentApprovals.index')->middleware('admin.can:view-agents');
         Route::get('/agent-approvals/{id}', [AdminAgentApprovalController::class, 'show'])->name('admin.agentApprovals.show')->middleware('admin.can:view-agents');
         Route::put('/agent-approvals/{id}/approve', [AdminAgentApprovalController::class, 'approve'])->name('admin.agentApprovals.approve')->middleware('admin.can:manage-agents');
@@ -288,7 +283,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('admin.transactions')->middleware('admin.can:view-orders');
         Route::get('/transactions/{id}', [AdminTransactionController::class, 'viewTransaction'])->name('admin.transactions.show')->middleware('admin.can:view-orders');
 
-        //Agent Withdrawal Queue
+        // Agent Withdrawal Queue
         Route::get('/withdrawals/agent', [AdminAgentWithdrawalController::class, 'index'])->name('admin.withdrawalQueue.index')->middleware('admin.can:view-withdrawals');
         Route::get('/withdrawals/agent/{id}', [AdminAgentWithdrawalController::class, 'show'])->name('admin.withdrawalQueue.show')->middleware('admin.can:view-withdrawals');
         Route::put('/withdrawals/agent/{id}/approve', [AdminAgentWithdrawalController::class, 'approve'])->name('admin.withdrawalQueue.approve')->middleware('admin.can:manage-withdrawals');
@@ -320,7 +315,6 @@ Route::prefix('admin')->group(function () {
 
             Route::get('/other-permit', [AdminTransactionController::class, 'transactionOtherPermit'])->name('admin.transactions.otherPermit')->middleware('admin.can:view-orders');
             Route::get('/other-permit/{id}', [AdminTransactionController::class, 'showTransactionOtherPermit'])->name('admin.transactions.showOtherPermit')->middleware('admin.can:view-orders');
-
         });
 
         // ========== TRANSACTION ROUTES ==========
@@ -329,6 +323,7 @@ Route::prefix('admin')->group(function () {
            
             Route::get('/paper-renewal', [AdminTransactionController::class, 'transactionPaperRenewal'])->name('admin.transaction.paperRenewal');
             Route::get('/paper-renewal/{id}', [AdminTransactionController::class, 'showTransactionPaperRenewal'])->name('admin.transaction.showPaperRenewal');
+        }); // <--- FIXED: Added missing closing brace here
 
         Route::prefix('account')->group(function () {
             Route::get('/password', [AdminDashboardController::class, 'settings'])
@@ -374,12 +369,13 @@ Route::prefix('admin')->group(function () {
             Route::get('/{id}', [AdminDashboardController::class, 'showContactMessage'])
                 ->name('admin.contactMessages.show')->middleware('admin.can:view-messaging');
         });
-        //process/history
-        Route::get('/view/process/history/{id}', [AdminController::class, 'viewprocesshistory'])->name('admin.viewprocesshistory');
-        Route::put('/update/process/history/{id}', [AdminController::class, 'updateProcessHistoryStatus'])->name('admin.update-processhistory-status');
-        Route::get('/view/ready-for-delivery/paper/{id}', [AdminController::class, 'viewreadyfordeliveryPaper'])->name('admin.viewreadyfordeliveryPaper');
+        
+        // Process/history
+        Route::get('/view/process/history/{id}', [AdminDashboardController::class, 'viewprocesshistory'])->name('admin.viewprocesshistory');
+        Route::put('/update/process/history/{id}', [AdminDashboardController::class, 'updateProcessHistoryStatus'])->name('admin.update-processhistory-status');
+        Route::get('/view/ready-for-delivery/paper/{id}', [AdminDashboardController::class, 'viewreadyfordeliveryPaper'])->name('admin.viewreadyfordeliveryPaper');
 
-        //Document Processes
+        // Document Processes
         Route::get('/pending/paper', [AdminProcessDocument::class, 'pendingPaper'])->name('admin.pendingpaper')->middleware('admin.can:view-orders');
         Route::get('/view/pending/paper/{id}', [AdminProcessDocument::class, 'viewpendingPaper'])->name('admin.viewpendingpaper')->middleware('admin.can:view-orders');
         Route::put('/update/pending/paper/{id}', [AdminProcessDocument::class, 'updatePendingPaperStatus'])->name('admin.update-pendingPaper-status')->middleware('admin.can:manage-orders');

@@ -23,8 +23,7 @@
                     </a>
                 </li>
 
-                <!-- ✅ 5.5 Order Management Section - Corrected -->
-
+                <!-- ✅ Document Processes Section -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -54,6 +53,8 @@
                          </a>
                     </div>
                 </li>
+
+                <!-- ✅ Process Type Section -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -91,9 +92,9 @@
                          </a>
                     </div>
                 </li>
-                @endif
-
-                @if ($__admin && Gate::forUser($__admin)->allows('view-vehicles'))
+               
+                @if(Auth::guard('admin')->user()->hasPermission('view-vehicles'))
+               
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -117,6 +118,7 @@
                         </a>
                     </div>
                 </li>
+                @endif
 
                 <!-- Rest of your existing menu items below -->
                 <li class="nav-item dropdown">
@@ -143,8 +145,9 @@
                     </div>
                 </li>
                 
-
-                @if ($__admin && (Gate::forUser($__admin)->allows('view-pricing') || Gate::forUser($__admin)->allows('view-vehicles')))
+               
+                @if(Auth::guard('admin')->user()->hasPermission('view-pricing') || Auth::guard('admin')->user()->hasPermission('view-vehicles'))
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -156,12 +159,14 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        @if (Gate::forUser($__admin)->allows('view-pricing'))
+                         @if(Auth::guard('admin')->user()->hasPermission('view-pricing'))
+               
                         <a class="dropdown-item" href="{{ route('admin.services.index') }}">
                             Service Pricing
                         </a>
                         @endif
-                        @if (Gate::forUser($__admin)->allows('view-vehicles'))
+                        @if(Auth::guard('admin')->user()->hasPermission('view-vehicles'))
+
                         <a class="dropdown-item" href="{{ route('admin.vehicle.types') }}">
                             Vehicle Type
                         </a>
@@ -169,7 +174,7 @@
                             State
                         </a>
                         @endif
-                        @if (Gate::forUser($__admin)->allows('view-pricing'))
+                        @if(Auth::guard('admin')->user()->hasPermission('view-pricing'))
                         <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice.index') }}">
                             Vechicle Renewal Price
                         </a>
@@ -197,9 +202,9 @@
                         @endif
                     </div>
                 </li>
-                
+                @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-users'))
+                @if(Auth::guard('admin')->user()->hasPermission('view-users'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -210,11 +215,11 @@
                         </span>
                     </a>
                 </li>
-                
+                @endif
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.agents')}}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
                         <i class="fa fa-users"></i>
                         </span>
                         <span class="nav-link-title">
@@ -256,17 +261,17 @@
                         </span>
                     </a>
                     <div class="dropdown-menu">
-                        @if (Gate::forUser($__admin)->allows('view-orders'))
+                        @if(Auth::guard('admin')->user()->hasPermission('view-orders'))
                         <a class="dropdown-item" href="{{ route('admin.transactions') }}">
                             All Transaction
                         </a>
                         @endif
-                        @if (Gate::forUser($__admin)->allows('view-withdrawals'))
+                        @if(Auth::guard('admin')->user()->hasPermission('view-withdrawals'))
                         <a class="dropdown-item" href="{{ route('admin.withdrawalQueue.index') }}">
                             Agent Withdraw
                         </a>
                         @endif
-                        @if (Gate::forUser($__admin)->allows('view-orders'))
+                        @if(Auth::guard('admin')->user()->hasPermission('view-orders'))
                         <a class="dropdown-item" href="{{ route('admin.transaction.paperRenewal') }}">
                             Vechicle Paper Renewal
                         </a>
@@ -296,7 +301,7 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-orders'))
+                @if(Auth::guard('admin')->user()->hasPermission('view-orders'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -312,7 +317,7 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-reports'))
+                @if(Auth::guard('admin')->user()->hasPermission('view-reports'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -330,7 +335,7 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-messaging'))
+                @if(Auth::guard('admin')->user()->hasPermission('view-messaging'))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -338,7 +343,6 @@
                             <i class="fa fa-bullhorn"></i>
                         </span>
                         <span class="nav-link-title">Messages / Broadcasts</span>
-<<<<<<< HEAD
                         <i class="fa fa-chevron-down ms-auto"></i>
                     </a>
                     <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
@@ -364,18 +368,9 @@
                         </ul>
                     </div>
                 </li>
-=======
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.broadcasts.compose') }}">Compose Broadcast</a>
-                        <a class="dropdown-item" href="{{ route('admin.broadcasts.history') }}">Broadcast History</a>
-                    </div>
-                </li>
                 @endif
->>>>>>> 1204b22987f927620c66e37fd462273fee38202a
 
                 @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
-               
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.promocode.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -389,7 +384,6 @@
                 @endif
 
                 @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
-            
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.contactMessages.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -402,7 +396,7 @@
                 </li>
                 @endif
 
-                @if ($__admin && Gate::forUser($__admin)->allows('view-faq'))
+                @if(Auth::guard('admin')->user()->hasPermission('view-faq'))
                  <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
@@ -435,7 +429,6 @@
                 @endif
 
                 @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
-                
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.staff.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -463,9 +456,6 @@
                 </li>
 
             </ul>
-
         </div>
-
     </div>
-
 </aside>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Mail;
-
+ 
 use App\Models\AddVehicleRenewal;
 use App\Models\User;
 use Carbon\Carbon;
@@ -58,7 +58,7 @@ class VehicleExpiryMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.vehicle.expiry',
+            view: 'emails.vehicle-expiry',
         );
     }
 

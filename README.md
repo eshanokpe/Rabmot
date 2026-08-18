@@ -96,3 +96,6 @@ alias php='/usr/local/opt/php@8.2/bin/php'
 
 # Now check
 php -v
+
+brew unlink php
+brew link --force php@8.2

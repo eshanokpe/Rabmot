@@ -2,22 +2,19 @@
 
 namespace App\Models;
 
-// namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-
 class Admin extends Authenticatable
 {
-    use Notifiable;
+    use HasFactory, Notifiable;
  
-     protected $fillable = [
+    protected $fillable = [
         'name', 'email', 'password', 'phone', 'last_login', 'login_ip', 'otp',
-        'role', 'status' // ✅ Status is present here
+        'role', 'status' 
     ];
-
 
     protected $hidden = [
         'password', 'remember_token',
@@ -33,25 +30,44 @@ class Admin extends Authenticatable
         'mfa_enabled' => 'boolean',
     ];
 
-    public function isActive()
+    /**
+     * Check if the admin account is active.
+     */
+    public function isActive(): bool
     {
-        // OPTION 1: If your 'status' column is a string (e.g., 'active', 'inactive')
-        // return $this->status === 'active';
-
-        // OPTION 2: If your 'status' column is an integer/boolean (e.g., 1 = active, 0 = deactivated)
-        return (bool) $this->status; 
+        return $this->status === 'active';
     }
 
-    // --------------------------
-    // ✅ Role & Permission Checks
-    // --------------------------
-    public function isSuperAdmin()
+    /**
+     * Check if the admin is a super admin.
+     */
+    public function isSuperAdmin(): bool
     {
         return $this->role === 'super_admin';
     }
 
-    public function isActive(): bool
+     public function hasPermission(string $permission): bool
     {
-        return $this->status === 'active';
+        // 1. Super admins bypass all permission checks and have access to everything
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        // 2. IF YOU USE SPATIE LARAVEL-PERMISSION: 
+        // Uncomment the line below and delete the rest of this method.
+        // return $this->hasPermissionTo($permission);
+
+        // 3. IF YOU STORE PERMISSIONS IN A DATABASE COLUMN (e.g., JSON or comma-separated string)
+        if (isset($this->permissions)) {
+            $userPermissions = is_string($this->permissions) 
+                ? explode(',', str_replace(' ', '', $this->permissions)) 
+                : (array) $this->permissions;
+            
+            return in_array($permission, $userPermissions, true);
+        }
+
+        // 4. FALLBACK: If you don't have a permissions column yet, 
+        // you can temporarily return true to test, or add your custom logic here.
+        return false;
     }
 }
