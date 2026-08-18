@@ -25,6 +25,7 @@
                     <table class="table table-vcenter card-table">
                         <thead>
                             <tr>
+                                <th style="width: 50px;">S/N</th>
                                 <th>Date / Time</th>
                                 <th>Title</th>
                                 <th>Audience</th>
@@ -37,6 +38,9 @@
                         <tbody>
                             @forelse($broadcasts as $item)
                             <tr>
+                                <td>
+                                    <strong>{{ ($broadcasts->currentPage() - 1) * $broadcasts->perPage() + $loop->iteration }}</strong>
+                                </td>
                                 <td>
                                     <div>{{ $item->created_at->format('d M Y') }}</div>
                                     <div class="text-muted small">{{ $item->created_at->format('H:i') }}</div>
@@ -72,7 +76,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
+                                <td colspan="8" class="text-center py-4 text-muted">
                                     No broadcasts have been sent yet.
                                 </td>
                             </tr>

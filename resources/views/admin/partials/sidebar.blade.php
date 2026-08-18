@@ -336,39 +336,23 @@
                 @endif
 
                 @if(Auth::guard('admin')->user()->hasPermission('view-messaging'))
-                <li class="nav-item dropdown">
+               
+                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-bullhorn"></i>
+                            <i class="fa fa-chart-line"></i>
                         </span>
                         <span class="nav-link-title">Messages / Broadcasts</span>
-                        <i class="fa fa-chevron-down ms-auto"></i>
                     </a>
-                    <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
-                        <ul class="nav submenu">
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('admin.broadcasts.compose') ? 'active' : '' }}"
-                                   href="{{ route('admin.broadcasts.compose') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="fa fa-pencil-alt"></i>
-                                    </span>
-                                    <span class="nav-link-title">Compose Broadcast</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('admin.broadcasts.history') ? 'active' : '' }}"
-                                   href="{{ route('admin.broadcasts.history') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <i class="fa fa-history"></i>
-                                    </span>
-                                    <span class="nav-link-title">Broadcast History</span>
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.broadcasts.compose') }}">Compose Broadcast</a>
+                        <a class="dropdown-item" href="{{ route('admin.broadcasts.history') }}">Broadcast History</a>
                     </div>
                 </li>
                 @endif
+
+                
 
                 @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
                 <li class="nav-item">

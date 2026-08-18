@@ -13,7 +13,7 @@ class Broadcast extends Model
         'admin_id', 'title', 'body', 'target_audience',
         'target_ids', 'channels', 'scheduled_at', 'sent_at',
         'delivery_status', 'delivery_report'
-    ];
+    ]; 
 
     protected $casts = [
         'target_ids' => 'array',

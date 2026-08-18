@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
     <div class="page-body">
         <div class="container-fluid">
             <form action="{{ route('admin.broadcasts.store') }}" method="POST">
@@ -26,10 +26,10 @@
                             @error('title') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
-                        <!-- Message Body (CKEditor UNCHANGED) -->
+                        <!-- ✅ Removed 'required' from the textarea -->
                         <div class="mb-3">
                             <label class="form-label required">Message Body</label>
-                            <textarea name="body" id="rich-editor" rows="10" class="form-control" required>{{ old('body') }}</textarea>
+                            <textarea name="body" id="rich-editor" rows="10" class="form-control">{{ old('body') }}</textarea>
                             @error('body') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
@@ -64,13 +64,13 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="channels[]" value="in_app" {{ in_array('in_app', old('channels', ['in_app'])) ? 'checked' : '' }}>
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="in_app" {{ in_array('in_app', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">In-App Message</span>
                                     </label>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="channels[]" value="email" {{ in_array('email', old('channels', ['email'])) ? 'checked' : '' }}>
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="email" {{ in_array('email', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">Email</span>
                                     </label>
                                 </div>
@@ -106,11 +106,15 @@
 
 <!-- CKEditor Script - UNCHANGED -->
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<!-- jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- ✅ Add Select2 for smart search & tags -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <script>
+let editorInstance = null;
+
 ClassicEditor
     .create(document.querySelector('#rich-editor'), {
         toolbar: {
@@ -126,100 +130,121 @@ ClassicEditor
         language: 'en',
         licenseKey: ''
     })
-    .then(editor => {})
+    .then(editor => {
+        editorInstance = editor;
+        
+        // Sync editor content to textarea before form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (editorInstance) {
+                const editorData = editorInstance.getData();
+                document.querySelector('#rich-editor').value = editorData;
+
+                // ✅ Custom validation: Check if the content is practically empty
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = editorData;
+                
+                if (!tempDiv.textContent.trim()) {
+                    e.preventDefault(); // Stop form submission
+                    alert('The Message Body cannot be empty.');
+                    editorInstance.editing.view.focus(); // Focus back on the editor
+                }
+            }
+        });
+    })
     .catch(error => { console.error(error); });
 
-// Pass PHP data to JavaScript
-const users = @json($users);
-const agents = @json($agents);
-const recipientSelect = $('#recipient_list');
-const targetAudience = document.getElementById('target_audience');
-const targetSelection = document.getElementById('target_selection');
+// Wait for jQuery and DOM to be ready
+jQuery(document).ready(function($) {
+    // Pass PHP data to JavaScript
+    const users = @json($users);
+    const agents = @json($agents);
+    const recipientSelect = $('#recipient_list');
+    const targetAudience = document.getElementById('target_audience');
+    const targetSelection = document.getElementById('target_selection');
 
-// Initialize smart multi-select
-recipientSelect.select2({
-    width: '100%',
-    allowClear: true,
-    closeOnSelect: false,
-    placeholder: 'Search by name or email...'
-});
-
-// Function to load correct list
-function loadRecipientList(type) {
-    recipientSelect.empty().trigger('change'); // Clear old options & selection
-
-    let options = [];
-    if (type === 'specific_user') {
-        options = users.map(user => ({
-            id: user.id,
-            text: `${user.fullname} — ${user.email} (${user.role})`
-        }));
-    } else if (type === 'specific_agent') {
-        options = agents.map(agent => ({
-            id: agent.id,
-            text: `${agent.fullname} — ${agent.email} (Agent)`
-        }));
-    }
-
-    // Add all options
-    options.forEach(opt => {
-        recipientSelect.append(new Option(opt.text, opt.id, false, false));
+    // Initialize smart multi-select
+    recipientSelect.select2({
+        width: '100%',
+        allowClear: true,
+        closeOnSelect: false,
+        placeholder: 'Search by name or email...'
     });
 
-    recipientSelect.trigger('change');
-}
+    // Function to load correct list
+    function loadRecipientList(type) {
+        recipientSelect.empty().trigger('change'); // Clear old options & selection
 
-// Run on audience change
-targetAudience.addEventListener('change', function() {
-    const val = this.value;
-    const showList = ['specific_user', 'specific_agent'].includes(val);
+        let options = [];
+        if (type === 'specific_user') {
+            options = users.map(user => ({
+                id: user.id,
+                text: `${user.fullname} — ${user.email} (${user.role})`
+            }));
+        } else if (type === 'specific_agent') {
+            options = agents.map(agent => ({
+                id: agent.id,
+                text: `${agent.fullname} — ${agent.email} (Agent)`
+            }));
+        }
 
-    targetSelection.classList.toggle('d-none', !showList);
+        // Add all options
+        options.forEach(opt => {
+            recipientSelect.append(new Option(opt.text, opt.id, false, false));
+        });
 
-    if (showList) {
-        loadRecipientList(val);
+        recipientSelect.trigger('change');
     }
 
-    updateRecipientCount();
-});
+    // Run on audience change
+    targetAudience.addEventListener('change', function() {
+        const val = this.value;
+        const showList = ['specific_user', 'specific_agent'].includes(val);
 
-// Live recipient-count preview
-const recipientCountPreview = document.getElementById('recipient_count_preview');
+        targetSelection.classList.toggle('d-none', !showList);
 
-function updateRecipientCount() {
-    const audience = targetAudience.value;
+        if (showList) {
+            loadRecipientList(val);
+        }
 
-    if (!audience) {
-        recipientCountPreview.textContent = '';
-        return;
-    }
+        updateRecipientCount();
+    });
 
-    const targetIds = ['specific_user', 'specific_agent'].includes(audience) ? recipientSelect.val() || [] : [];
+    // Live recipient-count preview
+    const recipientCountPreview = document.getElementById('recipient_count_preview');
 
-    if (['specific_user', 'specific_agent'].includes(audience) && targetIds.length === 0) {
-        recipientCountPreview.textContent = '';
-        return;
-    }
+    function updateRecipientCount() {
+        const audience = targetAudience.value;
 
-    const params = new URLSearchParams();
-    params.append('target_audience', audience);
-    targetIds.forEach(id => params.append('target_ids[]', id));
+        if (!audience) {
+            recipientCountPreview.textContent = '';
+            return;
+        }
 
-    fetch(`{{ route('admin.broadcasts.previewCount') }}?${params.toString()}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
-        .then(res => res.json())
-        .then(data => {
-            recipientCountPreview.textContent = `This will reach ${data.count} recipient${data.count === 1 ? '' : 's'}.`;
+        const targetIds = ['specific_user', 'specific_agent'].includes(audience) ? recipientSelect.val() || [] : [];
+
+        if (['specific_user', 'specific_agent'].includes(audience) && targetIds.length === 0) {
+            recipientCountPreview.textContent = '';
+            return;
+        }
+
+        const params = new URLSearchParams();
+        params.append('target_audience', audience);
+        targetIds.forEach(id => params.append('target_ids[]', id));
+
+        fetch(`{{ route('admin.broadcasts.previewCount') }}?${params.toString()}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-        .catch(() => { recipientCountPreview.textContent = ''; });
-}
+            .then(res => res.json())
+            .then(data => {
+                recipientCountPreview.textContent = `This will reach ${data.count} recipient${data.count === 1 ? '' : 's'}.`;
+            })
+            .catch(() => { recipientCountPreview.textContent = ''; });
+    }
 
-recipientSelect.on('change', updateRecipientCount);
+    recipientSelect.on('change', updateRecipientCount);
 
-// Restore old input after validation error
-@if(old('target_audience'))
-document.addEventListener('DOMContentLoaded', () => {
+    // Restore old input after validation error
+    @if(old('target_audience'))
     const val = "{{ old('target_audience') }}";
     if (['specific_user', 'specific_agent'].includes(val)) {
         loadRecipientList(val);
@@ -230,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
         recipientSelect.val(oldIds).trigger('change');
     }
     updateRecipientCount();
+    @endif
 });
-@endif
 </script>
 @endsection
