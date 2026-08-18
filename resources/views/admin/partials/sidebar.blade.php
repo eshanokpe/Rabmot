@@ -17,7 +17,9 @@
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-home"></i>
                         </span>
-                        <span class="nav-link-title">Home</span>
+                        <span class="nav-link-title">
+                            Home
+                        </span>
                     </a>
                 </li>
 
@@ -27,40 +29,105 @@
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-list-ol"></i>
+                        <i class="fa fa-file"></i>
                         </span>
-                        <span class="nav-link-title">Order List</span>
+                        <span class="nav-link-title">
+                          Document Processes
+                        </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'submitted') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-circle text-secondary"></i></span>
-                            Submitted</a>
-                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'agent_assigned') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-tag text-info"></i></span>
-                            Agent Assigned</a>
-                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'processing') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cog fa-spin text-warning"></i></span>
-                            Processing</a>
-                        <a class="dropdown-item" href="{{ route('admin.orders.status', 'ready') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-check-circle text-primary"></i></span>
-                            Ready</a>
-                         <a class="dropdown-item" href="{{ route('admin.orders.status', 'delivered') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-truck text-success"></i></span>
-                            Delivered</a>
+                        <a class="dropdown-item" href="{{route('admin.pendingpaper')}}">
+                            Pending Document
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.processedpaper')}}">
+                            Processing Document
+                        </a>
+
+                        <a class="dropdown-item" href="{{route('admin.readyfordelivery')}}">
+                           Ready for Delivery
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.deliveryinprogress')}}">
+                           Delivery in Progress
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.delivered')}}">
+                           Document Delivered
+                         </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <i class="fa fa-file"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            Process Type
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.processVehiclePaperRenewal') }}">
+                            Vechicle Paper Renewal
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewVehicleRegistration')}}">
+                           New vehicle Registration
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.processChangeOfOwnership')}}">
+                           Change of Ownership
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverlicense')}}">
+                            New Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.processNewDriverLicenseRenewal')}}">
+                            Driver License Renewal
+                        </a>
+                        <a class="dropdown-item"href="{{ route('admin.processInternationalDriverLicense')}}">
+                            International Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.processDealerPlateNumber')}}">
+                            Dealer's Plate Number
+                         </a>
+                          <a class="dropdown-item" href="{{ route('admin.processOtherPermit')}}">
+                            Other Permit
+                         </a>
+                    </div>
+                </li>
+                @endif
+
+                @if ($__admin && Gate::forUser($__admin)->allows('view-vehicles'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-car"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            View Added Vehicle
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{route('admin.vehicle.renewals')}}"  rel="noopener">
+                            Vehicle Renewal
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.vehicle.registrations.new')}}">
+                            New Vehicle Registration
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.changeOfOwnership')}}"
+                            rel="noopener">
+                            Change Of Ownership
+                        </a>
                     </div>
                 </li>
 
                 <!-- Rest of your existing menu items below -->
-                {{-- NOTE: wrapped with a permission check to balance the stray @endif that followed this block.
-                     Confirm 'view-vehicles' matches your actual Gate/permission name, or remove this @if/@endif
-                     if this menu item should always be visible. --}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-car"></i>
                         </span>
-                        <span class="nav-link-title">+Add Vehicle</span>
+                        <span class="nav-link-title">
+                            +Add Vehicle
+                        </span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{route('admin.vehicle.renewal.add')}}" >
@@ -77,45 +144,82 @@
                 </li>
                 
 
+                @if ($__admin && (Gate::forUser($__admin)->allows('view-pricing') || Gate::forUser($__admin)->allows('view-vehicles')))
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-money-bill"></i>
+                        <i class="fa fa-money-bill"></i>
                         </span>
-                        <span class="nav-link-title">Price</span>
+                        <span class="nav-link-title">
+                            Price
+                        </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.vehicle.types') }}">Vehicle Type</a>
-                        <a class="dropdown-item" href="{{ route('admin.states') }}">State</a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice.index') }}">Vehicle Renewal Price</a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice.index')}}">New Vehicle Registration</a>
-                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice.index')}}">Change of Ownership</a>
-                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense.index')}}">New Driver License</a>
-                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal.index')}}">Driver License Renewal</a>
-                        <a class="dropdown-item" href="{{ route('admin.intDriverLicense.index')}}">International Driver License</a>
-                        <a class="dropdown-item" href="{{ route('admin.dealersPlateNumber.index')}}">Dealer's Plate Number</a>
-                        <a class="dropdown-item" href="{{ route('admin.otherPermit.index')}}">Other Permit</a>
+                        @if (Gate::forUser($__admin)->allows('view-pricing'))
+                        <a class="dropdown-item" href="{{ route('admin.services.index') }}">
+                            Service Pricing
+                        </a>
+                        @endif
+                        @if (Gate::forUser($__admin)->allows('view-vehicles'))
+                        <a class="dropdown-item" href="{{ route('admin.vehicle.types') }}">
+                            Vehicle Type
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.states') }}">
+                            State
+                        </a>
+                        @endif
+                        @if (Gate::forUser($__admin)->allows('view-pricing'))
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRenewalPrice.index') }}">
+                            Vechicle Renewal Price
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.vehicleRegistrationPrice.index')}}">
+                           New Vehicle Registration
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.vehicleChangeofOwnershipPrice.index')}}">
+                           Change of Ownership
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.newDriverLicense.index')}}">
+                            New Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.driverLicenseRenewal.index')}}">
+                            Driver License Renewal
+                        </a>
+                        <a class="dropdown-item"href="{{ route('admin.intDriverLicense.index')}}">
+                            International Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.dealersPlateNumber.index')}}">
+                            Dealer's Plate Number
+                         </a>
+                          <a class="dropdown-item" href="{{ route('admin.otherPermit.index')}}">
+                            Other Permit
+                         </a>
+                        @endif
                     </div>
                 </li>
                 
 
+                @if ($__admin && Gate::forUser($__admin)->allows('view-users'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.users')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-users"></i>
                         </span>
-                        <span class="nav-link-title">User's</span>
+                        <span class="nav-link-title">
+                            User's
+                        </span>
                     </a>
                 </li>
                 
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.agents')}}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-users"></i>
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                        <i class="fa fa-users"></i>
                         </span>
-                        <span class="nav-link-title">Agent's</span>
+                        <span class="nav-link-title">
+                            Agent's
+                        </span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -145,34 +249,96 @@
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa-solid fa-money-bill-transfer"></i>
+                        <i class="fa-solid fa-money-bill-transfer"></i>
                         </span>
-                        <span class="nav-link-title">Transaction</span>
+                        <span class="nav-link-title">
+                            Transaction
+                        </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.transactions') }}">All Transaction</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.agent') }}">Agent Withdraw</a>
-                        <a class="dropdown-item" href="{{ route('admin.transaction.paperRenewal') }}">Vehicle Paper Renewal</a>
-                        <a class="dropdown-item" href="{{ route('admin.transaction.vehicleRegistration')}}">New Vehicle Registration</a>
-                        <a class="dropdown-item" href="{{ route('admin.transaction.changeOfOwnership')}}">Change of Ownership</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.newDriverLicense')}}">New Driver License</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.driverLicenseRenewal')}}">Driver License Renewal</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.internationalDriverLicense')}}">International Driver License</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.dealerPlateNumber')}}">Dealer's Plate Number</a>
-                        <a class="dropdown-item" href="{{ route('admin.transactions.otherPermit')}}">Other Permit</a>
+                        @if (Gate::forUser($__admin)->allows('view-orders'))
+                        <a class="dropdown-item" href="{{ route('admin.transactions') }}">
+                            All Transaction
+                        </a>
+                        @endif
+                        @if (Gate::forUser($__admin)->allows('view-withdrawals'))
+                        <a class="dropdown-item" href="{{ route('admin.withdrawalQueue.index') }}">
+                            Agent Withdraw
+                        </a>
+                        @endif
+                        @if (Gate::forUser($__admin)->allows('view-orders'))
+                        <a class="dropdown-item" href="{{ route('admin.transaction.paperRenewal') }}">
+                            Vechicle Paper Renewal
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.transaction.vehicleRegistration')}}">
+                           New vehicle Registration
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.transaction.changeOfOwnership')}}">
+                           Change of Ownership
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.transactions.newDriverLicense')}}">
+                            New Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.transactions.driverLicenseRenewal')}}">
+                            Driver License Renewal
+                        </a>
+                        <a class="dropdown-item"href="{{ route('admin.transactions.internationalDriverLicense')}}">
+                            International Driver License
+                        </a>
+                        <a class="dropdown-item" href="{{ route('admin.transactions.dealerPlateNumber')}}">
+                            Dealer's Plate Number
+                         </a>
+                          <a class="dropdown-item" href="{{ route('admin.transactions.otherPermit')}}">
+                            Other Permit
+                         </a>
+                        @endif
                     </div>
                 </li>
                 @endif
 
-                <!-- 5.9 Messages / Broadcasts -->
-                <li class="nav-item {{ request()->is('admin/broadcasts*') ? 'open' : '' }}">
-                    <a class="nav-link {{ request()->is('admin/broadcasts*') ? 'active' : '' }}"
-                       href="#broadcast-submenu" data-bs-toggle="collapse" data-bs-auto-close="false"
-                       role="button" aria-expanded="{{ request()->is('admin/broadcasts*') ? 'true' : 'false' }}">
+                @if ($__admin && Gate::forUser($__admin)->allows('view-orders'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-list-check"></i>
+                        </span>
+                        <span class="nav-link-title">Order Management</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.orders.index') }}">All Orders</a>
+                        <a class="dropdown-item" href="{{ route('admin.orders.assigned') }}">Assigned to Me</a>
+                    </div>
+                </li>
+                @endif
+
+                @if ($__admin && Gate::forUser($__admin)->allows('view-reports'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="fa fa-chart-line"></i>
+                        </span>
+                        <span class="nav-link-title">Reports</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.reports.revenue') }}">Revenue Dashboard</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.orders') }}">Order Reports</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.agentPerformance') }}">Agent Performance</a>
+                        <a class="dropdown-item" href="{{ route('admin.reports.referrals') }}">Referral Reports</a>
+                    </div>
+                </li>
+                @endif
+
+                @if ($__admin && Gate::forUser($__admin)->allows('view-messaging'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-bullhorn"></i>
                         </span>
                         <span class="nav-link-title">Messages / Broadcasts</span>
+<<<<<<< HEAD
                         <i class="fa fa-chevron-down ms-auto"></i>
                     </a>
                     <div id="broadcast-submenu" class="collapse {{ request()->is('admin/broadcasts*') ? 'show' : '' }}">
@@ -198,15 +364,26 @@
                         </ul>
                     </div>
                 </li>
+=======
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('admin.broadcasts.compose') }}">Compose Broadcast</a>
+                        <a class="dropdown-item" href="{{ route('admin.broadcasts.history') }}">Broadcast History</a>
+                    </div>
+                </li>
+                @endif
+>>>>>>> 1204b22987f927620c66e37fd462273fee38202a
 
                 @if(Auth::guard('admin')->user()->hasPermission('view_financial_reports'))
                
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.promocode.index')}}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-ticket"></i>
+                            <i class="fa fa-users"></i>
                         </span>
-                        <span class="nav-link-title">Promo Code</span>
+                        <span class="nav-link-title">
+                            Promo Code
+                        </span>
                     </a>
                 </li>
                 @endif
@@ -218,20 +395,28 @@
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-envelope"></i>
                         </span>
-                        <span class="nav-link-title">Contact Message</span>
+                        <span class="nav-link-title">
+                            Contact Message
+                        </span>
                     </a>
                 </li>
+                @endif
 
-                <li class="nav-item dropdown">
+                @if ($__admin && Gate::forUser($__admin)->allows('view-faq'))
+                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
                         data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-question-circle"></i>
+                        <i class="fa fa-money-bill"></i>
                         </span>
-                        <span class="nav-link-title">FAQ</span>
+                        <span class="nav-link-title">
+                            FAQ
+                        </span>
                     </a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.faq.index') }}">View FAQ</a>
+                        <a class="dropdown-item" href="{{ route('admin.faq.index') }}">
+                            View FAQ
+                        </a>
                     </div>
                 </li>
                 @endif
@@ -242,7 +427,9 @@
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-gears"></i>
                         </span>
-                        <span class="nav-link-title">Settings</span>
+                        <span class="nav-link-title">
+                            Settings
+                        </span>
                     </a>
                 </li>
                 @endif
@@ -261,18 +448,6 @@
                 </li>
                 @endif
 
-                {{-- ✅ Only Super Admin can manage other admins --}}
-                @if(Auth::guard('admin')->user()->hasPermission('manage_admins'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.admins.index') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-user-shield"></i>
-                        </span>
-                        <span class="nav-link-title">Manage Admins</span>
-                    </a>
-                </li>
-                @endif
-
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -281,12 +456,16 @@
                         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
-                        <span class="nav-link-title">Logout</span>
+                        <span class="nav-link-title">
+                            Logout
+                        </span>
                     </a>
                 </li>
 
             </ul>
+
         </div>
+
     </div>
 
 </aside>

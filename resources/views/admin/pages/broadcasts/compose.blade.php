@@ -40,10 +40,12 @@
                                 <option value="">Select audience</option>
                                 <option value="all_users" {{ old('target_audience') == 'all_users' ? 'selected' : '' }}>All Users</option>
                                 <option value="all_agents" {{ old('target_audience') == 'all_agents' ? 'selected' : '' }}>All Agents</option>
+                                <option value="all_consumers" {{ old('target_audience') == 'all_consumers' ? 'selected' : '' }}>All Consumers</option>
                                 <option value="specific_user" {{ old('target_audience') == 'specific_user' ? 'selected' : '' }}>Specific User</option>
                                 <option value="specific_agent" {{ old('target_audience') == 'specific_agent' ? 'selected' : '' }}>Specific Agent</option>
                             </select>
                             @error('target_audience') <span class="text-danger small">{{ $message }}</span> @enderror
+                            <div class="form-hint mt-1" id="recipient_count_preview"></div>
                         </div>
 
                         <!-- ✅ SMART Recipient Selection -->
@@ -73,9 +75,9 @@
                                     </label>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" {{ in_array('whatsapp', old('channels', [])) ? 'checked' : '' }}>
-                                        <span class="form-check-label">WhatsApp</span>
+                                    <label class="form-check" title="WhatsApp sending is not configured yet — coming soon">
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" disabled>
+                                        <span class="form-check-label text-muted">WhatsApp <span class="badge bg-secondary ms-1">Coming soon</span></span>
                                     </label>
                                 </div>
                             </div>
@@ -171,13 +173,49 @@ function loadRecipientList(type) {
 targetAudience.addEventListener('change', function() {
     const val = this.value;
     const showList = ['specific_user', 'specific_agent'].includes(val);
-    
+
     targetSelection.classList.toggle('d-none', !showList);
-    
+
     if (showList) {
         loadRecipientList(val);
     }
+
+    updateRecipientCount();
 });
+
+// Live recipient-count preview
+const recipientCountPreview = document.getElementById('recipient_count_preview');
+
+function updateRecipientCount() {
+    const audience = targetAudience.value;
+
+    if (!audience) {
+        recipientCountPreview.textContent = '';
+        return;
+    }
+
+    const targetIds = ['specific_user', 'specific_agent'].includes(audience) ? recipientSelect.val() || [] : [];
+
+    if (['specific_user', 'specific_agent'].includes(audience) && targetIds.length === 0) {
+        recipientCountPreview.textContent = '';
+        return;
+    }
+
+    const params = new URLSearchParams();
+    params.append('target_audience', audience);
+    targetIds.forEach(id => params.append('target_ids[]', id));
+
+    fetch(`{{ route('admin.broadcasts.previewCount') }}?${params.toString()}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+        .then(res => res.json())
+        .then(data => {
+            recipientCountPreview.textContent = `This will reach ${data.count} recipient${data.count === 1 ? '' : 's'}.`;
+        })
+        .catch(() => { recipientCountPreview.textContent = ''; });
+}
+
+recipientSelect.on('change', updateRecipientCount);
 
 // Restore old input after validation error
 @if(old('target_audience'))
@@ -186,11 +224,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (['specific_user', 'specific_agent'].includes(val)) {
         loadRecipientList(val);
         targetSelection.classList.remove('d-none');
-        
+
         // Re-select old values
         const oldIds = @json(old('target_ids', []));
         recipientSelect.val(oldIds).trigger('change');
     }
+    updateRecipientCount();
 });
 @endif
 </script>

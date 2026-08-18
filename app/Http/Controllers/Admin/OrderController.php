@@ -37,7 +37,7 @@ class OrderController extends Controller
         }
 
         $orders = $query->paginate(20);
-        $admins = Admin::where('status', 1)->get();
+        $admins = Admin::where('status', 'active')->get();
         $serviceTypes = ProcessHistory::distinct()->pluck('process_type');
 
         return view('admin.pages.orders.index', compact('orders', 'admins', 'serviceTypes'));
@@ -52,7 +52,7 @@ class OrderController extends Controller
             ->paginate(20);
 
         // ✅ Added missing variables here
-        $admins = Admin::where('status', 1)->get();
+        $admins = Admin::where('status', 'active')->get();
         $serviceTypes = ProcessHistory::distinct()->pluck('process_type');
 
         return view('admin.pages.orders.index', compact('orders', 'status', 'admins', 'serviceTypes'));
@@ -68,7 +68,7 @@ class OrderController extends Controller
             ->paginate(20);
 
         // ✅ Added missing variables here
-        $admins = Admin::where('status', 1)->get();
+        $admins = Admin::where('status', 'active')->get();
         $serviceTypes = ProcessHistory::distinct()->pluck('process_type');
 
         return view('admin.pages.orders.index', compact('orders', 'admins', 'serviceTypes'));

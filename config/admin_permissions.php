@@ -13,5 +13,6 @@ return [
         'promocode'   => ['manage' => ['super_admin'], 'view' => ['support_admin']],
         'faq'         => ['manage' => ['super_admin'], 'view' => ['support_admin']],
         'settings'    => ['manage' => ['super_admin'], 'view' => ['support_admin']],
+        'reports'     => ['manage' => ['super_admin', 'finance_admin', 'operations_admin'], 'view' => ['support_admin']],
     ],
 ];
