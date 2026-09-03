@@ -44,9 +44,10 @@ class BroadcastController extends Controller
         }
 
         $targetIds = $request->target_ids ?? [];
+        $scheduledAt = $validated['scheduled_at'] ?? null;
         $service = new BroadcastDispatchService();
         $recipientCount = $service->countRecipients($validated['target_audience'], $targetIds);
-        $deferLargeAudience = !$validated['scheduled_at'] && $service->shouldDefer($recipientCount);
+        $deferLargeAudience = !$scheduledAt && $service->shouldDefer($recipientCount);
 
         // Create broadcast record
         $broadcast = Broadcast::create([
@@ -56,19 +57,19 @@ class BroadcastController extends Controller
             'target_audience' => $validated['target_audience'],
             'target_ids' => $targetIds,
             'channels' => $validated['channels'],
-            'scheduled_at' => $validated['scheduled_at']
-                ? Carbon::parse($validated['scheduled_at'])
+            'scheduled_at' => $scheduledAt
+                ? Carbon::parse($scheduledAt)
                 : ($deferLargeAudience ? now() : null),
-            'delivery_status' => ($validated['scheduled_at'] || $deferLargeAudience) ? 'scheduled' : 'sent',
+            'delivery_status' => ($scheduledAt || $deferLargeAudience) ? 'scheduled' : 'sent',
         ]);
 
         // Send immediately if not scheduled and the audience is small enough to process inline
-        if (!$validated['scheduled_at'] && !$deferLargeAudience) {
+        if (!$scheduledAt && !$deferLargeAudience) {
             $service->send($broadcast);
-        } 
+        }
 
         $successMessage = match (true) {
-            (bool) $validated['scheduled_at'] => 'Broadcast scheduled successfully!',
+            (bool) $scheduledAt => 'Broadcast scheduled successfully!',
             $deferLargeAudience => 'Broadcast queued for sending — the audience is large, so it will go out within a minute.',
             default => 'Broadcast sent successfully!',
         };

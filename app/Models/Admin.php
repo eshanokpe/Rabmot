@@ -8,8 +8,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Admin extends Authenticatable
 {
-    use Notifiable;
- 
+    use Notifiable, HasFactory;
+
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'last_login', 'login_ip', 'otp',
         'role', 'status' // ✅ Status is present here
@@ -26,16 +26,9 @@ class Admin extends Authenticatable
         // 'status' => 'boolean', 
     ];
 
-    // --------------------------
-    // ✅ ADD THIS METHOD
-    // --------------------------
-    public function isActive()
+    public function isActive(): bool
     {
-        // OPTION 1: If your 'status' column is a string (e.g., 'active', 'inactive')
-        // return $this->status === 'active';
-
-        // OPTION 2: If your 'status' column is an integer/boolean (e.g., 1 = active, 0 = deactivated)
-        return (bool) $this->status; 
+        return $this->status === 'active';
     }
 
     // --------------------------
@@ -53,6 +46,21 @@ class Admin extends Authenticatable
 
     public function hasPermission(string $permission): bool
     {
+        // Area-based permissions ("view-{area}" / "manage-{area}") are resolved
+        // from config('admin_permissions.areas') so they stay in lockstep with
+        // the Gate::define('view-{area}'/'manage-{area}', ...) rules registered
+        // in AuthServiceProvider — one source of truth for both.
+        if (preg_match('/^(view|manage)-(.+)$/', $permission, $matches)) {
+            $roles = config("admin_permissions.areas.{$matches[2]}");
+
+            if ($roles) {
+                return $matches[1] === 'manage'
+                    ? in_array($this->role, $roles['manage'])
+                    : in_array($this->role, $roles['manage']) || in_array($this->role, $roles['view']);
+            }
+        }
+
+        // Named permissions with no corresponding config area.
         $permissions = [
             'view_orders'               => ['super_admin', 'admin'],
             'update_order_status'       => ['super_admin', 'admin'],
