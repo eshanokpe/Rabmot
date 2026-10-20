@@ -17,12 +17,16 @@ return new class extends Migration
             [$table, $indexName]
         );
 
-        return $result[0]->cnt > 0;
+        return (int) ($result[0]->cnt ?? 0) > 0;
     }
 
     public function up()
     {
         $indexName = 'broadcasts_delivery_status_scheduled_at_index';
+
+        if (Schema::hasTable('broadcasts') && Schema::hasColumn('broadcasts', 'delivery_status')) {
+            DB::statement("ALTER TABLE `broadcasts` MODIFY `delivery_status` VARCHAR(100) NOT NULL DEFAULT 'draft'");
+        }
 
         if (! $this->indexExists('broadcasts', $indexName)) {
             Schema::table('broadcasts', function (Blueprint $table) use ($indexName) {
@@ -33,8 +37,16 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::table('broadcasts', function (Blueprint $table) {
-            try { $table->dropIndex('broadcasts_delivery_status_scheduled_at_index'); } catch (\Exception $e) {}
-        });
+        $indexName = 'broadcasts_delivery_status_scheduled_at_index';
+
+        if ($this->indexExists('broadcasts', $indexName)) {
+            Schema::table('broadcasts', function (Blueprint $table) use ($indexName) {
+                $table->dropIndex($indexName);
+            });
+        }
+
+        if (Schema::hasTable('broadcasts') && Schema::hasColumn('broadcasts', 'delivery_status')) {
+            DB::statement("ALTER TABLE `broadcasts` MODIFY `delivery_status` VARCHAR(255) NOT NULL DEFAULT 'draft'");
+        }
     }
 };

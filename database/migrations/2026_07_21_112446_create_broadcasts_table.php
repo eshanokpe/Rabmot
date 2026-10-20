@@ -23,7 +23,7 @@ return new class extends Migration
             $table->json('channels'); // in_app, email, whatsapp
             $table->timestamp('scheduled_at')->nullable();
             $table->timestamp('sent_at')->nullable();
-            $table->string('delivery_status')->default('draft'); // draft, scheduled, sending, sent, partial, failed
+            $table->string('delivery_status', 100)->default('draft'); // draft, scheduled, sending, sent, partial, failed
             $table->json('delivery_report')->nullable(); // Success/failure counts
             $table->timestamps();
 

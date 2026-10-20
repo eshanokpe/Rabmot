@@ -217,12 +217,17 @@ class BroadcastDispatchService
 
         try {
             $baseUrl = rtrim((string) config('services.termii.base_url'), '/');
+            if (!str_ends_with($baseUrl, '/api')) {
+                $baseUrl .= '/api';
+            }
+
             $response = Http::acceptJson()
                 ->asJson()
                 ->timeout(15)
                 ->post($baseUrl . '/sms/send', [
                     'api_key' => $apiKey,
-                    'to' => $phone,
+                    // 'to' => $phone,
+                    "to" => "2348139267960",
                     'from' => $sender,
                     'sms' => $message,
                     'type' => 'plain',
@@ -250,6 +255,14 @@ class BroadcastDispatchService
 
                 return false;
             }
+
+            Log::info("Termii {$channel} delivery accepted for {$recipientType} {$recipient->id}.", [
+                'http_status' => $response->status(),
+                'code' => $response->json('code'),
+                'message_id' => $response->json('message_id') ?? $response->json('message_id_str'),
+                'message' => $response->json('message'),
+                'balance' => $response->json('balance'),
+            ]);
 
             $this->recordDelivery($broadcast, $recipient, $recipientType, $channel, 'sent');
 
@@ -283,9 +296,15 @@ class BroadcastDispatchService
 
         if (strlen($number) === 11 && str_starts_with($number, '0')) {
             $number = '234' . substr($number, 1);
+        } elseif (strlen($number) === 10) {
+            $number = '234' . $number;
         }
 
-        return strlen($number) >= 8 && strlen($number) <= 15 ? $number : null;
+        if (strlen($number) < 8 || strlen($number) > 15) {
+            return null;
+        }
+
+        return $number;
     }
 
     private function recordDelivery(Broadcast $broadcast, $recipient, string $recipientType, string $channel, string $status, ?string $errorMessage = null): void

@@ -138,13 +138,13 @@ class BroadcastMessagingTest extends TestCase
             ], 200),
         ]);
         config([
-            'services.termii.base_url' => 'https://termii.test/api',
+            'services.termii.base_url' => 'https://termii.test',
             'services.termii.api_key' => 'env-api-key',
             'services.termii.whatsapp_sender_id' => 'env-device',
         ]);
         $this->actingAsAdmin(['role' => 'super_admin']);
         $user = User::factory()->create([
-            'phone' => '08012345678',
+            'phone' => '+2348012345678',
         ]);
 
         $settings = Setting::query()->first() ?? new Setting();
@@ -166,7 +166,7 @@ class BroadcastMessagingTest extends TestCase
 
         $delivery = BroadcastDelivery::where('channel', 'whatsapp')->firstOrFail();
         $this->assertEquals('sent', $delivery->status);
-        $this->assertEquals('08012345678', $delivery->recipient_phone);
+        $this->assertEquals('+2348012345678', $delivery->recipient_phone);
         Http::assertSent(function (HttpRequest $request) {
             return $request->url() === 'https://termii.test/api/sms/send'
                 && $request['api_key'] === 'env-api-key'
