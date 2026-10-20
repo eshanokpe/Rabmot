@@ -76,7 +76,7 @@
                         <tbody>
                             @forelse($deliveries as $delivery)
                             <tr>
-                                <td>{{ $delivery->recipient_email ?? '—' }}</td>
+                                <td>{{ in_array($delivery->channel, ['sms', 'whatsapp'], true) ? ($delivery->recipient_phone ?? '—') : ($delivery->recipient_email ?? '—') }}</td>
                                 <td>{{ ucfirst($delivery->recipient_type) }}</td>
                                 <td><span class="badge bg-secondary">{{ ucfirst($delivery->channel) }}</span></td>
                                 <td>

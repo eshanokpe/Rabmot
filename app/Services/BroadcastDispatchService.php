@@ -7,8 +7,10 @@ use App\Models\Agent;
 use App\Models\Broadcast;
 use App\Models\BroadcastDelivery;
 use App\Models\Notifications;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -64,8 +66,12 @@ class BroadcastDispatchService
                 $recipientFailed = true;
             }
 
-            if (in_array('whatsapp', $channels)) {
-                $this->recordDelivery($broadcast, $recipient, $recipientType, 'whatsapp', 'skipped', 'WhatsApp not configured');
+            if (in_array('sms', $channels) && !$this->sendSms($broadcast, $recipient, $recipientType)) {
+                $recipientFailed = true;
+            }
+
+            if (in_array('whatsapp', $channels) && !$this->sendWhatsapp($broadcast, $recipient, $recipientType)) {
+                $recipientFailed = true;
             }
 
             $recipientFailed ? $report['failed']++ : $report['success']++;
@@ -118,6 +124,170 @@ class BroadcastDispatchService
         }
     }
 
+    private function sendSms(Broadcast $broadcast, $recipient, string $recipientType): bool
+    {
+        $phone = $this->normalizePhoneNumber($recipient->phone ?? $recipient->phone_no ?? null);
+        if (!$phone) {
+            $this->recordDelivery($broadcast, $recipient, $recipientType, 'sms', 'failed', 'Recipient has no valid phone number.');
+
+            return false;
+        }
+
+        $settings = Setting::current();
+        $apiKey = config('services.termii.api_key') ?: $settings->sms_api_key;
+        $senderId = config('services.termii.sms_sender_id') ?: $settings->sms_sender_id;
+        $isTermiiConfigured = (bool) config('services.termii.api_key')
+            || strtolower((string) $settings->sms_provider) === 'termii';
+        if (!$isTermiiConfigured || !$apiKey || !$senderId) {
+            $this->recordDelivery($broadcast, $recipient, $recipientType, 'sms', 'failed', 'Termii SMS is not configured. Set TERMII_API_KEY and TERMII_SMS_SENDER_ID, or configure them in Settings.');
+
+            return false;
+        }
+
+        return $this->sendTermiiMessage(
+            $broadcast,
+            $recipient,
+            $recipientType,
+            'sms',
+            $phone,
+            $senderId,
+            'generic',
+            $apiKey
+        );
+    }
+
+    private function sendWhatsapp(Broadcast $broadcast, $recipient, string $recipientType): bool
+    {
+        $phone = $this->normalizePhoneNumber($recipient->phone ?? $recipient->phone_no ?? null);
+        if (!$phone) {
+            $this->recordDelivery($broadcast, $recipient, $recipientType, 'whatsapp', 'failed', 'Recipient has no valid phone number.');
+
+            return false;
+        }
+
+        $settings = Setting::current();
+        $apiKey = config('services.termii.api_key') ?: $settings->sms_api_key;
+        $senderId = config('services.termii.whatsapp_sender_id') ?: $settings->whatsapp_sender_id;
+        $isTermiiConfigured = (bool) config('services.termii.api_key')
+            || strtolower((string) $settings->sms_provider) === 'termii';
+        if (!$isTermiiConfigured || !$apiKey || !$senderId) {
+            $this->recordDelivery($broadcast, $recipient, $recipientType, 'whatsapp', 'failed', 'Termii WhatsApp is not configured. Set TERMII_API_KEY and TERMII_WHATSAPP_SENDER_ID, or configure them in Settings.');
+
+            return false;
+        }
+
+        return $this->sendTermiiMessage(
+            $broadcast,
+            $recipient,
+            $recipientType,
+            'whatsapp',
+            $phone,
+            $senderId,
+            'whatsapp',
+            $apiKey
+        );
+    }
+
+    private function sendTermiiMessage(
+        Broadcast $broadcast,
+        $recipient,
+        string $recipientType,
+        string $channel,
+        string $phone,
+        string $sender,
+        string $termiiChannel,
+        string $apiKey
+    ): bool {
+        $plainTextBody = preg_replace(
+            '/<\s*\/?(?:p|div|li|h[1-6]|br|blockquote)\b[^>]*>/i',
+            ' ',
+            $broadcast->body
+        ) ?? $broadcast->body;
+        $message = trim(preg_replace(
+            '/\s+/u',
+            ' ',
+            html_entity_decode(strip_tags($plainTextBody), ENT_QUOTES | ENT_HTML5, 'UTF-8')
+        ) ?? '');
+
+        if ($message === '') {
+            $this->recordDelivery($broadcast, $recipient, $recipientType, $channel, 'failed', 'The broadcast has no plain-text message to send.');
+
+            return false;
+        }
+
+        try {
+            $baseUrl = rtrim((string) config('services.termii.base_url'), '/');
+            $response = Http::acceptJson()
+                ->asJson()
+                ->timeout(15)
+                ->post($baseUrl . '/sms/send', [
+                    'api_key' => $apiKey,
+                    'to' => $phone,
+                    'from' => $sender,
+                    'sms' => $message,
+                    'type' => 'plain',
+                    'channel' => $termiiChannel,
+                ]);
+
+            $accepted = $response->successful()
+                && (
+                    strtolower((string) $response->json('code')) === 'ok'
+                    || (string) $response->json('message_id') !== ''
+                );
+
+            if (!$accepted) {
+                Log::error("Termii {$channel} delivery failed for {$recipientType} {$recipient->id}.", [
+                    'http_status' => $response->status(),
+                ]);
+                $this->recordDelivery(
+                    $broadcast,
+                    $recipient,
+                    $recipientType,
+                    $channel,
+                    'failed',
+                    "Termii rejected the message (HTTP {$response->status()})."
+                );
+
+                return false;
+            }
+
+            $this->recordDelivery($broadcast, $recipient, $recipientType, $channel, 'sent');
+
+            return true;
+        } catch (\Throwable $e) {
+            Log::error("Termii {$channel} delivery failed for {$recipientType} {$recipient->id}: {$e->getMessage()}");
+            $this->recordDelivery($broadcast, $recipient, $recipientType, $channel, 'failed', 'Unable to connect to Termii.');
+
+            return false;
+        }
+    }
+
+    private function normalizePhoneNumber(?string $phone): ?string
+    {
+        if (!$phone) {
+            return null;
+        }
+
+        $number = preg_replace('/\D+/', '', $phone);
+        if (!$number) {
+            return null;
+        }
+
+        if (str_starts_with($number, '00')) {
+            $number = substr($number, 2);
+        }
+
+        if (strlen($number) === 14 && str_starts_with($number, '2340')) {
+            $number = '234' . substr($number, 4);
+        }
+
+        if (strlen($number) === 11 && str_starts_with($number, '0')) {
+            $number = '234' . substr($number, 1);
+        }
+
+        return strlen($number) >= 8 && strlen($number) <= 15 ? $number : null;
+    }
+
     private function recordDelivery(Broadcast $broadcast, $recipient, string $recipientType, string $channel, string $status, ?string $errorMessage = null): void
     {
         BroadcastDelivery::create([
@@ -125,6 +295,7 @@ class BroadcastDispatchService
             'recipient_type' => $recipientType,
             'recipient_id' => $recipient->id,
             'recipient_email' => $recipient->email,
+            'recipient_phone' => $recipient->phone ?? $recipient->phone_no ?? null,
             'channel' => $channel,
             'status' => $status,
             'error_message' => $errorMessage,

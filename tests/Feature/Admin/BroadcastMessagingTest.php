@@ -5,8 +5,11 @@ namespace Tests\Feature\Admin;
 use App\Mail\BroadcastMail;
 use App\Models\Broadcast;
 use App\Models\BroadcastDelivery;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\Client\Request as HttpRequest;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -25,7 +28,7 @@ class BroadcastMessagingTest extends TestCase
             'body' => '<p>We will be down briefly.</p>',
             'target_audience' => 'specific_user',
             'target_ids' => [$user->id],
-            'channels' => ['in_app', 'email', 'whatsapp'],
+            'channels' => ['in_app', 'email'],
         ]);
 
         $response->assertRedirect(route('admin.broadcasts.history'));
@@ -34,14 +37,9 @@ class BroadcastMessagingTest extends TestCase
         $this->assertEquals('sent', $broadcast->delivery_status);
 
         $deliveries = BroadcastDelivery::where('broadcast_id', $broadcast->id)->get();
-        $this->assertCount(3, $deliveries);
+        $this->assertCount(2, $deliveries);
         $this->assertEquals('sent', $deliveries->firstWhere('channel', 'in_app')->status);
         $this->assertEquals('sent', $deliveries->firstWhere('channel', 'email')->status);
-
-        // Regression test: WhatsApp is recorded as skipped, not attempted — the
-        // fixed version of the in_array()-on-a-boolean TypeError that used to
-        // crash any immediate send with a WhatsApp channel checked.
-        $this->assertEquals('skipped', $deliveries->firstWhere('channel', 'whatsapp')->status);
 
         $this->assertDatabaseHas('notifications', ['user_id' => $user->id, 'type' => 'broadcast']);
         Mail::assertSent(BroadcastMail::class, 1);
@@ -67,6 +65,117 @@ class BroadcastMessagingTest extends TestCase
         $this->assertNotNull($broadcast->scheduled_at);
         $this->assertEquals(0, BroadcastDelivery::where('broadcast_id', $broadcast->id)->count());
         Mail::assertNothingSent();
+    }
+
+    public function test_sms_broadcast_is_sent_through_termii_and_records_recipient_phone(): void
+    {
+        Http::fake([
+            'https://api.ng.termii.com/api/sms/send' => Http::response([
+                'code' => 'ok',
+                'message_id' => 'termii-message-id',
+            ], 200),
+        ]);
+        $this->actingAsAdmin(['role' => 'super_admin']);
+        $user = User::factory()->create([
+            'phone' => '08012345678',
+        ]);
+
+        $settings = Setting::query()->first() ?? new Setting();
+        $settings->sms_provider = 'Termii';
+        $settings->sms_api_key = 'test-api-key';
+        $settings->sms_sender_id = 'RABMOT';
+        $settings->save();
+        Setting::forgetCache();
+
+        $response = $this->post(route('admin.broadcasts.store'), [
+            'title' => 'Service Update',
+            'body' => '<p>Hello &amp; welcome</p><p>Again.</p>',
+            'target_audience' => 'specific_user',
+            'target_ids' => [$user->id],
+            'channels' => ['sms'],
+        ]);
+
+        $response->assertRedirect(route('admin.broadcasts.history'));
+
+        $delivery = BroadcastDelivery::where('channel', 'sms')->firstOrFail();
+        $this->assertEquals('sent', $delivery->status);
+        $this->assertEquals('08012345678', $delivery->recipient_phone);
+        Http::assertSent(function (HttpRequest $request) {
+            return $request->url() === 'https://api.ng.termii.com/api/sms/send'
+                && $request['to'] === '2348012345678'
+                && $request['from'] === 'RABMOT'
+                && $request['sms'] === 'Hello & welcome Again.'
+                && $request['type'] === 'plain'
+                && $request['channel'] === 'generic';
+        });
+    }
+
+    public function test_sms_delivery_fails_and_is_logged_when_recipient_has_no_phone(): void
+    {
+        Http::fake();
+        $this->actingAsAdmin(['role' => 'super_admin']);
+        $user = User::factory()->create(['phone' => null]);
+
+        $this->post(route('admin.broadcasts.store'), [
+            'title' => 'Service Update',
+            'body' => '<p>Hello</p>',
+            'target_audience' => 'specific_user',
+            'target_ids' => [$user->id],
+            'channels' => ['sms'],
+        ])->assertRedirect(route('admin.broadcasts.history'));
+
+        $delivery = BroadcastDelivery::where('channel', 'sms')->firstOrFail();
+        $this->assertEquals('failed', $delivery->status);
+        $this->assertEquals('Recipient has no valid phone number.', $delivery->error_message);
+        Http::assertNothingSent();
+    }
+
+    public function test_whatsapp_broadcast_is_sent_through_termii_and_records_recipient_phone(): void
+    {
+        Http::fake([
+            'https://termii.test/api/sms/send' => Http::response([
+                'message_id' => 'termii-whatsapp-message-id',
+            ], 200),
+        ]);
+        config([
+            'services.termii.base_url' => 'https://termii.test/api',
+            'services.termii.api_key' => 'env-api-key',
+            'services.termii.whatsapp_sender_id' => 'env-device',
+        ]);
+        $this->actingAsAdmin(['role' => 'super_admin']);
+        $user = User::factory()->create([
+            'phone' => '08012345678',
+        ]);
+
+        $settings = Setting::query()->first() ?? new Setting();
+        $settings->sms_provider = null;
+        $settings->sms_api_key = null;
+        $settings->whatsapp_sender_id = null;
+        $settings->save();
+        Setting::forgetCache();
+
+        $response = $this->post(route('admin.broadcasts.store'), [
+            'title' => 'Service Update',
+            'body' => '<p>Hello &amp; welcome</p>',
+            'target_audience' => 'specific_user',
+            'target_ids' => [$user->id],
+            'channels' => ['whatsapp'],
+        ]);
+
+        $response->assertRedirect(route('admin.broadcasts.history'));
+
+        $delivery = BroadcastDelivery::where('channel', 'whatsapp')->firstOrFail();
+        $this->assertEquals('sent', $delivery->status);
+        $this->assertEquals('08012345678', $delivery->recipient_phone);
+        Http::assertSent(function (HttpRequest $request) {
+            return $request->url() === 'https://termii.test/api/sms/send'
+                && $request['api_key'] === 'env-api-key'
+                && $request['to'] === '2348012345678'
+                && $request['from'] === 'env-device'
+                && $request['sms'] === 'Hello & welcome'
+                && $request['type'] === 'plain'
+                && $request['channel'] === 'whatsapp';
+        });
     }
 
     public function test_preview_count_returns_correct_count_per_audience(): void

@@ -122,19 +122,19 @@
 
                                     <div class="tab-pane" id="tab-sms-whatsapp">
                                         <h4>SMS Provider</h4>
-                                        <p class="text-muted">Credential storage only — no SMS provider is integrated yet, so nothing sends using these values today.</p>
+                                        <p class="text-muted">Termii delivers SMS broadcasts. Environment values TERMII_API_KEY and TERMII_SMS_SENDER_ID take precedence over saved settings.</p>
                                         <form method="POST" action="{{ route('admin.settings.updateSms') }}" class="row mb-4">
                                             @csrf
                                             <div class="mb-3 col-6">
                                                 <label class="form-label">Provider Name</label>
-                                                <input type="text" name="sms_provider" class="form-control" value="{{ old('sms_provider', $settings->sms_provider) }}"/>
+                                                <input type="text" name="sms_provider" class="form-control" value="{{ old('sms_provider', $settings->sms_provider) }}" placeholder="Termii"/>
                                             </div>
                                             <div class="mb-3 col-6">
                                                 <label class="form-label">Sender ID</label>
                                                 <input type="text" name="sms_sender_id" class="form-control" value="{{ old('sms_sender_id', $settings->sms_sender_id) }}"/>
                                             </div>
                                             <div class="mb-3 col-6">
-                                                <label class="form-label">API Key</label>
+                                                <label class="form-label">Termii API Key</label>
                                                 <input type="password" name="sms_api_key" class="form-control" autocomplete="off" placeholder="{{ $settings->sms_api_key ? '•••••••• (leave blank to keep current)' : '' }}"/>
                                             </div>
                                             <div class="mb-3 col-6">
@@ -148,24 +148,16 @@
 
                                         <hr>
 
-                                        <h4>WhatsApp API</h4>
-                                        <p class="text-muted">Credential storage only — no WhatsApp integration exists yet, so nothing sends using these values today.</p>
+                                        <h4>Termii WhatsApp</h4>
+                                        <p class="text-muted">WhatsApp broadcasts use the Termii API key configured above. TERMII_WHATSAPP_SENDER_ID takes precedence over the saved sender/device name.</p>
                                         <form method="POST" action="{{ route('admin.settings.updateWhatsapp') }}" class="row">
                                             @csrf
                                             <div class="mb-3 col-6">
-                                                <label class="form-label">Phone Number ID</label>
-                                                <input type="text" name="whatsapp_phone_number_id" class="form-control" value="{{ old('whatsapp_phone_number_id', $settings->whatsapp_phone_number_id) }}"/>
-                                            </div>
-                                            <div class="mb-3 col-6">
-                                                <label class="form-label">Business Account ID</label>
-                                                <input type="text" name="whatsapp_business_account_id" class="form-control" value="{{ old('whatsapp_business_account_id', $settings->whatsapp_business_account_id) }}"/>
-                                            </div>
-                                            <div class="mb-3 col-6">
-                                                <label class="form-label">API Token</label>
-                                                <input type="password" name="whatsapp_api_token" class="form-control" autocomplete="off" placeholder="{{ $settings->whatsapp_api_token ? '•••••••• (leave blank to keep current)' : '' }}"/>
+                                                <label class="form-label">WhatsApp Sender / Device Name</label>
+                                                <input type="text" name="whatsapp_sender_id" class="form-control" value="{{ old('whatsapp_sender_id', $settings->whatsapp_sender_id) }}" required/>
                                             </div>
                                             <div class="col-12">
-                                                <button type="submit" class="btn btn-primary">Save WhatsApp Settings</button>
+                                                <button type="submit" class="btn btn-primary">Save Termii WhatsApp Settings</button>
                                             </div>
                                         </form>
                                     </div>

@@ -52,7 +52,7 @@
                         <div class="mb-3 d-none" id="target_selection">
                             <label class="form-label required">Select Recipients</label>
                             <p class="text-muted small mb-2">Type to search; click to select; select multiple recipients</p>
-                            <select name="target_ids[]" id="recipient_list" class="form-select" multiple data-placeholder="Search by name or email...">
+                            <select name="target_ids[]" id="recipient_list" class="form-select" multiple data-placeholder="Search by name, email or phone...">
                                 <!-- Auto-filled by JS -->
                             </select>
                             @error('target_ids') <span class="text-danger small">{{ $message }}</span> @enderror
@@ -62,26 +62,34 @@
                         <div class="mb-3">
                             <label class="form-label required">Send Via</label>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-check">
                                         <input class="form-check-input" type="checkbox" name="channels[]" value="in_app" {{ in_array('in_app', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">In-App Message</span>
                                     </label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <label class="form-check">
                                         <input class="form-check-input" type="checkbox" name="channels[]" value="email" {{ in_array('email', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">Email</span>
                                     </label>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="form-check" title="WhatsApp sending is not configured yet — coming soon">
-                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" disabled>
-                                        <span class="form-check-label text-muted">WhatsApp <span class="badge bg-secondary ms-1">Coming soon</span></span>
+                                <div class="col-md-3">
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="sms" {{ in_array('sms', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
+                                        <span class="form-check-label">SMS <span class="badge bg-blue-lt ms-1">Termii</span></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" {{ in_array('whatsapp', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
+                                        <span class="form-check-label">WhatsApp <span class="badge bg-green-lt ms-1">Termii</span></span>
                                     </label>
                                 </div>
                             </div>
+                            <div class="form-hint mt-2">SMS and WhatsApp broadcasts are sent through Termii. Configure the Termii API key and each channel's sender in Settings before sending. WhatsApp recipients must be opted in, and approved templates may be required by WhatsApp outside the customer-service window.</div>
                             @error('channels') <span class="text-danger small">{{ $message }}</span> @enderror
+                            @error('channels.*') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
 
                         <!-- Scheduled Time -->
@@ -167,7 +175,7 @@ jQuery(document).ready(function($) {
         width: '100%',
         allowClear: true,
         closeOnSelect: false,
-        placeholder: 'Search by name or email...'
+        placeholder: 'Search by name, email or phone...'
     });
 
     // Function to load correct list
@@ -178,12 +186,12 @@ jQuery(document).ready(function($) {
         if (type === 'specific_user') {
             options = users.map(user => ({
                 id: user.id,
-                text: `${user.fullname} — ${user.email} (${user.role})`
+                text: `${user.fullname} — ${user.phone || user.email} (${user.role})`
             }));
         } else if (type === 'specific_agent') {
             options = agents.map(agent => ({
                 id: agent.id,
-                text: `${agent.fullname} — ${agent.email} (Agent)`
+                text: `${agent.fullname} — ${agent.phone_no || agent.email} (Agent)`
             }));
         }
 

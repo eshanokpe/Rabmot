@@ -17,7 +17,7 @@ class BroadcastController extends Controller
     public function compose()
     {
         // Load ONLY regular Users
-        $users = User::select('id', 'fullname', 'email', 'role')->get();
+        $users = User::select('id', 'fullname', 'email', 'phone', 'role')->get();
 
         // Load ONLY Agents (from your separate Agent model)
         $agents = Agent::select('id', 'fullname', 'email', 'userType', 'phone_no')->get();
@@ -33,6 +33,7 @@ class BroadcastController extends Controller
             'body' => 'required|string',
             'target_audience' => 'required|in:all_users,all_agents,all_consumers,specific_user,specific_agent',
             'channels' => 'required|array|min:1',
+            'channels.*' => ['required', Rule::in(['in_app', 'email', 'sms', 'whatsapp'])],
             'scheduled_at' => 'nullable|date|after:now',
         ]);
 

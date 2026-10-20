@@ -21,6 +21,7 @@ class Setting extends Model
         'whatsapp_api_token',
         'whatsapp_phone_number_id',
         'whatsapp_business_account_id',
+        'whatsapp_sender_id',
         'currency_code',
         'currency_symbol',
         'timezone',

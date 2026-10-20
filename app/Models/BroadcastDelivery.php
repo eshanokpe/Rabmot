@@ -14,6 +14,7 @@ class BroadcastDelivery extends Model
         'recipient_type',
         'recipient_id',
         'recipient_email',
+        'recipient_phone',
         'channel',
         'status',
         'error_message',

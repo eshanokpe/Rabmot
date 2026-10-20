@@ -33,6 +33,12 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
+    'termii' => [
+        'base_url' => rtrim(env('TERMII_BASE_URL', 'https://api.ng.termii.com/api'), '/'),
+        'api_key' => env('TERMII_API_KEY'),
+        'sms_sender_id' => env('TERMII_SMS_SENDER_ID'),
+        'whatsapp_sender_id' => env('TERMII_WHATSAPP_SENDER_ID'),
+    ],
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
