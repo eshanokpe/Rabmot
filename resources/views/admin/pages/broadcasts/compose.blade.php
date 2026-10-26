@@ -68,7 +68,7 @@
                                         <span class="form-check-label">In-App Message</span>
                                     </label>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-3"> 
                                     <label class="form-check">
                                         <input class="form-check-input" type="checkbox" name="channels[]" value="email" {{ in_array('email', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">Email</span>
@@ -80,12 +80,12 @@
                                         <span class="form-check-label">SMS <span class="badge bg-blue-lt ms-1">Termii</span></span>
                                     </label>
                                 </div>
-                                <div class="col-md-3">
+                                <!-- <div class="col-md-3">
                                     <label class="form-check">
                                         <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" {{ in_array('whatsapp', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
                                         <span class="form-check-label">WhatsApp <span class="badge bg-green-lt ms-1">Termii</span></span>
                                     </label>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="form-hint mt-2">SMS and WhatsApp broadcasts are sent through Termii. Configure the Termii API key and each channel's sender in Settings before sending. WhatsApp recipients must be opted in, and approved templates may be required by WhatsApp outside the customer-service window.</div>
                             @error('channels') <span class="text-danger small">{{ $message }}</span> @enderror

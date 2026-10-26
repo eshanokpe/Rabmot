@@ -151,7 +151,7 @@ class BroadcastDispatchService
             'sms',
             $phone,
             $senderId,
-            'generic',
+            'DND',
             $apiKey
         );
     }
@@ -199,15 +199,19 @@ class BroadcastDispatchService
         string $apiKey
     ): bool {
         $plainTextBody = preg_replace(
-            '/<\s*\/?(?:p|div|li|h[1-6]|br|blockquote)\b[^>]*>/i',
-            ' ',
+            '/<\s*br\s*\/?>|<\s*\/\s*(?:p|div|li|h[1-6]|blockquote)\s*>/i',
+            "\n",
             $broadcast->body
         ) ?? $broadcast->body;
-        $message = trim(preg_replace(
-            '/\s+/u',
-            ' ',
-            html_entity_decode(strip_tags($plainTextBody), ENT_QUOTES | ENT_HTML5, 'UTF-8')
-        ) ?? '');
+        $plainTextBody = html_entity_decode(strip_tags($plainTextBody), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $bodyLines = preg_split('/\R/u', $plainTextBody) ?: [];
+        $bodyLines = array_map(
+            fn (string $line): string => trim(preg_replace('/[ \t]+/u', ' ', $line) ?? $line),
+            $bodyLines
+        );
+        $messageBody = trim(preg_replace('/\n{3,}/u', "\n\n", implode("\n", $bodyLines)) ?? '');
+        $title = trim(html_entity_decode(strip_tags($broadcast->title), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $message = "Rabmot Automobile Licensing Agency\n\n" . $title . ($messageBody !== '' ? "\n\n" . $messageBody : '');
 
         if ($message === '') {
             $this->recordDelivery($broadcast, $recipient, $recipientType, $channel, 'failed', 'The broadcast has no plain-text message to send.');
@@ -226,8 +230,7 @@ class BroadcastDispatchService
                 ->timeout(15)
                 ->post($baseUrl . '/sms/send', [
                     'api_key' => $apiKey,
-                    // 'to' => $phone,
-                    "to" => "2348139267960",
+                    'to' => $phone,
                     'from' => $sender,
                     'sms' => $message,
                     'type' => 'plain',

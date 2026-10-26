@@ -75,6 +75,11 @@ class BroadcastMessagingTest extends TestCase
                 'message_id' => 'termii-message-id',
             ], 200),
         ]);
+        config([
+            'services.termii.base_url' => 'https://api.ng.termii.com/api',
+            'services.termii.api_key' => 'test-api-key',
+            'services.termii.sms_sender_id' => 'RABMOT',
+        ]);
         $this->actingAsAdmin(['role' => 'super_admin']);
         $user = User::factory()->create([
             'phone' => '08012345678',
@@ -97,17 +102,17 @@ class BroadcastMessagingTest extends TestCase
 
         $response->assertRedirect(route('admin.broadcasts.history'));
 
-        $delivery = BroadcastDelivery::where('channel', 'sms')->firstOrFail();
+        $broadcast = Broadcast::latest()->firstOrFail();
+        $delivery = $broadcast->deliveries()->where('channel', 'sms')->firstOrFail();
         $this->assertEquals('sent', $delivery->status);
         $this->assertEquals('08012345678', $delivery->recipient_phone);
-        Http::assertSent(function (HttpRequest $request) {
-            return $request->url() === 'https://api.ng.termii.com/api/sms/send'
-                && $request['to'] === '2348012345678'
-                && $request['from'] === 'RABMOT'
-                && $request['sms'] === 'Hello & welcome Again.'
-                && $request['type'] === 'plain'
-                && $request['channel'] === 'generic';
-        });
+        $termiiRequest = Http::recorded()->first()[0];
+        $this->assertSame('https://api.ng.termii.com/api/sms/send', $termiiRequest->url());
+        $this->assertSame('2348012345678', $termiiRequest['to']);
+        $this->assertSame('RABMOT', $termiiRequest['from']);
+        $this->assertSame("Rabmot Licensing\n\nService Update\n\nHello & welcome\nAgain.", $termiiRequest['sms']);
+        $this->assertSame('plain', $termiiRequest['type']);
+        $this->assertSame('DND', $termiiRequest['channel']);
     }
 
     public function test_sms_delivery_fails_and_is_logged_when_recipient_has_no_phone(): void
@@ -124,7 +129,8 @@ class BroadcastMessagingTest extends TestCase
             'channels' => ['sms'],
         ])->assertRedirect(route('admin.broadcasts.history'));
 
-        $delivery = BroadcastDelivery::where('channel', 'sms')->firstOrFail();
+        $broadcast = Broadcast::latest()->firstOrFail();
+        $delivery = $broadcast->deliveries()->where('channel', 'sms')->firstOrFail();
         $this->assertEquals('failed', $delivery->status);
         $this->assertEquals('Recipient has no valid phone number.', $delivery->error_message);
         Http::assertNothingSent();
@@ -164,7 +170,8 @@ class BroadcastMessagingTest extends TestCase
 
         $response->assertRedirect(route('admin.broadcasts.history'));
 
-        $delivery = BroadcastDelivery::where('channel', 'whatsapp')->firstOrFail();
+        $broadcast = Broadcast::latest()->firstOrFail();
+        $delivery = $broadcast->deliveries()->where('channel', 'whatsapp')->firstOrFail();
         $this->assertEquals('sent', $delivery->status);
         $this->assertEquals('+2348012345678', $delivery->recipient_phone);
         Http::assertSent(function (HttpRequest $request) {
