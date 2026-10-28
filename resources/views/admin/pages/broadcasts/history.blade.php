@@ -42,8 +42,8 @@
                                     <strong>{{ ($broadcasts->currentPage() - 1) * $broadcasts->perPage() + $loop->iteration }}</strong>
                                 </td>
                                 <td>
-                                    <div>{{ $item->created_at->format('d M Y') }}</div>
-                                    <div class="text-muted small">{{ $item->created_at->format('H:i') }}</div>
+                                    <div>{{ $item->created_at->timezone(config('app.display_timezone'))->format('d M Y') }}</div>
+                                    <div class="text-muted small">{{ $item->created_at->timezone(config('app.display_timezone'))->format('H:i') }}</div>
                                 </td>
                                 <td>{{ $item->title }}</td>
                                 <td>{{ ucwords(str_replace('_', ' ', $item->target_audience)) }}</td>
@@ -58,6 +58,7 @@
                                         @case('sent') <span class="badge bg-success">Sent</span> @break
                                         @case('partial') <span class="badge bg-warning">Partial</span> @break
                                         @case('failed') <span class="badge bg-danger">Failed</span> @break
+                                        @case('awaiting_whatsapp') <span class="badge bg-warning">WhatsApp pending</span> @break
                                         @default <span class="badge bg-light">Draft</span>
                                     @endswitch
                                 </td>

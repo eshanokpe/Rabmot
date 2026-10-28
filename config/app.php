@@ -72,6 +72,12 @@ return [
     'timezone' => 'UTC',
 
     /*
+    | Timezone admins enter and read dates in (e.g. broadcast schedule times).
+    | Dates are still stored in the application timezone above.
+    */
+    'display_timezone' => env('APP_DISPLAY_TIMEZONE', 'Africa/Lagos'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------

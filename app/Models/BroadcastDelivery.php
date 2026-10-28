@@ -19,6 +19,8 @@ class BroadcastDelivery extends Model
         'status',
         'error_message',
         'delivered_at',
+        'sent_by_admin_id',
+        'sent_by_admin_name',
     ];
 
     protected $casts = [

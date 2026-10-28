@@ -416,6 +416,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/broadcasts/history', [BroadcastController::class, 'history'])->name('admin.broadcasts.history')->middleware('admin.can:view-messaging');
         Route::get('/broadcasts/preview-count', [BroadcastController::class, 'previewCount'])->name('admin.broadcasts.previewCount')->middleware('admin.can:view-messaging');
         Route::get('/broadcasts/{broadcast}', [BroadcastController::class, 'show'])->name('admin.broadcasts.show')->middleware('admin.can:view-messaging');
+        Route::post('/broadcasts/{broadcast}/whatsapp/{delivery}', [BroadcastController::class, 'sendManualWhatsapp'])->name('admin.broadcasts.whatsappSend')->middleware('admin.can:manage-messaging');
 
         // ========== REPORTS ==========
         Route::prefix('reports')->middleware('admin.can:view-reports')->group(function () {

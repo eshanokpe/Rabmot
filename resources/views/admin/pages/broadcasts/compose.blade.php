@@ -80,14 +80,19 @@
                                         <span class="form-check-label">SMS <span class="badge bg-blue-lt ms-1">Termii</span></span>
                                     </label>
                                 </div>
-                                <!-- <div class="col-md-3">
+                                <div class="col-md-3">
                                     <label class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" {{ in_array('whatsapp', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
-                                        <span class="form-check-label">WhatsApp <span class="badge bg-green-lt ms-1">Termii</span></span>
+                                        <input class="form-check-input" type="checkbox" name="channels[]" value="whatsapp" id="channel_whatsapp" {{ in_array('whatsapp', old('channels', ['in_app', 'email'])) ? 'checked' : '' }}>
+                                        <span class="form-check-label">WhatsApp <span class="badge bg-green-lt ms-1">{{ $whatsappManual ? 'Manual' : 'Termii' }}</span></span>
                                     </label>
-                                </div> -->
+                                </div>
                             </div>
-                            <div class="form-hint mt-2">SMS and WhatsApp broadcasts are sent through Termii. Configure the Termii API key and each channel's sender in Settings before sending. WhatsApp recipients must be opted in, and approved templates may be required by WhatsApp outside the customer-service window.</div>
+                            @if($whatsappManual)
+                                <div class="form-hint mt-2">SMS broadcasts are sent through Termii. WhatsApp will be sent manually: after saving, open the broadcast and send each recipient's pre-filled WhatsApp chat yourself.</div>
+                            @else
+                                <div class="form-hint mt-2">SMS and WhatsApp broadcasts are sent through Termii. Configure the Termii API key and each channel's sender in Settings before sending. WhatsApp recipients must be opted in, and approved templates may be required by WhatsApp outside the customer-service window.</div>
+                            @endif
+                            <div class="alert alert-warning mt-2 mb-0 d-none" id="whatsapp_manual_warning"></div>
                             @error('channels') <span class="text-danger small">{{ $message }}</span> @enderror
                             @error('channels.*') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
@@ -95,8 +100,8 @@
                         <!-- Scheduled Time -->
                         <div class="mb-3">
                             <label class="form-label">Schedule Sending (Optional)</label>
-                            <input type="datetime-local" name="scheduled_at" class="form-control" min="{{ now()->addMinute()->format('Y-m-d\TH:i') }}" value="{{ old('scheduled_at') }}">
-                            <small class="text-muted">Leave empty to send immediately.</small>
+                            <input type="datetime-local" name="scheduled_at" class="form-control" min="{{ now(config('app.display_timezone'))->addMinute()->format('Y-m-d\TH:i') }}" value="{{ old('scheduled_at') }}">
+                            <small class="text-muted">Leave empty to send immediately. Time is in {{ config('app.display_timezone') }} ({{ now(config('app.display_timezone'))->format('T') }}).</small>
                             @error('scheduled_at') <span class="text-danger small">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -219,9 +224,33 @@ jQuery(document).ready(function($) {
 
     // Live recipient-count preview
     const recipientCountPreview = document.getElementById('recipient_count_preview');
+    const whatsappCheckbox = document.getElementById('channel_whatsapp');
+    const whatsappWarning = document.getElementById('whatsapp_manual_warning');
+    const whatsappManual = @json($whatsappManual);
+    const manualWhatsappWarnAt = 50;
+
+    function updateWhatsappWarning(data) {
+        if (!whatsappManual || !whatsappCheckbox.checked || !data) {
+            whatsappWarning.classList.add('d-none');
+            return;
+        }
+
+        let text = `WhatsApp: ${data.valid_phones} of ${data.count} recipient${data.count === 1 ? ' has' : 's have'} a valid phone number. You'll open each chat yourself.`;
+        if (data.valid_phones > manualWhatsappWarnAt) {
+            text += ` That's ${data.valid_phones} chats to send by hand, and sending the same message to many people can get the WhatsApp account flagged. Consider a smaller audience.`;
+        }
+
+        whatsappWarning.textContent = text;
+        whatsappWarning.classList.remove('d-none');
+    }
+
+    let lastPreview = null;
+    whatsappCheckbox.addEventListener('change', () => updateWhatsappWarning(lastPreview));
 
     function updateRecipientCount() {
         const audience = targetAudience.value;
+        lastPreview = null;
+        updateWhatsappWarning(null);
 
         if (!audience) {
             recipientCountPreview.textContent = '';
@@ -245,6 +274,8 @@ jQuery(document).ready(function($) {
             .then(res => res.json())
             .then(data => {
                 recipientCountPreview.textContent = `This will reach ${data.count} recipient${data.count === 1 ? '' : 's'}.`;
+                lastPreview = data;
+                updateWhatsappWarning(data);
             })
             .catch(() => { recipientCountPreview.textContent = ''; });
     }
