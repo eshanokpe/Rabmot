@@ -97,6 +97,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDetails'])->name('admin.vehicle.renewals.view')->middleware('admin.can:view-vehicles');
         Route::get('/vehicle-renewals/delete/{id}', [AdminAddedVehicleController::class, 'showVehicleRenewalDelete'])->name('admin.vehicle.renewals.delete')->middleware('admin.can:manage-vehicles');
         Route::put('/vehicle-renewals/{id}', [AdminAddedVehicleController::class, 'updateVehicleRenewal'])->name('admin.vehicle.renewals.update')->middleware('admin.can:manage-vehicles');
+        Route::post('/vehicle-renewals/{id}/whatsapp-reminder', [AdminAddedVehicleController::class, 'sendWhatsappReminder'])->name('admin.vehicle.renewals.whatsappReminder')->middleware('admin.can:manage-vehicles');
 
         Route::get('/vehicle-license-papers/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleLicensePapers'])->name('vehicle.license.papers.download')->middleware('admin.can:manage-vehicles');
         Route::get('/vehicle-insurance-papers/download/{id}', [AdminAddedVehicleController::class, 'downloadVehicleInsurancePapers'])->name('vehicle.insurance.papers.download')->middleware('admin.can:manage-vehicles');
