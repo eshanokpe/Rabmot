@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,6 +15,20 @@ return new class extends Migration
     public function up()
     {
         if (Schema::hasTable('broadcast_deliveries')) {
+            if (Schema::getConnection()->getDriverName() === 'mysql') {
+                DB::statement('ALTER TABLE `broadcast_deliveries` MODIFY `status` VARCHAR(100) NOT NULL');
+
+                $index = DB::select(
+                    "SHOW INDEX FROM `broadcast_deliveries` WHERE `Key_name` = 'broadcast_deliveries_broadcast_id_status_index'"
+                );
+
+                if (empty($index)) {
+                    Schema::table('broadcast_deliveries', function (Blueprint $table) {
+                        $table->index(['broadcast_id', 'status']);
+                    });
+                }
+            }
+
             return;
         }
 
@@ -24,7 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger('recipient_id');
             $table->string('recipient_email')->nullable();
             $table->string('channel'); // in_app, email, whatsapp
-            $table->string('status'); // sent, failed, skipped
+            $table->string('status', 100); // sent, failed, skipped
             $table->text('error_message')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
