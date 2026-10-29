@@ -18,11 +18,11 @@
                                     Here's what's happening with your vehicles today
                                 </p>
                             </div>
-                            <a href="{{ route('home.addVehicleRenewal') }}" 
+                            <!-- <a href="{{ route('home.addVehicleRenewal') }}" 
                                class="inline-flex items-center px-6 py-3 bg-white text-[#142444] font-semibold rounded-xl hover:bg-gray-100 transition duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl whitespace-nowrap">
                                 <i class="bx bx-plus-circle mr-2 text-xl"></i>
                                 New Request
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                 </div>

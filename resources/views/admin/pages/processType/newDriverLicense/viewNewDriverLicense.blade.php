@@ -94,6 +94,10 @@
                                             <input type="text" class="form-control" autocomplete="off" value="{{ $items->user_email}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
+                                            <label class="form-label">Applicant Email</label>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->email}}" disabled/>
+                                        </div>
+                                        <div class="mb-3 col-3">
                                             <label class="form-label required">First name</label>
                                             <input type="text" class="form-control" autocomplete="off" value="{{ $items->firstname}}" disabled/>
                                         </div>
@@ -151,7 +155,7 @@
                                         </div> 
 
                                         <div class="mb-3 col-3">
-                                            <label class="form-label">Local Government</label>
+                                            <label class="form-label">Local Government of State of Origin</label>
                                             <input type="text" class="form-control" autocomplete="off"  value="{{ $items->localgovernment}}" disabled/>
                                         </div> 
 
@@ -161,13 +165,25 @@
                                         </div>
 
                                         <div class="mb-3 col-3">
-                                            <label class="form-label">State</label>
+                                            <label class="form-label">State of Origin</label>
                                             <input type="text" class="form-control" autocomplete="off"  value="{{ $items->state}}" disabled/>
                                         </div>
 
                                         <div class="mb-3 col-3">
-                                            <label class="form-label">Local govt place of birth</label>
+                                            <label class="form-label">State of Place of Birth</label>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->placeofbirthstate}}" disabled/>
+                                        </div>
+                                        <div class="mb-3 col-3">
+                                            <label class="form-label">Local Government of Place of Birth</label>
                                             <input type="text" class="form-control" autocomplete="off"  value="{{ $items->localgovtplaceofbirth}}" disabled/>
+                                        </div>
+                                        <div class="mb-3 col-3">
+                                            <label class="form-label">Residential Address</label>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->address}}" disabled/>
+                                        </div>
+                                        <div class="mb-3 col-3">
+                                            <label class="form-label">Local Government of Address</label>
+                                            <input type="text" class="form-control" autocomplete="off" value="{{ $items->addresslocalgovernment}}" disabled/>
                                         </div>
                                         <div class="mb-3 col-3">
                                             <label class="form-label">Blood Group</label>

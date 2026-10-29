@@ -114,8 +114,9 @@
                                         @error('firstname') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-4 mb-4">
-                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Other Name</label>
-                                        <input type="text" class="form-control" wire:model.live="othername" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
+                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Middle Name</label>
+                                        <input type="text" class="form-control @error('middlename') is-invalid @enderror" wire:model.live="middlename" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
+                                        @error('middlename') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Sex <span class="text-danger">*</span></label>
@@ -135,9 +136,20 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Place of Birth <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('place_of_birth') is-invalid @enderror" 
-                                               wire:model.live="place_of_birth" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
-                                        @error('place_of_birth') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
+                                        <select class="form-control @error('place_of_birth_state') is-invalid @enderror"
+                                                wire:model.live="place_of_birth_state" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
+                                            <option value="">Select State</option>
+                                            @foreach($all_states as $state)
+                                                <option value="{{ $state }}">{{ $state }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('place_of_birth_state') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Local Government of Place of Birth <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('lga_place_of_birth') is-invalid @enderror"
+                                               wire:model.live="lga_place_of_birth" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
+                                        @error('lga_place_of_birth') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Marital Status <span class="text-danger">*</span></label>
@@ -162,6 +174,12 @@
                                         <textarea class="form-control @error('address') is-invalid @enderror" 
                                                   wire:model.live="address" rows="3" style="border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;"></textarea>
                                         @error('address') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Local Government of Address <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('address_localgovernment') is-invalid @enderror"
+                                               wire:model.live="address_localgovernment" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
+                                        @error('address_localgovernment') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                 </div>
                                 <div class="text-right mt-3">
@@ -193,16 +211,9 @@
                                         @error('state_origin') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6 mb-4">
-                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Local Government of Origin <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('lga_origin') is-invalid @enderror" 
-                                                wire:model.live="lga_origin" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;" {{ empty($lgas) ? 'disabled' : '' }}>
-                                            <option value="">Select LGA</option>
-                                            @if(!empty($lgas) && is_array($lgas))
-                                                @foreach($lgas as $lga)
-                                                    <option value="{{ $lga }}">{{ $lga }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
+                                        <label class="form-label" style="font-weight:600; margin-bottom:8px; color:#333;">Local Government of State of Origin <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control @error('lga_origin') is-invalid @enderror"
+                                               wire:model.live="lga_origin" style="height:50px; border-radius:8px; border:1px solid #ced4da; transition:all 0.2s ease;">
                                         @error('lga_origin') <div class="invalid-feedback mt-1"><i class="fas fa-exclamation-circle mr-1"></i> {{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-md-6 mb-4">
@@ -365,10 +376,14 @@
                                         <table class="table table-borderless mb-0">
                                             <tr><th width="35%" class="text-muted">Surname</th><td>{{ $surname }}</td></tr>
                                             <tr><th class="text-muted">First Name</th><td>{{ $firstname }}</td></tr>
-                                            <tr><th class="text-muted">Other Name</th><td>{{ $othername ?: 'N/A' }}</td></tr>
+                                            <tr><th class="text-muted">Middle Name</th><td>{{ $middlename ?: 'N/A' }}</td></tr>
                                             <tr><th class="text-muted">Gender</th><td>{{ $gender }}</td></tr>
                                             <tr><th class="text-muted">Date of Birth</th><td>{{ $dob }}</td></tr>
+                                            <tr><th class="text-muted">State of Place of Birth</th><td>{{ $place_of_birth_state }}</td></tr>
+                                            <tr><th class="text-muted">Local Government of Place of Birth</th><td>{{ $lga_place_of_birth }}</td></tr>
                                             <tr><th class="text-muted">Nationality</th><td>{{ $nationality }}</td></tr>
+                                            <tr><th class="text-muted">Residential Address</th><td>{{ $address }}</td></tr>
+                                            <tr><th class="text-muted">Local Government of Address</th><td>{{ $address_localgovernment }}</td></tr>
                                         </table>
                                     </div>
                                 </div>
@@ -385,6 +400,8 @@
                                         <table class="table table-borderless mb-0">
                                             <tr><th width="35%" class="text-muted">Phone Number</th><td>{{ $phone }}</td></tr>
                                             <tr><th class="text-muted">Email Address</th><td>{{ $email }}</td></tr>
+                                            <tr><th class="text-muted">State of Origin</th><td>{{ $state_origin }}</td></tr>
+                                            <tr><th class="text-muted">Local Government of State of Origin</th><td>{{ $lga_origin }}</td></tr>
                                             <tr><th class="text-muted">NIN</th><td>{{ $nin }}</td></tr>
                                             <tr><th class="text-muted">Occupation</th><td>{{ $occupation }}</td></tr>
                                         </table>
