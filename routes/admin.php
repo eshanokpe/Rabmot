@@ -51,6 +51,7 @@ Route::prefix('admin')->group(function () {
         });
 
         // Process Type
+        Route::get('/process-type', [AdminProcessTypeController::class, 'documents'])->name('admin.processtype.index')->middleware('admin.can:view-orders');
         Route::get('/vehicle/paper-renewal', [AdminProcessTypeController::class, 'processVehiclePaperRenewal'])->name('admin.processVehiclePaperRenewal')->middleware('admin.can:view-orders');
         Route::get('/vehicle/paper-renewal/view/{id}', [AdminProcessTypeController::class, 'viewVehiclePaperRenewal'])->name('admin.viewVehiclePaperRenewal')->middleware('admin.can:view-orders');
 

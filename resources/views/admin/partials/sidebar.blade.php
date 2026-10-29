@@ -54,43 +54,13 @@
                     </div>
                 </li>
 
-                <!-- ✅ Process Type Section -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.processtype.index') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="fa fa-file"></i>
+                            <i class="fa fa-file"></i>
                         </span>
-                        <span class="nav-link-title">
-                            Process Type
-                        </span>
+                        <span class="nav-link-title">Process Type</span>
                     </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ route('admin.processVehiclePaperRenewal') }}">
-                            Vechicle Paper Renewal
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.processNewVehicleRegistration')}}">
-                           New vehicle Registration
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.processChangeOfOwnership')}}">
-                           Change of Ownership
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.processNewDriverlicense')}}">
-                            New Driver License
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.processNewDriverLicenseRenewal')}}">
-                            Driver License Renewal
-                        </a>
-                        <a class="dropdown-item"href="{{ route('admin.processInternationalDriverLicense')}}">
-                            International Driver License
-                        </a>
-                        <a class="dropdown-item" href="{{ route('admin.processDealerPlateNumber')}}">
-                            Dealer's Plate Number
-                         </a>
-                          <a class="dropdown-item" href="{{ route('admin.processOtherPermit')}}">
-                            Other Permit
-                         </a>
-                    </div>
                 </li>
                
                 @if(Auth::guard('admin')->user()->hasPermission('view-vehicles'))

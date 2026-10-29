@@ -12,12 +12,103 @@ use App\Models\DriverLicenseRenewal;
 use App\Models\DealerPlateNumber;
 use App\Models\InternationalDriverLicense;
 use App\Models\OtherPermit;
+use Illuminate\Support\Collection;
 
 class AdminProcessTypeController extends Controller
 {
+    public function documents(Request $request)
+    {
+        $services = [
+            [
+                'key' => 'vehicle_licence_renewal',
+                'label' => 'Vehicle Licence Renewal',
+                'model' => VehiclePaperRenewal::class,
+                'view_route' => 'admin.viewVehiclePaperRenewal',
+            ],
+            [
+                'key' => 'new_vehicle_registration',
+                'label' => 'New Vehicle Registration',
+                'model' => VehicleRegistration::class,
+                'view_route' => 'admin.viewNewVehicleRegistration',
+            ],
+            [
+                'key' => 'change_of_ownership',
+                'label' => 'Change of Ownership',
+                'model' => ChangeOfOwnership::class,
+                'view_route' => 'admin.viewChangeOfOwnership',
+            ],
+            [
+                'key' => 'new_drivers_licence',
+                'label' => "New Driver's Licence",
+                'model' => NewDriverLicense::class,
+                'view_route' => 'admin.viewNewDriverLicense',
+            ],
+            [
+                'key' => 'drivers_licence_renewal',
+                'label' => "Driver's Licence Renewal",
+                'model' => DriverLicenseRenewal::class,
+                'view_route' => 'admin.viewNewDriverLicenseRenewal',
+            ],
+            [
+                'key' => 'international_drivers_licence',
+                'label' => "International Driver's Licence",
+                'model' => InternationalDriverLicense::class,
+                'view_route' => 'admin.viewInternationalDriverlicense',
+            ],
+            [
+                'key' => 'last_plate_number',
+                'label' => 'Last Plate Number',
+                'model' => DealerPlateNumber::class,
+                'view_route' => 'admin.viewplateNumber',
+            ],
+            [
+                'key' => 'other_permits',
+                'label' => 'Other Permits',
+                'model' => OtherPermit::class,
+                'view_route' => 'admin.viewOtherPermit',
+            ],
+        ];
+
+        $documents = new Collection();
+        foreach ($services as $service) {
+            $records = $service['model']::query()->get();
+
+            foreach ($records as $record) {
+                $fullName = trim(collect([
+                    $record->firstname,
+                    $record->middlename,
+                    $record->lastname,
+                ])->filter()->implode(' '));
+
+                $documents->push((object) [
+                    'service' => $service['key'],
+                    'service_label' => $service['label'],
+                    'process_id' => $record->process_id,
+                    'process_type' => $record->process_type ?: $service['label'],
+                    'applicant' => $record->fullname ?: ($fullName ?: null),
+                    'email' => $record->user_email ?: $record->email ?: $record->emailaddress,
+                    'payment_status' => $record->payment_status,
+                    'amount' => $record->totalamount ?? $record->totalAmount ?? $record->amount,
+                    'created_at' => $record->created_at,
+                    'view_url' => route($service['view_route'], encrypt($record->id)),
+                ]);
+            }
+        }
+
+        $documents = $documents
+            ->sortByDesc(fn ($document) => $document->created_at?->getTimestamp() ?? 0)
+            ->values();
+
+        $selectedService = $request->query('service', 'all');
+        if ($selectedService !== 'all' && ! collect($services)->contains('key', $selectedService)) {
+            $selectedService = 'all';
+        }
+
+        return view('admin.pages.processType.documents', compact('documents', 'services', 'selectedService'));
+    }
+
     public function processVehiclePaperRenewal(){
-        $items = VehiclePaperRenewal::latest()->paginate(10);
-        return view('admin.pages.processType.vehiclePaperRenewal', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'vehicle_licence_renewal']);
     }
 
     public function viewVehiclePaperRenewal($id){
@@ -29,8 +120,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processNewVehicleRegistration(){
-        $items = VehicleRegistration::latest()->paginate(10);
-        return view('admin.pages.processType.newVehicleRegistration', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'new_vehicle_registration']);
     }
 
     public function viewNewVehicleRegistration($id){
@@ -42,8 +132,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processChangeOfOwnership(){ 
-        $items = ChangeOfOwnership::latest()->paginate(10);
-        return view('admin.pages.processType.changeOfOwnership.changeOfOwnership', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'change_of_ownership']);
     } 
 
     public function viewChangeOfOwnership($id){
@@ -92,8 +181,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processNewDriverlicense(){
-        $items = NewDriverLicense::latest()->paginate(10);
-        return view('admin.pages.processType.newDriverLicense.newDriverLicense', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'new_drivers_licence']);
     }
 
     public function viewNewDriverLicense($id){
@@ -124,8 +212,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processNewDriverlicenseRenewal(){
-        $items = DriverLicenseRenewal::latest()->paginate(10);
-        return view('admin.pages.processType.newDriverLicenseRenewal', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'drivers_licence_renewal']);
     }
 
     public function viewNewDriverLicenseRenewal($id){
@@ -156,8 +243,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processInternationalDriverLicense(){
-        $items = InternationalDriverLicense::latest()->paginate(10);
-        return view('admin.pages.processType.internationalDriverLicense.internationalDriverLicense', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'international_drivers_licence']);
     }
 
     public function viewInternationalDriverLicense($id){
@@ -187,8 +273,7 @@ class AdminProcessTypeController extends Controller
     }
     
     public function processDealerPlateNumber(){
-        $items = DealerPlateNumber::latest()->paginate(10);
-        return view('admin.pages.processType.dealerPlateNumber.dealerPlateNumber', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'last_plate_number']);
     }
 
     public function viewDealerPlateNumber($id){
@@ -251,8 +336,7 @@ class AdminProcessTypeController extends Controller
     }
 
     public function processOtherPermit(){
-        $items = OtherPermit::latest()->paginate(10);
-        return view('admin.pages.processType.otherPermit.otherPermit', compact('items'));
+        return redirect()->route('admin.processtype.index', ['service' => 'other_permits']);
     }
 
     public function viewOtherPermit($id){
