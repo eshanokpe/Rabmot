@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('whatsapp_reminders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('vehicle_renewal_id');
-            $table->string('document_field');
+            $table->string('document_field', 60);
             $table->date('expiry_date');
             $table->string('recipient_phone');
             $table->text('message');
