@@ -38,88 +38,93 @@
             <div class="row row-cards mb-4">
                 <!-- Total Orders Today -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <!-- <div class="col-auto">
-                                    <span class="bg-primary text-white avatar">
-                                        <i class="fa-solid fa-calendar-day"></i>
-                                    </span>
-                                </div> -->
-                                <div class="col">
-                                    <div class="font-weight-medium fs-4">{{ $ordersToday }}</div>
-                                    <div class="text-muted">Orders Today</div>
-                                    <small class="{{ $ordersTodayDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
-                                        {{ $ordersTodayDelta >= 0 ? '+' : '' }}{{ $ordersTodayDelta }}% vs yesterday
-                                    </small>
+                    <a href="{{ route('admin.orders.index') }}" class="card-link d-block text-reset text-decoration-none" aria-label="View all orders">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="font-weight-medium fs-4">{{ $ordersToday }}</div>
+                                        <div class="text-muted">Orders Today</div>
+                                        <small class="{{ $ordersTodayDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
+                                            {{ $ordersTodayDelta >= 0 ? '+' : '' }}{{ $ordersTodayDelta }}% vs yesterday
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Total Orders This Month -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="font-weight-medium fs-4">{{ $ordersThisMonth }}</div>
-                                    <div class="text-muted">Orders This Month</div>
-                                    <small class="{{ $ordersMonthDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
-                                        {{ $ordersMonthDelta >= 0 ? '+' : '' }}{{ $ordersMonthDelta }}% vs last month
-                                    </small>
+                    <a href="{{ route('admin.orders.index') }}" class="card-link d-block text-reset text-decoration-none" aria-label="View all orders">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="font-weight-medium fs-4">{{ $ordersThisMonth }}</div>
+                                        <div class="text-muted">Orders This Month</div>
+                                        <small class="{{ $ordersMonthDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
+                                            {{ $ordersMonthDelta >= 0 ? '+' : '' }}{{ $ordersMonthDelta }}% vs last month
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Revenue This Month -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="font-weight-medium fs-4">₦{{ number_format($revenueThisMonth, 2) }}</div>
-                                    <div class="text-muted">Revenue This Month</div>
-                                    <small class="{{ $revenueDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
-                                        {{ $revenueDelta >= 0 ? '+' : '' }}{{ $revenueDelta }}% vs last month
-                                    </small>
+                    <a href="{{ route('admin.reports.revenue') }}" class="card-link d-block text-reset text-decoration-none" aria-label="View revenue dashboard">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="font-weight-medium fs-4">₦{{ number_format($revenueThisMonth, 2) }}</div>
+                                        <div class="text-muted">Revenue This Month</div>
+                                        <small class="{{ $revenueDelta >= 0 ? 'delta-positive' : 'delta-negative' }}">
+                                            {{ $revenueDelta >= 0 ? '+' : '' }}{{ $revenueDelta }}% vs last month
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Pending Orders -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm {{ $countpending > 20 ? 'high-pending' : '' }}">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="font-weight-medium fs-4">{{ $countpending }}</div>
-                                    <div class="text-muted">Pending Orders</div>
-                                    <small class="text-muted">Awaiting processing</small>
+                    <a href="{{ route('admin.pendingpaper') }}" class="card-link d-block text-reset text-decoration-none" aria-label="View pending documents">
+                        <div class="card card-sm {{ $countpending > 20 ? 'high-pending' : '' }}">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="font-weight-medium fs-4">{{ $countpending }}</div>
+                                        <div class="text-muted">Pending Orders</div>
+                                        <small class="text-muted">Awaiting processing</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Active Users -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm">
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <div class="font-weight-medium fs-4">{{ $activeUsersTotal }}</div>
-                                    <div class="text-muted">Active Users</div>
-                                    <small class="text-muted">Consumers + Agents</small>
+                    <a href="{{ route('admin.users') }}" class="card-link d-block text-reset text-decoration-none" aria-label="View users">
+                        <div class="card card-sm">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="font-weight-medium fs-4">{{ $activeUsersTotal }}</div>
+                                        <div class="text-muted">Active Users</div>
+                                        <small class="text-muted">Consumers + Agents</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <!-- Documents Expiring -->
