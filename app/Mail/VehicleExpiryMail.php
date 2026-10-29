@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Mail;
- 
-use App\Models\AddVehicleRenewal;
-use App\Models\User;
+
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
@@ -16,22 +15,22 @@ class VehicleExpiryMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public User              $user;
-    public AddVehicleRenewal $vehicle;
-    public string            $documentLabel;
-    public int               $daysRemaining;
-    public Carbon            $expiryDate;
-    public string            $urgencyColor;
-    public string            $urgencyText;
+    public ?string $recipientName;
+    public Model   $vehicle;   // AddVehicleRenewal or AddVehicleOwnership
+    public string  $documentLabel;
+    public int     $daysRemaining; // negative once the document has expired
+    public Carbon  $expiryDate;
+    public string  $urgencyColor;
+    public string  $urgencyText;
 
     public function __construct(
-        User              $user,
-        AddVehicleRenewal $vehicle,
-        string            $documentLabel,
-        int               $daysRemaining,
-        Carbon            $expiryDate
+        ?string $recipientName,
+        Model   $vehicle,
+        string  $documentLabel,
+        int     $daysRemaining,
+        Carbon  $expiryDate
     ) {
-        $this->user          = $user;
+        $this->recipientName = $recipientName;
         $this->vehicle       = $vehicle;
         $this->documentLabel = $documentLabel;
         $this->daysRemaining = $daysRemaining;
@@ -42,11 +41,13 @@ class VehicleExpiryMail extends Mailable
 
     public function envelope(): Envelope
     {
-        $subject = match ($this->daysRemaining) {
-            1  => "⚠️ URGENT: Your {$this->documentLabel} expires TOMORROW!",
-            7  => "⏰ Reminder: {$this->documentLabel} expires in 7 days",
-            15 => "📋 Notice: {$this->documentLabel} expires in 15 days",
-            default => "Notice: {$this->documentLabel} expiring soon",
+        $days = $this->daysRemaining;
+
+        $subject = match (true) {
+            $days < 0   => "⚠️ Your {$this->documentLabel} has expired",
+            $days === 0 => "⚠️ URGENT: Your {$this->documentLabel} expires TODAY!",
+            $days === 1 => "⚠️ URGENT: Your {$this->documentLabel} expires TOMORROW!",
+            default     => "⏰ Reminder: {$this->documentLabel} expires in {$days} days",
         };
 
         return new Envelope(
@@ -69,11 +70,12 @@ class VehicleExpiryMail extends Mailable
 
     protected function resolveUrgency(int $days): array
     {
-        return match ($days) {
-            1  => ['#DC2626', 'URGENT – Action Required Today'],
-            7  => ['#D97706', 'Reminder – 1 Week Left'],
-            15 => ['#2563EB', 'Heads Up – 15 Days Left'],
-            default => ['#6B7280', 'Notice'],
+        return match (true) {
+            $days < 0   => ['#DC2626', 'Expired – Renew Now'],
+            $days <= 1  => ['#DC2626', 'URGENT – Action Required Today'],
+            $days <= 7  => ['#D97706', 'Reminder – Less Than a Week Left'],
+            $days <= 15 => ['#2563EB', "Heads Up – {$days} Days Left"],
+            default     => ['#6B7280', 'Notice'],
         };
     }
 }

@@ -24,6 +24,7 @@ use App\Models\InternationalDriverLicense;
 use App\Models\DealerPlateNumber;
 use App\Models\OtherPermit;
 use App\Models\PaymentModel;
+use App\Services\DocumentExpiryService;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -76,9 +77,12 @@ class AdminDashboardController extends Controller
         $totalAgents = Agent::where('status', 1)->count();
         $activeUsersTotal = $totalUsers + $totalAgents;
 
-        // Documents Expiring in 30 days
-        $expiryThreshold = Carbon::now()->addDays(30);
-        $expiringDocs = VehiclePaperRenewal::whereDate('created_at', '<=', $expiryThreshold)->count();
+        // Vehicle documents expiring within the alert window, and already expired
+        $expiryService = app(DocumentExpiryService::class);
+        $expiryStatuses = $expiryService->allDocuments()->countBy('status');
+        $expiringDocs = $expiryStatuses->get(DocumentExpiryService::STATUS_WEEK, 0) + $expiryStatuses->get(DocumentExpiryService::STATUS_MONTH, 0);
+        $expiredDocs = $expiryStatuses->get(DocumentExpiryService::STATUS_EXPIRED, 0);
+        $expiryWindowDays = $expiryService->alertWindowDays();
 
         // --------------------------
         // Existing Stats
@@ -111,7 +115,7 @@ class AdminDashboardController extends Controller
                 'ordersToday', 'ordersTodayDelta',
                 'ordersThisMonth', 'ordersMonthDelta',
                 'revenueThisMonth', 'revenueDelta',
-                'activeUsersTotal', 'expiringDocs'
+                'activeUsersTotal', 'expiringDocs', 'expiredDocs', 'expiryWindowDays'
             )
         );
     }
