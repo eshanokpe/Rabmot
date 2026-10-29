@@ -54,6 +54,8 @@
                                     </div>
                                 @endif
 
+                            @include('admin.partials.documentReminders', ['recordId' => $items->id])
+
                             <div class="col-12 mt-2 ps-2">
 
                                 <form method="POST"

@@ -4,16 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WhatsappReminder extends Model
+/**
+ * One expiry reminder attempt for a vehicle document, on one channel
+ * (email, sms or whatsapp). admin_id is null for the automatic daily job.
+ */
+class DocumentReminder extends Model
 {
-    protected $table = 'whatsapp_reminders';
+    protected $table = 'document_reminders';
 
     protected $fillable = [
-        'vehicle_renewal_id',
+        'source',
+        'record_id',
         'document_field',
+        'channel',
+        'status',
+        'reminder_point',
         'expiry_date',
-        'recipient_phone',
+        'recipient',
         'message',
+        'error_message',
         'admin_id',
         'admin_name',
     ];
@@ -21,11 +30,6 @@ class WhatsappReminder extends Model
     protected $casts = [
         'expiry_date' => 'date',
     ];
-
-    public function vehicleRenewal()
-    {
-        return $this->belongsTo(AddVehicleRenewal::class, 'vehicle_renewal_id');
-    }
 
     public function admin()
     {

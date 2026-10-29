@@ -124,13 +124,21 @@
 
                 <!-- Documents Expiring -->
                 <div class="col-6 col-sm-6 col-lg-2">
-                    <div class="card card-sm {{ $expiringDocs > 10 ? 'high-pending' : '' }}">
+                    <div class="card card-sm card-link position-relative {{ $expiringDocs > 10 ? 'high-pending' : '' }}">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <div class="font-weight-medium fs-4">{{ $expiringDocs }}</div>
-                                    <div class="text-muted">Expiring This Month</div>
-                                    <small class="text-muted">Within 30 days</small>
+                                    <a href="{{ route('admin.documentExpiry.index', ['status' => 'soon']) }}" class="stretched-link text-reset text-decoration-none">
+                                        <div class="font-weight-medium fs-4">{{ $expiringDocs }}</div>
+                                        <div class="text-muted">Expiring Soon</div>
+                                    </a>
+                                    <small class="text-muted">Within {{ $expiryWindowDays }} days</small>
+                                    @if($expiredDocs)
+                                        <div>
+                                            <a href="{{ route('admin.documentExpiry.index', ['status' => 'expired']) }}"
+                                                class="small text-danger position-relative" style="z-index: 2">{{ $expiredDocs }} already expired</a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

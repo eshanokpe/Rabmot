@@ -46,18 +46,30 @@
     <!-- Body -->
     <div class="body">
 
-        <p class="greeting">Hello, <span>{{ $user->name ?? $user->fullname ?? 'Valued Customer' }}</span> 👋</p>
+        <p class="greeting">Hello, <span>{{ $recipientName ?: 'Valued Customer' }}</span> 👋</p>
 
         <p style="font-size:15px; line-height:1.7; color:#374151;">
-            This is an official reminder that one of your registered vehicle documents
-            is approaching its expiry date. Please take action to avoid fines, penalties,
-            or being flagged during road checks.
+            @if($daysRemaining < 0)
+                This is an official reminder that one of your registered vehicle documents
+                has expired. Please renew it as soon as possible to avoid fines, penalties,
+                or being flagged during road checks.
+            @else
+                This is an official reminder that one of your registered vehicle documents
+                is approaching its expiry date. Please take action to avoid fines, penalties,
+                or being flagged during road checks.
+            @endif
         </p>
 
         <!-- Countdown -->
         <div class="countdown">
-            <div class="days-num">{{ $daysRemaining }}</div>
-            <div class="days-label">Day{{ $daysRemaining > 1 ? 's' : '' }} Remaining</div>
+            <div class="days-num">{{ abs($daysRemaining) }}</div>
+            <div class="days-label">
+                @if($daysRemaining < 0)
+                    Day{{ abs($daysRemaining) === 1 ? '' : 's' }} Since Expiry
+                @else
+                    Day{{ $daysRemaining === 1 ? '' : 's' }} Remaining
+                @endif
+            </div>
         </div>
 
         <!-- Vehicle & Document Info -->
@@ -84,7 +96,7 @@
 
         <!-- CTA -->
         <div class="cta">
-            <a href="{{ route('home.index') }}">Renew Now on My Dashboard →</a>
+            <a href="{{ config('whatsapp_reminders.renewal_link') ?: url('/') }}">Renew Now on My Dashboard →</a>
         </div>
 
         <!-- Tips -->

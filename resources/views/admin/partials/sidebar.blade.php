@@ -128,6 +128,9 @@
                             rel="noopener" @if(request()->routeIs('admin.changeOfOwnership')) aria-current="page" @endif>
                             Change Of Ownership
                         </a>
+                        <a class="dropdown-item" href="{{route('admin.documentExpiry.index')}}">
+                            Document Expiry
+                        </a>
                     </div>
                 </li>
                 @endif

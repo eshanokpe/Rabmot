@@ -8,9 +8,7 @@ use App\Models\VehicleType;
 use App\Models\AddVehicleRenewal;
 use App\Models\AddVehicleOwnership;
 use App\Models\AddVehicleRegistration;
-use App\Models\WhatsappReminder;
-use App\Services\WhatsappReminderService;
-use Illuminate\Support\Facades\Auth;
+use App\Services\DocumentExpiryService;
  
 
 class AdminAddedVehicleController extends Controller
@@ -26,49 +24,23 @@ class AdminAddedVehicleController extends Controller
            return view('admin.404');
         }
         $vehicleList = VehicleType::all();
-        $reminderService = app(WhatsappReminderService::class);
-        $expiringDocuments = $reminderService->expiringDocuments($items);
-        $reminderWindowDays = $reminderService->alertWindowDays();
-        return view('admin.pages.showAddVehicle.showAddVehicleRenewalDetails', compact('items','vehicleList','expiringDocuments','reminderWindowDays'));
+        $expiringDocuments = $this->documentsNeedingReminder('vehicle_renewal', $items);
+        return view('admin.pages.showAddVehicle.showAddVehicleRenewalDetails', compact('items','vehicleList','expiringDocuments'));
     }
 
-    public function sendWhatsappReminder(Request $request, WhatsappReminderService $reminderService, $id)
+    // Expired or soon-to-expire documents on a record, ready for the WhatsApp reminder section
+    private function documentsNeedingReminder(string $source, $record)
     {
-        $vehicle = AddVehicleRenewal::find(decrypt($id));
-        if (!$vehicle) {
-           return view('admin.404');
-        }
+        $service = app(DocumentExpiryService::class);
+        $documents = $service->documentsFor($source, $record)
+            ->filter(fn ($document) => $service->needsReminder($document))
+            ->values();
 
-        $validated = $request->validate([
-            'document_field' => 'required|string|in:' . implode(',', array_keys(WhatsappReminderService::DOCUMENT_FIELDS)),
-            'message' => 'nullable|string|max:1000',
-        ]);
+        return $service->attachLastReminders($documents)->map(function ($document) use ($service) {
+            $document['message'] = $service->buildMessage($document);
 
-        $document = collect($reminderService->expiringDocuments($vehicle))
-            ->firstWhere('field', $validated['document_field']);
-
-        if (!$document) {
-            return redirect()->back()->with('error', 'This document is not within the reminder window.');
-        }
-
-        if (!$document['phone']) {
-            return redirect()->back()->with('error', 'No valid phone number on record.');
-        }
-
-        $message = trim($validated['message'] ?? '') ?: $document['message'];
-        $admin = Auth::guard('admin')->user();
-
-        WhatsappReminder::create([
-            'vehicle_renewal_id' => $vehicle->id,
-            'document_field' => $document['field'],
-            'expiry_date' => $document['expiry_date'],
-            'recipient_phone' => $document['phone'],
-            'message' => $message,
-            'admin_id' => $admin->id,
-            'admin_name' => $admin->name,
-        ]);
-
-        return redirect()->away($reminderService->whatsappUrl($document['phone'], $message));
+            return $document;
+        });
     }
 
     public function showVehicleRenewalDelete($id){
@@ -312,7 +284,8 @@ class AdminAddedVehicleController extends Controller
            return view('admin.404');
         }
         $vehicleList = VehicleType::all();
-        return view('admin.pages.showAddVehicle.showAddChangeOfOwnershipDetails', compact('items','vehicleList'));
+        $expiringDocuments = $this->documentsNeedingReminder('vehicle_ownership', $items);
+        return view('admin.pages.showAddVehicle.showAddChangeOfOwnershipDetails', compact('items','vehicleList','expiringDocuments'));
     }
 
     public function updateChangeOfOwnership(Request $request, $id){
