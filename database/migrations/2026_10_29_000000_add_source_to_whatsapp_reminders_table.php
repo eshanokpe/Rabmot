@@ -24,7 +24,7 @@ return new class extends Migration
     // Raw SQL keeps this independent of doctrine/dbal for the column rename.
     public function up()
     {
-        if (!Schema::hasTable('whatsapp_reminders') || Schema::hasColumn('whatsapp_reminders', 'source')) {
+        if (!Schema::hasTable('whatsapp_reminders')) {
             return;
         }
 
@@ -33,9 +33,24 @@ return new class extends Migration
             DB::statement("ALTER TABLE `whatsapp_reminders` DROP INDEX `{$oldIndex}`");
         }
 
-        DB::statement("ALTER TABLE `whatsapp_reminders` CHANGE `vehicle_renewal_id` `record_id` BIGINT UNSIGNED NOT NULL");
-        DB::statement("ALTER TABLE `whatsapp_reminders` ADD `source` VARCHAR(50) NOT NULL DEFAULT 'vehicle_renewal' AFTER `id`");
-        DB::statement("ALTER TABLE `whatsapp_reminders` ADD INDEX `whatsapp_reminders_source_record_index` (`source`, `record_id`, `document_field`)");
+        if (Schema::hasColumn('whatsapp_reminders', 'vehicle_renewal_id')) {
+            if (Schema::hasColumn('whatsapp_reminders', 'record_id')) {
+                throw new \RuntimeException('Both vehicle_renewal_id and record_id exist on whatsapp_reminders.');
+            }
+
+            DB::statement("ALTER TABLE `whatsapp_reminders` CHANGE `vehicle_renewal_id` `record_id` BIGINT UNSIGNED NOT NULL");
+        } elseif (!Schema::hasColumn('whatsapp_reminders', 'record_id')) {
+            throw new \RuntimeException('Neither vehicle_renewal_id nor record_id exists on whatsapp_reminders.');
+        }
+
+        if (!Schema::hasColumn('whatsapp_reminders', 'source')) {
+            DB::statement("ALTER TABLE `whatsapp_reminders` ADD `source` VARCHAR(50) NOT NULL DEFAULT 'vehicle_renewal' AFTER `id`");
+        }
+
+        $newIndex = 'whatsapp_reminders_source_record_index';
+        if (!$this->indexExists('whatsapp_reminders', $newIndex)) {
+            DB::statement("ALTER TABLE `whatsapp_reminders` ADD INDEX `{$newIndex}` (`source`, `record_id`, `document_field`(60))");
+        }
     }
 
     public function down()
@@ -52,6 +67,6 @@ return new class extends Migration
         DB::statement("DELETE FROM `whatsapp_reminders` WHERE `source` <> 'vehicle_renewal'");
         DB::statement("ALTER TABLE `whatsapp_reminders` DROP COLUMN `source`");
         DB::statement("ALTER TABLE `whatsapp_reminders` CHANGE `record_id` `vehicle_renewal_id` BIGINT UNSIGNED NOT NULL");
-        DB::statement("ALTER TABLE `whatsapp_reminders` ADD INDEX `whatsapp_reminders_vehicle_renewal_id_document_field_index` (`vehicle_renewal_id`, `document_field`)");
+        DB::statement("ALTER TABLE `whatsapp_reminders` ADD INDEX `whatsapp_reminders_vehicle_renewal_id_document_field_index` (`vehicle_renewal_id`, `document_field`(60))");
     }
 };
