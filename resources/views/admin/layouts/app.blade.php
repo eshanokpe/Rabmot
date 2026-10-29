@@ -26,6 +26,19 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";     
         }
+
+        .navbar-vertical .navbar-nav > .nav-item > .nav-link.active {
+            color: #fff;
+            background-color: #20385d;
+            box-shadow: inset 3px 0 0 #facc15;
+            font-weight: 600;
+        }
+
+        .navbar-vertical .navbar-nav > .nav-item > .dropdown-menu > .dropdown-item.active {
+            color: #fff;
+            background-color: #20385d;
+            font-weight: 600;
+        }
     </style>
     <script src="{{ asset('/assets/dist/js/demo-theme.min.js')}}"></script>
 </head>
@@ -39,6 +52,5 @@
         @include('admin.partials.footer')
     </div>
 </body>
-
 
 
