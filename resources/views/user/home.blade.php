@@ -1,7 +1,7 @@
 @extends('user.layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 wrapper">
+<div class="min-h-screen bg-gray-50">
     <div class="page-wrapper">
         <div class="page-content-wrapper">  
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -432,44 +432,3 @@
         </div>
     </div>
 </div>
-
-@push('styles')
-<style>
-    /* Custom scrollbar for expiry list */
-    .expiry-list::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    .expiry-list::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    
-    .expiry-list::-webkit-scrollbar-thumb {
-        background: #c1c7cd;
-        border-radius: 10px;
-    }
-    
-    .expiry-list::-webkit-scrollbar-thumb:hover {
-        background: #a0a7ae;
-    }
-    
-    /* Smooth transitions */
-    .transition-shadow {
-        transition: box-shadow 0.2s ease;
-    }
-    
-    /* Focus styles */
-    *:focus-visible {
-        outline: 2px solid #142444;
-        outline-offset: 2px;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 640px) {
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-</style>
-@endpush

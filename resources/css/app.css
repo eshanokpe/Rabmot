@@ -1,3 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "../views/**/*.blade.php";
+@source "../js/**/*.{js,jsx,ts,tsx}";
+
+@theme {
+  --color-primary: #142444;
+}
+
+.expiry-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.expiry-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.expiry-list::-webkit-scrollbar-thumb {
+  background: #c1c7cd;
+  border-radius: 10px;
+}
+
+.expiry-list::-webkit-scrollbar-thumb:hover {
+  background: #a0a7ae;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.2s ease;
+}
+
+*:focus-visible {
+  outline: 2px solid #142444;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

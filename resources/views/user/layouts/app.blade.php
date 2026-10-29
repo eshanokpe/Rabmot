@@ -20,7 +20,7 @@
     
     <!-- loader-->
     <link href="{{ asset('/assets/dashboard/css/pace.min.css')}}" rel="stylesheet" />
-    <script src="{{ asset('/assets/dashboard/js/pace.min.js')}}"></script>
+    <script src="{{ asset('/assets/dashboard/js/pace.min.js')}}" defer></script>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('/assets/dashboard/css/bootstrap.min.css')}}" />
@@ -37,31 +37,14 @@
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     
-    <!-- ✅ ADD TAILWIND CSS - This should come AFTER Bootstrap -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- ✅ Custom Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#142444',
-                    }
-                }
-            }
-        }
-    </script>
-
     <!-- jQuery (necessary for Toastr) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     @viteReactRefresh
-    @vite('resources/js/app.jsx')
+    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
 </head>
 
 <body>
