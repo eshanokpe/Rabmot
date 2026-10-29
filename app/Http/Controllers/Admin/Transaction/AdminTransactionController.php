@@ -6,11 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PaymentModel;
 use App\Models\Wallet;
+use Carbon\Carbon;
 
 
 class AdminTransactionController extends Controller
 {
-    public function index(){
+    public function index(Request $request)
+    {
+        $filters = $request->validate([
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date|after_or_equal:date_from',
+        ]);
+
         $data['totalAmount'] = PaymentModel::sum('amount');
         $data['totalAmountVPR'] = PaymentModel::where('process_type','Vehicle Paper Renewal')->sum('amount');
         $data['totalAmountVNR'] = PaymentModel::where('process_type','Vehicle Registration')->sum('amount');
@@ -22,8 +29,18 @@ class AdminTransactionController extends Controller
         $data['totalAmountOP'] = PaymentModel::where('process_type','Other Permit')->sum('amount');
         $data['totalAmountwithdraw'] = Wallet::latest()->sum('amount');
   
-        $data['items'] = PaymentModel::latest()->get();
-  
+        $transactions = PaymentModel::query();
+        if (!empty($filters['date_from'])) {
+            $transactions->where('created_at', '>=', Carbon::parse($filters['date_from'])->startOfDay());
+        }
+        if (!empty($filters['date_to'])) {
+            $transactions->where('created_at', '<=', Carbon::parse($filters['date_to'])->endOfDay());
+        }
+
+        $data['items'] = $transactions->latest()->get();
+        $data['dateFrom'] = $filters['date_from'] ?? null;
+        $data['dateTo'] = $filters['date_to'] ?? null;
+
         
         return view('admin.pages.transactions.index', $data);
     }
@@ -123,4 +140,3 @@ class AdminTransactionController extends Controller
     }
 
 }
-

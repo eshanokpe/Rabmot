@@ -12,7 +12,7 @@
                         <h2 class="page-title">
                             Master Admin
                         </h2>
-                    </div>
+                    </div> 
                     <div class="text-end col-6">
                         <a href="{{route('admin.agent.create')}}">
                             <button type="submit" class="btn btn-primary">+Add Agent</button>
@@ -69,6 +69,11 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            @if(session('warning'))
+                                <div class="alert alert-warning" id="warning-alert">
+                                    {{ session('warning') }}
+                                </div>
+                            @endif
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     var successAlert = document.getElementById('success-alert');
@@ -92,12 +97,13 @@
                                             <th>Status</th>
                                             <th>Username</th>
                                             <th>Fullname</th>
-                                            <th>Eamil Address</th>
+                                            <th>Email Address</th>
+                                            <th>Commission Tier</th>
                                             <th>Phone No.</th>
                                             <th>Location</th>
                                             <th>Gender</th>
                                             <th >Date Created</th>
-                                            <th>Updated Created</th>
+                                            <th>Last Updated</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -136,6 +142,14 @@
                                             <td>{{$item->username}}</td>
                                             <td>{{$item->fullname}} </td>
                                             <td>{{$item->email}}</td>
+                                            <td>
+                                                @if ($item->commissionTier)
+                                                    <span class="badge text-bg-primary">{{ $item->commissionTier->name }}</span>
+                                                    <div class="text-muted small">{{ number_format((float) $item->commissionTier->rate, 2) }}%</div>
+                                                @else
+                                                    <span class="text-muted">Automatic</span>
+                                                @endif
+                                            </td>
                                             <td>{{$item->phone_no}}</td>
                                             <td>{{$item->location}}</td>
                                             <td>{{$item->gender}}</td>
@@ -154,7 +168,7 @@
                                         </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="10"><p class="text-danger mb-0">No Data found</p></td>
+                                                <td colspan="11"><p class="text-danger mb-0">No agents found.</p></td>
                                             </tr>
                                         @endforelse
                                     </tbody>

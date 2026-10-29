@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AgentCommissionTier extends Model
 {
@@ -16,6 +17,11 @@ class AgentCommissionTier extends Model
         'sort_order',
         'updated_by',
     ];
+
+    public function agents(): HasMany
+    {
+        return $this->hasMany(Agent::class, 'commission_tier_id');
+    }
 
     public function matches(int $referralCount): bool
     {

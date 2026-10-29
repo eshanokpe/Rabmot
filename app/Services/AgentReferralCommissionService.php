@@ -24,6 +24,14 @@ class AgentReferralCommissionService
             ];
         }
 
+        if ($referrer->commissionTier) {
+            return [
+                'rate' => (float) $referrer->commissionTier->rate,
+                'source' => 'assigned_tier',
+                'tier' => $referrer->commissionTier,
+            ];
+        }
+
         $referralCount = Agent::where('referred_by', $referrer->id)->count();
         $tier = AgentCommissionTier::orderBy('sort_order')->get()->first(fn ($t) => $t->matches($referralCount));
 

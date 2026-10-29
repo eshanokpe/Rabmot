@@ -252,6 +252,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/agents/{id}', [AdminAgentManagementController::class, 'update'])->name('admin.agent.update')->middleware('admin.can:manage-agents');
         Route::put('/agents/{id}/commission-override', [AdminAgentManagementController::class, 'setOverride'])->name('admin.agent.setOverride')->middleware('admin.can:manage-agents');
         Route::delete('/agents/{id}/commission-override', [AdminAgentManagementController::class, 'clearOverride'])->name('admin.agent.clearOverride')->middleware('admin.can:manage-agents');
+        Route::put('/agents/{id}/commission-tier', [AdminAgentManagementController::class, 'setCommissionTier'])->name('admin.agent.setCommissionTier')->middleware('admin.can:manage-commissions');
         Route::get('/agents/{id}', [AdminAgentManagementController::class, 'show'])->name('admin.agent.show')->middleware('admin.can:view-agents');
         Route::put('/agents/{id}/activate', [AdminAgentManagementController::class, 'activate'])->name('admin.agent.activate')->middleware('admin.can:manage-agents');
         Route::put('/agents/{id}/suspend', [AdminAgentManagementController::class, 'suspend'])->name('admin.agent.suspend')->middleware('admin.can:manage-agents');

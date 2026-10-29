@@ -78,7 +78,9 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = ProcessHistory::with(['user', 'adminAssigned'])->findOrFail($id);
-        return view('admin.pages.orders.show', compact('order'));
+        $admins = Admin::where('status', 'active')->orderBy('name')->get();
+
+        return view('admin.pages.orders.show', compact('order', 'admins'));
     }
 
     // Update order status

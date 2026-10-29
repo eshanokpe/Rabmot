@@ -37,6 +37,7 @@ class Agent extends Authenticatable
         'referral_code',
         'referred_by',
         'commission_override_rate',
+        'commission_tier_id',
     ];
 
     protected $casts = [
@@ -46,6 +47,11 @@ class Agent extends Authenticatable
     public function approvedBy()
     {
         return $this->belongsTo(Admin::class, 'approved_by');
+    }
+
+    public function commissionTier()
+    {
+        return $this->belongsTo(AgentCommissionTier::class, 'commission_tier_id');
     }
 
     public static function generateReferralCode(): string

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\AgentDetailMessage;
 use App\Mail\AgentEmailForgetPassword;
 use App\Models\Agent;
+use App\Models\AgentCommissionTier;
 use App\Models\AgentPasswordModel;
 use App\Models\Order;
 use App\Models\ProcessHistory;
@@ -17,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -25,7 +27,7 @@ class AdminAgentManagementController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Agent::query();
+        $query = Agent::with('commissionTier');
 
         if ($search = $request->query('q')) {
             $query->where(function ($q) use ($search) {
@@ -51,7 +53,9 @@ class AdminAgentManagementController extends Controller
 
     public function create()
     {
-        return view('admin.pages.agents.create');
+        $tiers = AgentCommissionTier::orderBy('sort_order')->orderBy('name')->get();
+
+        return view('admin.pages.agents.create', compact('tiers'));
     }
 
     public function store(Request $request)
@@ -65,6 +69,7 @@ class AdminAgentManagementController extends Controller
             'cpassword' => 'required|same:password',
             'location' => 'nullable',
             'gender' => 'required',
+            'commission_tier_id' => 'nullable|exists:agent_commission_tiers,id',
         ]);
 
         if ($validator->fails()) {
@@ -74,35 +79,58 @@ class AdminAgentManagementController extends Controller
                 ->withErrors($validator);
         }
 
-        try {
-            $agentData = $request->only(['username', 'email', 'fullname', 'phone_no', 'location', 'gender']);
-            $agentData['password'] = Hash::make($request->input('password'));
-            $agentData['userType'] = 'agent';
-            $agentData['status'] = 'active';
-            $agentData['approval_status'] = 'approved';
-            $agentData['approved_by'] = Auth::guard('admin')->user()->id;
-            $agentData['approved_at'] = now();
-            $agentData['referral_code'] = Agent::generateReferralCode();
+        $agentData = $request->only(['username', 'email', 'fullname', 'phone_no', 'location', 'gender']);
+        $agentData['password'] = Hash::make($request->input('password'));
+        $agentData['userType'] = 'agent';
+        $agentData['status'] = 'active';
+        $agentData['approval_status'] = 'approved';
+        $agentData['approved_by'] = Auth::guard('admin')->user()->id;
+        $agentData['approved_at'] = now();
+        $agentData['referral_code'] = Agent::generateReferralCode();
+        $agentData['commission_tier_id'] = $request->input('commission_tier_id');
 
-            $agentData['referred_by'] = null;
-            if ($request->filled('referral_code')) {
-                $referringAgent = Agent::where('referral_code', $request->input('referral_code'))->first();
-                if ($referringAgent) {
-                    $agentData['referred_by'] = $referringAgent->id;
-                }
+        $agentData['referred_by'] = null;
+        if ($request->filled('referral_code')) {
+            $referringAgent = Agent::where('referral_code', $request->input('referral_code'))->first();
+            if ($referringAgent) {
+                $agentData['referred_by'] = $referringAgent->id;
             }
-
-            try {
-                $sendMail = new AgentDetailMessage($agentData['email'], $agentData['fullname'], $agentData['username'], $request->input('password'));
-                Mail::to($agentData['email'])->send($sendMail);
-                Agent::create($agentData);
-                return redirect()->back()->with('success', 'Created Successfully.');
-            } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Email not sending');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Agent Details failed');
         }
+
+        $agent = Agent::create($agentData);
+
+        if ($agent->commissionTier) {
+            (new AgentCommissionAuditLogger())->log(
+                Auth::guard('admin')->user(),
+                'agent_tier_assigned',
+                "Tier \"{$agent->commissionTier->name}\" assigned to {$agent->fullname} ({$agent->username})",
+                null,
+                "{$agent->commissionTier->name} ({$agent->commissionTier->rate}%)",
+                $agent->id,
+                $agent->commissionTier->id
+            );
+        }
+
+        try {
+            Mail::to($agent->email)->send(new AgentDetailMessage(
+                $agent->email,
+                $agent->fullname,
+                $agent->username,
+                $request->input('password')
+            ));
+        } catch (\Throwable $e) {
+            Log::warning('Agent welcome email failed.', [
+                'agent_id' => $agent->id,
+                'exception' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('admin.agents')->with(
+                'warning',
+                'Agent created successfully, but the welcome email could not be sent. Check the mail settings and use Reset Credentials (Email) from the agent profile to send a password reset link.'
+            );
+        }
+
+        return redirect()->route('admin.agents')->with('success', 'Agent created and welcome email sent successfully.');
     }
 
     public function edit($id)
@@ -185,13 +213,46 @@ class AdminAgentManagementController extends Controller
             ->sum('amount');
 
         $commissionResolution = (new AgentReferralCommissionService())->resolveRateForAgent($agent);
+        $tiers = AgentCommissionTier::orderBy('sort_order')->orderBy('name')->get();
 
         return view('admin.pages.agents.show', compact(
             'agent', 'orders', 'processHistory', 'withdrawals',
             'totalEarning', 'totalWithdrawn', 'walletBalance',
             'referredBy', 'referredAgents', 'totalReferralCommission',
-            'commissionResolution'
+            'commissionResolution', 'tiers'
         ));
+    }
+
+    public function setCommissionTier(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'commission_tier_id' => 'nullable|exists:agent_commission_tiers,id',
+        ]);
+
+        $agent = Agent::findOrFail(decrypt($id));
+        $admin = Auth::guard('admin')->user();
+        $oldTier = $agent->commissionTier;
+        $newTier = isset($validated['commission_tier_id'])
+            ? AgentCommissionTier::findOrFail($validated['commission_tier_id'])
+            : null;
+
+        $agent->commission_tier_id = $newTier?->id;
+        $agent->save();
+
+        (new AgentCommissionAuditLogger())->log(
+            $admin,
+            $newTier ? 'agent_tier_assigned' : 'agent_tier_cleared',
+            ($newTier ? "Tier \"{$newTier->name}\" assigned to " : 'Assigned tier cleared for ')
+                . "{$agent->fullname} ({$agent->username})",
+            $oldTier ? "{$oldTier->name} ({$oldTier->rate}%)" : null,
+            $newTier ? "{$newTier->name} ({$newTier->rate}%)" : null,
+            $agent->id,
+            $newTier?->id
+        );
+
+        return redirect()->back()->with('success', $newTier
+            ? "Commission tier \"{$newTier->name}\" assigned successfully."
+            : 'Agent commission tier cleared.');
     }
 
     public function setOverride(Request $request, $id)

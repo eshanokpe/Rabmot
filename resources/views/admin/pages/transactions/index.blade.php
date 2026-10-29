@@ -269,8 +269,40 @@
                                     
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-body border-bottom">
+                                <form method="GET" action="{{ route('admin.transactions') }}" class="row g-3 align-items-end">
+                                    <div class="col-sm-6 col-md-4">
+                                        <label for="date_from" class="form-label">Start date</label>
+                                        <input type="date" name="date_from" id="date_from" class="form-control" value="{{ $dateFrom }}">
+                                    </div>
+                                    <div class="col-sm-6 col-md-4">
+                                        <label for="date_to" class="form-label">End date</label>
+                                        <input type="date" name="date_to" id="date_to" class="form-control" value="{{ $dateTo }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary me-2">Filter</button>
+                                        <a href="{{ route('admin.transactions') }}" class="btn btn-outline-secondary">Reset</a>
+                                    </div>
+                                    @if ($errors->has('date_to'))
+                                        <div class="col-12">
+                                            <div class="text-danger">{{ $errors->first('date_to') }}</div>
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('date_from'))
+                                        <div class="col-12">
+                                            <div class="text-danger">{{ $errors->first('date_from') }}</div>
+                                        </div>
+                                    @endif
+                                </form>
+                            </div>
                             <div class="card-header">
-                                <h3 class="card-title">Transaction History</h3>                              
+                                <h3 class="card-title">Transaction History</h3>
+                                @if ($dateFrom || $dateTo)
+                                    <div class="card-actions text-muted">
+                                        {{ $dateFrom ? \Carbon\Carbon::parse($dateFrom)->format('M j, Y') : 'Beginning' }}
+                                        – {{ $dateTo ? \Carbon\Carbon::parse($dateTo)->format('M j, Y') : 'Today' }}
+                                    </div>
+                                @endif
                             </div>                           
 
                             <div class="table-responsive">
@@ -316,7 +348,7 @@
                                                 
                                             </tr> 
                                         @empty
-                                            <p> No data founds</p>
+                                            <tr><td colspan="9" class="text-center text-muted py-4">No transactions found for the selected date range.</td></tr>
                                         @endforelse
                                                                           
 

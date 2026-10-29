@@ -120,6 +120,24 @@
                                             <label class="form-label">Referred By (Referral Code)</label>
                                             <input type="text" name="referral_code" class="form-control" autocomplete="off"/>
                                         </div>
+                                        <div class="mb-3 col-6">
+                                            <label for="commission_tier_id" class="form-label">Commission Tier</label>
+                                            <select name="commission_tier_id" id="commission_tier_id" class="form-select">
+                                                <option value="">Automatic (referral-count tier or base rate)</option>
+                                                @foreach ($tiers as $tier)
+                                                    <option value="{{ $tier->id }}" @selected(old('commission_tier_id') == $tier->id)>
+                                                        {{ $tier->name }} — {{ number_format((float) $tier->rate, 2) }}%
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <small class="form-hint">
+                                                @if ($tiers->isEmpty())
+                                                    No shared tiers are configured. Create one in <a href="{{ route('admin.commission.index') }}">Commission Management</a>.
+                                                @else
+                                                    Optional. Assign an existing shared tier now, or manage tiers in <a href="{{ route('admin.commission.index') }}">Commission Management</a>.
+                                                @endif
+                                            </small>
+                                        </div>
                                         <div class="mb-3 col-12">
                                             <input type="submit" class="btn btn-primary ms-auto" value="Create Account"/>
                                         </div>

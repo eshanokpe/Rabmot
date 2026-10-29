@@ -122,6 +122,8 @@
                                                         <strong>Reason:</strong>
                                                         @if ($preview['source'] === 'override')
                                                             Agent-specific override
+                                                        @elseif ($preview['source'] === 'assigned_tier')
+                                                            Assigned tier "{{ $preview['tier']->name }}"
                                                         @elseif ($preview['source'] === 'tier')
                                                             Tier "{{ $preview['tier']->name }}" ({{ $preview['tier']->min_referrals }}-{{ $preview['tier']->max_referrals ?? '∞' }} referrals)
                                                         @else

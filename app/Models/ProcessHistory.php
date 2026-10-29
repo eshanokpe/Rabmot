@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProcessHistory extends Model
 { 
     use HasFactory;
+
+    protected $casts = [
+        'status_history' => 'array',
+        'estimated_completion_date' => 'date',
+    ];
+
     protected $fillable = [
         'user_id', 
         'owner_id', 

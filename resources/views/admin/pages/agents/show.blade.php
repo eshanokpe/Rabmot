@@ -36,6 +36,15 @@
                                 {{ session('success') }}
                             </div>
                         @endif
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
                                 var successAlert = document.getElementById('success-alert');
@@ -338,8 +347,10 @@
                                                                 Agent-Specific Override
                                                             @elseif ($commissionResolution['source'] === 'tier')
                                                                 Tier "{{ $commissionResolution['tier']->name }}"
-                                                            @else
-                                                                Base Rate
+                                                                            @elseif ($commissionResolution['source'] === 'assigned_tier')
+                                                                                Assigned tier: "{{ $commissionResolution['tier']->name }}"
+                                                                            @else
+                                                                                Base Rate
                                                             @endif
                                                         </div>
                                                     </div>
@@ -357,6 +368,33 @@
                                                 <button type="submit" class="btn btn-outline-danger">Clear Override</button>
                                             </form>
                                         @endif
+
+                                        <h5>Commission Tier</h5>
+                                        <p class="text-muted">
+                                            An assigned tier takes precedence over referral-count tiers. A commission override, when set, still takes precedence over all tiers.
+                                        </p>
+                                        <form method="POST" action="{{ route('admin.agent.setCommissionTier', ['id' => encrypt($agent->id)]) }}" class="row align-items-end mb-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="mb-3 col-md-6">
+                                                <label for="commission_tier_id" class="form-label">Assigned Tier</label>
+                                                <select name="commission_tier_id" id="commission_tier_id" class="form-select">
+                                                    <option value="">Use referral-count tier or base rate</option>
+                                                    @foreach ($tiers as $tier)
+                                                        <option value="{{ $tier->id }}" @selected($agent->commission_tier_id == $tier->id)>
+                                                            {{ $tier->name }} — {{ $tier->rate }}% ({{ $tier->min_referrals }}-{{ $tier->max_referrals ?? 'unlimited' }} referrals)
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($tiers->isEmpty())
+                                                    <small class="form-hint">No shared tiers are configured. Add tiers in Commission Management.</small>
+                                                @endif
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <button type="submit" class="btn btn-primary">Save Tier Assignment</button>
+                                                <a href="{{ route('admin.commission.index') }}" class="btn btn-outline-secondary">Manage Shared Tiers</a>
+                                            </div>
+                                        </form>
 
                                         <h5>{{ $agent->commission_override_rate !== null ? 'Update Override' : 'Set Override' }}</h5>
                                         <form method="POST" action="{{ route('admin.agent.setOverride', ['id' => encrypt($agent->id)]) }}" class="row">
