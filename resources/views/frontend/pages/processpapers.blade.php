@@ -42,7 +42,7 @@
                     </p>
                     <a
                         href="{{ route('signup') }}"
-                        class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white bg-white px-8 py-3 text-sm font-bold uppercase tracking-wide text-[#142444] shadow-lg shadow-black/20 transition-all duration-200 hover:scale-105 hover:bg-[#142444] hover:text-white"
+                        class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white bg-white px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-[#142444] shadow-lg shadow-black/20 transition-all duration-200 hover:scale-105 hover:bg-[#142444] hover:text-white"
                     >
                         Create Account
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -182,7 +182,7 @@
                         <button
                             type="submit"
                             id="submitBtn"
-                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#142444] px-8 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-[#142444]/30 transition-all duration-200 hover:scale-[1.02] hover:bg-[#0e1a34] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[#142444] px-6 py-2.5 text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-[#142444]/30 transition-all duration-200 hover:scale-[1.02] hover:bg-[#0e1a34] disabled:opacity-70 disabled:cursor-not-allowed sm:w-auto"
                         >
                             <span id="btnText" class="inline-flex items-center gap-2">
                                 Sign In

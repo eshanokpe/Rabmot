@@ -33,6 +33,9 @@ require __DIR__.'/user.php';
 
 
 Route::get('/verifyemail/{token}', [RegisterController::class, 'verify']);
+Route::get('/verify-email-code', [RegisterController::class, 'showVerificationCode'])->name('verification.code');
+Route::post('/verify-email-code', [RegisterController::class, 'verifyCode'])->middleware('throttle:6,1')->name('verification.code.submit');
+Route::post('/verify-email-code/resend', [RegisterController::class, 'resendVerificationCode'])->middleware('throttle:3,10')->name('verification.code.resend');
 Route::post('/forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password/', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
@@ -94,4 +97,3 @@ Route::get('/payment/callback', [PaymentController::class, 'handleGatewayCallbac
 
 Route::get('/application/success', [PaymentController::class, 'success'])
     ->name('application.success');
-

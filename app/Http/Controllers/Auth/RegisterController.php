@@ -7,15 +7,13 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\Events\UserCreating;
-use Mail;
-use Http; 
-use App\Mail\MailNotify;
-use App\Mail\EmailVerification;
+use Http;
+use App\Mail\EmailVerificationCode;
 use App\Mail\EmailConfirmation;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
 use App\Models\Notifications;
 use App\Models\ReferralLog;
 use Illuminate\Support\Str;
@@ -98,18 +96,23 @@ class RegisterController extends Controller
              $tokensEarned = 10 * $referringUser->referrer_count;
          }
      
+         $verificationCode = (string) random_int(100000, 999999);
+
          // Create the new user
          $user = User::create([
              'fullname' => $request->input('fullname'),
              'email' => $request->input('email'),
-             'email_token' => bin2hex(openssl_random_pseudo_bytes(30)),
              'phone' => $request->input('phone'),
              'role' => 3,
              'password' => bcrypt($request->input('password')),
              'status_id' => 1,
              'status' => 'active',
              'referral_code' => $referralCode,
+             'verified' => 0,
          ]);
+         $user->email_verification_code = Hash::make($verificationCode);
+         $user->email_verification_code_expires_at = now()->addMinutes(10);
+         $user->save();
      
          // Create referral and token records if applicable
          if ($referringUser) {
@@ -141,18 +144,113 @@ class RegisterController extends Controller
             'status' => 0
         ]);
      
-         // Send email verification
-         event(new Registered($user));
-     
+         $request->session()->put('pending_email_verification_user_id', $user->id);
+
          try {
-             Mail::to($user->email)->send(new EmailVerification($user));
-         } catch (\Exception $e) {
-             return redirect()->back()->with('error', 'Email verification failed');
+             Mail::to($user->email)->send(new EmailVerificationCode($user, $verificationCode));
+         } catch (\Throwable $e) {
+             Log::error('Registration email verification code could not be sent.', [
+                 'user_id' => $user->id,
+                 'exception' => $e->getMessage(),
+             ]);
+
+             return redirect()->route('verification.code')
+                 ->with('error', 'Your account was created, but the verification code could not be emailed. Please try sending a new code.');
          }
      
-         // Redirect to email verification view
-         return view('frontend.emails.verification');
+         return redirect()->route('verification.code')
+             ->with('success', 'Your account was created. Enter the verification code sent to your email address.');
      }
+
+    public function showVerificationCode(Request $request)
+    {
+        $user = User::find($request->session()->get('pending_email_verification_user_id'));
+
+        if (!$user) {
+            return redirect()->route('signup')->with('error', 'Please create an account before verifying your email.');
+        }
+
+        if ($user->verified) {
+            return redirect()->route('processpapers')->with('success', 'Your email address is already verified.');
+        }
+
+        return view('frontend.emails.verification-code', compact('user'));
+    }
+
+    public function verifyCode(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|digits:6',
+        ]);
+        $user = User::find($request->session()->get('pending_email_verification_user_id'));
+
+        if (!$user) {
+            return redirect()->route('signup')->with('error', 'Your verification session has expired. Please sign up again.');
+        }
+
+        if ($user->verified) {
+            return redirect()->route('processpapers')->with('success', 'Your email address is already verified.');
+        }
+
+        if (!$user->email_verification_code || !$user->email_verification_code_expires_at || $user->email_verification_code_expires_at->isPast()) {
+            return redirect()->route('verification.code')->with('error', 'Your verification code has expired. Request a new code to continue.');
+        }
+
+        if (!Hash::check($validated['code'], $user->email_verification_code)) {
+            return redirect()->route('verification.code')->withErrors([
+                'code' => 'That verification code is incorrect. Please check your email and try again.',
+            ]);
+        }
+
+        $user->verified = 1;
+        $user->email_verification_code = null;
+        $user->email_verification_code_expires_at = null;
+        $user->save();
+        $request->session()->forget('pending_email_verification_user_id');
+
+        Notifications::create([
+            'user_id' => $user->id,
+            'user_email' => $user->email,
+            'fullname' => $user->fullname,
+            'userType' => 'user',
+            'title' => 'User account creation',
+            'message' => 'A new user account has been created.',
+        ]);
+
+        return view('frontend.emails.emailconfirm', compact('user'));
+    }
+
+    public function resendVerificationCode(Request $request)
+    {
+        $user = User::find($request->session()->get('pending_email_verification_user_id'));
+
+        if (!$user) {
+            return redirect()->route('signup')->with('error', 'Your verification session has expired. Please sign up again.');
+        }
+
+        if ($user->verified) {
+            return redirect()->route('processpapers')->with('success', 'Your email address is already verified.');
+        }
+
+        $verificationCode = (string) random_int(100000, 999999);
+        $user->email_verification_code = Hash::make($verificationCode);
+        $user->email_verification_code_expires_at = now()->addMinutes(10);
+        $user->save();
+
+        try {
+            Mail::to($user->email)->send(new EmailVerificationCode($user, $verificationCode));
+        } catch (\Throwable $e) {
+            Log::error('Registration email verification code could not be resent.', [
+                'user_id' => $user->id,
+                'exception' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('verification.code')
+                ->with('error', 'We could not send a new verification code. Please try again later.');
+        }
+
+        return redirect()->route('verification.code')->with('success', 'A new verification code has been sent.');
+    }
      
 
     private function generateReferralCode(): string
