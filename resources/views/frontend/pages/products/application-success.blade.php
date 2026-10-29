@@ -139,9 +139,9 @@
                                 Create a free account to view status, save details, and manage future applications.
                             </p>
                             <div class="flex flex-wrap gap-3">
-                                <a href="{{ route('signup', ['ref' => $reference ?? $order->order_number ?? '']) }}" 
+                                <a href="{{ route('login') }}" 
                                    class="inline-flex items-center px-4 py-2 bg-[#142444] hover:bg-[#0f1c38] text-white font-medium rounded-lg transition duration-200">
-                                    <i class="fas fa-user-plus mr-2"></i> Create My Account
+                                    <i class="fas fa-user-plus mr-2"></i> Login
                                 </a>
                                 <a href="{{ route('home') }}" 
                                    class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-lg transition duration-200">
