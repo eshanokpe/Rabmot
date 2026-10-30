@@ -84,6 +84,7 @@
                                 <table class="table card-table table-vcenter text-nowrap">
                                     <thead>
                                         <tr>
+                                            <th class="w-1">S/N</th>
                                             <th>Order No</th>
                                             <th>Amount</th>
                                             <th>Status</th>
@@ -93,13 +94,14 @@
                                     <tbody>
                                         @forelse ($payments as $payment)
                                             <tr>
+                                                <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                 <td>{{ $payment->orderNo }}</td>
                                                 <td>₦{{ number_format($payment->amount, 2) }}</td>
                                                 <td><span class="badge text-bg-success">{{ $payment->status }}</span></td>
                                                 <td>{{ $payment->created_at->format('F j, Y g:i A') }}</td>
                                             </tr>
                                         @empty
-                                            <tr><td colspan="4" class="text-muted">No successful payments in this period.</td></tr>
+                                            <tr><td colspan="5" class="text-muted">No successful payments in this period.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>

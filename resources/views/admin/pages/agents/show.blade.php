@@ -143,6 +143,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Order Number</th>
                                                         <th>Product</th>
                                                         <th>Qty</th>
@@ -154,6 +155,7 @@
                                                 <tbody>
                                                     @forelse ($orders as $order)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $orders->firstItem() + $loop->index }}</span></td>
                                                             <td>{{ $order->order_number }}</td>
                                                             <td>{{ $order->product_name }}</td>
                                                             <td>{{ $order->product_qty }}</td>
@@ -162,7 +164,7 @@
                                                             <td>{{ \Carbon\Carbon::parse($order->created_at)->format('F j, Y') }}</td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="6" class="text-muted">No orders found</td></tr>
+                                                        <tr><td colspan="7" class="text-muted">No orders found</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -174,6 +176,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Process Number</th>
                                                         <th>Process Type</th>
                                                         <th>Status</th>
@@ -183,13 +186,14 @@
                                                 <tbody>
                                                     @forelse ($processHistory as $process)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                             <td>{{ $process->process_number }}</td>
                                                             <td>{{ $process->process_type }}</td>
                                                             <td>{{ $process->status }}</td>
                                                             <td>{{ \Carbon\Carbon::parse($process->created_at)->format('F j, Y') }}</td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="4" class="text-muted">No process history found</td></tr>
+                                                        <tr><td colspan="5" class="text-muted">No process history found</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -228,6 +232,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Date</th>
                                                         <th>Amount</th>
                                                         <th>Bank</th>
@@ -239,6 +244,7 @@
                                                 <tbody>
                                                     @forelse ($withdrawals as $withdrawal)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $withdrawals->firstItem() + $loop->index }}</span></td>
                                                             <td>{{ \Carbon\Carbon::parse($withdrawal->created_at)->format('F j, Y') }}</td>
                                                             <td>₦{{ number_format($withdrawal->amount, 2) }}</td>
                                                             <td>{{ $withdrawal->bank }}</td>
@@ -257,7 +263,7 @@
                                                             </td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="6" class="text-muted">No withdrawal requests found</td></tr>
+                                                        <tr><td colspan="7" class="text-muted">No withdrawal requests found</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -304,6 +310,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Username</th>
                                                         <th>Full Name</th>
                                                         <th>Email</th>
@@ -314,6 +321,7 @@
                                                 <tbody>
                                                     @forelse ($referredAgents as $referred)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                             <td>{{ $referred->username }}</td>
                                                             <td><a href="{{ route('admin.agent.show', ['id' => encrypt($referred->id)]) }}">{{ $referred->fullname }}</a></td>
                                                             <td>{{ $referred->email }}</td>
@@ -321,7 +329,7 @@
                                                             <td>{{ \Carbon\Carbon::parse($referred->created_at)->format('F j, Y') }}</td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="5" class="text-muted">This agent has not referred anyone yet.</td></tr>
+                                                        <tr><td colspan="6" class="text-muted">This agent has not referred anyone yet.</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>

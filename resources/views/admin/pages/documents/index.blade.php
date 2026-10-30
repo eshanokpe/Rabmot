@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Documents')
+@section('title', 'Document Process')
 
 @section('content')
 <div class="page-wrapper">
@@ -9,7 +9,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <div class="page-pretitle">Overview</div>
-                    <h2 class="page-title">Documents</h2>
+                    <h2 class="page-title">Document Process</h2>
                 </div>
             </div>
         </div>

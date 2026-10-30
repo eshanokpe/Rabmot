@@ -117,6 +117,7 @@
                         <table class="table table-vcenter card-table">
                             <thead>
                                 <tr>
+                                    <th class="w-1">S/N</th>
                                     <th>Recipient</th>
                                     <th>Phone</th>
                                     <th>Status</th>
@@ -125,6 +126,7 @@
                             <tbody>
                                 @foreach($whatsappDeliveries as $delivery)
                                 <tr>
+                                    <td><span class="text-muted">{{ $whatsappDeliveries->firstItem() + $loop->index }}</span></td>
                                     <td>
                                         {{ $delivery->recipient_name ?? '—' }}
                                         <div class="small text-muted">{{ ucfirst($delivery->recipient_type) }}</div>
@@ -183,6 +185,7 @@
                     <table class="table table-vcenter card-table">
                         <thead>
                             <tr>
+                                <th class="w-1">S/N</th>
                                 <th>Recipient</th>
                                 <th>Type</th>
                                 <th>Channel</th>
@@ -194,6 +197,7 @@
                         <tbody>
                             @forelse($deliveries as $delivery)
                             <tr>
+                                <td><span class="text-muted">{{ $deliveries->firstItem() + $loop->index }}</span></td>
                                 <td>{{ in_array($delivery->channel, ['sms', 'whatsapp'], true) ? ($delivery->recipient_phone ?? '—') : ($delivery->recipient_email ?? '—') }}</td>
                                 <td>{{ ucfirst($delivery->recipient_type) }}</td>
                                 <td><span class="badge bg-secondary">{{ ucfirst($delivery->channel) }}</span></td>
@@ -211,7 +215,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">
+                                <td colspan="7" class="text-center py-4 text-muted">
                                     No delivery records yet.
                                 </td>
                             </tr>

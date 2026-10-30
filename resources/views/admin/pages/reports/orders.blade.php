@@ -115,6 +115,7 @@
                                 <table class="table card-table table-vcenter text-nowrap">
                                     <thead>
                                         <tr>
+                                            <th class="w-1">S/N</th>
                                             <th>Process Number</th>
                                             <th>Type</th>
                                             <th>Status</th>
@@ -124,13 +125,14 @@
                                     <tbody>
                                         @forelse ($orders as $order)
                                             <tr>
+                                                <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                 <td>{{ $order->process_number }}</td>
                                                 <td>{{ $order->process_type }}</td>
                                                 <td>{{ \App\Http\Controllers\Admin\AdminReportsController::ORDER_STATUS_LABELS[$order->status] ?? $order->status }}</td>
                                                 <td>{{ $order->created_at->format('F j, Y g:i A') }}</td>
                                             </tr>
                                         @empty
-                                            <tr><td colspan="4" class="text-muted">No orders in this period.</td></tr>
+                                            <tr><td colspan="5" class="text-muted">No orders in this period.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>

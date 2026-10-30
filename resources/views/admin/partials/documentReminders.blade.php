@@ -14,6 +14,7 @@
             <table class="table table-vcenter card-table">
                 <thead>
                     <tr>
+                        <th class="w-1">S/N</th>
                         <th>Document</th>
                         <th>Expiry Date</th>
                         <th>Reminder</th>
@@ -22,6 +23,7 @@
                 <tbody>
                     @foreach($expiringDocuments as $document)
                         <tr>
+                            <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                             <td class="fw-bold">{{ $document['label'] }}</td>
                             <td class="text-nowrap">
                                 {{ $document['expiry_date']->format('F j, Y') }}

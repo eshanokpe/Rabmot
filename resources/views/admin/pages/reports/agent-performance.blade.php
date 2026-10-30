@@ -53,6 +53,7 @@
                                 <table class="table card-table table-vcenter text-nowrap">
                                     <thead>
                                         <tr>
+                                            <th class="w-1">S/N</th>
                                             <th>Agent</th>
                                             <th>Email</th>
                                             <th>Orders</th>
@@ -64,6 +65,7 @@
                                     <tbody>
                                         @forelse ($agents as $row)
                                             <tr>
+                                                <td><span class="text-muted">{{ $agents->firstItem() + $loop->index }}</span></td>
                                                 <td>{{ $row->agent->fullname }}</td>
                                                 <td>{{ $row->agent->email }}</td>
                                                 <td>{{ $row->orders }}</td>
@@ -72,7 +74,7 @@
                                                 <td>₦{{ number_format($row->referralCommission, 2) }}</td>
                                             </tr>
                                         @empty
-                                            <tr><td colspan="6" class="text-muted">No agent data available.</td></tr>
+                                            <tr><td colspan="7" class="text-muted">No agent data available.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>

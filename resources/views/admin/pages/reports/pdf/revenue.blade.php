@@ -22,11 +22,13 @@
 
     <table>
         <thead>
-            <tr><th>Order No</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+            <tr><th class="w-1">S/N</th>
+            <th>Order No</th><th>Amount</th><th>Status</th><th>Date</th></tr>
         </thead>
         <tbody>
             @foreach ($payments as $payment)
                 <tr>
+                    <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                     <td>{{ $payment->orderNo }}</td>
                     <td>₦{{ number_format($payment->amount, 2) }}</td>
                     <td>{{ $payment->status }}</td>

@@ -63,6 +63,7 @@
                                 <table class="table card-table table-vcenter text-nowrap">
                                     <thead>
                                         <tr>
+                                            <th class="w-1">S/N</th>
                                             <th>Agent</th>
                                             <th>Email</th>
                                             <th>Referrals</th>
@@ -72,13 +73,14 @@
                                     <tbody>
                                         @forelse ($referrers as $row)
                                             <tr>
+                                                <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                 <td>{{ $row->agent->fullname }}</td>
                                                 <td>{{ $row->agent->email }}</td>
                                                 <td>{{ $row->referrals }}</td>
                                                 <td>₦{{ number_format($row->referralCommission, 2) }}</td>
                                             </tr>
                                         @empty
-                                            <tr><td colspan="4" class="text-muted">No referral activity in this period.</td></tr>
+                                            <tr><td colspan="5" class="text-muted">No referral activity in this period.</td></tr>
                                         @endforelse
                                     </tbody>
                                 </table>

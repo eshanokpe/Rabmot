@@ -16,11 +16,13 @@
 
     <table>
         <thead>
-            <tr><th>Process Number</th><th>Type</th><th>Status</th><th>Date</th></tr>
+            <tr><th class="w-1">S/N</th>
+            <th>Process Number</th><th>Type</th><th>Status</th><th>Date</th></tr>
         </thead>
         <tbody>
             @foreach ($orders as $order)
                 <tr>
+                    <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                     <td>{{ $order->process_number }}</td>
                     <td>{{ $order->process_type }}</td>
                     <td>{{ \App\Http\Controllers\Admin\AdminReportsController::ORDER_STATUS_LABELS[$order->status] ?? $order->status }}</td>

@@ -104,6 +104,7 @@
                     <table class="table table-vcenter card-table">
                         <thead>
                             <tr>
+                                <th class="w-1">S/N</th>
                                 <th>Owner</th>
                                 <th>Vehicle</th>
                                 <th>Document</th>
@@ -115,6 +116,7 @@
                         <tbody>
                             @forelse($documents as $document)
                                 <tr>
+                                    <td><span class="text-muted">{{ $documents->firstItem() + $loop->index }}</span></td>
                                     <td>
                                         {{ $document['owner_name'] ?? '—' }}
                                         <div class="small text-muted">{{ $document['raw_phone'] ?: 'No phone' }}</div>
@@ -140,7 +142,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">No documents match these filters.</td>
+                                    <td colspan="7" class="text-center py-4 text-muted">No documents match these filters.</td>
                                 </tr>
                             @endforelse
                         </tbody>

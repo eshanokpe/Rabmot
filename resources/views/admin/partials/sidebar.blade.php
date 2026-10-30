@@ -72,7 +72,7 @@
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-file"></i>
                         </span>
-                        <span class="nav-link-title">Documents</span>
+                        <span class="nav-link-title">Document Process</span>
                     </a>
                 </li>
                 @endif

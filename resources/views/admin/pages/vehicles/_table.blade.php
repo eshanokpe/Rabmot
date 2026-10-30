@@ -8,6 +8,7 @@
     <table class="table table-vcenter card-table">
         <thead>
             <tr>
+                <th class="w-1">S/N</th>
                 <th></th>
                 <th>Service</th>
                 <th>Owner</th>
@@ -22,6 +23,7 @@
         <tbody>
             @forelse($vehicles as $vehicle)
                 <tr>
+                    <td><span class="text-muted">{{ $vehicles->firstItem() + $loop->index }}</span></td>
                     <td>
                         <a href="{{ route($services[$vehicle->service]['view_route'], encrypt($vehicle->id)) }}" class="btn btn-sm btn-outline-primary">View</a>
                     </td>
@@ -58,7 +60,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="9" class="text-center py-4 text-muted">
+                    <td colspan="10" class="text-center py-4 text-muted">
                         {{ $search !== '' ? 'No vehicles match your search.' : 'No vehicles yet.' }}
                     </td>
                 </tr>

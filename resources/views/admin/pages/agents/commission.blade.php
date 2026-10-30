@@ -142,6 +142,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Name</th>
                                                         <th>Min Referrals</th>
                                                         <th>Max Referrals</th>
@@ -153,6 +154,7 @@
                                                 <tbody>
                                                     @forelse ($tiers as $tier)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                             <td><input type="text" name="name" form="tier-update-{{ $tier->id }}" class="form-control form-control-sm" value="{{ $tier->name }}" required></td>
                                                             <td><input type="number" min="0" name="min_referrals" form="tier-update-{{ $tier->id }}" class="form-control form-control-sm" value="{{ $tier->min_referrals }}" required></td>
                                                             <td><input type="number" min="0" name="max_referrals" form="tier-update-{{ $tier->id }}" class="form-control form-control-sm" value="{{ $tier->max_referrals }}" placeholder="No limit"></td>
@@ -164,7 +166,7 @@
                                                             </td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="6" class="text-muted">No tiers configured yet — the base rate applies to everyone.</td></tr>
+                                                        <tr><td colspan="7" class="text-muted">No tiers configured yet — the base rate applies to everyone.</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -218,6 +220,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Username</th>
                                                         <th>Full Name</th>
                                                         <th>Email</th>
@@ -228,6 +231,7 @@
                                                 <tbody>
                                                     @forelse ($overriddenAgents as $overriddenAgent)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                                                             <td>{{ $overriddenAgent->username }}</td>
                                                             <td>{{ $overriddenAgent->fullname }}</td>
                                                             <td>{{ $overriddenAgent->email }}</td>
@@ -237,7 +241,7 @@
                                                             </td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="5" class="text-muted">No agents currently have a commission override.</td></tr>
+                                                        <tr><td colspan="6" class="text-muted">No agents currently have a commission override.</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>
@@ -250,6 +254,7 @@
                                             <table class="table card-table table-vcenter text-nowrap">
                                                 <thead>
                                                     <tr>
+                                                        <th class="w-1">S/N</th>
                                                         <th>Date</th>
                                                         <th>Admin</th>
                                                         <th>Action</th>
@@ -261,6 +266,7 @@
                                                 <tbody>
                                                     @forelse ($auditLogs as $log)
                                                         <tr>
+                                                            <td><span class="text-muted">{{ $auditLogs->firstItem() + $loop->index }}</span></td>
                                                             <td>{{ $log->created_at->format('F j, Y g:i A') }}</td>
                                                             <td>{{ $log->admin->name ?? 'Unknown' }}</td>
                                                             <td><span class="badge text-bg-secondary">{{ str_replace('_', ' ', $log->action) }}</span></td>
@@ -269,7 +275,7 @@
                                                             <td>{{ $log->new_value ?? '—' }}</td>
                                                         </tr>
                                                     @empty
-                                                        <tr><td colspan="6" class="text-muted">No commission changes have been logged yet.</td></tr>
+                                                        <tr><td colspan="7" class="text-muted">No commission changes have been logged yet.</td></tr>
                                                     @endforelse
                                                 </tbody>
                                             </table>

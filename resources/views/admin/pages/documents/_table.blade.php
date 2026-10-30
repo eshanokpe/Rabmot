@@ -4,6 +4,7 @@
     <table class="table table-vcenter card-table">
         <thead>
             <tr>
+                <th class="w-1">S/N</th>
                 <th>Process ID</th>
                 <th>Customer</th>
                 <th>Process Type</th>
@@ -17,6 +18,7 @@
             @forelse($documents as $document)
                 @php $status = $statuses[(string) $document->status] ?? null; @endphp
                 <tr>
+                    <td><span class="text-muted">{{ $documents->firstItem() + $loop->index }}</span></td>
                     <td class="fw-bold text-nowrap">{{ $document->process_id ?: '—' }}</td>
                     <td>
                         {{ $document->user_email ?: '—' }}
@@ -43,7 +45,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center py-4 text-muted">
+                    <td colspan="8" class="text-center py-4 text-muted">
                         {{ $search !== '' ? 'No documents match your search.' : 'No documents here yet.' }}
                     </td>
                 </tr>

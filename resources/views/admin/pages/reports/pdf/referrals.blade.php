@@ -21,11 +21,13 @@
 
     <table>
         <thead>
-            <tr><th>Agent</th><th>Email</th><th>Referrals</th><th>Referral Commission</th></tr>
+            <tr><th class="w-1">S/N</th>
+            <th>Agent</th><th>Email</th><th>Referrals</th><th>Referral Commission</th></tr>
         </thead>
         <tbody>
             @foreach ($referrers as $row)
                 <tr>
+                    <td><span class="text-muted">{{ $loop->iteration }}</span></td>
                     <td>{{ $row->agent->fullname }}</td>
                     <td>{{ $row->agent->email }}</td>
                     <td>{{ $row->referrals }}</td>
