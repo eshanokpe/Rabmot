@@ -13,9 +13,9 @@ use App\Services\DocumentExpiryService;
 
 class AdminAddedVehicleController extends Controller
 {
+    // The per-service lists now live on Admin > Vehicles; keep old links working.
     public function showAddVehicleRenewal(){
-        $items = AddVehicleRenewal::with('user')->latest()->paginate(10);
-        return view('admin.pages.showAddVehicle.showAddVehicleRenewal', compact('items'));
+        return redirect()->route('admin.vehicles.index', ['service' => 'renewal']);
     }
 
     public function showVehicleRenewalDetails($id){
@@ -186,8 +186,7 @@ class AdminAddedVehicleController extends Controller
     }
 
     public function showAddNewVehicleRegistration(){
-        $items = AddVehicleRegistration::latest()->paginate(10);
-        return view('admin.pages.showAddVehicle.showAddNewVehicleRegistration', compact('items'));
+        return redirect()->route('admin.vehicles.index', ['service' => 'registration']);
     }
 
     public function showAddNewVehicleRegistrationDetails($id){
@@ -274,8 +273,7 @@ class AdminAddedVehicleController extends Controller
     }
 
     public function showAddChangeOfOwnership(){
-        $items = AddVehicleOwnership::latest()->paginate(10);
-        return view('admin.pages.showAddVehicle.showAddChangeOfOwnership', compact('items'));
+        return redirect()->route('admin.vehicles.index', ['service' => 'ownership']);
     }
 
     public function viewAddChangeOfOwnership($id){

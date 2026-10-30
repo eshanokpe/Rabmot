@@ -142,7 +142,7 @@ class AdminAddVehicleController extends Controller
         $saved = $vehiclerenewal->save(); 
 
         if($saved){
-            return redirect()->back()->withSuccess('New Vehicle Renewal has been successfully created.');
+            return redirect()->route('admin.vehicles.index', ['service' => 'renewal'])->withSuccess('New Vehicle Renewal has been successfully created.');
 
         }else{
             return redirect()->back()->withError('Somthing went wrong in saving Vehicle Renewal data.');
@@ -209,7 +209,7 @@ class AdminAddVehicleController extends Controller
         ]);
             
         if($saved){
-            return redirect()->back()->withSuccess('New Vehicle Registration has been created Successfully');
+            return redirect()->route('admin.vehicles.index', ['service' => 'registration'])->withSuccess('New Vehicle Registration has been created Successfully');
 
         }else{
             return redirect()->back()->withError('Somthing went wrong in saving Vehicle Renewal data.');
@@ -310,7 +310,7 @@ class AdminAddVehicleController extends Controller
             $saved = $vehicleOwnership->save(); 
         
             if($saved){
-                return redirect()->back()->withSuccess('New Ownership Renewal has been successfully created.');
+                return redirect()->route('admin.vehicles.index', ['service' => 'ownership'])->withSuccess('New Ownership Renewal has been successfully created.');
         
             }else{
                 return redirect()->back()->withError('Somthing went wrong in saving Vehicle Renewal data.');

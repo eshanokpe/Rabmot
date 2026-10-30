@@ -13,22 +13,23 @@
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
                 @php
-                    $documentProcessActive = request()->routeIs(
-                        'admin.pendingpaper',
-                        'admin.processedpaper',
-                        'admin.readyfordelivery',
-                        'admin.deliveryinprogress',
-                        'admin.delivered'
+                    $documentsActive = request()->routeIs(
+                        'admin.documents.index',
+                        'admin.viewpendingpaper',
+                        'admin.viewprocesspaper',
+                        'admin.viewreadyfordeliveryPaper',
+                        'admin.viewdeliveryinprogress',
+                        'admin.viewdeliveredPaper'
                     );
-                    $vehicleListActive = request()->routeIs(
-                        'admin.vehicle.renewals',
-                        'admin.vehicle.registrations.new',
-                        'admin.changeOfOwnership'
-                    );
-                    $addVehicleActive = request()->routeIs(
+                    $vehiclesActive = request()->routeIs(
+                        'admin.vehicles.index',
+                        'admin.vehicle.renewals*',
+                        'admin.vehicle.registrations*',
+                        'admin.changeOfOwnership*',
                         'admin.vehicle.renewal.add',
                         'admin.vehicle.registration.new',
-                        'admin.vehicle.changeOfOwnership.add'
+                        'admin.vehicle.changeOfOwnership.add',
+                        'admin.documentExpiry.*'
                     );
                     $pricingActive = request()->routeIs(
                         'admin.services.index',
@@ -65,36 +66,16 @@
                     </a>
                 </li>
 
-                <!-- ✅ Document Processes Section -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ $documentProcessActive ? 'active' : '' }}" href="#navbar-help" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="{{ $documentProcessActive ? 'true' : 'false' }}">
+                @if(Auth::guard('admin')->user()->hasPermission('view-orders'))
+                <li class="nav-item">
+                    <a class="nav-link {{ $documentsActive ? 'active' : '' }}" href="{{ route('admin.documents.index') }}" @if($documentsActive) aria-current="page" @endif>
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        <i class="fa fa-file"></i>
+                            <i class="fa fa-file"></i>
                         </span>
-                        <span class="nav-link-title">
-                          Document Processes
-                        </span>
+                        <span class="nav-link-title">Documents</span>
                     </a>
-                    <div class="dropdown-menu {{ $documentProcessActive ? 'show' : '' }}">
-                        <a class="dropdown-item {{ request()->routeIs('admin.pendingpaper') ? 'active' : '' }}" href="{{route('admin.pendingpaper')}}" @if(request()->routeIs('admin.pendingpaper')) aria-current="page" @endif>
-                            Pending Document
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.processedpaper') ? 'active' : '' }}" href="{{route('admin.processedpaper')}}" @if(request()->routeIs('admin.processedpaper')) aria-current="page" @endif>
-                            Processing Document
-                        </a>
-
-                        <a class="dropdown-item {{ request()->routeIs('admin.readyfordelivery') ? 'active' : '' }}" href="{{route('admin.readyfordelivery')}}" @if(request()->routeIs('admin.readyfordelivery')) aria-current="page" @endif>
-                           Ready for Delivery
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.deliveryinprogress') ? 'active' : '' }}" href="{{route('admin.deliveryinprogress')}}" @if(request()->routeIs('admin.deliveryinprogress')) aria-current="page" @endif>
-                           Delivery in Progress
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.delivered') ? 'active' : '' }}" href="{{route('admin.delivered')}}" @if(request()->routeIs('admin.delivered')) aria-current="page" @endif>
-                           Document Delivered
-                         </a>
-                    </div>
                 </li>
+                @endif
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('admin.processtype.index') ? 'active' : '' }}" href="{{ route('admin.processtype.index') }}" @if(request()->routeIs('admin.processtype.index')) aria-current="page" @endif>
@@ -106,59 +87,26 @@
                 </li>
                
                 @if(Auth::guard('admin')->user()->hasPermission('view-vehicles'))
-               
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ $vehicleListActive ? 'active' : '' }}" href="#" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="{{ $vehicleListActive ? 'true' : 'false' }}">
+                    <a class="nav-link dropdown-toggle {{ $vehiclesActive ? 'active' : '' }}" href="#" data-bs-toggle="dropdown"
+                        data-bs-auto-close="false" role="button" aria-expanded="{{ $vehiclesActive ? 'true' : 'false' }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                             <i class="fa fa-car"></i>
                         </span>
                         <span class="nav-link-title">
-                            View Added Vehicle
+                            Vehicles
                         </span>
                     </a>
-                    <div class="dropdown-menu {{ $vehicleListActive ? 'show' : '' }}">
-                        <a class="dropdown-item {{ request()->routeIs('admin.vehicle.renewals') ? 'active' : '' }}" href="{{route('admin.vehicle.renewals')}}" rel="noopener" @if(request()->routeIs('admin.vehicle.renewals')) aria-current="page" @endif>
-                            Vehicle Renewal
+                    <div class="dropdown-menu {{ $vehiclesActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('admin.vehicles.index') ? 'active' : '' }}" href="{{ route('admin.vehicles.index') }}" @if(request()->routeIs('admin.vehicles.index')) aria-current="page" @endif>
+                            Client Vehicles
                         </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.vehicle.registrations.new') ? 'active' : '' }}" href="{{route('admin.vehicle.registrations.new')}}" @if(request()->routeIs('admin.vehicle.registrations.new')) aria-current="page" @endif>
-                            New Vehicle Registration
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.changeOfOwnership') ? 'active' : '' }}" href="{{route('admin.changeOfOwnership')}}"
-                            rel="noopener" @if(request()->routeIs('admin.changeOfOwnership')) aria-current="page" @endif>
-                            Change Of Ownership
-                        </a>
-                        <a class="dropdown-item" href="{{route('admin.documentExpiry.index')}}">
+                        <a class="dropdown-item {{ request()->routeIs('admin.documentExpiry.*') ? 'active' : '' }}" href="{{ route('admin.documentExpiry.index') }}" @if(request()->routeIs('admin.documentExpiry.*')) aria-current="page" @endif>
                             Document Expiry
                         </a>
                     </div>
                 </li>
                 @endif
-
-                <!-- Rest of your existing menu items below -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {{ $addVehicleActive ? 'active' : '' }}" href="#navbar-help" data-bs-toggle="dropdown"
-                        data-bs-auto-close="false" role="button" aria-expanded="{{ $addVehicleActive ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="fa fa-car"></i>
-                        </span>
-                        <span class="nav-link-title">
-                            +Add Vehicle
-                        </span>
-                    </a>
-                    <div class="dropdown-menu {{ $addVehicleActive ? 'show' : '' }}">
-                        <a class="dropdown-item {{ request()->routeIs('admin.vehicle.renewal.add') ? 'active' : '' }}" href="{{route('admin.vehicle.renewal.add')}}" @if(request()->routeIs('admin.vehicle.renewal.add')) aria-current="page" @endif>
-                           Vehicle Renewal
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.vehicle.registration.new') ? 'active' : '' }}" href="{{route('admin.vehicle.registration.new')}}" @if(request()->routeIs('admin.vehicle.registration.new')) aria-current="page" @endif>
-                            New Vehicle Registration
-                        </a>
-                        <a class="dropdown-item {{ request()->routeIs('admin.vehicle.changeOfOwnership.add') ? 'active' : '' }}" href="{{route('admin.vehicle.changeOfOwnership.add')}}"
-                            rel="noopener" @if(request()->routeIs('admin.vehicle.changeOfOwnership.add')) aria-current="page" @endif>
-                            Change Of Ownership
-                        </a>
-                    </div>
-                </li>
                 
                
                 @if(Auth::guard('admin')->user()->hasPermission('view-pricing') || Auth::guard('admin')->user()->hasPermission('view-vehicles'))

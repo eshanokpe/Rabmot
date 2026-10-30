@@ -53,12 +53,12 @@
             <div class="card">
                 <div class="card-body border-bottom">
                     <form method="GET" action="{{ route('admin.documentExpiry.index') }}" class="row g-2 align-items-end">
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-6 col-lg-4">
                             <label class="form-label">Search</label>
                             <input type="text" name="search" class="form-control" placeholder="Plate, owner or phone"
                                 value="{{ $filters['search'] ?? '' }}" />
                         </div>
-                        <div class="col-6 col-md-2">
+                        <div class="col-6 col-md-3 col-lg-2">
                             <label class="form-label">Status</label>
                             <select name="status" class="form-select">
                                 <option value="">All</option>
@@ -67,7 +67,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-6 col-md-2">
+                        <div class="col-6 col-md-3 col-lg-3">
                             <label class="form-label">Document</label>
                             <select name="document" class="form-select">
                                 <option value="">All</option>
@@ -76,7 +76,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-6 col-md-2">
+                        <div class="col-12 col-md-4 col-lg-3">
                             <label class="form-label">Source</label>
                             <select name="source" class="form-select">
                                 <option value="">All</option>
@@ -85,17 +85,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-6 col-md-1">
+                        <div class="col-6 col-md-4 col-lg-2">
                             <label class="form-label">Expiry from</label>
                             <input type="date" name="from" class="form-control" value="{{ $filters['from'] ?? '' }}" />
                         </div>
-                        <div class="col-6 col-md-1">
-                            <label class="form-label">to</label>
+                        <div class="col-6 col-md-4 col-lg-2">
+                            <label class="form-label">Expiry to</label>
                             <input type="date" name="to" class="form-control" value="{{ $filters['to'] ?? '' }}" />
                         </div>
-                        <div class="col-6 col-md-1 d-flex gap-1">
+                        <div class="col-12 col-lg-auto d-flex gap-2">
                             <button type="submit" class="btn btn-primary">Filter</button>
-                            <a href="{{ route('admin.documentExpiry.index') }}" class="btn btn-link px-1">Clear</a>
+                            <a href="{{ route('admin.documentExpiry.index') }}" class="btn btn-outline-secondary">Clear</a>
                         </div>
                     </form>
                 </div>

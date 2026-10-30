@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\AdminAddVehicleController;
 use App\Http\Controllers\Admin\AdminVehiclePriceController;
 use App\Http\Controllers\Admin\AdminAddedVehicleController;
 use App\Http\Controllers\Admin\DocumentExpiryController;
+use App\Http\Controllers\Admin\VehiclesController;
+use App\Http\Controllers\Admin\DocumentsController;
 use App\Http\Controllers\Admin\DriverLicenseController;
 use App\Http\Controllers\Admin\DealersPlateNumberPriceController;
 use App\Http\Controllers\Admin\DriverLicenseRenewalController;
@@ -93,6 +95,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/download/otherpermitaffidavit/{id}', [AdminProcessTypeController::class, 'downloadotherpermitaffidavit'])->name('otherpermitaffidavit.download')->middleware('admin.can:manage-orders');
         Route::get('/download/otherpermitpolicereport/{id}', [AdminProcessTypeController::class, 'downloadotherpermitpolicereport'])->name('otherpermitpolicereport.download')->middleware('admin.can:manage-orders');
         Route::put('/update/deliveryinprogress/paper/{id}', [AdminDashboardController::class, 'updatedeliveryinprogressStatus'])->name('admin.update-deliveryinprogress-status')->middleware('admin.can:manage-orders');
+
+        // Vehicles: one Client Vehicles table across all added-vehicle services
+        Route::get('/vehicles', [VehiclesController::class, 'index'])->name('admin.vehicles.index')->middleware('admin.can:view-vehicles');
 
         // Get add vehicle renewal
         Route::get('/vehicle-renewals', [AdminAddedVehicleController::class, 'showAddVehicleRenewal'])->name('admin.vehicle.renewals')->middleware('admin.can:view-vehicles');
@@ -382,6 +387,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/view/ready-for-delivery/paper/{id}', [AdminDashboardController::class, 'viewreadyfordeliveryPaper'])->name('admin.viewreadyfordeliveryPaper');
 
         // Document Processes
+        // Documents: every order in one table with status tabs
+        Route::get('/documents', [DocumentsController::class, 'index'])->name('admin.documents.index')->middleware('admin.can:view-orders');
+
         Route::get('/pending/paper', [AdminProcessDocument::class, 'pendingPaper'])->name('admin.pendingpaper')->middleware('admin.can:view-orders');
         Route::get('/view/pending/paper/{id}', [AdminProcessDocument::class, 'viewpendingPaper'])->name('admin.viewpendingpaper')->middleware('admin.can:view-orders');
         Route::put('/update/pending/paper/{id}', [AdminProcessDocument::class, 'updatePendingPaperStatus'])->name('admin.update-pendingPaper-status')->middleware('admin.can:manage-orders');

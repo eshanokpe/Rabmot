@@ -17,9 +17,9 @@ use App\Mail\DeliveredMode;
  
 class AdminProcessDocument extends Controller
 { 
+    // The per-status lists now live on Admin > Documents; keep old links working.
     public function pendingPaper(){
-        $items = ProcessHistory::where('status',0)->latest()->get();
-        return view('admin.pages.processHistory.pending.pendingpaper', compact('items'));
+        return redirect()->route('admin.documents.index', ['status' => 'pending']);
     } 
 
    public function viewpendingPaper($id){ 
@@ -89,8 +89,7 @@ class AdminProcessDocument extends Controller
    }
 
    public function processedPaper(){
-      $items = ProcessHistory::where('status',1)->latest()->get();
-      return view('admin.pages.processHistory.processed.processedPaper', compact('items'));
+      return redirect()->route('admin.documents.index', ['status' => 'processing']);
    }
 
    public function viewProcessPaper($id){
@@ -152,8 +151,7 @@ class AdminProcessDocument extends Controller
    }
 
    public function readyForDelivery(){
-      $items = ProcessHistory::where('status',2)->latest()->get();
-      return view('admin.pages.processHistory.delivery.readyForDelivery', compact('items'));
+      return redirect()->route('admin.documents.index', ['status' => 'ready']);
    }
 
    public function viewDeliveryinProgress($id){
@@ -213,13 +211,11 @@ class AdminProcessDocument extends Controller
    }
 
    public function deliveryinProgress(){
-      $items = ProcessHistory::where('status', 3)->latest()->get();
-      return view('admin.pages.processHistory.deliveryinprogress.deliveryinProgress', compact('items'));
+      return redirect()->route('admin.documents.index', ['status' => 'in_progress']);
    }
 
    public function delivered(){
-      $items = Processhistory::where('status',4)->latest()->get();
-      return view('admin.pages.processHistory.delivered.delivered', compact('items'));
+      return redirect()->route('admin.documents.index', ['status' => 'delivered']);
    }
 
    public function viewDeliveredPaper($id){

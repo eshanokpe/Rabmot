@@ -30,7 +30,7 @@
         .navbar-vertical .navbar-nav > .nav-item > .nav-link.active {
             color: #fff;
             background-color: #20385d;
-            box-shadow: inset 3px 0 0 #facc15;
+            box-shadow: inset 3px 0 0 #fff;
             font-weight: 600;
         }
 
